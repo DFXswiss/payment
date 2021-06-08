@@ -1,13 +1,12 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>DFX Payments</Text>
+      <Text style={styles.text}>
+        <Text style={styles.defi}>DEFI</Text>CHANGE</Text>
       <Text>Coming soon!</Text>
-      <StatusBar style="auto" />
     </View>
   );
 }
@@ -20,8 +19,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   text: {
-    color: '#ff00af',
     fontWeight: 'bold',
     fontSize: 30
+  },
+  defi: {
+    color: '#ff00af'
   }
 });

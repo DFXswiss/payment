@@ -29,3 +29,10 @@ jobs:
 
       - name: Build for web
         run: expo build:web
+
+      - name: Deploy to all-inkl
+        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        with:
+          server: w01bfd03.kasserver.com
+          username: w01bfd03
+          password: ${{ secrets.ftp_password }}

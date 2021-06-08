@@ -14,12 +14,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+      - uses: expo/expo-github-action@v5
+        with:
+          expo-version: 4.x
 
       - name: Install packages
-        run: npm i
-        
+        run: npm install
+
       - name: Optimize assets
         run: npx expo-optimize
-        
+
       - name: Build for web
-        run: npm run build:web
+        run: expo build:web

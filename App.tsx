@@ -5,7 +5,8 @@ import { StyleSheet, Text, View } from 'react-native';
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>DFX Payments - Coming soon!</Text>
+      <Text style={styles.text}>DFX Payments</Text>
+      <Text>Coming soon!</Text>
       <StatusBar style="auto" />
     </View>
   );
@@ -16,6 +17,11 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
+  text: {
+    color: '#ff00af',
+    fontWeight: 'bold',
+    fontSize: 30
+  }
 });

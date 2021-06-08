@@ -36,3 +36,5 @@ jobs:
           server: w01bfd03.kasserver.com
           username: w01bfd03
           password: ${{ secrets.ftp_password }}
+          local-dir: ./web-build/
+          server-dir: payment.fiat2defi.ch/

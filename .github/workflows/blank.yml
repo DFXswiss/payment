@@ -1,0 +1,25 @@
+name: CI/CD Main
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install packages
+        run: npm i
+        
+      - name: Optimize assets
+        run: npx expo-optimize
+        
+      - name: Build for web
+        run: expo build:web

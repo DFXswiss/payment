@@ -1,35 +1,35 @@
+import "react-native-gesture-handler";
 import React from "react";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { LinkingOptions, NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
+import HomeScreen from "./app/screens/HomeScreen";
+import SignUpScreen from "./app/screens/SignUpScreen";
+import Header from "./app/components/Header";
+import routes from "./app/config/routes";
+import { navigationRef } from "./app/utils/navigationHelper";
 
 export default function App() {
+  const Stack = createStackNavigator();
+
+  const linking: LinkingOptions = {
+    prefixes: [],
+    config: {
+      initialRouteName: routes.home,
+      screens: {
+        [routes.home]: "/",
+        [routes.signUp]: "sign-up",
+      },
+    },
+  };
+
   return (
-    <View style={styles.container}>
-      <Image
-        style={styles.image}
-        source={require("./assets/change_logo.png")}
-      />
-      <Text style={styles.text}>
-        <Text style={{ color: "#ff00af" }}>DEFI</Text>CHANGE
-      </Text>
-      <Text>Coming soon!</Text>
-    </View>
+    <NavigationContainer linking={linking} ref={navigationRef}>
+      <Header></Header>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name={routes.home} component={HomeScreen}></Stack.Screen>
+        <Stack.Screen name={routes.signUp} component={SignUpScreen}></Stack.Screen>
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    fontWeight: "bold",
-    fontSize: 30,
-  },
-  image: {
-    marginBottom: "1rem",
-    width: 333,
-    height: 270,
-  },
-});

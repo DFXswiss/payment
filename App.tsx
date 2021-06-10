@@ -9,9 +9,8 @@ import Routes from "./app/config/Routes";
 import { navigationRef } from "./app/utils/NavigationHelper";
 import "./app/i18n/i18n";
 
-export default function App() {
+const App = () => {
   const stack = createStackNavigator();
-
   const linking: LinkingOptions = {
     prefixes: [],
     config: {
@@ -33,3 +32,5 @@ export default function App() {
     </NavigationContainer>
   );
 }
+
+export default App;

@@ -1,9 +1,12 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View, Image } from "react-native";
 import colors from "../config/Colors";
 import AppStyles from "../styles/AppStyles";
 
 const HomeScreen = () => {
+  const { t } = useTranslation();
+
   return (
     <View style={[AppStyles.container, styles.container]}>
       <Image
@@ -13,7 +16,7 @@ const HomeScreen = () => {
       <Text style={styles.text}>
         <Text style={{ color: colors.Primary }}>DEFI</Text>CHANGE
       </Text>
-      <Text>Coming soon!</Text>
+      <Text>{t('coming_soon')}</Text>
     </View>
   );
 }

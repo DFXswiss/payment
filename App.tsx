@@ -7,6 +7,7 @@ import SignUpScreen from "./app/screens/SignUpScreen";
 import Header from "./app/components/Header";
 import Routes from "./app/config/Routes";
 import { navigationRef } from "./app/utils/NavigationHelper";
+import "./app/i18n/i18n";
 
 export default function App() {
   const stack = createStackNavigator();

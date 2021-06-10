@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
-import colors from "../config/colors";
+import colors from "../config/Colors";
 import AppStyles from "../styles/AppStyles";
 
 const HomeScreen = () => {
@@ -11,7 +11,7 @@ const HomeScreen = () => {
         source={require("../assets/change_logo.png")}
       />
       <Text style={styles.text}>
-        <Text style={{ color: colors.primary }}>DEFI</Text>CHANGE
+        <Text style={{ color: colors.Primary }}>DEFI</Text>CHANGE
       </Text>
       <Text>Coming soon!</Text>
     </View>

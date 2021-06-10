@@ -1,4 +1,4 @@
 export default {
-    home: "Home",
-    signUp: "Sign up"
+    Home: "Home",
+    SignUp: "Sign up"
 }

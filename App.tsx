@@ -2,23 +2,22 @@ import "react-native-gesture-handler";
 import React from "react";
 import { LinkingOptions, NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-
 import HomeScreen from "./app/screens/HomeScreen";
 import SignUpScreen from "./app/screens/SignUpScreen";
 import Header from "./app/components/Header";
-import routes from "./app/config/routes";
-import { navigationRef } from "./app/utils/navigationHelper";
+import Routes from "./app/config/Routes";
+import { navigationRef } from "./app/utils/NavigationHelper";
 
 export default function App() {
-  const Stack = createStackNavigator();
+  const stack = createStackNavigator();
 
   const linking: LinkingOptions = {
     prefixes: [],
     config: {
-      initialRouteName: routes.home,
+      initialRouteName: Routes.Home,
       screens: {
-        [routes.home]: "/",
-        [routes.signUp]: "sign-up",
+        [Routes.Home]: "/",
+        [Routes.SignUp]: "sign-up",
       },
     },
   };
@@ -26,10 +25,10 @@ export default function App() {
   return (
     <NavigationContainer linking={linking} ref={navigationRef}>
       <Header></Header>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name={routes.home} component={HomeScreen}></Stack.Screen>
-        <Stack.Screen name={routes.signUp} component={SignUpScreen}></Stack.Screen>
-      </Stack.Navigator>
+      <stack.Navigator screenOptions={{ headerShown: false }}>
+        <stack.Screen name={Routes.Home} component={HomeScreen}></stack.Screen>
+        <stack.Screen name={Routes.SignUp} component={SignUpScreen}></stack.Screen>
+      </stack.Navigator>
     </NavigationContainer>
   );
 }

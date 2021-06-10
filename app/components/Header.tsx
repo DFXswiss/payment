@@ -1,25 +1,27 @@
 import React from "react";
-import { Button, View, Image } from "react-native";
-import colors from "../config/colors";
-import routes from "../config/routes";
-import * as navigation from "../utils/navigationHelper";
+import { Button, View, Image, TouchableOpacity } from "react-native";
+import Colors from "../config/Colors";
+import Routes from "../config/Routes";
+import * as navigation from "../utils/NavigationHelper";
 
 const Header = () => {
   return (
     <View style={{ flexDirection: "row", padding: 10 }}>
-      <Image
-        style={{ width: 190 }}
-        source={require("../assets/logo_defichange.png")}
-      />
+      <TouchableOpacity activeOpacity={1} style={{ width: 200 }} onPress={() => navigation.navigate(Routes.Home)}>
+        <Image
+          style={{ flex: 1, resizeMode: "contain" }}
+          source={require("../assets/logo_defichange.png")}
+        />
+      </TouchableOpacity>
       <Button
-        color={colors.primary}
+        color={Colors.Primary}
         title="Home"
-        onPress={() => navigation.navigate(routes.home)}
+        onPress={() => navigation.navigate(Routes.Home)}
       />
       <Button
-        color={colors.primary}
+        color={Colors.Primary}
         title="Sign up"
-        onPress={() => navigation.navigate(routes.signUp)}
+        onPress={() => navigation.navigate(Routes.SignUp)}
       />
     </View>
   );

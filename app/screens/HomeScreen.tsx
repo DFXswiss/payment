@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
+import Loading from "../components/Loading";
 import Row from "../components/Row";
 import { getUser, User } from "../services/ApiService";
 import AppStyles from "../styles/AppStyles";
@@ -25,7 +26,7 @@ const HomeScreen = () => {
       <Text style={AppStyles.h2}>{t("model.user.your_data")}</Text>
 
       {/* TODO: loading component */}
-      {isLoading && <Text>Loading ...</Text>}
+      {isLoading && <Loading />}
       {user && (
         <View>
           {user.address ? <Row cells={[t("model.user.address"), user.address]} /> : null}

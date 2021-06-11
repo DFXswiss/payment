@@ -1,27 +1,8 @@
-// TODO: move to environment?
-const BaseUrl = "https://api.fiat2defi.ch/api/v1";
+import { Environment } from "../env/Environment";
+import { User } from "../models/User";
+
+const BaseUrl = Environment.api.baseUrl;
 const UserUrl = "user";
-
-// TODO: move to model folder?
-export interface User {
-  address: string;
-  signature: string;
-
-  firstname: string;
-  surname: string;
-  street: string;
-  zip: string;
-  location: string;
-  mail: string;
-  phone_number: string;
-
-  ref: string;
-  used_ref: string;
-  wallet_id: number;
-
-  created: string;
-  IP: string;
-}
 
 // TODO: remove dummy data
 const Address = "8MTm4jQ2FHbrxZRbbKkTWgAHYv5hCASU22";

@@ -3,7 +3,8 @@ import { useTranslation } from "react-i18next";
 import { StyleSheet, Text, View } from "react-native";
 import Loading from "../components/Loading";
 import Row from "../components/Row";
-import { getUser, User } from "../services/ApiService";
+import { User } from "../models/User";
+import { getUser } from "../services/ApiService";
 import AppStyles from "../styles/AppStyles";
 
 const HomeScreen = () => {

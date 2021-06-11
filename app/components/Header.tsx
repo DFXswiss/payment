@@ -12,6 +12,7 @@ import i18n, { changeLanguage } from "../i18n/i18n";
 import * as navigation from "../utils/NavigationHelper";
 import { Picker } from "@react-native-picker/picker";
 import { getSettings } from "../services/SettingsService";
+import Sizes from "../config/Sizes";
 
 const Header = () => {
   const [selectedLanguage, setSelectedLanguage] = useState("en");
@@ -28,15 +29,15 @@ const Header = () => {
     <View style={styles.container}>
       <TouchableOpacity
         activeOpacity={1}
-        style={{ width: 200 }}
+        style={styles.logoTouch}
         onPress={() => navigation.navigate(Routes.Home)}
       >
         <Image
-          style={{ flex: 1, resizeMode: "contain" }}
+          style={styles.logo}
           source={require("../assets/logo_defichange.png")}
         />
       </TouchableOpacity>
-      <Button
+      {/* <Button
         color={Colors.Primary}
         title="Home"
         onPress={() => navigation.navigate(Routes.Home)}
@@ -45,7 +46,7 @@ const Header = () => {
         color={Colors.Primary}
         title="Sign up"
         onPress={() => navigation.navigate(Routes.SignUp)}
-      />
+      /> */}
       <Picker
         style={styles.languageSelect}
         selectedValue={selectedLanguage}
@@ -64,7 +65,15 @@ const Header = () => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    padding: 10,
+    padding: Sizes.AppPadding,
+  },
+  logoTouch: {
+    width: 150,
+    height: 30,
+  },
+  logo: {
+    flex: 1,
+    resizeMode: "contain",
   },
   languageSelect: {
     marginLeft: "auto",

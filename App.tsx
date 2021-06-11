@@ -8,6 +8,9 @@ import Header from "./app/components/Header";
 import Routes from "./app/config/Routes";
 import { navigationRef } from "./app/utils/NavigationHelper";
 import "./app/i18n/i18n";
+import { View, StyleSheet } from "react-native";
+import AppStyles from "./app/styles/AppStyles";
+import Sizes from "./app/config/Sizes";
 
 const App = () => {
   const stack = createStackNavigator();
@@ -22,15 +25,24 @@ const App = () => {
     },
   };
 
+  // TODO: max width
   return (
     <NavigationContainer linking={linking} ref={navigationRef}>
       <Header></Header>
-      <stack.Navigator screenOptions={{ headerShown: false }}>
-        <stack.Screen name={Routes.Home} component={HomeScreen}></stack.Screen>
-        <stack.Screen name={Routes.SignUp} component={SignUpScreen}></stack.Screen>
-      </stack.Navigator>
+      <View style={[AppStyles.container, styles.container]}>
+        <stack.Navigator screenOptions={{ headerShown: false }}>
+          <stack.Screen name={Routes.Home} component={HomeScreen}></stack.Screen>
+          <stack.Screen name={Routes.SignUp} component={SignUpScreen}></stack.Screen>
+        </stack.Navigator>
+      </View>
     </NavigationContainer>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: Sizes.AppPadding
+  }
+})
 
 export default App;

@@ -37,12 +37,12 @@ const App = () => {
       </View>
     </NavigationContainer>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
-    padding: Sizes.AppPadding
-  }
-})
+    padding: Sizes.AppPadding,
+  },
+});
 
 export default App;

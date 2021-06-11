@@ -25,8 +25,7 @@ export interface User {
 
 // TODO: remove dummy data
 const Address = "8MTm4jQ2FHbrxZRbbKkTWgAHYv5hCASU22";
-const Signature =
-  "IMFmkM25tqVtrva3m7xFd+py91i7q/23FJ8bSl7No0VgVcQo4ATV19+XoS+tLlydtS1gj2zl0Zb0XL2GDj/bw22=";
+const Signature = "IMFmkM25tqVtrva3m7xFd+py91i7q/23FJ8bSl7No0VgVcQo4ATV19+XoS+tLlydtS1gj2zl0Zb0XL2GDj/bw22=";
 const DummyUser: User = {
   IP: "192.192.192.192",
   address: "8MTm4jQ2FHbrxZRbbKkTWgAHYv5hCASU22",
@@ -36,8 +35,7 @@ const DummyUser: User = {
   mail: "test@google.com",
   phone_number: "",
   ref: "000-005",
-  signature:
-    "IMFmkM25tqVtrva3m7xFd+py91i7q/23FJ8bSl7No0VgVcQo4ATV19+XoS+tLlydtS1gj2zl0Zb0XL2GDj/bw22=",
+  signature: "IMFmkM25tqVtrva3m7xFd+py91i7q/23FJ8bSl7No0VgVcQo4ATV19+XoS+tLlydtS1gj2zl0Zb0XL2GDj/bw22=",
   street: "",
   surname: "",
   used_ref: "010-000",

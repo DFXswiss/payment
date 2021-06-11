@@ -20,12 +20,9 @@ const HomeScreen = () => {
 
   return (
     <View style={AppStyles.container}>
-      <Text style={[AppStyles.h1, { textAlign: "center" }]}>
-        {t("welcome")}
-      </Text>
+      <Text style={[AppStyles.h1, { textAlign: "center" }]}>{t("welcome")}</Text>
       <Text style={AppStyles.h2}>{t("model.user.your_data")}</Text>
 
-      {/* TODO: loading component */}
       {isLoading && <Loading />}
       {user && (
         <View>

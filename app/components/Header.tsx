@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Button,
-  View,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
 import i18n, { changeLanguage } from "../i18n/i18n";
@@ -27,15 +21,8 @@ const Header = () => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity
-        activeOpacity={1}
-        style={styles.logoTouch}
-        onPress={() => navigation.navigate(Routes.Home)}
-      >
-        <Image
-          style={styles.logo}
-          source={require("../assets/logo_defichange.png")}
-        />
+      <TouchableOpacity activeOpacity={1} style={styles.logoTouch} onPress={() => navigation.navigate(Routes.Home)}>
+        <Image style={styles.logo} source={require("../assets/logo_defichange.png")} />
       </TouchableOpacity>
       {/* <Button
         color={Colors.Primary}

@@ -1,6 +1,22 @@
 {
   "common": {
-    "coming_soon": "Erscheint bald!",
-    "change_language": "Sprache ändern"
+    "welcome": "Willkommen!",
+    "model": {
+      "user": {
+        "your_data": "Deine Benutzerdaten",
+        "address": "ID",
+        "signature": "Signatur",
+      
+        "firstname": "Vorname",
+        "surname": "Nachname",
+        "street": "Adresse",
+        "zip": "PLZ",
+        "location": "Ort",
+        "mail": "E-Mail Adresse",
+        "phone_number": "Telefonnummer",
+        "ref": "Verwendeter Ref-Code",
+        "used_ref": "Ref-Code zum Verteilen"
+      }
+    }
   }
 }

@@ -14,7 +14,8 @@ export interface AppSettings {
 
 
 export const getSettings = (): Promise<AppSettings> => {
-  return AsyncStorage.getItem(SettingsKey).then((data) => ({...DefaultSettings, ...JSON.parse(data ?? "{}")}));
+  return AsyncStorage.getItem(SettingsKey)
+    .then((data) => ({...DefaultSettings, ...JSON.parse(data ?? "{}")}));
 };
 
 export const updateSettings = (update: Partial<AppSettings>): Promise<void> => {

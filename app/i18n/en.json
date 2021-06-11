@@ -1,6 +1,6 @@
 {
   "common": {
-    "coming_soon": "Coming soon!",
-    "change_language": "Change language"
+    "welcome": "Welcome!",
+    "user_data": "Your User Data"
   }
 }

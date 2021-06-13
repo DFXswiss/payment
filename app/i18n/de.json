@@ -10,8 +10,8 @@
         "address": "ID",
         "signature": "Signatur",
 
-        "firstname": "Vorname",
-        "surname": "Nachname",
+        "first_name": "Vorname",
+        "last_name": "Nachname",
         "street": "Adresse",
         "zip": "PLZ",
         "location": "Ort",
@@ -24,8 +24,8 @@
         "routes": "Payment Routen",
         "none": "Du hast noch keine Routen angelegt.",
         "new": "Neue Route:",
-        "fiat2crypto": "Fiat > Crypto",
-        "crypto2fiat": "Crypto > Fiat"
+        "buy": "Fiat > Crypto",
+        "sell": "Crypto > Fiat"
       }
     }
   }

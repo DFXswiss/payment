@@ -43,14 +43,14 @@ const HomeScreen = () => {
                 </View>
               </View>
               {user.address ? <Row cells={[t("model.user.address"), user.address]} /> : null}
-              {user.firstname ? <Row cells={[t("model.user.firstname"), user.firstname]} /> : null}
-              {user.surname ? <Row cells={[t("model.user.surname"), user.surname]} /> : null}
+              {user.firstName ? <Row cells={[t("model.user.first_name"), user.firstName]} /> : null}
+              {user.lastName ? <Row cells={[t("model.user.last_name"), user.lastName]} /> : null}
               {user.street ? <Row cells={[t("model.user.street"), user.street]} /> : null}
               {user.zip ? <Row cells={[t("model.user.zip"), user.zip]} /> : null}
               {user.location ? <Row cells={[t("model.user.location"), user.location]} /> : null}
               {user.mail ? <Row cells={[t("model.user.mail"), user.mail]} /> : null}
-              {user.phone_number ? <Row cells={[t("model.user.phone_number"), user.phone_number]} /> : null}
-              {user.used_ref ? <Row cells={[t("model.user.used_ref"), user.used_ref]} /> : null}
+              {user.phoneNumber ? <Row cells={[t("model.user.phone_number"), user.phoneNumber]} /> : null}
+              {user.usedRef ? <Row cells={[t("model.user.used_ref"), user.usedRef]} /> : null}
               {/* TODO: KYC status, gebühr */}
 
               <Spacer10 />
@@ -66,12 +66,12 @@ const HomeScreen = () => {
                 <Text style={AppStyles.h2}>{t("model.routes.routes")}</Text>
                 <Text style={[AppStyles.mla, AppStyles.mr10]}>{t("model.routes.new")}</Text>
                 <View style={AppStyles.mr10}>
-                  <Button color={Colors.Primary} title={t("model.routes.fiat2crypto")} onPress={() => {}} />
+                  <Button color={Colors.Primary} title={t("model.routes.buy")} onPress={() => {}} />
                 </View>
-                <Button color={Colors.Primary} title={t("model.routes.crypto2fiat")} onPress={() => {}} />
+                <Button color={Colors.Primary} title={t("model.routes.sell")} onPress={() => {}} />
               </View>
 
-              {routes.fiat2crypto?.length + routes.crypto2fiat?.length > 0 ? (
+              {routes.buyRoutes?.length + routes.sellRoutes?.length > 0 ? (
                 <Text>TODO</Text>
               ) : (
                 <Text style={AppStyles.i}>{t("model.routes.none")}</Text>

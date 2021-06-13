@@ -26,7 +26,6 @@ const App = () => {
     },
   };
 
-  // TODO: max width
   return (
     <View style={[AppStyles.container, styles.container]}>
       <View style={[AppStyles.container, styles.appContainer]}>

@@ -3,7 +3,7 @@ import { Asset } from "./Asset";
 export interface BuyRouteDto {
   id: string;
   address: string;
-  asset: number; // TODO: map to asset object?
+  asset: number;
   bank_usage: string;
   iban: string;
   active: boolean;

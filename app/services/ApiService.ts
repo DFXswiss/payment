@@ -82,7 +82,9 @@ export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
 };
 
 export const getRoutes = (): Promise<PaymentRoutes> => {
-  // TODO: verify return type
+  // TODO: remove
+  return Promise.resolve({ fiat2crypto: [], crypto2fiat: [] });
+
   return fetch(`${BaseUrl}/${UserUrl}/${Address}/${RouteUrl}?signature=${Signature}`)
     .then((response) => response.json());
 };

@@ -1,12 +1,15 @@
 {
   "common": {
     "welcome": "Willkommen!",
+    "action": {
+      "edit": "Bearbeiten"
+    },
     "model": {
       "user": {
         "your_data": "Deine Benutzerdaten",
         "address": "ID",
         "signature": "Signatur",
-      
+
         "firstname": "Vorname",
         "surname": "Nachname",
         "street": "Adresse",
@@ -14,8 +17,15 @@
         "location": "Ort",
         "mail": "E-Mail Adresse",
         "phone_number": "Telefonnummer",
-        "ref": "Verwendeter Ref-Code",
-        "used_ref": "Ref-Code zum Verteilen"
+        "used_ref": "Verwendeter Ref-Code",
+        "ref": "Ref-Code zum Verteilen"
+      },
+      "routes": {
+        "routes": "Payment Routen",
+        "none": "Du hast noch keine Routen angelegt.",
+        "new": "Neue Route:",
+        "fiat2crypto": "Fiat > Crypto",
+        "crypto2fiat": "Crypto > Fiat"
       }
     }
   }

@@ -1,6 +1,7 @@
-export type AssetType = "Coin" | "TODO";
-// TODO: check swagger enum
-// TODO: export to separate file?
+export enum AssetType {
+  Coin = "Coin",
+  DAT = "DAT"
+}
 
 export interface Asset {
   id: number;

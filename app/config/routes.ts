@@ -1,5 +1,7 @@
+const PageTitle = "DeFi Exchange"
+
 export default {
-    Home: "home",
-    Login: "login",
-    NotFound: "not-found"
+    Home: `${PageTitle}: Home`,
+    Login: `${PageTitle}: Login`,
+    NotFound: `${PageTitle}: NotFound`
 }

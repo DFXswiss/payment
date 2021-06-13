@@ -24,7 +24,7 @@ const Header = () => {
       <TouchableOpacity activeOpacity={1} style={styles.logoTouch} onPress={() => navigation.navigate(Routes.Home)}>
         <Image style={styles.logo} source={require("../assets/logo_defichange.png")} />
       </TouchableOpacity>
-      
+
       <Picker
         style={styles.languageSelect}
         selectedValue={selectedLanguage}

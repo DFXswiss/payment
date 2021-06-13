@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Loading from "../components/Loading";
 import Row from "../components/Row";
 import Colors from "../config/Colors";
-import { Spacer10, Spacer50 } from "../elements";
+import { Spacer50, Spacer10 } from "../elements/elements";
 import { PaymentRoutes } from "../models/PaymentRoutes";
 import { User } from "../models/User";
 import { getRoutes, getUser } from "../services/ApiService";

@@ -28,8 +28,8 @@ const App = () => {
 
   // TODO: max width
   return (
-    <View style={[ AppStyles.container, styles.container]}>
-      <View style={[ AppStyles.container, styles.appContainer]}>
+    <View style={[AppStyles.container, styles.container]}>
+      <View style={[AppStyles.container, styles.appContainer]}>
         <NavigationContainer linking={linking} ref={navigationRef}>
           <Header></Header>
           <View style={[AppStyles.container]}>

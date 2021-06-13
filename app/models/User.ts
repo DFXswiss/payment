@@ -14,6 +14,6 @@ export interface User {
   used_ref: string;
   wallet_id: number;
 
-  created: string;
+  created: string; // TODO: dates
   IP: string;
 }

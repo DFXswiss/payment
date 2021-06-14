@@ -5,7 +5,7 @@ import { StyleSheet, Text, View } from "react-native";
 import Loading from "../components/Loading";
 import Row from "../components/Row";
 import Colors from "../config/Colors";
-import { Spacer50, Spacer10 } from "../elements/Elements";
+import { Spacer } from "../elements/Elements";
 import { PaymentRoutes } from "../models/PaymentRoutes";
 import { User } from "../models/User";
 import { getRoutes, getUser } from "../services/ApiService";
@@ -28,7 +28,7 @@ const HomeScreen = () => {
     <View style={AppStyles.container}>
       <Text style={[AppStyles.h1, { textAlign: "center" }]}>{t("welcome")}</Text>
 
-      <Spacer50 />
+      <Spacer height={50} />
 
       {isLoading && <Loading />}
 
@@ -53,12 +53,12 @@ const HomeScreen = () => {
               {user.usedRef ? <Row cells={[t("model.user.used_ref"), user.usedRef]} /> : null}
               {/* TODO: KYC status, gebühr */}
 
-              <Spacer10 />
+              <Spacer />
               {user.ref ? <Row cells={[t("model.user.ref"), user.ref]} /> : null}
             </View>
           )}
 
-          <Spacer50 />
+          <Spacer height={50} />
 
           {routes && (
             <View>

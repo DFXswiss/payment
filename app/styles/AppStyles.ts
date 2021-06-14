@@ -20,15 +20,6 @@ export default StyleSheet.create({
   i: {
     fontStyle: "italic",
   },
-  s10: {
-    height: 10,
-  },
-  s20: {
-    height: 20,
-  },
-  s50: {
-    height: 50,
-  },
   mr10: {
     marginRight: 10,
   },

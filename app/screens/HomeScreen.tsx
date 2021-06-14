@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "react-native";
 import { StyleSheet, Text, View } from "react-native";
+import DeFiModal from "../components/DeFiModal";
 import Loading from "../components/Loading";
 import Row from "../components/Row";
 import Colors from "../config/Colors";
@@ -17,6 +18,7 @@ const HomeScreen = () => {
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User>();
   const [routes, setRoutes] = useState<PaymentRoutes>();
+  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     Promise.all([getUser().then((user) => setUser(user)), getRoutes().then((routes) => setRoutes(routes))])
@@ -30,6 +32,10 @@ const HomeScreen = () => {
 
       <Spacer height={50} />
 
+      <DeFiModal isVisible={isVisible} setIsVisible={setIsVisible} title={t("model.user.edit")} save={t("action.save")}>
+        <Text>TODO</Text>
+      </DeFiModal>
+
       {isLoading && <Loading />}
 
       {!isLoading ? (
@@ -39,7 +45,7 @@ const HomeScreen = () => {
               <View style={AppStyles.containerHorizontal}>
                 <Text style={AppStyles.h2}>{t("model.user.your_data")}</Text>
                 <View style={AppStyles.mla}>
-                  <Button color={Colors.Primary} title={t("action.edit")} onPress={() => {}} />
+                  <Button color={Colors.Primary} title={t("action.edit")} onPress={() => setIsVisible(true)} />
                 </View>
               </View>
               {user.address ? <Row cells={[t("model.user.address"), user.address]} /> : null}

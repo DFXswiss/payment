@@ -2,14 +2,17 @@
   "common": {
     "welcome": "Willkommen!",
     "action": {
-      "edit": "Bearbeiten"
+      "edit": "Bearbeiten",
+      "save": "Speichern",
+      "abort": "Abbrechen"
     },
     "model": {
       "user": {
+        "edit": "Benutzerdaten bearbeiten",
+
         "your_data": "Deine Benutzerdaten",
         "address": "ID",
         "signature": "Signatur",
-
         "first_name": "Vorname",
         "last_name": "Nachname",
         "street": "Adresse",

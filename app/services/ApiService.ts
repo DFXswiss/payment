@@ -11,13 +11,13 @@ const BaseUrl = Environment.api.baseUrl;
 const UserUrl = "user";
 const BuyUrl = "fiat2crypto";
 const SellUrl = "crypto2fiat";
-const RouteUrl = "registrations"; // TODO: tell Yannick => inconsistency
-const AssetUrl = "assets";
+const RouteUrl = "registration";
+const AssetUrl = "asset";
 const FiatUrl = "fiat";
 
 // TODO: remove dummy data
-const Address = "8MTm4jQ2FHbrxZRbbKkTWgAHYv5hCASU22";
-const Signature = "IMFmkM25tqVtrva3m7xFd+py91i7q/23FJ8bSl7No0VgVcQo4ATV19+XoS+tLlydtS1gj2zl0Zb0XL2GDj/bw22=";
+const Address = "8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG";
+const Signature = "Hwj3sJjBxMOnkPxZkGtqinGdASIOM6ffGDCcQsWA7kRIIjMP5/HMyuZwlLnBKuD6weD5c/8HIzMrmi6GpCmFU04=";
 const DummyUser: UserDto = {
   IP: "192.192.192.192",
   address: "8MTm4jQ2FHbrxZRbbKkTWgAHYv5hCASU22",
@@ -34,6 +34,8 @@ const DummyUser: UserDto = {
   wallet_id: 0,
   zip: "",
 };
+
+// TODO: delete routes
 
 // --- SESSION --- //
 export const isLoggedIn = (): Promise<boolean> => {

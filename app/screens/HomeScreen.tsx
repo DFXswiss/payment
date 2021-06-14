@@ -49,7 +49,7 @@ const HomeScreen = () => {
       {isLoading && <Loading />}
 
       {!isLoading ? (
-        <View>
+        <>
           {user && (
             <View>
               <View style={AppStyles.containerHorizontal}>
@@ -96,7 +96,7 @@ const HomeScreen = () => {
               )}
             </View>
           )}
-        </View>
+        </>
       ) : null}
     </View>
 

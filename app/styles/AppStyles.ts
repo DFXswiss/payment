@@ -13,6 +13,15 @@ export default StyleSheet.create({
   link: {
     color: Colors.Primary,
   },
+  row: {
+    flex: 1,
+    alignSelf: "stretch",
+    flexDirection: "row",
+  },
+  cell: {
+    flex: 1,
+    alignSelf: "stretch",
+  },
   h1: {
     fontSize: 30,
     fontWeight: "bold",

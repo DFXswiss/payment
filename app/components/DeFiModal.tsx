@@ -45,7 +45,7 @@ const DeFiModal = ({
 const styles = StyleSheet.create({
   container: {
     margin: "auto",
-    padding: 10,
+    padding: 15,
     backgroundColor: Colors.White,
   },
 });

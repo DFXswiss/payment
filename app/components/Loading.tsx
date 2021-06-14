@@ -5,7 +5,7 @@ import Colors from "../config/Colors";
 const Loading = () => {
   return (
     <View>
-      <ActivityIndicator color={Colors.Primary}></ActivityIndicator>
+      <ActivityIndicator size="large" color={Colors.Primary}></ActivityIndicator>
     </View>
   );
 };

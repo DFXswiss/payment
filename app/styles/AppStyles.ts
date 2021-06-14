@@ -10,6 +10,9 @@ export default StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  link: {
+    color: Colors.Primary,
+  },
   h1: {
     fontSize: 30,
     fontWeight: "bold",
@@ -26,5 +29,8 @@ export default StyleSheet.create({
   },
   mla: {
     marginLeft: "auto",
+  },
+  ml10: {
+    marginLeft: 10,
   },
 });

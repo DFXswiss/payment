@@ -32,10 +32,10 @@ const DeFiModal = ({
         {children}
         <Spacer />
         <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
-          <View style={AppStyles.mr10}>
-            <Button color={Colors.Secondary} title={t("action.abort")} onPress={() => setIsVisible(false)} />
+          <Button color={Colors.Secondary} title={t("action.abort")} onPress={() => setIsVisible(false)} />
+          <View style={AppStyles.ml10}>
+            <Button color={Colors.Primary} title={save} onPress={() => setIsVisible(false)} />
           </View>
-          <Button color={Colors.Primary} title={save} onPress={() => setIsVisible(false)} />
         </View>
       </View>
     </Modal>

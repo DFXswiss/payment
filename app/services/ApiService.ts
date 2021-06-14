@@ -5,6 +5,7 @@ import { Fiat } from "../models/Fiat";
 import { fromPaymentRoutesDto, PaymentRoutes, PaymentRoutesDto } from "../models/PaymentRoutes";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import { fromUserDto, toUserDto, User, UserDto } from "../models/User";
+import { getSettings, updateSettings } from "./SettingsService";
 
 const BaseUrl = Environment.api.baseUrl;
 const UserUrl = "user";
@@ -34,26 +35,30 @@ const DummyUser: UserDto = {
   zip: "",
 };
 
-const buildInit = (method: "PUT" | "POST", data: any): RequestInit => ({
-  method: method,
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(data),
-});
+// --- SESSION --- //
+export const isLoggedIn = (): Promise<boolean> => {
+  return getSettings().then((settings) => !!settings.address);
+};
 
-const fetchFrom = <T>(url: string, init?: RequestInit): Promise<T> => {
-  return fetch(url, init).then((response) => response.json());
+// TODO
+export const login = (): Promise<void> => {
+  return updateSettings({ address: Address, signature: Signature });
+};
+
+export const logout = (): Promise<void> => {
+  return updateSettings({ address: undefined, signature: undefined });
 };
 
 // --- USER --- //
+
 export const getUser = (): Promise<User> => {
   // TODO: remove
   return new Promise((resolve) => {
     setTimeout(() => resolve(fromUserDto(DummyUser)), 1000);
   });
 
-  return fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}/${Address}?signature=${Signature}`)
+  return getSettings()
+    .then((settings) => fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}/${settings.address}?signature=${settings.signature}`))
     .then((dto: UserDto) => fromUserDto(dto))
     .catch(); // TODO: error handling?
 };
@@ -65,18 +70,24 @@ export const postUser = (user: User): Promise<User> => {
 };
 
 export const putUser = (user: User): Promise<User> => {
-  return fetchFrom<UserDto>(
-    `${BaseUrl}/${UserUrl}/${Address}?signature=${Signature}`,
-    buildInit("PUT", toUserDto(user))
-  ).then((dto: UserDto) => fromUserDto(dto));
+  return getSettings()
+    .then((settings) =>
+      fetchFrom<UserDto>(
+        `${BaseUrl}/${UserUrl}/${settings.address}?signature=${settings.signature}`,
+        buildInit("PUT", toUserDto(user))
+      )
+    )
+    .then((dto: UserDto) => fromUserDto(dto));
 };
 
 // --- PAYMENT ROUTES --- //
 export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
   return Promise.all([
-    fetchFrom<BuyRouteDto>(
-      `${BaseUrl}/${UserUrl}/${Address}/${BuyUrl}?signature=${Signature}`,
-      buildInit("POST", toBuyRouteDto(route))
+    getSettings().then((settings) =>
+      fetchFrom<BuyRouteDto>(
+        `${BaseUrl}/${UserUrl}/${settings.address}/${BuyUrl}?signature=${settings.signature}`,
+        buildInit("POST", toBuyRouteDto(route))
+      )
     ),
     getAssets(),
   ]).then(([dto, assets]) => fromBuyRouteDto(dto, assets));
@@ -84,9 +95,11 @@ export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
 
 export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
   return Promise.all([
-    fetchFrom<SellRouteDto>(
-      `${BaseUrl}/${UserUrl}/${Address}/${SellUrl}?signature=${Signature}`,
-      buildInit("POST", toSellRouteDto(route))
+    getSettings().then((settings) =>
+      fetchFrom<SellRouteDto>(
+        `${BaseUrl}/${UserUrl}/${settings.address}/${SellUrl}?signature=${settings.signature}`,
+        buildInit("POST", toSellRouteDto(route))
+      )
     ),
     getFiats(),
   ]).then(([dto, fiats]) => fromSellRouteDto(dto, fiats));
@@ -97,7 +110,11 @@ export const getRoutes = (): Promise<PaymentRoutes> => {
   return Promise.resolve({ buyRoutes: [], sellRoutes: [] });
 
   return Promise.all([
-    fetchFrom<PaymentRoutesDto>(`${BaseUrl}/${UserUrl}/${Address}/${RouteUrl}?signature=${Signature}`),
+    getSettings().then((settings) =>
+      fetchFrom<PaymentRoutesDto>(
+        `${BaseUrl}/${UserUrl}/${settings.address}/${RouteUrl}?signature=${settings.signature}`
+      )
+    ),
     getAssets(),
     getFiats(),
   ]).then(([routes, assets, fiats]) => fromPaymentRoutesDto(routes, assets, fiats));
@@ -110,4 +127,17 @@ export const getAssets = (): Promise<Asset[]> => {
 
 export const getFiats = (): Promise<Fiat[]> => {
   return fetchFrom<Fiat[]>(`${BaseUrl}/${FiatUrl}`);
+};
+
+// --- HELPERS --- //
+const buildInit = (method: "PUT" | "POST", data: any): RequestInit => ({
+  method: method,
+  headers: {
+    "Content-Type": "application/json",
+  },
+  body: JSON.stringify(data),
+});
+
+const fetchFrom = <T>(url: string, init?: RequestInit): Promise<T> => {
+  return fetch(url, init).then((response) => response.json());
 };

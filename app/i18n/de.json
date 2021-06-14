@@ -2,6 +2,8 @@
   "common": {
     "welcome": "Willkommen!",
     "action": {
+      "login": "Login",
+      "logout": "Logout",
       "edit": "Bearbeiten",
       "save": "Speichern",
       "abort": "Abbrechen"

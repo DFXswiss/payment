@@ -8,7 +8,6 @@ const DefaultSettings: Partial<AppSettings> = {
 export interface AppSettings {
   address: string;
   signature: string;
-  walledId: string;
   language: string;
 }
 

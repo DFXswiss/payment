@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
 import i18n, { changeLanguage } from "../i18n/i18n";
-import * as navigation from "../utils/NavigationHelper";
+import * as nav from "../utils/NavigationHelper";
 import { Picker } from "@react-native-picker/picker";
 import { getSettings } from "../services/SettingsService";
 import AppStyles from "../styles/AppStyles";
+import { logout } from "../services/ApiService";
+import { useTranslation } from "react-i18next";
 
 const Header = () => {
+  const { t } = useTranslation();
+
   const [selectedLanguage, setSelectedLanguage] = useState("en");
 
   useEffect(() => {
@@ -21,7 +25,7 @@ const Header = () => {
 
   return (
     <View style={[AppStyles.containerHorizontal, styles.container]}>
-      <TouchableOpacity activeOpacity={1} style={styles.logoTouch} onPress={() => navigation.navigate(Routes.Home)}>
+      <TouchableOpacity activeOpacity={1} style={styles.logoTouch} onPress={() => nav.navigate(Routes.Home)}>
         <Image style={styles.logo} source={require("../assets/logo_defichange.png")} />
       </TouchableOpacity>
 
@@ -36,6 +40,10 @@ const Header = () => {
         <Picker.Item label="Deutsch" value="de" />
         <Picker.Item label="English" value="en" />
       </Picker>
+      {/* TODO: only if logged in */}
+      <TouchableOpacity style={AppStyles.ml10} onPress={() => logout().then(() => nav.navigate(Routes.Login))}>
+        <Text style={AppStyles.link}>{t("action.logout")}</Text>
+      </TouchableOpacity>
     </View>
   );
 };

@@ -1,3 +1,4 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "react-native";
@@ -6,14 +7,16 @@ import DeFiModal from "../components/DeFiModal";
 import Loading from "../components/Loading";
 import Row from "../components/Row";
 import Colors from "../config/Colors";
+import Routes from "../config/Routes";
 import { Spacer } from "../elements/Elements";
 import { PaymentRoutes } from "../models/PaymentRoutes";
 import { User } from "../models/User";
-import { getRoutes, getUser } from "../services/ApiService";
+import { getRoutes, getUser, isLoggedIn } from "../services/ApiService";
 import AppStyles from "../styles/AppStyles";
 
 const HomeScreen = () => {
   const { t } = useTranslation();
+  const nav = useNavigation();
 
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User>();
@@ -21,9 +24,16 @@ const HomeScreen = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    Promise.all([getUser().then((user) => setUser(user)), getRoutes().then((routes) => setRoutes(routes))])
-      // TODO: error handling
-      .finally(() => setLoading(false));
+    // TODO: subscribe (does not work correctly)
+    isLoggedIn().then((isLoggedIn) => {
+      if (isLoggedIn) {
+        Promise.all([getUser().then((user) => setUser(user)), getRoutes().then((routes) => setRoutes(routes))])
+          // TODO: error handling
+          .finally(() => setLoading(false));
+      } else {
+        nav.navigate(Routes.Login);
+      }
+    });
   }, []);
 
   return (
@@ -70,11 +80,13 @@ const HomeScreen = () => {
             <View>
               <View style={AppStyles.containerHorizontal}>
                 <Text style={AppStyles.h2}>{t("model.routes.routes")}</Text>
-                <Text style={[AppStyles.mla, AppStyles.mr10]}>{t("model.routes.new")}</Text>
-                <View style={AppStyles.mr10}>
+                <Text style={AppStyles.mla}>{t("model.routes.new")}</Text>
+                <View style={AppStyles.ml10}>
                   <Button color={Colors.Primary} title={t("model.routes.buy")} onPress={() => {}} />
                 </View>
-                <Button color={Colors.Primary} title={t("model.routes.sell")} onPress={() => {}} />
+                <View style={AppStyles.ml10}>
+                  <Button color={Colors.Primary} title={t("model.routes.sell")} onPress={() => {}} />
+                </View>
               </View>
 
               {routes.buyRoutes?.length + routes.sellRoutes?.length > 0 ? (

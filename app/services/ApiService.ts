@@ -64,7 +64,7 @@ export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
   return Promise.all([
     getSettings().then((settings) =>
       fetchFrom<BuyRouteDto>(
-        `${BaseUrl}/${UserUrl}/${settings.address}/${BuyUrl}`,
+        `${BaseUrl}/${BuyUrl}`,
         buildInit("POST", settings, toBuyRouteDto(route))
       )
     ),
@@ -76,7 +76,7 @@ export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
   return Promise.all([
     getSettings().then((settings) =>
       fetchFrom<SellRouteDto>(
-        `${BaseUrl}/${UserUrl}/${settings.address}/${SellUrl}`,
+        `${BaseUrl}/${SellUrl}`,
         buildInit("POST", settings, toSellRouteDto(route))
       )
     ),
@@ -87,7 +87,7 @@ export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
 export const getRoutes = (): Promise<PaymentRoutes> => {
   return Promise.all([
     getSettings().then((settings) =>
-      fetchFrom<PaymentRoutesDto>(`${BaseUrl}/${UserUrl}/${settings.address}/${RouteUrl}`, buildInit("GET", settings))
+      fetchFrom<PaymentRoutesDto>(`${BaseUrl}/${RouteUrl}`, buildInit("GET", settings))
     ),
     getAssets(),
     getFiats(),

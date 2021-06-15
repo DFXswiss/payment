@@ -23,6 +23,7 @@ const DeFiModal = ({
 }) => {
   const { t } = useTranslation();
 
+  // TODO: close on escape
   return (
     <Modal isVisible={isVisible} onBackdropPress={() => setIsVisible(false)}>
       <View style={[styles.container, { minWidth: minWidth }]}>
@@ -30,13 +31,14 @@ const DeFiModal = ({
         {/* TODO: close icon? */}
         <Spacer />
         {children}
-        <Spacer />
+        {/* TODO */}
+        {/* <Spacer />
         <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
           <Button color={Colors.Secondary} title={t("action.abort")} onPress={() => setIsVisible(false)} />
           <View style={AppStyles.ml10}>
             <Button color={Colors.Primary} title={save} onPress={() => setIsVisible(false)} />
           </View>
-        </View>
+        </View> */}
       </View>
     </Modal>
   );

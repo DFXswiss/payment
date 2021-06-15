@@ -1,6 +1,6 @@
 import { Fiat } from "./Fiat";
 
-export interface SellRouteDto {
+export interface SellRouteDto { // TODO: getting fiat object!
   id: string;
   address: string;
   fiat: number;

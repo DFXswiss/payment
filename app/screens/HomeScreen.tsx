@@ -44,7 +44,13 @@ const HomeScreen = () => {
       <Spacer height={50} />
 
       <DeFiModal isVisible={isVisible} setIsVisible={setIsVisible} title={t("model.user.edit")} save={t("action.save")}>
-        <UserEdit user={user}></UserEdit>
+        <UserEdit
+          user={user}
+          onUserChanged={(user) => {
+            setUser(user);
+            setIsVisible(false);
+          }}
+        ></UserEdit>
       </DeFiModal>
 
       {isLoading && <Loading />}

@@ -59,6 +59,7 @@ export const putUser = (user: User): Promise<User> => {
 };
 
 // --- PAYMENT ROUTES --- //
+// TODO: use other DTO?
 export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
   return Promise.all([
     getSettings().then((settings) =>

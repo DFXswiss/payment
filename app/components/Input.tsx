@@ -23,7 +23,7 @@ const Input = ({ control, name, placeholder, label, labelStyle, rules, error }: 
           <TextInput
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
-            value={value}
+            value={value ?? ""}
             style={[styles.input, { borderColor: error ? Colors.Error : Colors.Grey }]}
             placeholder={placeholder}
           />

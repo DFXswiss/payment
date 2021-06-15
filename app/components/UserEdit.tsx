@@ -1,19 +1,31 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View, Button } from "react-native";
+import Colors from "../config/Colors";
 import { Spacer } from "../elements/Elements";
 import { User } from "../models/User";
+import AppStyles from "../styles/AppStyles";
 import Input from "./Input";
 
-const UserEdit = ({ user }: { user?: User }) => {
+// TODO: save on enter
+const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: User) => void }) => {
   const { t } = useTranslation();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    reset,
+  } = useForm<User>({ defaultValues: useMemo(() => user, [user]) });
 
-  const { control, handleSubmit, formState: { errors }, } = useForm<User>({ defaultValues: user });
+  useEffect(() => {
+    reset(user);
+  }, [user]);
 
-  const onSubmit = (user: User) => console.log(user);
+  const onSubmit = (user: User) => onUserChanged(user);
 
-  const rules: any = { };
+  const rules: any = {}; // TODO
 
   return (
     // TODO: wrapper
@@ -33,7 +45,10 @@ const UserEdit = ({ user }: { user?: User }) => {
         error={errors.lastName}
         rules={rules.lastName}
       />
-      <Button title="Submit" onPress={handleSubmit(onSubmit)} />
+      <Spacer />
+      <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
+        <Button color={Colors.Primary} title={t("action.save")} onPress={handleSubmit(onSubmit)} />
+      </View>
     </View>
   );
 };

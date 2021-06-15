@@ -1,5 +1,3 @@
-import { Asset } from "./Asset";
-import { Fiat } from "./Fiat";
 import { BuyRoute, BuyRouteDto, fromBuyRouteDto, toBuyRouteDto } from "./BuyRoute";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "./SellRoute";
 
@@ -13,9 +11,9 @@ export interface PaymentRoutes {
   sellRoutes: SellRoute[];
 }
 
-export const fromPaymentRoutesDto = (routes: PaymentRoutesDto, assets: Asset[], fiats: Fiat[]): PaymentRoutes => ({
-  buyRoutes: routes.fiat2crypto.map((r) => fromBuyRouteDto(r, assets)),
-  sellRoutes: routes.crypto2fiat.map((r) => fromSellRouteDto(r, fiats)),
+export const fromPaymentRoutesDto = (routes: PaymentRoutesDto): PaymentRoutes => ({
+  buyRoutes: routes.fiat2crypto.map((r) => fromBuyRouteDto(r)),
+  sellRoutes: routes.crypto2fiat.map((r) => fromSellRouteDto(r)),
 });
 
 export const toPaymentRoutesDto = (routes: PaymentRoutes): PaymentRoutesDto => ({

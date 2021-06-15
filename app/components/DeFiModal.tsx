@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import Modal from "modal-enhanced-react-native-web";
-import { Button, StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import Colors from "../config/Colors";
 import { useTranslation } from "react-i18next";
 import { SpacerV } from "../elements/Elements";
@@ -31,7 +31,7 @@ const DeFiModal = ({
         {/* TODO: close icon? */}
         <SpacerV />
         {children}
-        {/* TODO */}
+        {/* TODO: default close buttons? */}
         {/* <Spacer />
         <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
           <Button color={Colors.Secondary} title={t("action.abort")} onPress={() => setIsVisible(false)} />

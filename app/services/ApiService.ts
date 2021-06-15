@@ -19,14 +19,14 @@ const FiatUrl = "fiat";
 const Address = "8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG";
 const Signature = "Hwj3sJjBxMOnkPxZkGtqinGdASIOM6ffGDCcQsWA7kRIIjMP5/HMyuZwlLnBKuD6weD5c/8HIzMrmi6GpCmFU04=";
 
-// TODO: delete routes method
+// TODO: add delete routes method
 
 // --- SESSION --- //
 export const isLoggedIn = (): Promise<boolean> => {
   return getSettings().then((settings) => !!settings.address);
 };
 
-// TODO
+// TODO: login with API
 export const login = (): Promise<void> => {
   return updateSettings({ address: Address, signature: Signature });
 };
@@ -40,8 +40,7 @@ export const logout = (): Promise<void> => {
 export const getUser = (): Promise<User> => {
   return getSettings()
     .then((settings) => fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, buildInit("GET", settings)))
-    .then((dto: UserDto) => fromUserDto(dto))
-    .catch(); // TODO: error handling?
+    .then((dto: UserDto) => fromUserDto(dto));
 };
 
 export const postUser = (user: User): Promise<User> => {
@@ -61,37 +60,25 @@ export const putUser = (user: User): Promise<User> => {
 // --- PAYMENT ROUTES --- //
 // TODO: use other DTO?
 export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
-  return Promise.all([
-    getSettings().then((settings) =>
-      fetchFrom<BuyRouteDto>(
-        `${BaseUrl}/${BuyUrl}`,
-        buildInit("POST", settings, toBuyRouteDto(route))
-      )
-    ),
-    getAssets(),
-  ]).then(([dto, assets]) => fromBuyRouteDto(dto, assets));
+  return getSettings()
+    .then((settings) =>
+      fetchFrom<BuyRouteDto>(`${BaseUrl}/${BuyUrl}`, buildInit("POST", settings, toBuyRouteDto(route)))
+    )
+    .then((dto) => fromBuyRouteDto(dto));
 };
 
 export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
-  return Promise.all([
-    getSettings().then((settings) =>
-      fetchFrom<SellRouteDto>(
-        `${BaseUrl}/${SellUrl}`,
-        buildInit("POST", settings, toSellRouteDto(route))
-      )
-    ),
-    getFiats(),
-  ]).then(([dto, fiats]) => fromSellRouteDto(dto, fiats));
+  return getSettings()
+    .then((settings) =>
+      fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}`, buildInit("POST", settings, toSellRouteDto(route)))
+    )
+    .then((dto) => fromSellRouteDto(dto));
 };
 
 export const getRoutes = (): Promise<PaymentRoutes> => {
-  return Promise.all([
-    getSettings().then((settings) =>
-      fetchFrom<PaymentRoutesDto>(`${BaseUrl}/${RouteUrl}`, buildInit("GET", settings))
-    ),
-    getAssets(),
-    getFiats(),
-  ]).then(([routes, assets, fiats]) => fromPaymentRoutesDto(routes, assets, fiats));
+  return getSettings()
+    .then((settings) => fetchFrom<PaymentRoutesDto>(`${BaseUrl}/${RouteUrl}`, buildInit("GET", settings)))
+    .then((routes) => fromPaymentRoutesDto(routes));
 };
 
 // --- MASTER DATA --- //

@@ -4,7 +4,7 @@ import { Text, View } from "react-native";
 const NotFoundScreen = () => {
   return (
     <View>
-      {/* TODO */}
+      {/* TODO: Not found screen */}
       <Text>Page not Found!</Text>
     </View>
   );

@@ -1,9 +1,9 @@
 import { Fiat } from "./Fiat";
 
-export interface SellRouteDto { // TODO: getting fiat object!
+export interface SellRouteDto {
   id: string;
   address: string;
-  fiat: number;
+  fiat: Fiat;
   deposit_address: string;
   iban: string;
   active: boolean;
@@ -20,10 +20,10 @@ export interface SellRoute {
   created: Date;
 }
 
-export const fromSellRouteDto = (route: SellRouteDto, fiats: Fiat[]): SellRoute => ({
+export const fromSellRouteDto = (route: SellRouteDto): SellRoute => ({
   id: route.id,
   address: route.address,
-  fiat: fiats.find((f) => f.id === route.fiat) as Fiat, // TODO: through error?
+  fiat: route.fiat,
   depositAddress: route.deposit_address,
   iban: route.iban,
   active: route.active,

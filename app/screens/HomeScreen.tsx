@@ -97,7 +97,7 @@ const HomeScreen = () => {
               </View>
 
               {routes.buyRoutes?.length + routes.sellRoutes?.length > 0 ? (
-                <Text>TODO</Text>
+                <Text>TODO:routes display</Text>
               ) : (
                 <Text style={AppStyles.i}>{t("model.routes.none")}</Text>
               )}

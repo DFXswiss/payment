@@ -5,6 +5,8 @@ import Colors from "../config/Colors";
 import { useTranslation } from "react-i18next";
 import { SpacerV } from "../elements/Elements";
 import AppStyles from "../styles/AppStyles";
+import { Icon } from "react-native-elements";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const DeFiModal = ({
   isVisible,
@@ -27,8 +29,13 @@ const DeFiModal = ({
   return (
     <Modal isVisible={isVisible} onBackdropPress={() => setIsVisible(false)}>
       <View style={[styles.container, { minWidth: minWidth }]}>
-        <Text style={AppStyles.h2}>{title}</Text>
-        {/* TODO: close icon? */}
+        <View style={AppStyles.containerHorizontal}>
+          <Text style={AppStyles.h2}>{title}</Text>
+          <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
+            <Icon name="close" color={Colors.Grey} style={AppStyles.ml20} />
+          </TouchableWithoutFeedback>
+        </View>
+
         <SpacerV />
         {children}
         {/* TODO: default close buttons? */}

@@ -42,4 +42,7 @@ export default StyleSheet.create({
   ml10: {
     marginLeft: 10,
   },
+  ml20: {
+    marginLeft: 20,
+  }
 });

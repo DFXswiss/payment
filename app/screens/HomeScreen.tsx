@@ -9,7 +9,7 @@ import Row from "../components/Row";
 import UserEdit from "../components/UserEdit";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
-import { Spacer } from "../elements/Elements";
+import { SpacerV } from "../elements/Elements";
 import { PaymentRoutes } from "../models/PaymentRoutes";
 import { User } from "../models/User";
 import { getRoutes, getUser, isLoggedIn } from "../services/ApiService";
@@ -41,7 +41,7 @@ const HomeScreen = () => {
     <View style={AppStyles.container}>
       <Text style={[AppStyles.h1, { textAlign: "center" }]}>{t("welcome")}</Text>
 
-      <Spacer height={50} />
+      <SpacerV height={50} />
 
       <DeFiModal isVisible={isVisible} setIsVisible={setIsVisible} title={t("model.user.edit")} save={t("action.save")}>
         <UserEdit
@@ -76,12 +76,12 @@ const HomeScreen = () => {
               {user.usedRef ? <Row cells={[t("model.user.used_ref"), user.usedRef]} /> : null}
               {/* TODO: KYC status, gebühr */}
 
-              <Spacer />
+              <SpacerV />
               {user.ref ? <Row cells={[t("model.user.ref"), user.ref]} /> : null}
             </View>
           )}
 
-          <Spacer height={50} />
+          <SpacerV height={50} />
 
           {routes && (
             <View>

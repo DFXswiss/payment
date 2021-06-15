@@ -3,7 +3,7 @@ import Modal from "modal-enhanced-react-native-web";
 import { Button, StyleSheet, View, Text } from "react-native";
 import Colors from "../config/Colors";
 import { useTranslation } from "react-i18next";
-import { Spacer } from "../elements/Elements";
+import { SpacerV } from "../elements/Elements";
 import AppStyles from "../styles/AppStyles";
 
 const DeFiModal = ({
@@ -29,7 +29,7 @@ const DeFiModal = ({
       <View style={[styles.container, { minWidth: minWidth }]}>
         <Text style={AppStyles.h2}>{title}</Text>
         {/* TODO: close icon? */}
-        <Spacer />
+        <SpacerV />
         {children}
         {/* TODO */}
         {/* <Spacer />

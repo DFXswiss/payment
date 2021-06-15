@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View, Button } from "react-native";
 import Colors from "../config/Colors";
-import { Spacer } from "../elements/Elements";
+import { SpacerH, SpacerV } from "../elements/Elements";
 import { User } from "../models/User";
 import AppStyles from "../styles/AppStyles";
 import Form from "./Form";
@@ -31,20 +31,20 @@ const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: 
   return (
     <View>
       <Form control={control} rules={rules} errors={errors}>
-        <Input name="firstName" label={t("model.user.first_name")} />
-        <Spacer />
-        <Input name="lastName" label={t("model.user.last_name")} />
-        <Spacer />
+        <View style={AppStyles.containerHorizontal}>
+          <Input name="firstName" label={t("model.user.first_name")} />
+            <SpacerH />
+          <Input name="lastName" label={t("model.user.last_name")} />
+        </View>
         <Input name="street" label={t("model.user.street")} />
-        <Spacer />
-        <Input name="zip" label={t("model.user.zip")} />
-        <Spacer />
-        <Input name="location" label={t("model.user.location")} />
-        <Spacer />
+        <View style={AppStyles.containerHorizontal}>
+          <Input name="zip" label={t("model.user.zip")} />
+          <SpacerH />
+          <Input name="location" label={t("model.user.location")} />
+        </View>
         <Input name="mail" label={t("model.user.mail")} />
-        <Spacer />
         <Input name="phoneNumber" label={t("model.user.phone_number")} />
-        <Spacer />
+        <SpacerV />
 
         <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
           <Button color={Colors.Primary} title={t("action.save")} onPress={handleSubmit(onSubmit)} />

@@ -9,23 +9,33 @@ interface Props {
 }
 
 const Form = ({ children, control, rules, errors }: Props) => {
-  return (
-    <>
-      {(Array.isArray(children) ? [...children] : [children]).map((child, i) =>
-        child.props.name
-          ? React.createElement(child.type, {
-              ...{
-                ...child.props,
-                key: child.props.name,
-                control: control,
-                rules: rules[child.props.name],
-                error: errors[child.props.name],
-              },
-            })
-          : child
-      )}
-    </>
-  );
+  const enrichElements = (elements: ReactElement[] | ReactElement): ReactElement[] | undefined => {
+    if (!elements) return undefined;
+
+    return (Array.isArray(elements) ? [...elements] : [elements])
+      .map((element, i) => enrichElement(element, i));
+  };
+
+  const enrichElement = (element: ReactElement, index: number): ReactElement => {
+    let props = {
+      ...element.props,
+      children: enrichElements(element.props.children),
+      key: index,
+    };
+
+    if (element.props.name) {
+      props = {
+        ...props,
+        control: control,
+        rules: rules[element.props.name],
+        error: errors[element.props.name],
+      };
+    }
+
+    return React.createElement(element.type, props);
+  };
+
+  return <>{enrichElements(children)}</>;
 };
 
 export default Form;

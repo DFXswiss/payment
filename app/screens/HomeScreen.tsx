@@ -2,10 +2,11 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "react-native";
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import DeFiModal from "../components/DeFiModal";
 import Loading from "../components/Loading";
 import Row from "../components/Row";
+import UserEdit from "../components/UserEdit";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
 import { Spacer } from "../elements/Elements";
@@ -43,7 +44,7 @@ const HomeScreen = () => {
       <Spacer height={50} />
 
       <DeFiModal isVisible={isVisible} setIsVisible={setIsVisible} title={t("model.user.edit")} save={t("action.save")}>
-        <Text>TODO</Text>
+        <UserEdit user={user}></UserEdit>
       </DeFiModal>
 
       {isLoading && <Loading />}
@@ -113,9 +114,5 @@ const HomeScreen = () => {
     // </View>
   );
 };
-
-const styles = StyleSheet.create({
-  // TODO
-});
 
 export default HomeScreen;

@@ -30,8 +30,12 @@ const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: 
   }, [user]);
 
   const onSubmit = (user: User) => {
+    // TODO: disable on saving?
     setIsSaving(true);
-    putUser(user).then((user) => onUserChanged(user));
+    putUser(user).then((user) => {
+      onUserChanged(user);
+      setIsSaving(false);
+    });
   };
 
   const rules: any = {

@@ -4,7 +4,7 @@ import { StyleSheet, View, Text, TextInput, TextStyle } from "react-native";
 import Colors from "../config/Colors";
 
 interface Props {
-  control: Control<any>;
+  control?: Control<any>;
   name: string;
   placeholder?: string;
   label?: string;

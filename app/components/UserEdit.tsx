@@ -7,6 +7,7 @@ import Colors from "../config/Colors";
 import { Spacer } from "../elements/Elements";
 import { User } from "../models/User";
 import AppStyles from "../styles/AppStyles";
+import Form from "./Form";
 import Input from "./Input";
 
 // TODO: save on enter
@@ -25,30 +26,30 @@ const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: 
 
   const onSubmit = (user: User) => onUserChanged(user);
 
-  const rules: any = {}; // TODO
+  const rules: any = { firstName: { required: true } }; // TODO
 
   return (
-    // TODO: wrapper
     <View>
-      <Input
-        control={control}
-        name="firstName"
-        label={t("model.user.first_name")}
-        error={errors.firstName}
-        rules={rules.firstName}
-      />
-      <Spacer />
-      <Input
-        control={control}
-        name="lastName"
-        label={t("model.user.last_name")}
-        error={errors.lastName}
-        rules={rules.lastName}
-      />
-      <Spacer />
-      <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
-        <Button color={Colors.Primary} title={t("action.save")} onPress={handleSubmit(onSubmit)} />
-      </View>
+      <Form control={control} rules={rules} errors={errors}>
+        <Input name="firstName" label={t("model.user.first_name")} />
+        <Spacer />
+        <Input name="lastName" label={t("model.user.last_name")} />
+        <Spacer />
+        <Input name="street" label={t("model.user.street")} />
+        <Spacer />
+        <Input name="zip" label={t("model.user.zip")} />
+        <Spacer />
+        <Input name="location" label={t("model.user.location")} />
+        <Spacer />
+        <Input name="mail" label={t("model.user.mail")} />
+        <Spacer />
+        <Input name="phoneNumber" label={t("model.user.phone_number")} />
+        <Spacer />
+
+        <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
+          <Button color={Colors.Primary} title={t("action.save")} onPress={handleSubmit(onSubmit)} />
+        </View>
+      </Form>
     </View>
   );
 };

@@ -12,7 +12,7 @@ import Routes from "../config/Routes";
 import { SpacerV } from "../elements/Elements";
 import { PaymentRoutes } from "../models/PaymentRoutes";
 import { User } from "../models/User";
-import { getRoutes, getUser, isLoggedIn } from "../services/ApiService";
+import { getActiveRoutes, getUser, isLoggedIn } from "../services/ApiService";
 import AppStyles from "../styles/AppStyles";
 
 const HomeScreen = () => {
@@ -28,7 +28,7 @@ const HomeScreen = () => {
     // TODO: subscribe (does not work correctly)
     isLoggedIn().then((isLoggedIn) => {
       if (isLoggedIn) {
-        Promise.all([getUser().then((user) => setUser(user)), getRoutes().then((routes) => setRoutes(routes))])
+        Promise.all([getUser().then((user) => setUser(user)), getActiveRoutes().then((routes) => setRoutes(routes))])
           // TODO: error handling
           .finally(() => setLoading(false));
       } else {
@@ -53,7 +53,7 @@ const HomeScreen = () => {
         ></UserEdit>
       </DeFiModal>
 
-      {isLoading && <Loading />}
+      {isLoading && <Loading size="large" />}
 
       {!isLoading ? (
         <>
@@ -86,20 +86,61 @@ const HomeScreen = () => {
           {routes && (
             <View>
               <View style={AppStyles.containerHorizontal}>
-                <Text style={AppStyles.h2}>{t("model.routes.routes")}</Text>
-                <Text style={AppStyles.mla}>{t("model.routes.new")}</Text>
+                <Text style={AppStyles.h2}>{t("model.route.routes")}</Text>
+                <Text style={AppStyles.mla}>{t("model.route.new")}</Text>
                 <View style={AppStyles.ml10}>
-                  <Button color={Colors.Primary} title={t("model.routes.buy")} onPress={() => {}} />
+                  <Button color={Colors.Primary} title={t("model.route.buy")} onPress={() => {}} />
                 </View>
                 <View style={AppStyles.ml10}>
-                  <Button color={Colors.Primary} title={t("model.routes.sell")} onPress={() => {}} />
+                  <Button color={Colors.Primary} title={t("model.route.sell")} onPress={() => {}} />
                 </View>
               </View>
 
+              {/* TODO: delete routes */}
+              {/* TODO: details */}
               {routes.buyRoutes?.length + routes.sellRoutes?.length > 0 ? (
-                <Text>TODO:routes display</Text>
+                <>
+                  {routes.buyRoutes?.length > 0 && (
+                    <>
+                      <SpacerV />
+                      <Text style={AppStyles.h3}>{t("model.route.buy")}</Text>
+                      <SpacerV />
+                      <Row
+                        textStyle={AppStyles.b}
+                        cells={[t("model.route.asset"), t("model.route.iban"), t("model.route.bank_usage")]}
+                        layout={[1, 1, 2]}
+                      />
+                      {routes.buyRoutes.map((route) => (
+                        <Row
+                          key={route.id}
+                          cells={[route.asset.name, route.iban, route.bankUsage]}
+                          layout={[1, 1, 2]}
+                        />
+                      ))}
+                    </>
+                  )}
+                  {routes.sellRoutes?.length > 0 && (
+                    <>
+                      <SpacerV />
+                      <Text style={AppStyles.h3}>{t("model.route.sell")}</Text>
+                      <SpacerV />
+                      <Row
+                        textStyle={AppStyles.b}
+                        cells={[t("model.route.fiat"), t("model.route.iban"), t("model.route.deposit_address")]}
+                        layout={[1, 1, 2]}
+                      />
+                      {routes.sellRoutes.map((route) => (
+                        <Row
+                          key={route.id}
+                          cells={[route.fiat.name, route.iban, route.depositAddress]}
+                          layout={[1, 1, 2]}
+                        />
+                      ))}
+                    </>
+                  )}
+                </>
               ) : (
-                <Text style={AppStyles.i}>{t("model.routes.none")}</Text>
+                <Text style={AppStyles.i}>{t("model.route.none")}</Text>
               )}
             </View>
           )}

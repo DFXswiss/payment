@@ -29,12 +29,18 @@
         "used_ref": "Verwendeter Ref-Code",
         "ref": "Ref-Code zum Verteilen"
       },
-      "routes": {
+      "route": {
         "routes": "Payment Routen",
         "none": "Du hast noch keine Routen angelegt.",
         "new": "Neue Route:",
         "buy": "Fiat > Crypto",
-        "sell": "Crypto > Fiat"
+        "sell": "Crypto > Fiat",
+
+        "iban": "IBAN",
+        "bank_usage": "Zahlungszweck",
+        "asset": "Asset",
+        "fiat": "Währung",
+        "deposit_address": "Depositadresse"
       }
     }
   }

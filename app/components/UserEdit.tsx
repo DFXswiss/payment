@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { useState } from "react";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -6,9 +7,11 @@ import { View, Button } from "react-native";
 import Colors from "../config/Colors";
 import { SpacerH, SpacerV } from "../elements/Elements";
 import { User } from "../models/User";
+import { putUser } from "../services/ApiService";
 import AppStyles from "../styles/AppStyles";
 import Form from "./Form";
 import Input from "./Input";
+import Loading from "./Loading";
 
 // TODO: save on enter
 const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: User) => void }) => {
@@ -20,11 +23,16 @@ const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: 
     reset,
   } = useForm<User>({ defaultValues: useMemo(() => user, [user]) });
 
+  const [isSaving, setIsSaving] = useState(false);
+
   useEffect(() => {
     reset(user);
   }, [user]);
 
-  const onSubmit = (user: User) => onUserChanged(user);
+  const onSubmit = (user: User) => {
+    setIsSaving(true);
+    putUser(user).then((user) => onUserChanged(user));
+  };
 
   const rules: any = {
     mail: {
@@ -62,7 +70,11 @@ const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: 
         <SpacerV />
 
         <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
-          <Button color={Colors.Primary} title={t("action.save")} onPress={handleSubmit(onSubmit)} />
+          {isSaving ? (
+            <Loading />
+          ) : (
+            <Button color={Colors.Primary} title={t("action.save")} onPress={handleSubmit(onSubmit)} />
+          )}
         </View>
       </Form>
     </View>

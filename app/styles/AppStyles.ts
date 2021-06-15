@@ -30,8 +30,14 @@ export default StyleSheet.create({
     fontSize: 25,
     fontWeight: "bold",
   },
+  h3: {
+    fontSize: 20,
+  },
   i: {
     fontStyle: "italic",
+  },
+  b: {
+    fontWeight: "bold"
   },
   mr10: {
     marginRight: 10,

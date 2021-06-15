@@ -8,6 +8,10 @@
       "save": "Speichern",
       "abort": "Abbrechen"
     },
+    "validation": {
+      "required": "Pflichtfeld",
+      "pattern_invalid": "Ungültiges Format"
+    },
     "model": {
       "user": {
         "edit": "Benutzerdaten bearbeiten",

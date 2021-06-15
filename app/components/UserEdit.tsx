@@ -26,14 +26,27 @@ const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: 
 
   const onSubmit = (user: User) => onUserChanged(user);
 
-  const rules: any = { firstName: { required: true } }; // TODO
+  const rules: any = {
+    mail: {
+      pattern: {
+        value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        message: t("validation.pattern_invalid"),
+      },
+    },
+    usedRef: {
+      pattern: {
+        value: /^\d{3}-\d{3}$/,
+        message: t("validation.pattern_invalid"),
+      },
+    },
+  };
 
   return (
     <View>
       <Form control={control} rules={rules} errors={errors}>
         <View style={AppStyles.containerHorizontal}>
           <Input name="firstName" label={t("model.user.first_name")} />
-            <SpacerH />
+          <SpacerH />
           <Input name="lastName" label={t("model.user.last_name")} />
         </View>
         <Input name="street" label={t("model.user.street")} />
@@ -44,6 +57,8 @@ const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: 
         </View>
         <Input name="mail" label={t("model.user.mail")} />
         <Input name="phoneNumber" label={t("model.user.phone_number")} />
+        <SpacerV />
+        <Input name="usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />
         <SpacerV />
 
         <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>

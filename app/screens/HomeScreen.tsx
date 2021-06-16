@@ -10,12 +10,14 @@ import UserEdit from "../components/UserEdit";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
 import { SpacerV } from "../elements/Elements";
+import withSession from "../hocs/withSession";
 import { PaymentRoutes } from "../models/PaymentRoutes";
 import { User } from "../models/User";
-import { getActiveRoutes, getUser, isLoggedIn } from "../services/ApiService";
+import { getActiveRoutes, getUser } from "../services/ApiService";
+import { Session } from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
 
-const HomeScreen = () => {
+const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const nav = useNavigation();
 
@@ -24,18 +26,25 @@ const HomeScreen = () => {
   const [routes, setRoutes] = useState<PaymentRoutes>();
   const [isVisible, setIsVisible] = useState(false);
 
+  const reset = (): void => {
+    setLoading(true);
+    setUser(undefined);
+    setRoutes(undefined);
+    setIsVisible(false);
+  };
+
   useEffect(() => {
-    // TODO: subscribe (does not work correctly)
-    isLoggedIn().then((isLoggedIn) => {
-      if (isLoggedIn) {
+    if (session) {
+      if (session.isLoggedIn) {
         Promise.all([getUser().then((user) => setUser(user)), getActiveRoutes().then((routes) => setRoutes(routes))])
           // TODO: error handling
           .finally(() => setLoading(false));
       } else {
+        reset();
         nav.navigate(Routes.Login);
       }
-    });
-  }, []);
+    }
+  }, [session]);
 
   return (
     <View style={AppStyles.container}>
@@ -162,4 +171,4 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default withSession(HomeScreen);

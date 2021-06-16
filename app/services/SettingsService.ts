@@ -6,8 +6,6 @@ const DefaultSettings: Partial<AppSettings> = {
 };
 
 export interface AppSettings {
-  address: string;
-  signature: string;
   language: string;
 }
 

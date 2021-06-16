@@ -5,7 +5,7 @@ import { Fiat } from "../models/Fiat";
 import { fromActivePaymentRoutesDto, fromPaymentRoutesDto, PaymentRoutes, PaymentRoutesDto } from "../models/PaymentRoutes";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import { fromUserDto, toUserDto, User, UserDto } from "../models/User";
-import { AppSettings, getSettings, updateSettings } from "./SettingsService";
+import SessionService, { Session } from "./SessionService";
 
 const BaseUrl = Environment.api.baseUrl;
 const UserUrl = "user";
@@ -15,31 +15,12 @@ const RouteUrl = "registration";
 const AssetUrl = "asset";
 const FiatUrl = "fiat";
 
-// TODO: remove dummy data
-const Address = "8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG";
-const Signature = "Hwj3sJjBxMOnkPxZkGtqinGdASIOM6ffGDCcQsWA7kRIIjMP5/HMyuZwlLnBKuD6weD5c/8HIzMrmi6GpCmFU04=";
-
 // TODO: add delete routes method
 
-// --- SESSION --- //
-export const isLoggedIn = (): Promise<boolean> => {
-  return getSettings().then((settings) => !!settings.address);
-};
-
-// TODO: login with API
-export const login = (): Promise<void> => {
-  return updateSettings({ address: Address, signature: Signature });
-};
-
-export const logout = (): Promise<void> => {
-  return updateSettings({ address: undefined, signature: undefined });
-};
-
 // --- USER --- //
-
 export const getUser = (): Promise<User> => {
-  return getSettings()
-    .then((settings) => fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, buildInit("GET", settings)))
+  return SessionService.Session
+    .then((session) => fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, buildInit("GET", session)))
     .then((dto: UserDto) => fromUserDto(dto));
 };
 
@@ -50,39 +31,37 @@ export const postUser = (user: User): Promise<User> => {
 };
 
 export const putUser = (user: User): Promise<User> => {
-  return getSettings()
-    .then((settings) =>
-      fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}/${settings.address}`, buildInit("PUT", settings, toUserDto(user)))
+  return SessionService.Session
+    .then((session) =>
+      fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}/${session.address}`, buildInit("PUT", session, toUserDto(user)))
     )
     .then((dto: UserDto) => fromUserDto(dto));
 };
 
 // --- PAYMENT ROUTES --- //
 export const getRoutes = (): Promise<PaymentRoutes> => {
-  return getSettings()
-    .then((settings) => fetchFrom<PaymentRoutesDto>(`${BaseUrl}/${RouteUrl}`, buildInit("GET", settings)))
+  return SessionService.Session
+    .then((session) => fetchFrom<PaymentRoutesDto>(`${BaseUrl}/${RouteUrl}`, buildInit("GET", session)))
     .then((routes) => fromPaymentRoutesDto(routes));
 };
 
 export const getActiveRoutes = (): Promise<PaymentRoutes> => {
-  return getSettings()
-    .then((settings) => fetchFrom<PaymentRoutesDto>(`${BaseUrl}/${RouteUrl}`, buildInit("GET", settings)))
+  return SessionService.Session
+    .then((session) => fetchFrom<PaymentRoutesDto>(`${BaseUrl}/${RouteUrl}`, buildInit("GET", session)))
     .then((routes) => fromActivePaymentRoutesDto(routes));
 };
 
 // TODO: use other DTO?
 export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
-  return getSettings()
-    .then((settings) =>
-      fetchFrom<BuyRouteDto>(`${BaseUrl}/${BuyUrl}`, buildInit("POST", settings, toBuyRouteDto(route)))
-    )
+  return SessionService.Session
+    .then((session) => fetchFrom<BuyRouteDto>(`${BaseUrl}/${BuyUrl}`, buildInit("POST", session, toBuyRouteDto(route))))
     .then((dto) => fromBuyRouteDto(dto));
 };
 
 export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
-  return getSettings()
-    .then((settings) =>
-      fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}`, buildInit("POST", settings, toSellRouteDto(route)))
+  return SessionService.Session
+    .then((session) =>
+      fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}`, buildInit("POST", session, toSellRouteDto(route)))
     )
     .then((dto) => fromSellRouteDto(dto));
 };
@@ -97,11 +76,11 @@ export const getFiats = (): Promise<Fiat[]> => {
 };
 
 // --- HELPERS --- //
-const buildInit = (method: "GET" | "PUT" | "POST", settings?: AppSettings, data?: any): RequestInit => ({
+const buildInit = (method: "GET" | "PUT" | "POST", session?: Session, data?: any): RequestInit => ({
   method: method,
   headers: {
     "Content-Type": "application/json",
-    Authorization: settings ? "Basic " + btoa(`${settings.address}:${settings.signature}`) : "",
+    Authorization: session ? "Basic " + btoa(`${session.address}:${session.signature}`) : "",
   },
   body: JSON.stringify(data),
 });

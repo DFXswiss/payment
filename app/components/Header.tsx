@@ -7,10 +7,11 @@ import * as nav from "../utils/NavigationHelper";
 import { Picker } from "@react-native-picker/picker";
 import { getSettings } from "../services/SettingsService";
 import AppStyles from "../styles/AppStyles";
-import { logout } from "../services/ApiService";
 import { useTranslation } from "react-i18next";
+import SessionService, { Session } from "../services/SessionService";
+import withSession from "../hocs/withSession";
 
-const Header = () => {
+const Header = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
 
   const [selectedLanguage, setSelectedLanguage] = useState("en");
@@ -23,14 +24,22 @@ const Header = () => {
     });
   }, []);
 
+  const logout = () => SessionService.logout().then(() => nav.navigate(Routes.Login));
+
   return (
     <View style={[AppStyles.containerHorizontal, styles.container]}>
       <TouchableOpacity activeOpacity={1} style={styles.logoTouch} onPress={() => nav.navigate(Routes.Home)}>
         <Image style={styles.logo} source={require("../assets/logo_defichange.png")} />
       </TouchableOpacity>
 
+      {session?.isLoggedIn && (
+        <TouchableOpacity style={AppStyles.mla} onPress={() => logout()}>
+          <Text style={AppStyles.link}>{t("action.logout")}</Text>
+        </TouchableOpacity>
+      )}
+
       <Picker
-        style={styles.languageSelect}
+        style={[AppStyles.ml10, styles.languageSelect]}
         selectedValue={selectedLanguage}
         onValueChange={(itemValue, itemIndex) => {
           setSelectedLanguage(itemValue);
@@ -40,10 +49,6 @@ const Header = () => {
         <Picker.Item label="Deutsch" value="de" />
         <Picker.Item label="English" value="en" />
       </Picker>
-      {/* TODO: only if logged in */}
-      <TouchableOpacity style={AppStyles.ml10} onPress={() => logout().then(() => nav.navigate(Routes.Login))}>
-        <Text style={AppStyles.link}>{t("action.logout")}</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -61,10 +66,9 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   languageSelect: {
-    marginLeft: "auto",
     color: Colors.Primary,
     borderColor: Colors.Primary,
   },
 });
 
-export default Header;
+export default withSession(Header);

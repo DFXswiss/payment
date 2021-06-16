@@ -3,16 +3,17 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, Button, View, Text } from "react-native";
+import { StyleSheet, Button, View } from "react-native";
 import Form from "../components/Form";
 import Input from "../components/Input";
 import Loading from "../components/Loading";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
 import { SpacerV } from "../elements/Spacers";
-import { Alert } from "../elements/Texts";
+import { Alert, H2 } from "../elements/Texts";
 import SessionService from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
+import VideoPlayer from "../components/VideoPlayer";
 
 interface LoginData {
   userName: string;
@@ -71,6 +72,10 @@ const LoginScreen = () => {
   return (
     <View style={[AppStyles.container, styles.container]}>
       <SpacerV height={20} />
+      <VideoPlayer src="https://www.youtube.com/embed/DubUrIPFajA" maxWidth={600} />
+      <SpacerV height={30} />
+
+      <H2 text={t("sign_up")} />
       <View style={styles.formContainer}>
         <Form control={control} rules={rules} errors={errors} editable={!isProcessing}>
           <Input name="userName" label={t("model.user.address")} />

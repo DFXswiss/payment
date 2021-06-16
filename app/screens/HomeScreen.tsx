@@ -10,7 +10,7 @@ import UserEdit from "../components/UserEdit";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
 import { SpacerV } from "../elements/Spacers";
-import { H1 } from "../elements/Texts";
+import { H1, H2, H3 } from "../elements/Texts";
 import withCredentials from "../hocs/withSession";
 import { PaymentRoutes } from "../models/PaymentRoutes";
 import { User } from "../models/User";
@@ -70,7 +70,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
           {user && (
             <View>
               <View style={AppStyles.containerHorizontal}>
-                <Text style={AppStyles.h2}>{t("model.user.your_data")}</Text>
+                <H2 text={t("model.user.your_data")} />
                 <View style={AppStyles.mla}>
                   <Button color={Colors.Primary} title={t("action.edit")} onPress={() => setIsVisible(true)} />
                 </View>
@@ -96,7 +96,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
           {routes && (
             <View>
               <View style={AppStyles.containerHorizontal}>
-                <Text style={AppStyles.h2}>{t("model.route.routes")}</Text>
+                <H2 text={t("model.route.routes")} />
                 <Text style={AppStyles.mla}>{t("model.route.new")}</Text>
                 <View style={AppStyles.ml10}>
                   <Button color={Colors.Primary} title={t("model.route.buy")} onPress={() => {}} />
@@ -113,7 +113,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
                   {routes.buyRoutes?.length > 0 && (
                     <>
                       <SpacerV />
-                      <Text style={AppStyles.h3}>{t("model.route.buy")}</Text>
+                      <H3 text={t("model.route.buy")} />
                       <SpacerV />
                       <Row
                         textStyle={AppStyles.b}
@@ -132,7 +132,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
                   {routes.sellRoutes?.length > 0 && (
                     <>
                       <SpacerV />
-                      <Text style={AppStyles.h3}>{t("model.route.sell")}</Text>
+                      <H3 text={t("model.route.sell")} />
                       <SpacerV />
                       <Row
                         textStyle={AppStyles.b}

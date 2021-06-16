@@ -1,6 +1,7 @@
 {
   "common": {
     "welcome": "Willkommen!",
+    "sign_up": "Anmelden / Registrieren",
     "action": {
       "login": "Login",
       "logout": "Logout",

@@ -7,6 +7,7 @@ import { SpacerV } from "../elements/Spacers";
 import AppStyles from "../styles/AppStyles";
 import { Icon } from "react-native-elements";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { H2 } from "../elements/Texts";
 
 const DeFiModal = ({
   isVisible,
@@ -30,7 +31,7 @@ const DeFiModal = ({
     <Modal isVisible={isVisible} onBackdropPress={() => setIsVisible(false)}>
       <View style={[styles.container, { minWidth: minWidth }]}>
         <View style={AppStyles.containerHorizontal}>
-          <Text style={AppStyles.h2}>{title}</Text>
+          <H2 text={title} />
           <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
             <Icon name="close" color={Colors.Grey} style={AppStyles.ml20} />
           </TouchableWithoutFeedback>

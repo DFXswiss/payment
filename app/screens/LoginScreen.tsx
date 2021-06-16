@@ -78,7 +78,7 @@ const LoginScreen = () => {
       <H2 text={t("sign_up")} />
       <View style={styles.formContainer}>
         <Form control={control} rules={rules} errors={errors} editable={!isProcessing} onSubmit={handleSubmit(onSubmit)}>
-          <Input name="userName" label={t("model.user.address")} />
+          <Input name="userName" label={t("model.user.address")} returnKeyType="next" />
           <Input name="password" label={t("model.user.signature")} />
           <SpacerV />
           <>{error && <Alert label={t("feedback.login_failed")} />}</>

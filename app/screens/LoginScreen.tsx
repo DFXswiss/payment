@@ -1,5 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Button, View, Text } from "react-native";
@@ -9,6 +10,7 @@ import Loading from "../components/Loading";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
 import { SpacerV } from "../elements/Spacers";
+import { Alert } from "../elements/Texts";
 import SessionService from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
 
@@ -19,12 +21,14 @@ interface LoginData {
 
 const LoginScreen = () => {
   const nav = useNavigation();
+  const route = useRoute();
   const { t } = useTranslation();
 
   const {
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<LoginData>();
 
   const [isProcessing, setIsProcessing] = useState(false);
@@ -33,12 +37,21 @@ const LoginScreen = () => {
   const onSubmit = (data: LoginData) => {
     setIsProcessing(true);
     setError(false);
-    
+
     SessionService.login({ address: data.userName, signature: data.password })
       .finally(() => setIsProcessing(false))
       .then(() => nav.navigate(Routes.Home))
       .catch(() => setError(true));
   };
+
+  useEffect(() => {
+    const params = route.params as any;
+    if (params?.address && params?.signature) {
+      setValue("userName", params.address);
+      setValue("password", params.signature);
+      handleSubmit(onSubmit)();
+    }
+  }, []);
 
   const rules: any = {
     userName: {
@@ -63,14 +76,7 @@ const LoginScreen = () => {
           <Input name="userName" label={t("model.user.address")} />
           <Input name="password" label={t("model.user.signature")} />
           <SpacerV />
-          <>
-            {error && (
-              // TODO: create an element
-              <View style={AppStyles.error}>
-                <Text style={[AppStyles.b, {color: Colors.White}]}>{t("feedback.login_failed")}</Text>
-              </View>
-            )}
-          </>
+          <>{error && <Alert label={t("feedback.login_failed")} />}</>
           <SpacerV />
           <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
             <View style={isProcessing && AppStyles.hidden}>

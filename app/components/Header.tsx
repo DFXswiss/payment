@@ -33,7 +33,7 @@ const Header = ({ credentials }: { credentials?: Credentials }) => {
         <Image style={styles.logo} source={require("../assets/logo_defichange.png")} />
       </TouchableOpacity>
 
-      <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
+      <View style={[AppStyles.containerHorizontal, AppStyles.mla, {alignItems: "baseline"}]}>
         {credentials?.isLoggedIn && <ActionLink action={() => logout()} label={t("action.logout")} />}
 
         <Picker

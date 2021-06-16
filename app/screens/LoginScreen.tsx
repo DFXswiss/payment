@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, Button, View } from "react-native";
+import { StyleSheet, Button, View, Text } from "react-native";
 import Form from "../components/Form";
 import Input from "../components/Input";
 import Loading from "../components/Loading";
@@ -28,13 +28,16 @@ const LoginScreen = () => {
   } = useForm<LoginData>();
 
   const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState(false);
 
   const onSubmit = (data: LoginData) => {
     setIsProcessing(true);
-    SessionService.login({ address: data.userName, signature: data.password }).then(() => {
-      setIsProcessing(false);
-      nav.navigate(Routes.Home);
-    });
+    setError(false);
+    
+    SessionService.login({ address: data.userName, signature: data.password })
+      .finally(() => setIsProcessing(false))
+      .then(() => nav.navigate(Routes.Home))
+      .catch(() => setError(true));
   };
 
   const rules: any = {
@@ -59,6 +62,15 @@ const LoginScreen = () => {
         <Form control={control} rules={rules} errors={errors} editable={!isProcessing}>
           <Input name="userName" label={t("model.user.address")} />
           <Input name="password" label={t("model.user.signature")} />
+          <SpacerV />
+          <>
+            {error && (
+              // TODO: create an element
+              <View style={AppStyles.error}>
+                <Text style={[AppStyles.b, {color: Colors.White}]}>{t("feedback.login_failed")}</Text>
+              </View>
+            )}
+          </>
           <SpacerV />
           <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
             <View style={isProcessing && AppStyles.hidden}>

@@ -13,7 +13,7 @@ const NotFoundScreen = () => {
 
   return (
     <View style={[AppStyles.container, styles.container]}>
-      <H1 text={t("page_not_found")} />
+      <H1 text={t("feedback.page_not_found")} />
       <SpacerV height={30} />
       <ActionLink action={() => nav.navigate(Routes.Home)} label={t("action.home")} />
     </View>

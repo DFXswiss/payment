@@ -5,7 +5,7 @@ import { Fiat } from "../models/Fiat";
 import { fromActivePaymentRoutesDto, fromPaymentRoutesDto, PaymentRoutes, PaymentRoutesDto } from "../models/PaymentRoutes";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import { fromUserDto, toUserDto, User, UserDto } from "../models/User";
-import SessionService, { Credentials } from "./SessionService";
+import SessionService, { Credentials, ICredentials } from "./SessionService";
 
 const BaseUrl = Environment.api.baseUrl;
 const UserUrl = "user";
@@ -18,9 +18,9 @@ const FiatUrl = "fiat";
 // TODO: add delete routes method
 
 // --- USER --- //
-export const getUser = (): Promise<User> => {
+export const getUser = (credentials?: ICredentials): Promise<User> => {
   return SessionService.Credentials
-    .then((credentials) => fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, buildInit("GET", credentials)))
+    .then((c) => fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, buildInit("GET", credentials ?? c)))
     .then((dto: UserDto) => fromUserDto(dto));
 };
 
@@ -79,7 +79,7 @@ export const getFiats = (): Promise<Fiat[]> => {
 };
 
 // --- HELPERS --- //
-const buildInit = (method: "GET" | "PUT" | "POST", credentials?: Credentials, data?: any): RequestInit => ({
+const buildInit = (method: "GET" | "PUT" | "POST", credentials?: ICredentials, data?: any): RequestInit => ({
   method: method,
   headers: {
     "Content-Type": "application/json",

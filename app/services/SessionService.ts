@@ -42,8 +42,8 @@ class SessionServiceClass {
   }
 
   public login(credentials: ICredentials): Promise<void> {
-    // TODO: login with API
-    return this.updateCredentials(credentials);
+    return getUser(credentials).then(() => this.updateCredentials(credentials));
+    // TODO: error => postUser?
   }
 
   public logout(): Promise<void> {

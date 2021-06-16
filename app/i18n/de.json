@@ -1,7 +1,6 @@
 {
   "common": {
     "welcome": "Willkommen!",
-    "page_not_found": "Seite nicht gefunden!",
     "action": {
       "login": "Login",
       "logout": "Logout",
@@ -9,6 +8,10 @@
       "save": "Speichern",
       "abort": "Abbrechen",
       "home": "Zurück zur Startseite"
+    },
+    "feedback": {
+      "page_not_found": "Seite nicht gefunden!",
+      "login_failed": "Login fehlgeschlagen!"
     },
     "validation": {
       "required": "Pflichtfeld",

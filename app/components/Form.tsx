@@ -13,11 +13,12 @@ const Form = ({ children, control, rules, errors, editable = true }: Props) => {
   const enrichElements = (elements: ReactElement[] | ReactElement): ReactElement[] | undefined => {
     if (!elements) return undefined;
 
-    return (Array.isArray(elements) ? [...elements] : [elements])
-      .map((element, i) => enrichElement(element, i));
+    return (Array.isArray(elements) ? [...elements] : [elements]).map((element, i) => enrichElement(element, i));
   };
 
   const enrichElement = (element: ReactElement, index: number): ReactElement => {
+    if (!element.props) return element;
+
     let props = {
       ...element.props,
       children: enrichElements(element.props.children),
@@ -30,7 +31,7 @@ const Form = ({ children, control, rules, errors, editable = true }: Props) => {
         control: control,
         rules: rules[element.props.name],
         error: errors[element.props.name],
-        editable: editable
+        editable: editable,
       };
     }
 

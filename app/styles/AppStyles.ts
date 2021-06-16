@@ -35,6 +35,11 @@ export default StyleSheet.create({
   h3: {
     fontSize: 20,
   },
+  error: {
+    backgroundColor: Colors.Error,
+    padding: 10,
+    borderRadius: 5,
+  },
   // style
   i: {
     fontStyle: "italic",

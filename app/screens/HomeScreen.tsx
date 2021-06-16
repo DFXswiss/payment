@@ -34,6 +34,11 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
     setIsVisible(false);
   };
 
+  const editUser = (): void => {
+    setUser(Object.assign({}, user));
+    setIsVisible(true);
+  }
+
   useEffect(() => {
     if (credentials) {
       if (credentials.isLoggedIn) {
@@ -72,7 +77,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
               <View style={AppStyles.containerHorizontal}>
                 <H2 text={t("model.user.your_data")} />
                 <View style={AppStyles.mla}>
-                  <Button color={Colors.Primary} title={t("action.edit")} onPress={() => setIsVisible(true)} />
+                  <Button color={Colors.Primary} title={t("action.edit")} onPress={() => editUser()} />
                 </View>
               </View>
               {user.address ? <Row cells={[t("model.user.address"), user.address]} /> : null}

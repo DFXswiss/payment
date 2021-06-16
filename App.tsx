@@ -11,6 +11,7 @@ import "./app/i18n/i18n";
 import { View, StyleSheet } from "react-native";
 import AppStyles from "./app/styles/AppStyles";
 import NotFoundScreen from "./app/screens/NotFoundScreen";
+import Sizes from "./app/config/Sizes";
 
 const App = () => {
   const stack = createStackNavigator();
@@ -45,7 +46,7 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
-  container: { alignItems: "center", padding: 10 },
+  container: { alignItems: "center", padding: Sizes.AppPadding },
   appContainer: { width: "100%", maxWidth: 800 },
 });
 

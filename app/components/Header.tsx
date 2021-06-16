@@ -33,19 +33,21 @@ const Header = ({ session }: { session?: Session }) => {
         <Image style={styles.logo} source={require("../assets/logo_defichange.png")} />
       </TouchableOpacity>
 
-      {session?.isLoggedIn && <ActionLink style={AppStyles.mla} action={() => logout()} label={t("action.logout")} />}
+      <View style={AppStyles.mla}>
+        {session?.isLoggedIn && <ActionLink action={() => logout()} label={t("action.logout")} />}
 
-      <Picker
-        style={[AppStyles.ml10, styles.languageSelect]}
-        selectedValue={selectedLanguage}
-        onValueChange={(itemValue, itemIndex) => {
-          setSelectedLanguage(itemValue);
-          changeLanguage(itemValue);
-        }}
-      >
-        <Picker.Item label="Deutsch" value="de" />
-        <Picker.Item label="English" value="en" />
-      </Picker>
+        <Picker
+          style={[AppStyles.ml10, styles.languageSelect]}
+          selectedValue={selectedLanguage}
+          onValueChange={(itemValue, itemIndex) => {
+            setSelectedLanguage(itemValue);
+            changeLanguage(itemValue);
+          }}
+        >
+          <Picker.Item label="Deutsch" value="de" />
+          <Picker.Item label="English" value="en" />
+        </Picker>
+      </View>
     </View>
   );
 };

@@ -1,6 +1,6 @@
 import React from "react";
 import { Control, Controller, FieldError } from "react-hook-form";
-import { StyleSheet, View, Text, TextInput, TextStyle } from "react-native";
+import { StyleSheet, View, Text, TextInput, TextStyle, NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native";
 import Colors from "../config/Colors";
 import AppStyles from "../styles/AppStyles";
 
@@ -13,9 +13,10 @@ interface Props {
   rules?: any;
   error?: FieldError | undefined;
   editable?: boolean;
+  onKeyPress?: (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => void;
 }
 
-const Input = ({ control, name, placeholder, label, labelStyle, rules, error, editable = true }: Props) => {
+const Input = ({ control, name, placeholder, label, labelStyle, rules, error, editable = true, onKeyPress }: Props) => {
   return (
     <Controller
       control={control}
@@ -33,6 +34,7 @@ const Input = ({ control, name, placeholder, label, labelStyle, rules, error, ed
             ]}
             placeholder={placeholder}
             editable={editable}
+            onKeyPress={onKeyPress}
           />
           <Text style={styles.textError}>{error && error.message}</Text>
         </View>

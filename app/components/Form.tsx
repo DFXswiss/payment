@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react";
 import { Control } from "react-hook-form";
+import { NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native";
 
 interface Props {
   children: ReactElement[];
@@ -7,9 +8,14 @@ interface Props {
   rules: any;
   errors: any;
   editable?: boolean;
+  onSubmit?: () => void;
 }
 
-const Form = ({ children, control, rules, errors, editable = true }: Props) => {
+const Form = ({ children, control, rules, errors, editable = true, onSubmit }: Props) => {
+  const handleKeyPress = (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+    if (e.nativeEvent.key === "Enter" && onSubmit) onSubmit();
+  };
+
   const enrichElements = (elements: ReactElement[] | ReactElement): ReactElement[] | undefined => {
     if (!elements) return undefined;
 
@@ -32,6 +38,7 @@ const Form = ({ children, control, rules, errors, editable = true }: Props) => {
         rules: rules[element.props.name],
         error: errors[element.props.name],
         editable: editable,
+        onKeyPress: (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => handleKeyPress(e),
       };
     }
 

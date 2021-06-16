@@ -13,7 +13,6 @@ import Form from "./Form";
 import Input from "./Input";
 import Loading from "./Loading";
 
-// TODO: save on enter
 const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: User) => void }) => {
   const { t } = useTranslation();
   const {
@@ -54,7 +53,7 @@ const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: 
 
   return (
     <View>
-      <Form control={control} rules={rules} errors={errors} editable={!isSaving}>
+      <Form control={control} rules={rules} errors={errors} editable={!isSaving} onSubmit={handleSubmit(onSubmit)}>
         <View style={AppStyles.containerHorizontal}>
           <Input name="firstName" label={t("model.user.first_name")} />
           <SpacerH />

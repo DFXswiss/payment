@@ -14,7 +14,7 @@ import withSession from "../hocs/withSession";
 const Header = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
 
-  const [selectedLanguage, setSelectedLanguage] = useState("en");
+  const [selectedLanguage, setSelectedLanguage] = useState("de");
 
   useEffect(() => {
     // get language from settings

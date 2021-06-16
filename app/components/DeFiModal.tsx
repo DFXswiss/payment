@@ -41,7 +41,7 @@ const DeFiModal = ({
         {/* TODO: default close buttons? */}
         {/* <Spacer />
         <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
-          <Button color={Colors.Secondary} title={t("action.abort")} onPress={() => setIsVisible(false)} />
+          <Button color={Colors.LightGrey} title={t("action.abort")} onPress={() => setIsVisible(false)} />
           <View style={AppStyles.ml10}>
             <Button color={Colors.Primary} title={save} onPress={() => setIsVisible(false)} />
           </View>

@@ -30,7 +30,6 @@ const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: 
   }, [user]);
 
   const onSubmit = (user: User) => {
-    // TODO: disable on saving?
     setIsSaving(true);
     putUser(user).then((user) => {
       onUserChanged(user);
@@ -55,7 +54,7 @@ const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: 
 
   return (
     <View>
-      <Form control={control} rules={rules} errors={errors}>
+      <Form control={control} rules={rules} errors={errors} editable={!isSaving}>
         <View style={AppStyles.containerHorizontal}>
           <Input name="firstName" label={t("model.user.first_name")} />
           <SpacerH />
@@ -74,11 +73,15 @@ const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: 
         <SpacerV />
 
         <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
-          {isSaving ? (
-            <Loading />
-          ) : (
-            <Button color={Colors.Primary} title={t("action.save")} onPress={handleSubmit(onSubmit)} />
-          )}
+          <View style={isSaving && AppStyles.hidden}>
+            <Button
+              color={Colors.Primary}
+              title={t("action.save")}
+              onPress={handleSubmit(onSubmit)}
+              disabled={isSaving}
+            />
+          </View>
+          <>{isSaving && <Loading />}</>
         </View>
       </Form>
     </View>

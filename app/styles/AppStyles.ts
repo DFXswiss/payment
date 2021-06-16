@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 import Colors from "../config/Colors";
 
 export default StyleSheet.create({
+  // layout
   container: {
     flex: 1,
     backgroundColor: Colors.White,
@@ -9,9 +10,6 @@ export default StyleSheet.create({
   containerHorizontal: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  link: {
-    color: Colors.Primary,
   },
   row: {
     flex: 1,
@@ -21,6 +19,10 @@ export default StyleSheet.create({
   cell: {
     flex: 1,
     alignSelf: "stretch",
+  },
+  // elements
+  link: {
+    color: Colors.Primary,
   },
   h1: {
     fontSize: 30,
@@ -33,12 +35,17 @@ export default StyleSheet.create({
   h3: {
     fontSize: 20,
   },
+  // style
   i: {
     fontStyle: "italic",
   },
   b: {
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
+  hidden: {
+    opacity: 0,
+  },
+  // spaces
   mr10: {
     marginRight: 10,
   },
@@ -50,5 +57,5 @@ export default StyleSheet.create({
   },
   ml20: {
     marginLeft: 20,
-  }
+  },
 });

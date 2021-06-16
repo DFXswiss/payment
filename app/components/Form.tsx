@@ -6,9 +6,10 @@ interface Props {
   control: Control<any>;
   rules: any;
   errors: any;
+  editable?: boolean;
 }
 
-const Form = ({ children, control, rules, errors }: Props) => {
+const Form = ({ children, control, rules, errors, editable = true }: Props) => {
   const enrichElements = (elements: ReactElement[] | ReactElement): ReactElement[] | undefined => {
     if (!elements) return undefined;
 
@@ -29,6 +30,7 @@ const Form = ({ children, control, rules, errors }: Props) => {
         control: control,
         rules: rules[element.props.name],
         error: errors[element.props.name],
+        editable: editable
       };
     }
 

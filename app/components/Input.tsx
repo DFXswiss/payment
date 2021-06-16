@@ -2,6 +2,7 @@ import React from "react";
 import { Control, Controller, FieldError } from "react-hook-form";
 import { StyleSheet, View, Text, TextInput, TextStyle } from "react-native";
 import Colors from "../config/Colors";
+import AppStyles from "../styles/AppStyles";
 
 interface Props {
   control?: Control<any>;
@@ -11,21 +12,27 @@ interface Props {
   labelStyle?: TextStyle;
   rules?: any;
   error?: FieldError | undefined;
+  editable?: boolean;
 }
 
-const Input = ({ control, name, placeholder, label, labelStyle, rules, error }: Props) => {
+const Input = ({ control, name, placeholder, label, labelStyle, rules, error, editable = true }: Props) => {
   return (
     <Controller
       control={control}
       render={({ field: { onChange, onBlur, value } }) => (
-        <View>
+        <View style={AppStyles.cell}>
           {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
           <TextInput
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value ?? ""}
-            style={[styles.input, { borderColor: error ? Colors.Error : Colors.Grey }]}
+            style={[
+              styles.input,
+              { borderColor: error ? Colors.Error : Colors.Grey },
+              !editable && styles.inputDisabled,
+            ]}
             placeholder={placeholder}
+            editable={editable}
           />
           <Text style={styles.textError}>{error && error.message}</Text>
         </View>
@@ -46,6 +53,10 @@ const styles = StyleSheet.create({
     height: 40,
     color: Colors.Black,
     fontSize: 14,
+  },
+  inputDisabled: {
+    color: Colors.Grey,
+    backgroundColor: Colors.LightGrey,
   },
   label: {
     paddingVertical: 5,

@@ -40,16 +40,19 @@ export const putUser = (user: User): Promise<User> => {
 
 // --- PAYMENT ROUTES --- //
 export const getRoutes = (): Promise<PaymentRoutes> => {
-  return SessionService.Session
-    .then((session) => fetchFrom<PaymentRoutesDto>(`${BaseUrl}/${RouteUrl}`, buildInit("GET", session)))
+  return getRoutesDto()
     .then((routes) => fromPaymentRoutesDto(routes));
 };
 
 export const getActiveRoutes = (): Promise<PaymentRoutes> => {
-  return SessionService.Session
-    .then((session) => fetchFrom<PaymentRoutesDto>(`${BaseUrl}/${RouteUrl}`, buildInit("GET", session)))
+  return getRoutesDto()
     .then((routes) => fromActivePaymentRoutesDto(routes));
 };
+
+const getRoutesDto = (): Promise<PaymentRoutesDto> => {
+  return SessionService.Session
+    .then((session) => fetchFrom<PaymentRoutesDto>(`${BaseUrl}/${RouteUrl}`, buildInit("GET", session)))
+}
 
 // TODO: use other DTO?
 export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {

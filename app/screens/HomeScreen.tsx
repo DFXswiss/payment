@@ -11,14 +11,14 @@ import Colors from "../config/Colors";
 import Routes from "../config/Routes";
 import { SpacerV } from "../elements/Spacers";
 import { H1 } from "../elements/Texts";
-import withSession from "../hocs/withSession";
+import withCredentials from "../hocs/withSession";
 import { PaymentRoutes } from "../models/PaymentRoutes";
 import { User } from "../models/User";
 import { getActiveRoutes, getUser } from "../services/ApiService";
-import { Session } from "../services/SessionService";
+import { Credentials } from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
 
-const HomeScreen = ({ session }: { session?: Session }) => {
+const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   const { t } = useTranslation();
   const nav = useNavigation();
 
@@ -35,8 +35,8 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   };
 
   useEffect(() => {
-    if (session) {
-      if (session.isLoggedIn) {
+    if (credentials) {
+      if (credentials.isLoggedIn) {
         Promise.all([getUser().then((user) => setUser(user)), getActiveRoutes().then((routes) => setRoutes(routes))])
           // TODO: error handling
           .finally(() => setLoading(false));
@@ -45,7 +45,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
         nav.navigate(Routes.Login);
       }
     }
-  }, [session]);
+  }, [credentials]);
 
   return (
     <View style={AppStyles.container}>
@@ -172,4 +172,4 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   );
 };
 
-export default withSession(HomeScreen);
+export default withCredentials(HomeScreen);

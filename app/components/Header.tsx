@@ -8,11 +8,11 @@ import { Picker } from "@react-native-picker/picker";
 import { getSettings } from "../services/SettingsService";
 import AppStyles from "../styles/AppStyles";
 import { useTranslation } from "react-i18next";
-import SessionService, { Session } from "../services/SessionService";
-import withSession from "../hocs/withSession";
+import SessionService, { Credentials } from "../services/SessionService";
+import withCredentials from "../hocs/withSession";
 import { ActionLink } from "../elements/Texts";
 
-const Header = ({ session }: { session?: Session }) => {
+const Header = ({ credentials }: { credentials?: Credentials }) => {
   const { t } = useTranslation();
 
   const [selectedLanguage, setSelectedLanguage] = useState("de");
@@ -33,8 +33,8 @@ const Header = ({ session }: { session?: Session }) => {
         <Image style={styles.logo} source={require("../assets/logo_defichange.png")} />
       </TouchableOpacity>
 
-      <View style={AppStyles.mla}>
-        {session?.isLoggedIn && <ActionLink action={() => logout()} label={t("action.logout")} />}
+      <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
+        {credentials?.isLoggedIn && <ActionLink action={() => logout()} label={t("action.logout")} />}
 
         <Picker
           style={[AppStyles.ml10, styles.languageSelect]}
@@ -70,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withSession(Header);
+export default withCredentials(Header);

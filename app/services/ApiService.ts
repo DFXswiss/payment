@@ -5,7 +5,7 @@ import { Fiat } from "../models/Fiat";
 import { fromActivePaymentRoutesDto, fromPaymentRoutesDto, PaymentRoutes, PaymentRoutesDto } from "../models/PaymentRoutes";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import { fromUserDto, toUserDto, User, UserDto } from "../models/User";
-import SessionService, { Session } from "./SessionService";
+import SessionService, { Credentials } from "./SessionService";
 
 const BaseUrl = Environment.api.baseUrl;
 const UserUrl = "user";
@@ -19,8 +19,8 @@ const FiatUrl = "fiat";
 
 // --- USER --- //
 export const getUser = (): Promise<User> => {
-  return SessionService.Session
-    .then((session) => fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, buildInit("GET", session)))
+  return SessionService.Credentials
+    .then((credentials) => fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, buildInit("GET", credentials)))
     .then((dto: UserDto) => fromUserDto(dto));
 };
 
@@ -31,9 +31,9 @@ export const postUser = (user: User): Promise<User> => {
 };
 
 export const putUser = (user: User): Promise<User> => {
-  return SessionService.Session
-    .then((session) =>
-      fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}/${session.address}`, buildInit("PUT", session, toUserDto(user)))
+  return SessionService.Credentials
+    .then((credentials) =>
+      fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}/${credentials.address}`, buildInit("PUT", credentials, toUserDto(user)))
     )
     .then((dto: UserDto) => fromUserDto(dto));
 };
@@ -50,21 +50,21 @@ export const getActiveRoutes = (): Promise<PaymentRoutes> => {
 };
 
 const getRoutesDto = (): Promise<PaymentRoutesDto> => {
-  return SessionService.Session
-    .then((session) => fetchFrom<PaymentRoutesDto>(`${BaseUrl}/${RouteUrl}`, buildInit("GET", session)))
+  return SessionService.Credentials
+    .then((credentials) => fetchFrom<PaymentRoutesDto>(`${BaseUrl}/${RouteUrl}`, buildInit("GET", credentials)))
 }
 
 // TODO: use other DTO?
 export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
-  return SessionService.Session
-    .then((session) => fetchFrom<BuyRouteDto>(`${BaseUrl}/${BuyUrl}`, buildInit("POST", session, toBuyRouteDto(route))))
+  return SessionService.Credentials
+    .then((credentials) => fetchFrom<BuyRouteDto>(`${BaseUrl}/${BuyUrl}`, buildInit("POST", credentials, toBuyRouteDto(route))))
     .then((dto) => fromBuyRouteDto(dto));
 };
 
 export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
-  return SessionService.Session
-    .then((session) =>
-      fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}`, buildInit("POST", session, toSellRouteDto(route)))
+  return SessionService.Credentials
+    .then((credentials) =>
+      fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}`, buildInit("POST", credentials, toSellRouteDto(route)))
     )
     .then((dto) => fromSellRouteDto(dto));
 };
@@ -79,11 +79,11 @@ export const getFiats = (): Promise<Fiat[]> => {
 };
 
 // --- HELPERS --- //
-const buildInit = (method: "GET" | "PUT" | "POST", session?: Session, data?: any): RequestInit => ({
+const buildInit = (method: "GET" | "PUT" | "POST", credentials?: Credentials, data?: any): RequestInit => ({
   method: method,
   headers: {
     "Content-Type": "application/json",
-    Authorization: session ? "Basic " + btoa(`${session.address}:${session.signature}`) : "",
+    Authorization: credentials ? "Basic " + btoa(`${credentials.address}:${credentials.signature}`) : "",
   },
   body: JSON.stringify(data),
 });

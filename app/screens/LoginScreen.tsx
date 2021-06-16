@@ -7,7 +7,9 @@ import Form from "../components/Form";
 import Input from "../components/Input";
 import Loading from "../components/Loading";
 import Colors from "../config/Colors";
+import Routes from "../config/Routes";
 import { SpacerV } from "../elements/Spacers";
+import SessionService from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
 
 interface LoginData {
@@ -23,16 +25,16 @@ const LoginScreen = () => {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<LoginData>();
 
   const [isProcessing, setIsProcessing] = useState(false);
 
   const onSubmit = (data: LoginData) => {
     setIsProcessing(true);
-    // TODO
-    console.log(data);
-    setIsProcessing(false);
+    SessionService.login({ address: data.userName, signature: data.password }).then(() => {
+      setIsProcessing(false);
+      nav.navigate(Routes.Home);
+    });
   };
 
   const rules: any = {
@@ -71,9 +73,6 @@ const LoginScreen = () => {
           </View>
         </Form>
       </View>
-      {/* <TouchableWithoutFeedback onPress={() => SessionService.login().then(() => nav.navigate(Routes.Home))}>
-        <Text>{t("action.login")}</Text>
-      </TouchableWithoutFeedback> */}
     </View>
   );
 };

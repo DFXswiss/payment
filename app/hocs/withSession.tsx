@@ -1,21 +1,21 @@
 import React from "react";
 import { Subscription } from "rxjs";
-import SessionService, { Session } from "../services/SessionService";
+import SessionService, { Credentials } from "../services/SessionService";
 
 interface Props {
-  session?: Session;
+  credentials?: Credentials;
 }
 
-const withSession = <T extends object>(WrappedComponent: React.ComponentType<T & Props>) => {
-  class WithSession extends React.Component<T> {
+const withCredentials = <T extends object>(WrappedComponent: React.ComponentType<T & Props>) => {
+  class WithCredentials extends React.Component<T> {
     private subscription?: Subscription = undefined;
 
     state = {
-      session: undefined,
+      credentials: undefined,
     };
 
     componentDidMount = () => {
-      this.subscription = SessionService.Session$.subscribe((session) => this.setState({ session: session }));
+      this.subscription = SessionService.Credentials$.subscribe((credentials) => this.setState({ credentials: credentials }));
     };
 
     componentWillUnmount = () => {
@@ -23,11 +23,11 @@ const withSession = <T extends object>(WrappedComponent: React.ComponentType<T &
     };
 
     render() {
-      return <WrappedComponent {...this.props} session={this.state.session} />;
+      return <WrappedComponent {...this.props} credentials={this.state.credentials} />;
     }
   }
 
-  return WithSession;
+  return WithCredentials;
 };
 
-export default withSession;
+export default withCredentials;

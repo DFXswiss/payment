@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "DfxPayments",
-    "slug": "DfxPayments",
+    "name": "DeFi Exchange",
+    "slug": "DeFi Exchange",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",

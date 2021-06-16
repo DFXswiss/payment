@@ -10,6 +10,7 @@ import AppStyles from "../styles/AppStyles";
 import { useTranslation } from "react-i18next";
 import SessionService, { Session } from "../services/SessionService";
 import withSession from "../hocs/withSession";
+import { ActionLink } from "../elements/Texts";
 
 const Header = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
@@ -32,11 +33,7 @@ const Header = ({ session }: { session?: Session }) => {
         <Image style={styles.logo} source={require("../assets/logo_defichange.png")} />
       </TouchableOpacity>
 
-      {session?.isLoggedIn && (
-        <TouchableOpacity style={AppStyles.mla} onPress={() => logout()}>
-          <Text style={AppStyles.link}>{t("action.logout")}</Text>
-        </TouchableOpacity>
-      )}
+      {session?.isLoggedIn && <ActionLink style={AppStyles.mla} action={() => logout()} label={t("action.logout")} />}
 
       <Picker
         style={[AppStyles.ml10, styles.languageSelect]}

@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View, Button } from "react-native";
 import Colors from "../config/Colors";
-import { SpacerH, SpacerV } from "../elements/Elements";
+import { SpacerH, SpacerV } from "../elements/Spacers";
 import { User } from "../models/User";
 import { putUser } from "../services/ApiService";
 import AppStyles from "../styles/AppStyles";

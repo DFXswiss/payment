@@ -1,12 +1,14 @@
 {
   "common": {
     "welcome": "Willkommen!",
+    "page_not_found": "Seite nicht gefunden!",
     "action": {
       "login": "Login",
       "logout": "Logout",
       "edit": "Bearbeiten",
       "save": "Speichern",
-      "abort": "Abbrechen"
+      "abort": "Abbrechen",
+      "home": "Zurück zur Startseite"
     },
     "validation": {
       "required": "Pflichtfeld",

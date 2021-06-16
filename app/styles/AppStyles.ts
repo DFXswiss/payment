@@ -45,6 +45,9 @@ export default StyleSheet.create({
   hidden: {
     opacity: 0,
   },
+  center: {
+    textAlign: "center",
+  },
   // spaces
   mr10: {
     marginRight: 10,

@@ -36,7 +36,6 @@ class SessionServiceClass {
     return this.session$;
   }
 
-  // TODO: take value from subject?
   public get Session(): Promise<Session> {
     return AsyncStorage.getItem(SessionKey).then((data) => Session.create(JSON.parse(data ?? "{}")));
   }

@@ -9,7 +9,8 @@ import Row from "../components/Row";
 import UserEdit from "../components/UserEdit";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
-import { SpacerV } from "../elements/Elements";
+import { SpacerV } from "../elements/Spacers";
+import { H1 } from "../elements/Texts";
 import withSession from "../hocs/withSession";
 import { PaymentRoutes } from "../models/PaymentRoutes";
 import { User } from "../models/User";
@@ -48,7 +49,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
   return (
     <View style={AppStyles.container}>
-      <Text style={[AppStyles.h1, { textAlign: "center" }]}>{t("welcome")}</Text>
+      <H1 text={t("welcome")} style={AppStyles.center} />
 
       <SpacerV height={50} />
 

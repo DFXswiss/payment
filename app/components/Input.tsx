@@ -38,6 +38,7 @@ const Input = ({ control, name, placeholder, label, labelStyle, rules, error, ed
             editable={editable}
             onKeyPress={onKeyPress}
             returnKeyType={returnKeyType}
+            placeholderTextColor={Colors.LightGrey}
           />
           <Text style={styles.textError}>{error && error.message}</Text>
         </View>

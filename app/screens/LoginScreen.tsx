@@ -38,12 +38,18 @@ const LoginScreen = () => {
     formState: { errors },
     setValue,
   } = useForm<LoginData>();
-  const address = useWatch({control, name: "userName", defaultValue: ""});
+  const address = useWatch({ control, name: "userName", defaultValue: "" });
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(false);
+  const [addressEntered, setAddressEntered] = useState(false);
 
   const onSubmit = (data: LoginData) => {
+    if (!addressEntered) {
+      setAddressEntered(true);
+      return;
+    }
+
     setIsProcessing(true);
     setError(false);
 
@@ -102,12 +108,25 @@ const LoginScreen = () => {
           editable={!isProcessing}
           onSubmit={handleSubmit(onSubmit)}
         >
-          <Input name="userName" label={t("model.user.address")} returnKeyType="next" />
-          <SpacerV />
-          <H3 text={t("session.signing_message")}></H3>
-          <Text style={styles.signingMessage}>{signingMessage(address)}</Text>
-          <SpacerV />
-          <Input name="password" label={t("model.user.signature")} />
+          <Input
+            name="userName"
+            label={t("model.user.address")}
+            returnKeyType="next"
+            placeholder="8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG"
+          />
+
+          <>
+            {addressEntered && (
+              <>
+                <SpacerV />
+                <H3 text={t("session.signing_message")}></H3>
+                <Text style={styles.signingMessage}>{signingMessage(address)}</Text>
+                <SpacerV />
+                <Input name="password" label={t("model.user.signature")} />
+              </>
+            )}
+          </>
+
           <>
             {error && (
               <>
@@ -116,13 +135,12 @@ const LoginScreen = () => {
               </>
             )}
           </>
-
           <SpacerV />
           <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
             <View style={isProcessing && AppStyles.hidden}>
               <Button
                 color={Colors.Primary}
-                title={t("action.login")}
+                title={t(addressEntered ? "action.login" : "action.next")}
                 onPress={handleSubmit(onSubmit)}
                 disabled={isProcessing}
               />

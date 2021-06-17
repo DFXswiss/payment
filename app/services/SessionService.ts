@@ -3,7 +3,7 @@ import { Observable, ReplaySubject } from "rxjs";
 import { getUser, postUser } from "./ApiService";
 
 const CredentialsKey = "credentials";
-const WalletId = 0;
+const WalletId = 1;
 
 export interface ICredentials {
   address?: string;

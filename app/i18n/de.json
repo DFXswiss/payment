@@ -1,7 +1,6 @@
 {
   "common": {
     "welcome": "Willkommen!",
-    "sign_up": "Anmelden / Registrieren",
     "action": {
       "login": "Login",
       "logout": "Logout",
@@ -11,12 +10,16 @@
       "home": "Zurück zur Startseite"
     },
     "feedback": {
-      "page_not_found": "Seite nicht gefunden!",
-      "login_failed": "Login fehlgeschlagen!"
+      "page_not_found": "Seite nicht gefunden!"
     },
     "validation": {
       "required": "Pflichtfeld",
       "pattern_invalid": "Ungültiges Format"
+    },
+    "session": {
+      "sign_up": "Anmelden / Registrieren",
+      "signing_message": "Nachricht zum Signieren",
+      "login_failed": "Login fehlgeschlagen!"
     },
     "model": {
       "user": {

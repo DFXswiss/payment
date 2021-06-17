@@ -1,16 +1,16 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState } from "react";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, Button, View } from "react-native";
+import { StyleSheet, Button, View, Text } from "react-native";
 import Form from "../components/Form";
 import Input from "../components/Input";
 import Loading from "../components/Loading";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
 import { SpacerV } from "../elements/Spacers";
-import { Alert, H2 } from "../elements/Texts";
+import { Alert, H2, H3 } from "../elements/Texts";
 import SessionService from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
 import VideoPlayer from "../components/VideoPlayer";
@@ -21,6 +21,11 @@ interface LoginData {
   userName: string;
   password: string;
 }
+
+const signingMessage = (address: string) =>
+  `By signing this message, you confirm that you are the sole owner of the provided Bitcoin address and are in possession of its private key.
+
+Your ID: ${address}`;
 
 const LoginScreen = () => {
   const nav = useNavigation();
@@ -33,6 +38,7 @@ const LoginScreen = () => {
     formState: { errors },
     setValue,
   } = useForm<LoginData>();
+  const address = useWatch({control, name: "userName", defaultValue: ""});
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(false);
@@ -87,13 +93,30 @@ const LoginScreen = () => {
       <VideoPlayer src="https://www.youtube.com/embed/DubUrIPFajA" maxWidth={600} />
       <SpacerV height={30} />
 
-      <H2 text={t("sign_up")} />
+      <H2 text={t("session.sign_up")} />
       <View style={styles.formContainer}>
-        <Form control={control} rules={rules} errors={errors} editable={!isProcessing} onSubmit={handleSubmit(onSubmit)}>
+        <Form
+          control={control}
+          rules={rules}
+          errors={errors}
+          editable={!isProcessing}
+          onSubmit={handleSubmit(onSubmit)}
+        >
           <Input name="userName" label={t("model.user.address")} returnKeyType="next" />
-          <Input name="password" label={t("model.user.signature")} />
           <SpacerV />
-          <>{error && <Alert label={t("feedback.login_failed")} />}</>
+          <H3 text={t("session.signing_message")}></H3>
+          <Text style={styles.signingMessage}>{signingMessage(address)}</Text>
+          <SpacerV />
+          <Input name="password" label={t("model.user.signature")} />
+          <>
+            {error && (
+              <>
+                <SpacerV />
+                <Alert label={t("session.login_failed")} />
+              </>
+            )}
+          </>
+
           <SpacerV />
           <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
             <View style={isProcessing && AppStyles.hidden}>
@@ -119,6 +142,12 @@ const styles = StyleSheet.create({
   formContainer: {
     width: "100%",
     maxWidth: 400,
+  },
+  signingMessage: {
+    padding: 5,
+    borderColor: Colors.Grey,
+    borderRadius: 5,
+    backgroundColor: Colors.LightGrey,
   },
 });
 

@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, Button, View, Text } from "react-native";
+import { StyleSheet, Button, View, Text, ScrollView } from "react-native";
 import Form from "../components/Form";
 import Input from "../components/Input";
 import Loading from "../components/Loading";
@@ -94,62 +94,63 @@ const LoginScreen = () => {
   };
 
   return (
-    <View style={[AppStyles.container, styles.container]}>
-      <SpacerV height={20} />
-      <VideoPlayer src="https://www.youtube.com/embed/DubUrIPFajA" maxWidth={600} />
-      <SpacerV height={30} />
+    <ScrollView style={AppStyles.container}>
+      <View style={[AppStyles.container, styles.container]}>
+        <SpacerV height={20} />
+        <VideoPlayer src="https://www.youtube.com/embed/DubUrIPFajA" maxWidth={600} />
+        <SpacerV height={30} />
+        <H2 text={t("session.sign_up")} />
+        <View style={styles.formContainer}>
+          <Form
+            control={control}
+            rules={rules}
+            errors={errors}
+            editable={!isProcessing}
+            onSubmit={handleSubmit(onSubmit(false))}
+          >
+            <Input
+              name="userName"
+              label={t("model.user.legacy_address")}
+              returnKeyType="next"
+              placeholder="8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG"
+            />
 
-      <H2 text={t("session.sign_up")} />
-      <View style={styles.formContainer}>
-        <Form
-          control={control}
-          rules={rules}
-          errors={errors}
-          editable={!isProcessing}
-          onSubmit={handleSubmit(onSubmit(false))}
-        >
-          <Input
-            name="userName"
-            label={t("model.user.legacy_address")}
-            returnKeyType="next"
-            placeholder="8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG"
-          />
+            <>
+              {addressEntered && (
+                <>
+                  <SpacerV />
+                  <H3 text={t("session.signing_message")}></H3>
+                  <Text style={styles.signingMessage}>{signingMessage(address)}</Text>
+                  <SpacerV />
+                  <Input name="password" label={t("model.user.signature")} />
+                </>
+              )}
+            </>
 
-          <>
-            {addressEntered && (
-              <>
-                <SpacerV />
-                <H3 text={t("session.signing_message")}></H3>
-                <Text style={styles.signingMessage}>{signingMessage(address)}</Text>
-                <SpacerV />
-                <Input name="password" label={t("model.user.signature")} />
-              </>
-            )}
-          </>
-
-          <>
-            {error && (
-              <>
-                <SpacerV />
-                <Alert label={t("session.login_failed")} />
-              </>
-            )}
-          </>
-          <SpacerV />
-          <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
-            <View style={isProcessing && AppStyles.hidden}>
-              <Button
-                color={Colors.Primary}
-                title={t(addressEntered ? "action.login" : "action.next")}
-                onPress={handleSubmit(onSubmit(false))}
-                disabled={isProcessing}
-              />
+            <>
+              {error && (
+                <>
+                  <SpacerV />
+                  <Alert label={t("session.login_failed")} />
+                </>
+              )}
+            </>
+            <SpacerV />
+            <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
+              <View style={isProcessing && AppStyles.hidden}>
+                <Button
+                  color={Colors.Primary}
+                  title={t(addressEntered ? "action.login" : "action.next")}
+                  onPress={handleSubmit(onSubmit(false))}
+                  disabled={isProcessing}
+                />
+              </View>
+              <>{isProcessing && <Loading />}</>
             </View>
-            <>{isProcessing && <Loading />}</>
-          </View>
-        </Form>
+          </Form>
+        </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

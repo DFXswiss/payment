@@ -1,7 +1,22 @@
-export interface UserDto {
+export interface NewUserDto {
   address: string;
   signature: string;
+  wallet_id: number;
+}
 
+export interface NewUser {
+  address: string;
+  signature: string;
+  walletId: number;
+}
+
+export const toNewUserDto = (user: NewUser): NewUserDto => ({
+  address: user.address,
+  signature: user.signature,
+  wallet_id: user.walletId
+})
+
+export interface UserDto extends NewUserDto {
   firstname: string;
   surname: string;
   street: string;
@@ -12,16 +27,12 @@ export interface UserDto {
 
   ref: string;
   used_ref: string;
-  wallet_id: number;
 
   created: string;
   IP: string;
 }
 
-export interface User {
-  address: string;
-  signature: string;
-
+export interface User extends NewUser {
   firstName: string;
   lastName: string;
   street: string;
@@ -32,7 +43,6 @@ export interface User {
 
   ref: string;
   usedRef: string;
-  walletId: number;
 
   created: Date;
   ip: string;

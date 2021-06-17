@@ -1,12 +1,9 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Observable, ReplaySubject } from "rxjs";
-import { getUser } from "./ApiService";
-
-// TODO: remove dummy data
-const Address = "8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG";
-const Signature = "Hwj3sJjBxMOnkPxZkGtqinGdASIOM6ffGDCcQsWA7kRIIjMP5/HMyuZwlLnBKuD6weD5c/8HIzMrmi6GpCmFU04=";
+import { getUser, postUser } from "./ApiService";
 
 const CredentialsKey = "credentials";
+const WalletId = 0;
 
 export interface ICredentials {
   address?: string;
@@ -42,8 +39,11 @@ class SessionServiceClass {
   }
 
   public login(credentials: ICredentials): Promise<void> {
-    return getUser(credentials).then(() => this.updateCredentials(credentials));
-    // TODO: error => postUser?
+    return (
+      getUser(credentials)
+        .catch(() => postUser({ address: credentials.address ?? "", signature: credentials.signature ?? "", walletId: WalletId }))
+        .then(() => this.updateCredentials(credentials))
+    );
   }
 
   public logout(): Promise<void> {

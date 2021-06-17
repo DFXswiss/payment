@@ -11,7 +11,7 @@ import Colors from "../config/Colors";
 import Routes from "../config/Routes";
 import { SpacerV } from "../elements/Spacers";
 import { H1, H2, H3 } from "../elements/Texts";
-import withCredentials from "../hocs/withSession";
+import withCredentials from "../hocs/withCredentials";
 import { PaymentRoutes } from "../models/PaymentRoutes";
 import { User } from "../models/User";
 import { getActiveRoutes, getUser } from "../services/ApiService";

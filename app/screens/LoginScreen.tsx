@@ -15,6 +15,7 @@ import SessionService from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
 import VideoPlayer from "../components/VideoPlayer";
 import { Environment } from "../env/Environment";
+import { changeLanguage } from "../i18n/i18n";
 
 interface LoginData {
   userName: string;
@@ -55,6 +56,9 @@ const LoginScreen = () => {
 
   useEffect(() => {
     const params = route.params as any;
+    if (params?.lang) {
+      changeLanguage(params.lang);
+    }
     if (params?.address && params?.signature) {
       setValue("userName", params.address);
       setValue("password", params.signature);

@@ -46,8 +46,8 @@
         "new": "Neue Route:",
         "buy": "Fiat > Crypto",
         "sell": "Crypto > Fiat",
-        "new_buy": "Neue Fiat > Crypto Route",
-        "new_sell": "Neue Crypto > Fiat Route",
+        "new_buy": "Neue Route: Fiat > Crypto",
+        "new_sell": "Neue Route: Crypto > Fiat",
 
         "iban": "IBAN",
         "bank_usage": "Zahlungszweck",

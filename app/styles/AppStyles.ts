@@ -55,6 +55,9 @@ export default StyleSheet.create({
   hidden: {
     opacity: 0,
   },
+  transparent: {
+    opacity: 0.3,
+  },
   center: {
     textAlign: "center",
   },

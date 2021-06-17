@@ -17,6 +17,8 @@ import { User } from "../models/User";
 import { getActiveRoutes, getUser } from "../services/ApiService";
 import { Credentials } from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
+import NewBuyRoute from "../components/edit/NewBuyRoute";
+import { BuyRoute } from "../models/BuyRoute";
 
 const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   const { t } = useTranslation();
@@ -32,16 +34,25 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   const [isNewBuyRoute, setIsNewBuyRoute] = useState(false);
   const [isNewSellRoute, setIsNewSellRoute] = useState(false);
 
+  const onUserChanged = (user: User) => {
+    setUser(user);
+    setIsUserEdit(false);
+  };
+  const onBuyRouteChanged = (route: BuyRoute) => {
+    setRoutes((routes) => {
+      routes?.buyRoutes.push(route);
+      return routes;
+    });
+    setIsNewBuyRoute(false);
+  };
+
   const reset = (): void => {
     setLoading(true);
     setUser(undefined);
     setRoutes(undefined);
     setIsUserEdit(false);
-  };
-
-  const editUser = (): void => {
-    setUser(Object.assign({}, user));
-    setIsUserEdit(true);
+    setIsNewBuyRoute(false);
+    setIsNewSellRoute(false);
   };
 
   useEffect(() => {
@@ -60,16 +71,10 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   return (
     <>
       <DeFiModal isVisible={isUserEdit} setIsVisible={setIsUserEdit} title={t("model.user.edit")}>
-        <UserEdit
-          user={user}
-          onUserChanged={(user) => {
-            setUser(user);
-            setIsUserEdit(false);
-          }}
-        ></UserEdit>
+        <UserEdit isVisible={isUserEdit} user={user} onUserChanged={onUserChanged} />
       </DeFiModal>
       <DeFiModal isVisible={isNewBuyRoute} setIsVisible={setIsNewBuyRoute} title={t("model.route.new_buy")}>
-        <Text>TODO:new buy route</Text>
+        <NewBuyRoute isVisible={isNewBuyRoute} onRouteCreated={onBuyRouteChanged} />
       </DeFiModal>
       <DeFiModal isVisible={isNewSellRoute} setIsVisible={setIsNewSellRoute} title={t("model.route.new_sell")}>
         <Text>TODO:new sell route</Text>
@@ -89,7 +94,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
                 <View style={AppStyles.containerHorizontal}>
                   <H2 text={t("model.user.your_data")} />
                   <View style={AppStyles.mla}>
-                    <Button color={Colors.Primary} title={t("action.edit")} onPress={() => editUser()} />
+                    <Button color={Colors.Primary} title={t("action.edit")} onPress={() => setIsUserEdit(true)} />
                   </View>
                 </View>
                 {user.address ? <Row cells={[t("model.user.address"), user.address]} /> : null}

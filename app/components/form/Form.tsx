@@ -3,7 +3,7 @@ import { Control } from "react-hook-form";
 import { NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native";
 
 interface Props {
-  children: ReactElement[];
+  children: ReactElement | ReactElement[];
   control: Control<any>;
   rules: any;
   errors: any;

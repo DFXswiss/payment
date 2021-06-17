@@ -6,7 +6,7 @@ import { Text, View } from "react-native";
 import DeFiModal from "../components/DeFiModal";
 import Loading from "../components/Loading";
 import Row from "../components/Row";
-import UserEdit from "../components/UserEdit";
+import UserEdit from "../components/edit/UserEdit";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
 import { SpacerV } from "../elements/Spacers";
@@ -23,21 +23,25 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   const nav = useNavigation();
   const isFocused = useIsFocused();
 
+  // TODO: full KYC Access
+
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User>();
   const [routes, setRoutes] = useState<PaymentRoutes>();
-  const [isVisible, setIsVisible] = useState(false);
+  const [isUserEdit, setIsUserEdit] = useState(false);
+  const [isNewBuyRoute, setIsNewBuyRoute] = useState(false);
+  const [isNewSellRoute, setIsNewSellRoute] = useState(false);
 
   const reset = (): void => {
     setLoading(true);
     setUser(undefined);
     setRoutes(undefined);
-    setIsVisible(false);
+    setIsUserEdit(false);
   };
 
   const editUser = (): void => {
     setUser(Object.assign({}, user));
-    setIsVisible(true);
+    setIsUserEdit(true);
   };
 
   useEffect(() => {
@@ -54,115 +58,123 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   }, [credentials, isFocused]);
 
   return (
-    <View style={AppStyles.container}>
-      <H1 text={t("welcome")} style={AppStyles.center} />
-
-      <SpacerV height={50} />
-
-      <DeFiModal isVisible={isVisible} setIsVisible={setIsVisible} title={t("model.user.edit")} save={t("action.save")}>
+    <>
+      <DeFiModal isVisible={isUserEdit} setIsVisible={setIsUserEdit} title={t("model.user.edit")}>
         <UserEdit
           user={user}
           onUserChanged={(user) => {
             setUser(user);
-            setIsVisible(false);
+            setIsUserEdit(false);
           }}
         ></UserEdit>
       </DeFiModal>
+      <DeFiModal isVisible={isNewBuyRoute} setIsVisible={setIsNewBuyRoute} title={t("model.route.new_buy")}>
+        <Text>TODO:new buy route</Text>
+      </DeFiModal>
+      <DeFiModal isVisible={isNewSellRoute} setIsVisible={setIsNewSellRoute} title={t("model.route.new_sell")}>
+        <Text>TODO:new sell route</Text>
+      </DeFiModal>
 
-      {isLoading && <Loading size="large" />}
+      <View style={AppStyles.container}>
+        <H1 text={t("welcome")} style={AppStyles.center} />
 
-      {!isLoading ? (
-        <>
-          {user && (
-            <View>
-              <View style={AppStyles.containerHorizontal}>
-                <H2 text={t("model.user.your_data")} />
-                <View style={AppStyles.mla}>
-                  <Button color={Colors.Primary} title={t("action.edit")} onPress={() => editUser()} />
+        <SpacerV height={50} />
+
+        {isLoading && <Loading size="large" />}
+
+        {!isLoading ? (
+          <>
+            {user && (
+              <View>
+                <View style={AppStyles.containerHorizontal}>
+                  <H2 text={t("model.user.your_data")} />
+                  <View style={AppStyles.mla}>
+                    <Button color={Colors.Primary} title={t("action.edit")} onPress={() => editUser()} />
+                  </View>
                 </View>
+                {user.address ? <Row cells={[t("model.user.address"), user.address]} /> : null}
+                {user.firstName ? <Row cells={[t("model.user.first_name"), user.firstName]} /> : null}
+                {user.lastName ? <Row cells={[t("model.user.last_name"), user.lastName]} /> : null}
+                {user.street ? <Row cells={[t("model.user.street"), user.street]} /> : null}
+                {user.zip ? <Row cells={[t("model.user.zip"), user.zip]} /> : null}
+                {user.location ? <Row cells={[t("model.user.location"), user.location]} /> : null}
+                {user.mail ? <Row cells={[t("model.user.mail"), user.mail]} /> : null}
+                {user.phoneNumber ? <Row cells={[t("model.user.phone_number"), user.phoneNumber]} /> : null}
+                {user.usedRef ? <Row cells={[t("model.user.used_ref"), user.usedRef]} /> : null}
+                {/* TODO: KYC status, gebühr */}
+
+                <SpacerV />
+                {user.ref ? <Row cells={[t("model.user.ref"), user.ref]} /> : null}
               </View>
-              {user.address ? <Row cells={[t("model.user.address"), user.address]} /> : null}
-              {user.firstName ? <Row cells={[t("model.user.first_name"), user.firstName]} /> : null}
-              {user.lastName ? <Row cells={[t("model.user.last_name"), user.lastName]} /> : null}
-              {user.street ? <Row cells={[t("model.user.street"), user.street]} /> : null}
-              {user.zip ? <Row cells={[t("model.user.zip"), user.zip]} /> : null}
-              {user.location ? <Row cells={[t("model.user.location"), user.location]} /> : null}
-              {user.mail ? <Row cells={[t("model.user.mail"), user.mail]} /> : null}
-              {user.phoneNumber ? <Row cells={[t("model.user.phone_number"), user.phoneNumber]} /> : null}
-              {user.usedRef ? <Row cells={[t("model.user.used_ref"), user.usedRef]} /> : null}
-              {/* TODO: KYC status, gebühr */}
+            )}
 
-              <SpacerV />
-              {user.ref ? <Row cells={[t("model.user.ref"), user.ref]} /> : null}
-            </View>
-          )}
+            <SpacerV height={50} />
 
-          <SpacerV height={50} />
-
-          {routes && (
-            <View>
-              <View style={AppStyles.containerHorizontal}>
-                <H2 text={t("model.route.routes")} />
-                <Text style={AppStyles.mla}>{t("model.route.new")}</Text>
-                <View style={AppStyles.ml10}>
-                  <Button color={Colors.Primary} title={t("model.route.buy")} onPress={() => {}} />
+            {routes && (
+              <View>
+                <View style={AppStyles.containerHorizontal}>
+                  <H2 text={t("model.route.routes")} />
+                  <Text style={AppStyles.mla}>{t("model.route.new")}</Text>
+                  <View style={AppStyles.ml10}>
+                    <Button color={Colors.Primary} title={t("model.route.buy")} onPress={() => setIsNewBuyRoute(true)} />
+                  </View>
+                  <View style={AppStyles.ml10}>
+                    <Button color={Colors.Primary} title={t("model.route.sell")} onPress={() => setIsNewSellRoute(true)} />
+                  </View>
                 </View>
-                <View style={AppStyles.ml10}>
-                  <Button color={Colors.Primary} title={t("model.route.sell")} onPress={() => {}} />
-                </View>
-              </View>
 
-              {/* TODO: delete routes */}
-              {/* TODO: details */}
-              {routes.buyRoutes?.length + routes.sellRoutes?.length > 0 ? (
-                <>
-                  {routes.buyRoutes?.length > 0 && (
-                    <>
-                      <SpacerV />
-                      <H3 text={t("model.route.buy")} />
-                      <SpacerV />
-                      <Row
-                        textStyle={AppStyles.b}
-                        cells={[t("model.route.asset"), t("model.route.iban"), t("model.route.bank_usage")]}
-                        layout={[1, 1, 2]}
-                      />
-                      {routes.buyRoutes.map((route) => (
+                {/* TODO: delete routes */}
+                {/* TODO: details */}
+                {routes.buyRoutes?.length + routes.sellRoutes?.length > 0 ? (
+                  <>
+                    {routes.buyRoutes?.length > 0 && (
+                      <>
+                        <SpacerV />
+                        <H3 text={t("model.route.buy")} />
+                        <SpacerV />
                         <Row
-                          key={route.id}
-                          cells={[route.asset.name, route.iban, route.bankUsage]}
+                          textStyle={AppStyles.b}
+                          cells={[t("model.route.asset"), t("model.route.iban"), t("model.route.bank_usage")]}
                           layout={[1, 1, 2]}
                         />
-                      ))}
-                    </>
-                  )}
-                  {routes.sellRoutes?.length > 0 && (
-                    <>
-                      <SpacerV />
-                      <H3 text={t("model.route.sell")} />
-                      <SpacerV />
-                      <Row
-                        textStyle={AppStyles.b}
-                        cells={[t("model.route.fiat"), t("model.route.iban"), t("model.route.deposit_address")]}
-                        layout={[1, 1, 2]}
-                      />
-                      {routes.sellRoutes.map((route) => (
+                        {routes.buyRoutes.map((route) => (
+                          <Row
+                            key={route.id}
+                            cells={[route.asset.name, route.iban, route.bankUsage]}
+                            layout={[1, 1, 2]}
+                          />
+                        ))}
+                      </>
+                    )}
+                    {routes.sellRoutes?.length > 0 && (
+                      <>
+                        <SpacerV />
+                        <H3 text={t("model.route.sell")} />
+                        <SpacerV />
                         <Row
-                          key={route.id}
-                          cells={[route.fiat.name, route.iban, route.depositAddress]}
+                          textStyle={AppStyles.b}
+                          cells={[t("model.route.fiat"), t("model.route.iban"), t("model.route.deposit_address")]}
                           layout={[1, 1, 2]}
                         />
-                      ))}
-                    </>
-                  )}
-                </>
-              ) : (
-                <Text style={AppStyles.i}>{t("model.route.none")}</Text>
-              )}
-            </View>
-          )}
-        </>
-      ) : null}
-    </View>
+                        {routes.sellRoutes.map((route) => (
+                          <Row
+                            key={route.id}
+                            cells={[route.fiat.name, route.iban, route.depositAddress]}
+                            layout={[1, 1, 2]}
+                          />
+                        ))}
+                      </>
+                    )}
+                  </>
+                ) : (
+                  <Text style={AppStyles.i}>{t("model.route.none")}</Text>
+                )}
+              </View>
+            )}
+          </>
+        ) : null}
+      </View>
+    </>
 
     // TODO: remove change logo PNG
     // <View style={[AppStyles.container, styles.container]}>

@@ -21,7 +21,7 @@ const DeFiModal = ({
   setIsVisible: (isVisible: boolean) => void;
   minWidth?: number;
   title: string;
-  save: string;
+  save?: string;
   children: ReactElement;
 }) => {
   const { t } = useTranslation();

@@ -4,14 +4,14 @@ import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View, Button } from "react-native";
-import Colors from "../config/Colors";
-import { SpacerH, SpacerV } from "../elements/Spacers";
-import { User } from "../models/User";
-import { putUser } from "../services/ApiService";
-import AppStyles from "../styles/AppStyles";
-import Form from "./Form";
-import Input from "./Input";
-import Loading from "./Loading";
+import Colors from "../../config/Colors";
+import { SpacerH, SpacerV } from "../../elements/Spacers";
+import { User } from "../../models/User";
+import { putUser } from "../../services/ApiService";
+import AppStyles from "../../styles/AppStyles";
+import Form from "../form/Form";
+import Input from "../form/Input";
+import Loading from "../Loading";
 
 const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: User) => void }) => {
   const { t } = useTranslation();
@@ -66,6 +66,7 @@ const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: 
           <Input name="location" label={t("model.user.location")} />
         </View>
         <Input name="mail" label={t("model.user.mail")} />
+        {/* TODO: ländervorwahl */}
         <Input name="phoneNumber" label={t("model.user.phone_number")} />
         <SpacerV />
         <Input name="usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />

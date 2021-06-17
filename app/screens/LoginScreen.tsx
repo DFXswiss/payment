@@ -4,8 +4,7 @@ import { useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, Button, View, Text, ScrollView } from "react-native";
-import Form from "../components/Form";
-import Input from "../components/Input";
+import Form from "../components/form/Form";
 import Loading from "../components/Loading";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
@@ -16,6 +15,7 @@ import AppStyles from "../styles/AppStyles";
 import VideoPlayer from "../components/VideoPlayer";
 import { Environment } from "../env/Environment";
 import { changeLanguage } from "../i18n/i18n";
+import Input from "../components/form/Input";
 
 interface LoginData {
   userName: string;
@@ -93,6 +93,7 @@ const LoginScreen = () => {
     },
   };
 
+  // TODO: focus signature on enter
   return (
     <ScrollView style={AppStyles.container}>
       <View style={[AppStyles.container, styles.container]}>

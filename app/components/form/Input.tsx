@@ -2,8 +2,8 @@ import React from "react";
 import { Control, Controller, FieldError } from "react-hook-form";
 import { ReturnKeyTypeOptions } from "react-native";
 import { StyleSheet, View, Text, TextInput, TextStyle, NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native";
-import Colors from "../config/Colors";
-import AppStyles from "../styles/AppStyles";
+import Colors from "../../config/Colors";
+import AppStyles from "../../styles/AppStyles";
 
 interface Props {
   control?: Control<any>;
@@ -18,6 +18,7 @@ interface Props {
   returnKeyType?: ReturnKeyTypeOptions
 }
 
+// TODO: focus next field 
 const Input = ({ control, name, placeholder, label, labelStyle, rules, error, editable = true, onKeyPress, returnKeyType }: Props) => {
   return (
     <Controller

@@ -44,8 +44,8 @@ const LoginScreen = () => {
   const [error, setError] = useState(false);
   const [addressEntered, setAddressEntered] = useState(false);
 
-  const onSubmit = (data: LoginData) => {
-    if (!addressEntered) {
+  const onSubmit = (direct: boolean) => (data: LoginData) => {
+    if (!direct && !addressEntered) {
       setAddressEntered(true);
       return;
     }
@@ -74,7 +74,7 @@ const LoginScreen = () => {
     if (params?.address && params?.signature) {
       setValue("userName", params.address);
       setValue("password", params.signature);
-      handleSubmit(onSubmit)();
+      handleSubmit(onSubmit(true))();
     }
   }, []);
 
@@ -106,11 +106,11 @@ const LoginScreen = () => {
           rules={rules}
           errors={errors}
           editable={!isProcessing}
-          onSubmit={handleSubmit(onSubmit)}
+          onSubmit={handleSubmit(onSubmit(false))}
         >
           <Input
             name="userName"
-            label={t("model.user.address")}
+            label={t("model.user.legacy_address")}
             returnKeyType="next"
             placeholder="8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG"
           />
@@ -141,7 +141,7 @@ const LoginScreen = () => {
               <Button
                 color={Colors.Primary}
                 title={t(addressEntered ? "action.login" : "action.next")}
-                onPress={handleSubmit(onSubmit)}
+                onPress={handleSubmit(onSubmit(false))}
                 disabled={isProcessing}
               />
             </View>

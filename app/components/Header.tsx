@@ -26,14 +26,15 @@ const Header = ({ credentials }: { credentials?: Credentials }) => {
   }, []);
 
   const logout = () => SessionService.logout().then(() => nav.navigate(Routes.Login));
+  const goHome = () => nav.navigate(credentials?.isLoggedIn ? Routes.Home : Routes.Login);
 
   return (
     <View style={[AppStyles.containerHorizontal, styles.container]}>
-      <TouchableOpacity activeOpacity={1} style={styles.logoTouch} onPress={() => nav.navigate(Routes.Home)}>
+      <TouchableOpacity activeOpacity={1} style={styles.logoTouch} onPress={() => goHome()}>
         <Image style={styles.logo} source={require("../assets/logo_defichange.png")} />
       </TouchableOpacity>
 
-      <View style={[AppStyles.containerHorizontal, AppStyles.mla, {alignItems: "baseline"}]}>
+      <View style={[AppStyles.containerHorizontal, AppStyles.mla, { alignItems: "baseline" }]}>
         {credentials?.isLoggedIn && <ActionLink action={() => logout()} label={t("action.logout")} />}
 
         <Picker

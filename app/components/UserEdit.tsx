@@ -54,13 +54,13 @@ const UserEdit = ({ user, onUserChanged }: { user?: User; onUserChanged: (user: 
   return (
     <View>
       <Form control={control} rules={rules} errors={errors} editable={!isSaving} onSubmit={handleSubmit(onSubmit)}>
-        <View style={AppStyles.containerHorizontal}>
+        <View style={AppStyles.containerHorizontalWrap}>
           <Input name="firstName" label={t("model.user.first_name")} />
           <SpacerH />
           <Input name="lastName" label={t("model.user.last_name")} />
         </View>
         <Input name="street" label={t("model.user.street")} />
-        <View style={AppStyles.containerHorizontal}>
+        <View style={AppStyles.containerHorizontalWrap}>
           <Input name="zip" label={t("model.user.zip")} />
           <SpacerH />
           <Input name="location" label={t("model.user.location")} />

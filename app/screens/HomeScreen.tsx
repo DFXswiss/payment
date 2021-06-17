@@ -1,4 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
+import { useIsFocused, useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "react-native";
@@ -21,6 +21,7 @@ import AppStyles from "../styles/AppStyles";
 const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   const { t } = useTranslation();
   const nav = useNavigation();
+  const isFocused = useIsFocused();
 
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User>();
@@ -37,7 +38,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   const editUser = (): void => {
     setUser(Object.assign({}, user));
     setIsVisible(true);
-  }
+  };
 
   useEffect(() => {
     if (credentials) {
@@ -50,7 +51,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
         nav.navigate(Routes.Login);
       }
     }
-  }, [credentials]);
+  }, [credentials, isFocused]);
 
   return (
     <View style={AppStyles.container}>

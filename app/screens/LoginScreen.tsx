@@ -14,6 +14,7 @@ import { Alert, H2 } from "../elements/Texts";
 import SessionService from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
 import VideoPlayer from "../components/VideoPlayer";
+import { Environment } from "../env/Environment";
 
 interface LoginData {
   userName: string;
@@ -38,6 +39,13 @@ const LoginScreen = () => {
   const onSubmit = (data: LoginData) => {
     setIsProcessing(true);
     setError(false);
+
+    if (Environment.debug && data.userName === "admin") {
+      data = {
+        userName: "8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG",
+        password: "Hwj3sJjBxMOnkPxZkGtqinGdASIOM6ffGDCcQsWA7kRIIjMP5/HMyuZwlLnBKuD6weD5c/8HIzMrmi6GpCmFU04=",
+      };
+    }
 
     SessionService.login({ address: data.userName, signature: data.password })
       .finally(() => setIsProcessing(false))

@@ -5,7 +5,7 @@ import { Fiat } from "../models/Fiat";
 import { fromActivePaymentRoutesDto, fromPaymentRoutesDto, PaymentRoutes, PaymentRoutesDto } from "../models/PaymentRoutes";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import { fromUserDto, toUserDto, User, UserDto } from "../models/User";
-import SessionService, { Credentials, ICredentials } from "./SessionService";
+import SessionService, { ICredentials } from "./SessionService";
 
 const BaseUrl = Environment.api.baseUrl;
 const UserUrl = "user";
@@ -25,9 +25,8 @@ export const getUser = (credentials?: ICredentials): Promise<User> => {
 };
 
 export const postUser = (user: User): Promise<User> => {
-  return fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, buildInit("POST", undefined, toUserDto(user))).then(
-    (dto: UserDto) => fromUserDto(dto)
-  );
+  return fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, buildInit("POST", undefined, toUserDto(user)))
+    .then((dto: UserDto) => fromUserDto(dto));
 };
 
 export const putUser = (user: User): Promise<User> => {

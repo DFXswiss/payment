@@ -11,6 +11,11 @@ export default StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  containerHorizontalWrap: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems: "center",
+  },
   row: {
     flex: 1,
     alignSelf: "stretch",

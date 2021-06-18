@@ -19,6 +19,8 @@ import { Credentials } from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
 import BuyRouteEdit from "../components/edit/BuyRouteEdit";
 import { BuyRoute } from "../models/BuyRoute";
+import SellRouteEdit from "../components/edit/SellRouteEdit";
+import { SellRoute } from "../models/SellRoute";
 
 const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   const { t } = useTranslation();
@@ -31,8 +33,8 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   const [user, setUser] = useState<User>();
   const [routes, setRoutes] = useState<PaymentRoutes>();
   const [isUserEdit, setIsUserEdit] = useState(false);
-  const [isNewBuyRoute, setIsNewBuyRoute] = useState(false);
-  const [isNewSellRoute, setIsNewSellRoute] = useState(false);
+  const [isBuyRouteEdit, setIsBuyRouteEdit] = useState(false);
+  const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
 
   const onUserChanged = (user: User) => {
     setUser(user);
@@ -43,7 +45,14 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
       routes?.buyRoutes.push(route);
       return routes;
     });
-    setIsNewBuyRoute(false);
+    setIsBuyRouteEdit(false);
+  };
+  const onSellRouteChanged = (route: SellRoute) => {
+    setRoutes((routes) => {
+      routes?.sellRoutes.push(route);
+      return routes;
+    });
+    setIsSellRouteEdit(false);
   };
 
   const reset = (): void => {
@@ -51,8 +60,8 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
     setUser(undefined);
     setRoutes(undefined);
     setIsUserEdit(false);
-    setIsNewBuyRoute(false);
-    setIsNewSellRoute(false);
+    setIsBuyRouteEdit(false);
+    setIsSellRouteEdit(false);
   };
 
   useEffect(() => {
@@ -73,11 +82,11 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
       <DeFiModal isVisible={isUserEdit} setIsVisible={setIsUserEdit} title={t("model.user.edit")}>
         <UserEdit isVisible={isUserEdit} user={user} onUserChanged={onUserChanged} />
       </DeFiModal>
-      <DeFiModal isVisible={isNewBuyRoute} setIsVisible={setIsNewBuyRoute} title={t("model.route.new_buy")}>
-        <BuyRouteEdit isVisible={isNewBuyRoute} onRouteCreated={onBuyRouteChanged} />
+      <DeFiModal isVisible={isBuyRouteEdit} setIsVisible={setIsBuyRouteEdit} title={t("model.route.new_buy")}>
+        <BuyRouteEdit isVisible={isBuyRouteEdit} onRouteCreated={onBuyRouteChanged} />
       </DeFiModal>
-      <DeFiModal isVisible={isNewSellRoute} setIsVisible={setIsNewSellRoute} title={t("model.route.new_sell")}>
-        <Text>TODO:new sell route</Text>
+      <DeFiModal isVisible={isSellRouteEdit} setIsVisible={setIsSellRouteEdit} title={t("model.route.new_sell")}>
+        <SellRouteEdit isVisible={isSellRouteEdit} onRouteCreated={onSellRouteChanged} />
       </DeFiModal>
 
       <View style={AppStyles.container}>

@@ -17,7 +17,7 @@ import { User } from "../models/User";
 import { getActiveRoutes, getUser } from "../services/ApiService";
 import { Credentials } from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
-import NewBuyRoute from "../components/edit/NewBuyRoute";
+import BuyRouteEdit from "../components/edit/BuyRouteEdit";
 import { BuyRoute } from "../models/BuyRoute";
 
 const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
@@ -74,7 +74,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
         <UserEdit isVisible={isUserEdit} user={user} onUserChanged={onUserChanged} />
       </DeFiModal>
       <DeFiModal isVisible={isNewBuyRoute} setIsVisible={setIsNewBuyRoute} title={t("model.route.new_buy")}>
-        <NewBuyRoute isVisible={isNewBuyRoute} onRouteCreated={onBuyRouteChanged} />
+        <BuyRouteEdit isVisible={isNewBuyRoute} onRouteCreated={onBuyRouteChanged} />
       </DeFiModal>
       <DeFiModal isVisible={isNewSellRoute} setIsVisible={setIsNewSellRoute} title={t("model.route.new_sell")}>
         <Text>TODO:new sell route</Text>

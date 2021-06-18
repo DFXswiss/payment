@@ -1,21 +1,15 @@
 import React from "react";
-import { Control, Controller, FieldError } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { ReturnKeyTypeOptions } from "react-native";
-import { StyleSheet, View, Text, TextInput, TextStyle, NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native";
+import { View, Text, TextInput, NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native";
 import Colors from "../../config/Colors";
 import AppStyles from "../../styles/AppStyles";
+import { ControlProps } from "./Form";
 
-interface Props {
-  control?: Control<any>;
-  name: string;
+interface Props extends ControlProps {
   placeholder?: string;
-  label?: string;
-  labelStyle?: TextStyle;
-  rules?: any;
-  error?: FieldError | undefined;
-  editable?: boolean;
   onKeyPress?: (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => void;
-  returnKeyType?: ReturnKeyTypeOptions
+  returnKeyType?: ReturnKeyTypeOptions;
 }
 
 // TODO: focus next field 
@@ -25,23 +19,19 @@ const Input = ({ control, name, placeholder, label, labelStyle, rules, error, ed
       control={control}
       render={({ field: { onChange, onBlur, value } }) => (
         <View style={AppStyles.cell}>
-          {label && <Text style={[styles.label, labelStyle]}>{label}</Text>}
+          {label && <Text style={[AppStyles.label, labelStyle]}>{label}</Text>}
           <TextInput
             onBlur={onBlur}
             onChangeText={(value) => onChange(value)}
             value={value ?? ""}
-            style={[
-              styles.input,
-              { borderColor: error ? Colors.Error : Colors.Grey },
-              !editable && styles.inputDisabled,
-            ]}
+            style={[AppStyles.control, error && { borderColor: Colors.Error }, !editable && AppStyles.controlDisabled]}
             placeholder={placeholder}
             editable={editable}
             onKeyPress={onKeyPress}
             returnKeyType={returnKeyType}
             placeholderTextColor={Colors.LightGrey}
           />
-          <Text style={styles.textError}>{error && error.message}</Text>
+          <Text style={AppStyles.textError}>{error && error.message}</Text>
         </View>
       )}
       name={name}
@@ -49,31 +39,5 @@ const Input = ({ control, name, placeholder, label, labelStyle, rules, error, ed
     />
   );
 };
-
-const styles = StyleSheet.create({
-  input: {
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderRadius: 5,
-    paddingVertical: 5,
-    paddingLeft: 5,
-    height: 40,
-    color: Colors.Black,
-    fontSize: 14,
-  },
-  inputDisabled: {
-    color: Colors.Grey,
-    backgroundColor: Colors.LightGrey,
-  },
-  label: {
-    paddingVertical: 5,
-    fontSize: 14,
-    fontWeight: "bold",
-    color: Colors.Grey,
-  },
-  textError: {
-    color: Colors.Error,
-  },
-});
 
 export default Input;

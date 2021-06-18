@@ -4,14 +4,16 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SpacerV } from "../../elements/Spacers";
-import { BuyRoute } from "../../models/BuyRoute";
-import { postBuyRoute } from "../../services/ApiService";
+import { Asset } from "../../models/Asset";
+import { BuyRoute, NewBuyRoute } from "../../models/BuyRoute";
+import { getAssets } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
+import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
 import Input from "../form/Input";
 import LoadingButton from "../LoadingButton";
 
-const NewBuyRoute = ({
+const BuyRouteEdit = ({
   isVisible,
   onRouteCreated,
 }: {
@@ -24,23 +26,28 @@ const NewBuyRoute = ({
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<BuyRoute>();
+  } = useForm<NewBuyRoute>();
 
   const [isSaving, setIsSaving] = useState(false);
+  const [assets, setAssets] = useState<Asset[]>([]);
 
-  useEffect(() => reset(), [isVisible]);
+  useEffect(() => reset({assetId: assets[0]?.id}), [isVisible]);
+  useEffect(() => {
+    getAssets().then((assets) => setAssets(assets));
+  }, []);
 
-  const onSubmit = (route: BuyRoute) => {
+  const onSubmit = (route: NewBuyRoute) => {
     setIsSaving(true);
     // postBuyRoute(route).then((route) => {
-      onRouteCreated(route);
-      setIsSaving(false);
+    // onRouteCreated(route);
+    setIsSaving(false);
     // });
     // TODO: finally!
+    // TODO: finally everywhere!
   };
 
   const rules: any = {
-    asset: {
+    assetId: {
       required: {
         value: true,
         message: t("validation.required"),
@@ -60,9 +67,13 @@ const NewBuyRoute = ({
 
   return (
     <Form control={control} rules={rules} errors={errors} onSubmit={handleSubmit(onSubmit)}>
-      {/* TODO: picker */}
-      <Input name="asset" label={t("model.route.asset")} />
+      <DeFiPicker
+        name="assetId"
+        label={t("model.route.asset")}
+        items={assets.map((asset) => ({ id: asset.id, label: asset.name }))}
+      />
       <SpacerV />
+
       <Input name="iban" label={t("model.route.iban")} />
       <SpacerV />
 
@@ -73,4 +84,4 @@ const NewBuyRoute = ({
   );
 };
 
-export default NewBuyRoute;
+export default BuyRouteEdit;

@@ -1,6 +1,16 @@
 import React, { ReactElement } from "react";
-import { Control } from "react-hook-form";
-import { NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native";
+import { Control, FieldError } from "react-hook-form";
+import { NativeSyntheticEvent, TextInputKeyPressEventData, TextStyle } from "react-native";
+
+export interface ControlProps {
+  control?: Control<any>;
+  name: string;
+  label?: string;
+  labelStyle?: TextStyle;
+  rules?: any;
+  error?: FieldError | undefined;
+  editable?: boolean;
+}
 
 interface Props {
   children: ReactElement | ReactElement[];

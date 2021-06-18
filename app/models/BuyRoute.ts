@@ -1,5 +1,16 @@
 import { Asset } from "./Asset";
 
+// TODO: check
+export interface NewBuyRouteDto {
+  asset: string;
+  iban: string;
+}
+
+export interface NewBuyRoute {
+  assetId: number;
+  iban: string;
+}
+
 export interface BuyRouteDto {
   id: string;
   address: string;

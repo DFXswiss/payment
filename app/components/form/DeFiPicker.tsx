@@ -36,6 +36,7 @@ const DeFiPicker = ({
             onValueChange={(itemValue, itemIndex) => onChange(items.find((i) => i[idProp] == itemValue))}
             enabled={editable}
           >
+            {!rules?.required && <Picker.Item label="" value={undefined} />}
             {items?.map((item) => (
               <Picker.Item key={item[idProp]} label={item[labelProp]} value={item[idProp]} />
             ))}

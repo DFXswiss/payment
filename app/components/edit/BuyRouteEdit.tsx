@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SpacerV } from "../../elements/Spacers";
 import { Asset } from "../../models/Asset";
-import { BuyRoute, NewBuyRoute } from "../../models/BuyRoute";
+import { BuyRoute } from "../../models/BuyRoute";
 import { getAssets } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import DeFiPicker from "../form/DeFiPicker";
@@ -26,17 +26,17 @@ const BuyRouteEdit = ({
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<NewBuyRoute>();
+  } = useForm<BuyRoute>();
 
   const [isSaving, setIsSaving] = useState(false);
   const [assets, setAssets] = useState<Asset[]>([]);
 
-  useEffect(() => reset({assetId: assets[0]?.id}), [isVisible]);
+  useEffect(() => reset({asset: assets[0]}), [isVisible]);
   useEffect(() => {
     getAssets().then(setAssets);
   }, []);
 
-  const onSubmit = (route: NewBuyRoute) => {
+  const onSubmit = (route: BuyRoute) => {
     setIsSaving(true);
     // postBuyRoute(route).then((route) => {
     // onRouteCreated(route);
@@ -47,7 +47,7 @@ const BuyRouteEdit = ({
   };
 
   const rules: any = {
-    assetId: {
+    asset: {
       required: {
         value: true,
         message: t("validation.required"),
@@ -68,7 +68,7 @@ const BuyRouteEdit = ({
   return (
     <Form control={control} rules={rules} errors={errors} onSubmit={handleSubmit(onSubmit)}>
       <DeFiPicker
-        name="assetId"
+        name="asset"
         label={t("model.route.asset")}
         items={assets}
         idProp="id"

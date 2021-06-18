@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SpacerV } from "../../elements/Spacers";
 import { Fiat } from "../../models/Fiat";
-import { NewSellRoute, SellRoute } from "../../models/SellRoute";
+import { SellRoute } from "../../models/SellRoute";
 import { getFiats } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import DeFiPicker from "../form/DeFiPicker";
@@ -26,17 +26,17 @@ const SellRouteEdit = ({
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<NewSellRoute>();
+  } = useForm<SellRoute>();
 
   const [isSaving, setIsSaving] = useState(false);
   const [fiats, setFiats] = useState<Fiat[]>([]);
 
-  useEffect(() => reset({ fiatId: fiats[0]?.id }), [isVisible]);
+  useEffect(() => reset({ fiat: fiats[0] }), [isVisible]);
   useEffect(() => {
     getFiats().then(setFiats);
   }, []);
 
-  const onSubmit = (route: NewSellRoute) => {
+  const onSubmit = (route: SellRoute) => {
     setIsSaving(true);
     // postSellRoute(route).then((route) => {
     // onRouteCreated(route);
@@ -47,7 +47,7 @@ const SellRouteEdit = ({
   };
 
   const rules: any = {
-    fiatId: {
+    fiat: {
       required: {
         value: true,
         message: t("validation.required"),
@@ -68,7 +68,7 @@ const SellRouteEdit = ({
   return (
     <Form control={control} rules={rules} errors={errors} onSubmit={handleSubmit(onSubmit)}>
       <DeFiPicker
-        name="fiatId"
+        name="fiat"
         label={t("model.route.fiat")}
         items={fiats}
         idProp="id"

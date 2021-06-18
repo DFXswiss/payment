@@ -1,6 +1,7 @@
 import { Environment } from "../env/Environment";
 import { Asset } from "../models/Asset";
 import { BuyRoute, BuyRouteDto, fromBuyRouteDto, NewBuyRoute } from "../models/BuyRoute";
+import { Country } from "../models/Country";
 import { Fiat } from "../models/Fiat";
 import { fromActivePaymentRoutesDto, fromPaymentRoutesDto, PaymentRoutes, PaymentRoutesDto } from "../models/PaymentRoutes";
 import { fromSellRouteDto, NewSellRoute, SellRoute, SellRouteDto } from "../models/SellRoute";
@@ -14,6 +15,7 @@ const SellUrl = "crypto2fiat";
 const RouteUrl = "registration";
 const AssetUrl = "asset";
 const FiatUrl = "fiat";
+const CountryUrl = "country";
 
 // TODO: add delete routes method
 
@@ -75,6 +77,10 @@ export const getAssets = (): Promise<Asset[]> => {
 
 export const getFiats = (): Promise<Fiat[]> => {
   return fetchFrom<Fiat[]>(`${BaseUrl}/${FiatUrl}`);
+};
+
+export const getCountries = (): Promise<Country[]> => {
+  return fetchFrom<Country[]>(`${BaseUrl}/${CountryUrl}`);
 };
 
 // --- HELPERS --- //

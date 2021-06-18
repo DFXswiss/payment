@@ -1,3 +1,5 @@
+import { Country } from "./Country";
+
 export interface NewUserDto {
   address: string;
   signature: string;
@@ -13,15 +15,17 @@ export interface NewUser {
 export const toNewUserDto = (user: NewUser): NewUserDto => ({
   address: user.address,
   signature: user.signature,
-  wallet_id: user.walletId
-})
+  wallet_id: user.walletId,
+});
 
 export interface UserDto extends NewUserDto {
   firstname: string;
   surname: string;
   street: string;
+  house_number: string;
   zip: string;
   location: string;
+  country: Country;
   mail: string;
   phone_number: string;
 
@@ -36,8 +40,10 @@ export interface User extends NewUser {
   firstName: string;
   lastName: string;
   street: string;
+  houseNumber: string;
   zip: string;
   location: string;
+  country: Country;
   mail: string;
   phoneNumber: string;
 
@@ -54,8 +60,10 @@ export const fromUserDto = (user: UserDto): User => ({
   firstName: user.firstname,
   lastName: user.surname,
   street: user.street,
+  houseNumber: user.house_number,
   zip: user.zip,
   location: user.location,
+  country: user.country,
   mail: user.mail,
   phoneNumber: user.phone_number,
   ref: user.ref,
@@ -71,8 +79,10 @@ export const toUserDto = (user: User): UserDto => ({
   firstname: user.firstName,
   surname: user.lastName,
   street: user.street,
+  house_number: user.houseNumber,
   zip: user.zip,
   location: user.location,
+  country: user.country,
   mail: user.mail,
   phone_number: user.phoneNumber,
   ref: user.ref,

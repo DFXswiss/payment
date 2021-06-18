@@ -107,11 +107,11 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
                   </View>
                 </View>
                 {user.address ? <Row cells={[t("model.user.address"), user.address]} /> : null}
-                {user.firstName ? <Row cells={[t("model.user.first_name"), user.firstName]} /> : null}
-                {user.lastName ? <Row cells={[t("model.user.last_name"), user.lastName]} /> : null}
-                {user.street ? <Row cells={[t("model.user.street"), user.street]} /> : null}
+                {(user.firstName || user.lastName) ? <Row cells={[t("model.user.name"), `${user.firstName} ${user.lastName}`]} /> : null}
+                {(user.street || user.houseNumber) ? <Row cells={[t("model.user.home"), `${user.street} ${user.houseNumber}`]} /> : null}
                 {user.zip ? <Row cells={[t("model.user.zip"), user.zip]} /> : null}
                 {user.location ? <Row cells={[t("model.user.location"), user.location]} /> : null}
+                {user.country ? <Row cells={[t("model.user.country"), user.country.name]} /> : null}
                 {user.mail ? <Row cells={[t("model.user.mail"), user.mail]} /> : null}
                 {user.phoneNumber ? <Row cells={[t("model.user.phone_number"), user.phoneNumber]} /> : null}
                 {user.usedRef ? <Row cells={[t("model.user.used_ref"), user.usedRef]} /> : null}
@@ -130,10 +130,10 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
                   <H2 text={t("model.route.routes")} />
                   <Text style={AppStyles.mla}>{t("model.route.new")}</Text>
                   <View style={AppStyles.ml10}>
-                    <Button color={Colors.Primary} title={t("model.route.buy")} onPress={() => setIsNewBuyRoute(true)} />
+                    <Button color={Colors.Primary} title={t("model.route.buy")} onPress={() => setIsBuyRouteEdit(true)} />
                   </View>
                   <View style={AppStyles.ml10}>
-                    <Button color={Colors.Primary} title={t("model.route.sell")} onPress={() => setIsNewSellRoute(true)} />
+                    <Button color={Colors.Primary} title={t("model.route.sell")} onPress={() => setIsSellRouteEdit(true)} />
                   </View>
                 </View>
 

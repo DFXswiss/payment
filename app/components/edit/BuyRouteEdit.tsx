@@ -33,7 +33,7 @@ const BuyRouteEdit = ({
 
   useEffect(() => reset({assetId: assets[0]?.id}), [isVisible]);
   useEffect(() => {
-    getAssets().then((assets) => setAssets(assets));
+    getAssets().then(setAssets);
   }, []);
 
   const onSubmit = (route: NewBuyRoute) => {
@@ -70,7 +70,9 @@ const BuyRouteEdit = ({
       <DeFiPicker
         name="assetId"
         label={t("model.route.asset")}
-        items={assets.map((asset) => ({ id: asset.id, label: asset.name }))}
+        items={assets}
+        idProp="id"
+        labelProp="name"
       />
       <SpacerV />
 

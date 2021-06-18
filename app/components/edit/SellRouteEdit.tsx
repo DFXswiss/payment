@@ -33,7 +33,7 @@ const SellRouteEdit = ({
 
   useEffect(() => reset({ fiatId: fiats[0]?.id }), [isVisible]);
   useEffect(() => {
-    getFiats().then((fiats) => setFiats(fiats));
+    getFiats().then(setFiats);
   }, []);
 
   const onSubmit = (route: NewSellRoute) => {
@@ -70,7 +70,9 @@ const SellRouteEdit = ({
       <DeFiPicker
         name="fiatId"
         label={t("model.route.fiat")}
-        items={fiats.map((fiat) => ({ id: fiat.id, label: fiat.name }))}
+        items={fiats}
+        idProp="id"
+        labelProp="name"
       />
       <SpacerV />
 

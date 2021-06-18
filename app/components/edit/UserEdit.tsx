@@ -5,9 +5,11 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
+import { Country } from "../../models/Country";
 import { User } from "../../models/User";
-import { putUser } from "../../services/ApiService";
+import { getCountries, putUser } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
+import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
 import Input from "../form/Input";
 import LoadingButton from "../LoadingButton";
@@ -28,8 +30,12 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
   } = useForm<User>({ defaultValues: useMemo(() => user, [user]) });
 
   const [isSaving, setIsSaving] = useState(false);
+  const [countries, setCountries] = useState<Country[]>([]);
 
   useEffect(() => reset(user), [isVisible]);
+  useEffect(() => {
+    getCountries().then(setCountries);
+  }, []);
 
   const onSubmit = (user: User) => {
     setIsSaving(true);
@@ -60,12 +66,24 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
         <SpacerH />
         <Input name="lastName" label={t("model.user.last_name")} />
       </View>
-      <Input name="street" label={t("model.user.street")} />
+      <View style={AppStyles.containerHorizontalWrap}>
+        <Input name="street" label={t("model.user.street")} />
+        <SpacerH />
+        <Input name="houseNumber" label={t("model.user.house_number")} />
+      </View>
       <View style={AppStyles.containerHorizontalWrap}>
         <Input name="zip" label={t("model.user.zip")} />
         <SpacerH />
         <Input name="location" label={t("model.user.location")} />
       </View>
+      <DeFiPicker
+        name="country"
+        label={t("model.user.country")}
+        items={countries}
+        idProp="id"
+        labelProp="name"
+      />
+      <SpacerV />
       <Input name="mail" label={t("model.user.mail")} />
       {/* TODO: ländervorwahl */}
       <Input name="phoneNumber" label={t("model.user.phone_number")} />

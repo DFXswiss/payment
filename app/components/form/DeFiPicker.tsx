@@ -6,17 +6,24 @@ import Colors from "../../config/Colors";
 import AppStyles from "../../styles/AppStyles";
 import { ControlProps } from "./Form";
 
-export interface Item {
-  id: any;
-  label: string;
-}
-
 interface Props extends ControlProps {
-  items: Item[];
+  items: any[];
+  idProp: string;
+  labelProp: string;
 }
 
-// TODO: onBlur
-const DeFiPicker = ({ control, name, label, labelStyle, rules, error, editable, items }: Props) => {
+const DeFiPicker = ({
+  control,
+  name,
+  label,
+  labelStyle,
+  rules,
+  error,
+  editable,
+  items,
+  idProp,
+  labelProp,
+}: Props) => {
   return (
     <Controller
       control={control}
@@ -25,12 +32,12 @@ const DeFiPicker = ({ control, name, label, labelStyle, rules, error, editable, 
           {label && <Text style={[AppStyles.label, labelStyle]}>{label}</Text>}
           <Picker
             style={[AppStyles.control, error && { borderColor: Colors.Error }, !editable && AppStyles.controlDisabled]}
-            selectedValue={value}
-            onValueChange={(itemValue, itemIndex) => onChange(itemValue)}
+            selectedValue={value && value[idProp]}
+            onValueChange={(itemValue, itemIndex) => onChange(items.find((i) => i[idProp] == itemValue))}
             enabled={editable}
           >
             {items?.map((item) => (
-              <Picker.Item key={item.id} label={item.label} value={item.id} />
+              <Picker.Item key={item[idProp]} label={item[labelProp]} value={item[idProp]} />
             ))}
           </Picker>
           <Text style={AppStyles.textError}>{error && error.message}</Text>

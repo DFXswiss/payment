@@ -1,10 +1,10 @@
 import { Environment } from "../env/Environment";
 import { Asset } from "../models/Asset";
-import { BuyRoute, BuyRouteDto, fromBuyRouteDto, NewBuyRoute } from "../models/BuyRoute";
+import { BuyRoute, BuyRouteDto, fromBuyRouteDto, toBuyRouteDto } from "../models/BuyRoute";
 import { Country } from "../models/Country";
 import { Fiat } from "../models/Fiat";
 import { fromActivePaymentRoutesDto, fromPaymentRoutesDto, PaymentRoutes, PaymentRoutesDto } from "../models/PaymentRoutes";
-import { fromSellRouteDto, NewSellRoute, SellRoute, SellRouteDto } from "../models/SellRoute";
+import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import { fromUserDto, NewUser, toNewUserDto, toUserDto, User, UserDto } from "../models/User";
 import SessionService, { ICredentials } from "./SessionService";
 
@@ -55,14 +55,13 @@ const getRoutesDto = (): Promise<PaymentRoutesDto> => {
     .then((credentials) => fetchFrom<PaymentRoutesDto>(`${BaseUrl}/${RouteUrl}`, buildInit("GET", credentials)))
 }
 
-// TODO: use other DTO?
-export const postBuyRoute = (route: NewBuyRoute): Promise<BuyRoute> => {
+export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
   return SessionService.Credentials
     .then((credentials) => fetchFrom<BuyRouteDto>(`${BaseUrl}/${BuyUrl}`, buildInit("POST", credentials, toBuyRouteDto(route))))
     .then((dto) => fromBuyRouteDto(dto));
 };
 
-export const postSellRoute = (route: NewSellRoute): Promise<SellRoute> => {
+export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
   return SessionService.Credentials
     .then((credentials) =>
       fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}`, buildInit("POST", credentials, toSellRouteDto(route)))

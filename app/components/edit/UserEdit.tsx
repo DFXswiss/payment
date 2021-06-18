@@ -4,6 +4,7 @@ import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import { MailRegex } from "../../config/Regex";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { Country } from "../../models/Country";
 import { User } from "../../models/User";
@@ -47,7 +48,7 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
   const rules: any = {
     mail: {
       pattern: {
-        value: /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        value: MailRegex,
         message: t("validation.pattern_invalid"),
       },
     },
@@ -76,13 +77,7 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
         <SpacerH />
         <Input name="location" label={t("model.user.location")} />
       </View>
-      <DeFiPicker
-        name="country"
-        label={t("model.user.country")}
-        items={countries}
-        idProp="id"
-        labelProp="name"
-      />
+      <DeFiPicker name="country" label={t("model.user.country")} items={countries.filter((c) => c.enable)} idProp="id" labelProp="name" />
       <SpacerV />
       <Input name="mail" label={t("model.user.mail")} />
       {/* TODO: ländervorwahl */}

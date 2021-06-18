@@ -1,16 +1,5 @@
 import { Fiat } from "./Fiat";
 
-// TODO: check
-export interface NewSellRouteDto {
-  fiat: Fiat;
-  iban: string;
-}
-
-export interface NewSellRoute {
-  fiatId: number;
-  iban: string;
-}
-
 export interface SellRouteDto {
   id: string;
   address: string;
@@ -48,5 +37,5 @@ export const toSellRouteDto = (route: SellRoute): SellRouteDto => ({
   deposit_address: route.depositAddress,
   iban: route.iban,
   active: route.active,
-  created: route.created.toString(),
+  created: route.created?.toString(),
 });

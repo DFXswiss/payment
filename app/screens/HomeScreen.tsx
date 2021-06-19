@@ -15,12 +15,12 @@ import withCredentials from "../hocs/withCredentials";
 import { PaymentRoutes } from "../models/PaymentRoutes";
 import { User } from "../models/User";
 import { getActiveRoutes, getUser } from "../services/ApiService";
-import { Credentials } from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
 import BuyRouteEdit from "../components/edit/BuyRouteEdit";
 import { BuyRoute } from "../models/BuyRoute";
 import SellRouteEdit from "../components/edit/SellRouteEdit";
 import { SellRoute } from "../models/SellRoute";
+import { Credentials } from "../services/AuthService";
 
 const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   const { t } = useTranslation();

@@ -1,6 +1,6 @@
 import React from "react";
 import { Subscription } from "rxjs";
-import SessionService, { Credentials } from "../services/SessionService";
+import AuthService, { Credentials } from "../services/AuthService";
 
 interface Props {
   credentials?: Credentials;
@@ -15,7 +15,7 @@ const withCredentials = <T extends object>(WrappedComponent: React.ComponentType
     };
 
     componentDidMount = () => {
-      this.subscription = SessionService.Credentials$.subscribe((credentials) => this.setState({ credentials: credentials }));
+      this.subscription = AuthService.Credentials$.subscribe((credentials) => this.setState({ credentials: credentials }));
     };
 
     componentWillUnmount = () => {

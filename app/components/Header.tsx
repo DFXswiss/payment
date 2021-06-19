@@ -7,11 +7,12 @@ import * as nav from "../utils/NavigationHelper";
 import { Picker } from "@react-native-picker/picker";
 import AppStyles from "../styles/AppStyles";
 import { useTranslation } from "react-i18next";
-import SessionService, { Credentials } from "../services/SessionService";
 import withCredentials from "../hocs/withCredentials";
 import { ActionLink } from "../elements/Texts";
 import SettingsService, { AppSettings } from "../services/SettingsService";
 import withSettings from "../hocs/withSettings";
+import { Credentials } from "../services/AuthService";
+import SessionService from "../services/SessionService";
 
 const Header = ({ credentials, settings }: { credentials?: Credentials, settings?: AppSettings }) => {
   const { t } = useTranslation();

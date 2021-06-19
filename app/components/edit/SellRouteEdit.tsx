@@ -40,7 +40,7 @@ const SellRouteEdit = ({
   const onSubmit = (route: SellRoute) => {
     setIsSaving(true);
     postSellRoute(route)
-      .then((route) => onRouteCreated(route))
+      .then((newRoute) => onRouteCreated(newRoute))
       .finally(() => setIsSaving(false));
   };
 
@@ -68,7 +68,7 @@ const SellRouteEdit = ({
       <DeFiPicker name="fiat" label={t("model.route.fiat")} items={fiats.filter((f) => f.enable)} idProp="id" labelProp="name" />
       <SpacerV />
 
-      <Input name="iban" label={t("model.route.iban")} />
+      <Input name="iban" label={t("model.route.iban") } placeholder="DE89 3704 0044 0532 0130 00" />
       <SpacerV />
 
       <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>

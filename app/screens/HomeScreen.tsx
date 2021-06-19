@@ -138,6 +138,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
                 </View>
 
                 {/* TODO: delete routes */}
+                {/* TODO: what if collision with deleted route? */}
                 {/* TODO: details */}
                 {routes.buyRoutes?.length + routes.sellRoutes?.length > 0 ? (
                   <>

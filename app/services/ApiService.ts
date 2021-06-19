@@ -17,8 +17,6 @@ const AssetUrl = "asset";
 const FiatUrl = "fiat";
 const CountryUrl = "country";
 
-// TODO: add delete routes method
-
 // --- USER --- //
 export const getUser = (credentials?: ICredentials): Promise<User> => {
   return AuthService.Credentials
@@ -62,11 +60,21 @@ export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
     .then((dto) => fromBuyRouteDto(dto));
 };
 
+export const putBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
+  return AuthService.Credentials
+    .then((credentials) => fetchFrom<BuyRouteDto>(`${BaseUrl}/${BuyUrl}/${route.id}`, buildInit("PUT", credentials, toBuyRouteDto(route))))
+    .then((dto) => fromBuyRouteDto(dto));
+};
+
 export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
   return AuthService.Credentials
-    .then((credentials) =>
-      fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}`, buildInit("POST", credentials, toSellRouteDto(route)))
-    )
+    .then((credentials) => fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}`, buildInit("POST", credentials, toSellRouteDto(route))) )
+    .then((dto) => {console.log(dto); console.log(fromSellRouteDto(dto)); return fromSellRouteDto(dto)});
+};
+
+export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
+  return AuthService.Credentials
+    .then((credentials) => fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}/${route.id}`, buildInit("PUT", credentials, toSellRouteDto(route))))
     .then((dto) => fromSellRouteDto(dto));
 };
 

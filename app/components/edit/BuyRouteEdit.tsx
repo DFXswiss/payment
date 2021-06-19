@@ -40,9 +40,11 @@ const BuyRouteEdit = ({
   const onSubmit = (route: BuyRoute) => {
     setIsSaving(true);
     postBuyRoute(route)
-      .then((route) => onRouteCreated(route))
+      .then((newRoute) => onRouteCreated(newRoute))
       .finally(() => setIsSaving(false));
   };
+
+  // TODO: react on collisions (buy&sell)
 
   const rules: any = {
     asset: {
@@ -68,7 +70,7 @@ const BuyRouteEdit = ({
       <DeFiPicker name="asset" label={t("model.route.asset")} items={assets.filter((a) => a.buyable)} idProp="id" labelProp="name" />
       <SpacerV />
 
-      <Input name="iban" label={t("model.route.iban")} />
+      <Input name="iban" label={t("model.route.iban")} placeholder="DE89 3704 0044 0532 0130 00" />
       <SpacerV />
 
       <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>

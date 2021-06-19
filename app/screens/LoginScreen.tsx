@@ -123,7 +123,8 @@ const LoginScreen = () => {
                   <H3 text={t("session.signing_message")}></H3>
                   <Text style={styles.signingMessage}>{signingMessage(address)}</Text>
                   <SpacerV />
-                  <Input name="password" label={t("model.user.signature")} />
+                  {/* TODO: verify go type */}
+                  <Input name="password" label={t("model.user.signature")} returnKeyType="go" />
                 </>
               )}
             </>

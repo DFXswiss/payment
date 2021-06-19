@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import Modal from "modal-enhanced-react-native-web";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, TextStyle } from "react-native";
 import Colors from "../config/Colors";
 import { useTranslation } from "react-i18next";
 import { SpacerV } from "../elements/Spacers";
@@ -12,14 +12,14 @@ import { H2 } from "../elements/Texts";
 const DeFiModal = ({
   isVisible,
   setIsVisible,
-  minWidth = 0,
+  style,
   title,
   save,
   children,
 }: {
   isVisible: boolean;
   setIsVisible: (isVisible: boolean) => void;
-  minWidth?: number;
+  style?: TextStyle,
   title: string;
   save?: string;
   children: ReactElement;
@@ -29,12 +29,14 @@ const DeFiModal = ({
   // TODO: close on escape
   return (
     <Modal isVisible={isVisible} onBackdropPress={() => setIsVisible(false)}>
-      <View style={[styles.container, { minWidth: minWidth }]}>
-        <View style={AppStyles.containerHorizontal}>
-          <H2 text={title} />
-          <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
-            <Icon name="close" color={Colors.Grey} style={AppStyles.ml20} />
-          </TouchableWithoutFeedback>
+      <View style={[styles.container, style]}>
+        <View style={[AppStyles.containerHorizontal]}>
+          <H2 text={title} style={AppStyles.mr20} />
+          <View style={AppStyles.mla}>
+            <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
+              <Icon name="close" color={Colors.Grey} />
+            </TouchableWithoutFeedback>
+          </View>
         </View>
 
         <SpacerV />

@@ -65,8 +65,14 @@ export default StyleSheet.create({
     textAlign: "center",
   },
   // spaces
+  mra: {
+    marginRight: "auto"
+  },
   mr10: {
     marginRight: 10,
+  },
+  mr20: {
+    marginRight: 20,
   },
   mla: {
     marginLeft: "auto",

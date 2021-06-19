@@ -25,6 +25,7 @@
     "model": {
       "user": {
         "edit": "Benutzerdaten bearbeiten",
+        "data_missing": "Füllen Sie bitte zuerst Ihre Benutzerdaten komplett aus!",
 
         "your_data": "Deine Benutzerdaten",
         "legacy_address": "Legacy Adresse",

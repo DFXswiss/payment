@@ -5,8 +5,10 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { IbanRegex } from "../../config/Regex";
 import { SpacerV } from "../../elements/Spacers";
+import { Alert } from "../../elements/Texts";
 import { Fiat } from "../../models/Fiat";
 import { SellRoute } from "../../models/SellRoute";
+import { User } from "../../models/User";
 import { getFiats, postSellRoute } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import DeFiPicker from "../form/DeFiPicker";
@@ -17,9 +19,11 @@ import LoadingButton from "../LoadingButton";
 const SellRouteEdit = ({
   isVisible,
   onRouteCreated,
+  user,
 }: {
   isVisible: boolean;
   onRouteCreated: (route: SellRoute) => void;
+  user?: User;
 }) => {
   const { t } = useTranslation();
   const {
@@ -63,16 +67,31 @@ const SellRouteEdit = ({
     },
   };
 
+  const userDataMissing = () =>
+    !(user?.firstName && user?.lastName && user?.street && user?.zip && user?.location && user?.country && user?.phoneNumber);
+
   return (
     <Form control={control} rules={rules} errors={errors} editable={!isSaving} onSubmit={handleSubmit(onSubmit)}>
-      <DeFiPicker name="fiat" label={t("model.route.fiat")} items={fiats.filter((f) => f.enable)} idProp="id" labelProp="name" />
+      <Alert label={t("model.user.data_missing")} />
+      <DeFiPicker
+        name="fiat"
+        label={t("model.route.fiat")}
+        items={fiats.filter((f) => f.enable)}
+        idProp="id"
+        labelProp="name"
+      />
       <SpacerV />
 
-      <Input name="iban" label={t("model.route.iban") } placeholder="DE89 3704 0044 0532 0130 00" />
+      <Input name="iban" label={t("model.route.iban")} placeholder="DE89 3704 0044 0532 0130 00" />
       <SpacerV />
 
       <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
-        <LoadingButton title={t("action.save")} isLoading={isSaving} onPress={handleSubmit(onSubmit)} />
+        <LoadingButton
+          title={t("action.save")}
+          disabled={userDataMissing()}
+          isLoading={isSaving}
+          onPress={handleSubmit(onSubmit)}
+        />
       </View>
     </Form>
   );

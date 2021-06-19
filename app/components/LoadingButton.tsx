@@ -6,11 +6,12 @@ import Loading from "./Loading";
 
 interface Props {
   title: string;
+  disabled?: boolean;
   isLoading: boolean;
   onPress: (ev: NativeSyntheticEvent<NativeTouchEvent>) => void;
 }
 
-const LoadingButton = ({ title, isLoading, onPress }: Props) => {
+const LoadingButton = ({ title, disabled = false, isLoading, onPress }: Props) => {
   return (
     <View>
       {isLoading && (
@@ -19,7 +20,7 @@ const LoadingButton = ({ title, isLoading, onPress }: Props) => {
         </View>
       )}
       <View style={isLoading && AppStyles.transparent}>
-        <Button color={isLoading ? Colors.LightGrey : Colors.Primary} title={title} onPress={onPress} disabled={isLoading} />
+        <Button color={isLoading ? Colors.LightGrey : Colors.Primary} title={title} onPress={onPress} disabled={disabled || isLoading} />
       </View>
     </View>
   );

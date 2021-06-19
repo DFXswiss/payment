@@ -86,7 +86,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
         <BuyRouteEdit isVisible={isBuyRouteEdit} onRouteCreated={onBuyRouteChanged} />
       </DeFiModal>
       <DeFiModal isVisible={isSellRouteEdit} setIsVisible={setIsSellRouteEdit} title={t("model.route.new_sell")}>
-        <SellRouteEdit isVisible={isSellRouteEdit} onRouteCreated={onSellRouteChanged} />
+        <SellRouteEdit isVisible={isSellRouteEdit} user={user} onRouteCreated={onSellRouteChanged} />
       </DeFiModal>
 
       <View style={AppStyles.container}>

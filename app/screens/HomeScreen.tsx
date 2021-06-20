@@ -12,15 +12,16 @@ import Routes from "../config/Routes";
 import { SpacerV } from "../elements/Spacers";
 import { H1, H2, H3 } from "../elements/Texts";
 import withCredentials from "../hocs/withCredentials";
-import { PaymentRoutes } from "../models/PaymentRoutes";
 import { User } from "../models/User";
-import { getActiveRoutes, getUser } from "../services/ApiService";
+import { getActiveRoutes, getUser, putBuyRoute, putSellRoute } from "../services/ApiService";
 import AppStyles from "../styles/AppStyles";
 import BuyRouteEdit from "../components/edit/BuyRouteEdit";
 import { BuyRoute } from "../models/BuyRoute";
 import SellRouteEdit from "../components/edit/SellRouteEdit";
 import { SellRoute } from "../models/SellRoute";
 import { Credentials } from "../services/AuthService";
+import { Icon } from "react-native-elements";
+import { IconButton } from "../elements/Buttons";
 
 const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   const { t } = useTranslation();
@@ -31,7 +32,8 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
 
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User>();
-  const [routes, setRoutes] = useState<PaymentRoutes>();
+  const [buyRoutes, setBuyRoutes] = useState<BuyRoute[]>();
+  const [sellRoutes, setSellRoutes] = useState<SellRoute[]>();
   const [isUserEdit, setIsUserEdit] = useState(false);
   const [isBuyRouteEdit, setIsBuyRouteEdit] = useState(false);
   const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
@@ -41,15 +43,15 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
     setIsUserEdit(false);
   };
   const onBuyRouteChanged = (route: BuyRoute) => {
-    setRoutes((routes) => {
-      routes?.buyRoutes.push(route);
+    setBuyRoutes((routes) => {
+      routes?.push(route);
       return routes;
     });
     setIsBuyRouteEdit(false);
   };
   const onSellRouteChanged = (route: SellRoute) => {
-    setRoutes((routes) => {
-      routes?.sellRoutes.push(route);
+    setSellRoutes((routes) => {
+      sellRoutes?.push(route);
       return routes;
     });
     setIsSellRouteEdit(false);
@@ -58,17 +60,33 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   const reset = (): void => {
     setLoading(true);
     setUser(undefined);
-    setRoutes(undefined);
+    setBuyRoutes([]);
+    setSellRoutes([]);
     setIsUserEdit(false);
     setIsBuyRouteEdit(false);
     setIsSellRouteEdit(false);
   };
 
+  const deleteBuyRoute = (route: BuyRoute) => {
+    route.active = false;
+    putBuyRoute(route).then(() => setBuyRoutes((routes) => routes?.filter((r) => r.id !== route.id)));
+  };
+  const deleteSellRoute = (route: SellRoute) => {
+    route.active = false;
+    putSellRoute(route).then(() => setSellRoutes((routes) => routes?.filter((r) => r.id !== route.id)));
+  };
+
   useEffect(() => {
     if (credentials) {
       if (credentials.isLoggedIn) {
-        Promise.all([getUser().then((user) => setUser(user)), getActiveRoutes().then((routes) => setRoutes(routes))])
-          // TODO: error handling
+        Promise.all([
+          getUser().then((user) => setUser(user)),
+          getActiveRoutes().then((routes) => {
+            setBuyRoutes(routes.buyRoutes);
+            setSellRoutes(routes.sellRoutes);
+          }),
+        ])
+          // TODO: error handling everywhere
           .finally(() => setLoading(false));
       } else {
         reset();
@@ -124,7 +142,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
 
             <SpacerV height={50} />
 
-            {routes && (
+            {(buyRoutes || sellRoutes) && (
               <View>
                 <View style={AppStyles.containerHorizontal}>
                   <H2 text={t("model.route.routes")} />
@@ -137,45 +155,64 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
                   </View>
                 </View>
 
-                {/* TODO: delete routes */}
                 {/* TODO: what if collision with deleted route? */}
                 {/* TODO: details */}
-                {routes.buyRoutes?.length + routes.sellRoutes?.length > 0 ? (
+                {(buyRoutes?.length ?? 0) + (sellRoutes?.length ?? 0) > 0 ? (
                   <>
-                    {routes.buyRoutes?.length > 0 && (
+                    {buyRoutes && buyRoutes.length > 0 && (
                       <>
                         <SpacerV />
                         <H3 text={t("model.route.buy")} />
                         <SpacerV />
                         <Row
                           textStyle={AppStyles.b}
-                          cells={[t("model.route.asset"), t("model.route.iban"), t("model.route.bank_usage")]}
-                          layout={[1, 1, 2]}
+                          cells={[
+                            t("model.route.asset"),
+                            t("model.route.iban"),
+                            t("model.route.bank_usage"),
+                            <Icon name="delete" color={Colors.Primary} style={AppStyles.hidden} />,
+                          ]}
+                          layout={[1, 1, 2, undefined]}
                         />
-                        {routes.buyRoutes.map((route) => (
+                        {buyRoutes.map((route) => (
                           <Row
                             key={route.id}
-                            cells={[route.asset.name, route.iban, route.bankUsage]}
-                            layout={[1, 1, 2]}
+                            cells={[
+                              route.asset.name,
+                              route.iban,
+                              route.bankUsage,
+                              <IconButton icon="delete" color={Colors.Primary} onPress={() => deleteBuyRoute(route)} />,
+                            ]}
+                            layout={[1, 1, 2, undefined]}
                           />
                         ))}
                       </>
                     )}
-                    {routes.sellRoutes?.length > 0 && (
+                    {sellRoutes && sellRoutes.length > 0 && (
                       <>
                         <SpacerV />
                         <H3 text={t("model.route.sell")} />
                         <SpacerV />
                         <Row
                           textStyle={AppStyles.b}
-                          cells={[t("model.route.fiat"), t("model.route.iban"), t("model.route.deposit_address")]}
-                          layout={[1, 1, 2]}
+                          cells={[
+                            t("model.route.fiat"),
+                            t("model.route.iban"),
+                            t("model.route.deposit_address"),
+                            <Icon name="delete" color={Colors.Primary} style={AppStyles.hidden} />,
+                          ]}
+                          layout={[1, 1, 2, undefined]}
                         />
-                        {routes.sellRoutes.map((route) => (
+                        {sellRoutes.map((route) => (
                           <Row
                             key={route.id}
-                            cells={[route.fiat.name, route.iban, route.depositAddress]}
-                            layout={[1, 1, 2]}
+                            cells={[
+                              route.fiat.name,
+                              route.iban,
+                              route.depositAddress,
+                              <IconButton icon="delete" color={Colors.Primary} onPress={() => deleteSellRoute(route)} />,
+                            ]}
+                            layout={[1, 1, 2, undefined]}
                           />
                         ))}
                       </>

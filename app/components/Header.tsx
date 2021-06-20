@@ -8,11 +8,11 @@ import { Picker } from "@react-native-picker/picker";
 import AppStyles from "../styles/AppStyles";
 import { useTranslation } from "react-i18next";
 import withCredentials from "../hocs/withCredentials";
-import { ActionLink } from "../elements/Texts";
 import SettingsService, { AppSettings } from "../services/SettingsService";
 import withSettings from "../hocs/withSettings";
 import { Credentials } from "../services/AuthService";
 import SessionService from "../services/SessionService";
+import { ActionLink } from "../elements/Buttons";
 
 const Header = ({ credentials, settings }: { credentials?: Credentials, settings?: AppSettings }) => {
   const { t } = useTranslation();
@@ -37,7 +37,7 @@ const Header = ({ credentials, settings }: { credentials?: Credentials, settings
       </TouchableOpacity>
 
       <View style={[AppStyles.containerHorizontal, AppStyles.mla, { alignItems: "baseline" }]}>
-        {credentials?.isLoggedIn && <ActionLink action={() => logout()} label={t("action.logout")} />}
+        {credentials?.isLoggedIn && <ActionLink onPress={() => logout()} label={t("action.logout")} />}
 
         <Picker
           style={[AppStyles.ml10, styles.languageSelect]}

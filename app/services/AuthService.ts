@@ -3,7 +3,6 @@ import { Observable, ReplaySubject } from "rxjs";
 
 const CredentialsKey = "credentials";
 
-
 export interface ICredentials {
   address?: string;
   signature?: string;
@@ -38,8 +37,9 @@ class AuthServiceClass {
   }
 
   public updateCredentials(credentials: ICredentials): Promise<void> {
-    this.credentials$.next(Credentials.create(credentials));
-    return AsyncStorage.setItem(CredentialsKey, JSON.stringify(credentials));
+    return AsyncStorage.setItem(CredentialsKey, JSON.stringify(credentials)).then(() =>
+      this.credentials$.next(Credentials.create(credentials))
+    );
   }
 }
 

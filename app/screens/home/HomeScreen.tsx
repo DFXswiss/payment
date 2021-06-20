@@ -1,4 +1,4 @@
-import { useIsFocused, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "react-native";
@@ -19,11 +19,11 @@ import { Credentials } from "../../services/AuthService";
 import RouteList from "./RouteList";
 import { PaymentRoutes } from "../../models/PaymentRoutes";
 import AppLayout from "../../components/AppLayout";
+import useGuard from "../../hooks/useGuard";
 
 const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   const { t } = useTranslation();
   const nav = useNavigation();
-  const isFocused = useIsFocused();
 
   // TODO: full KYC Access
   // TODO: scrollable!
@@ -59,7 +59,9 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
         nav.navigate(Routes.Login);
       }
     }
-  }, [credentials, isFocused]);
+  }, [credentials]);
+  
+  useGuard(() => credentials && !credentials.isLoggedIn)
 
   return (
     <AppLayout>

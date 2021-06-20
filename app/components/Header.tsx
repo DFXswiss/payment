@@ -3,7 +3,6 @@ import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
 import { changeLanguage } from "../i18n/i18n";
-import * as nav from "../utils/NavigationHelper";
 import { Picker } from "@react-native-picker/picker";
 import AppStyles from "../styles/AppStyles";
 import { useTranslation } from "react-i18next";
@@ -13,9 +12,11 @@ import withSettings from "../hocs/withSettings";
 import { Credentials } from "../services/AuthService";
 import SessionService from "../services/SessionService";
 import { ActionLink } from "../elements/Buttons";
+import { useNavigation } from "@react-navigation/native";
 
 const Header = ({ credentials, settings }: { credentials?: Credentials, settings?: AppSettings }) => {
   const { t } = useTranslation();
+  const nav = useNavigation();
 
   const [selectedLanguage, setSelectedLanguage] = useState("de");
 

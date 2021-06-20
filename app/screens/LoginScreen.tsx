@@ -16,6 +16,7 @@ import VideoPlayer from "../components/util/VideoPlayer";
 import { Environment } from "../env/Environment";
 import { changeLanguage } from "../i18n/i18n";
 import Input from "../components/form/Input";
+import AppLayout from "../components/AppLayout";
 
 interface LoginData {
   userName: string;
@@ -95,7 +96,7 @@ const LoginScreen = () => {
 
   // TODO: focus signature on enter
   return (
-    <ScrollView style={AppStyles.container}>
+    <AppLayout>
       <View style={[AppStyles.container, styles.container]}>
         <SpacerV height={20} />
         <VideoPlayer src="https://www.youtube.com/embed/DubUrIPFajA" maxWidth={600} />
@@ -152,7 +153,7 @@ const LoginScreen = () => {
           </Form>
         </View>
       </View>
-    </ScrollView>
+    </AppLayout>
   );
 };
 

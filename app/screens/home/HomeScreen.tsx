@@ -18,6 +18,7 @@ import AppStyles from "../../styles/AppStyles";
 import { Credentials } from "../../services/AuthService";
 import RouteList from "./RouteList";
 import { PaymentRoutes } from "../../models/PaymentRoutes";
+import AppLayout from "../../components/AppLayout";
 
 const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   const { t } = useTranslation();
@@ -61,7 +62,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   }, [credentials, isFocused]);
 
   return (
-    <>
+    <AppLayout>
       <DeFiModal isVisible={isUserEdit} setIsVisible={setIsUserEdit} title={t("model.user.edit")}>
         <UserEdit isVisible={isUserEdit} user={user} onUserChanged={onUserChanged} />
       </DeFiModal>
@@ -111,7 +112,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
           </>
         ) : null}
       </View>
-    </>
+    </AppLayout>
 
     // TODO: remove change logo PNG
     // <View style={[AppStyles.container, styles.container]}>

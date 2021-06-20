@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
+import AppLayout from "../components/AppLayout";
 import Routes from "../config/Routes";
 import { ActionLink } from "../elements/Buttons";
 import { SpacerV } from "../elements/Spacers";
@@ -13,11 +14,13 @@ const NotFoundScreen = () => {
   const nav = useNavigation();
 
   return (
-    <View style={[AppStyles.container, styles.container]}>
-      <H1 text={t("feedback.page_not_found")} />
-      <SpacerV height={30} />
-      <ActionLink onPress={() => nav.navigate(Routes.Home)} label={t("action.home")} />
-    </View>
+    <AppLayout>
+      <View style={[AppStyles.container, styles.container]}>
+        <H1 text={t("feedback.page_not_found")} />
+        <SpacerV height={30} />
+        <ActionLink onPress={() => nav.navigate(Routes.Home)} label={t("action.home")} />
+      </View>
+    </AppLayout>
   );
 };
 

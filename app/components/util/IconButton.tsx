@@ -5,12 +5,14 @@ import AppStyles from "../../styles/AppStyles";
 import Loading from "./Loading";
 
 const IconButton = ({
+  type = "font-awesome-5",
   icon,
   onPress,
   style,
   color,
   isLoading = false,
 }: {
+  type?: string;
   icon: string;
   onPress: () => void;
   style?: TextStyle;
@@ -25,7 +27,7 @@ const IconButton = ({
       </View>
     )}
     <View style={isLoading && AppStyles.hidden}>
-      <Icon name={icon} color={color} />
+      <Icon type={type} name={icon} color={color} />
     </View>
   </TouchableOpacity>
 );

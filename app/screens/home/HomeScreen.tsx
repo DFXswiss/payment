@@ -26,7 +26,6 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   const nav = useNavigation();
 
   // TODO: full KYC Access
-  // TODO: scrollable!
 
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User>();

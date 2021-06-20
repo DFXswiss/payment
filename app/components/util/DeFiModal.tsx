@@ -8,6 +8,7 @@ import AppStyles from "../../styles/AppStyles";
 import { Icon } from "react-native-elements";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { H2 } from "../../elements/Texts";
+import IconButton from "./IconButton";
 
 const DeFiModal = ({
   isVisible,
@@ -34,9 +35,7 @@ const DeFiModal = ({
           <View style={[AppStyles.containerHorizontal]}>
             <H2 text={title} style={AppStyles.mr20} />
             <View style={AppStyles.mla}>
-              <TouchableWithoutFeedback onPress={() => setIsVisible(false)}>
-                <Icon name="close" color={Colors.Grey} />
-              </TouchableWithoutFeedback>
+              <IconButton type="material" icon="close" color={Colors.Grey} onPress={() => setIsVisible(false)} />
             </View>
           </View>
           <SpacerV />

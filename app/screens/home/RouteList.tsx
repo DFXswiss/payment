@@ -111,6 +111,7 @@ const RouteList = ({ routes, setRoutes, user }: Props) => {
                       route.iban,
                       route.bankUsage,
                       <IconButton
+                        type="material"
                         icon="delete"
                         color={Colors.Primary}
                         onPress={() => deleteBuyRoute(route)}
@@ -145,6 +146,7 @@ const RouteList = ({ routes, setRoutes, user }: Props) => {
                       route.iban,
                       route.depositAddress,
                       <IconButton
+                        type="material"
                         icon="delete"
                         color={Colors.Primary}
                         onPress={() => deleteSellRoute(route)}

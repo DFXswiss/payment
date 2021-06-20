@@ -13,20 +13,20 @@ import Colors from "../../config/Colors";
 import { SpacerV } from "../../elements/Spacers";
 import { H2, H3 } from "../../elements/Texts";
 import { BuyRoute } from "../../models/BuyRoute";
+import { PaymentRoutes } from "../../models/PaymentRoutes";
 import { SellRoute } from "../../models/SellRoute";
 import { User } from "../../models/User";
 import { putBuyRoute, putSellRoute } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
+import { update } from "../../utils/Utils";
 
 interface Props {
-  buyRoutes?: BuyRoute[];
-  setBuyRoutes: Dispatch<SetStateAction<BuyRoute[] | undefined>>;
-  sellRoutes?: SellRoute[];
-  setSellRoutes: Dispatch<SetStateAction<SellRoute[] | undefined>>;
+  routes?: PaymentRoutes;
+  setRoutes: Dispatch<SetStateAction<PaymentRoutes | undefined>>;
   user?: User;
 }
 
-const RouteList = ({ buyRoutes, setBuyRoutes, sellRoutes, setSellRoutes, user }: Props) => {
+const RouteList = ({ routes, setRoutes, user }: Props) => {
   const { t } = useTranslation();
 
   const [isBuyRouteEdit, setIsBuyRouteEdit] = useState(false);
@@ -35,33 +35,32 @@ const RouteList = ({ buyRoutes, setBuyRoutes, sellRoutes, setSellRoutes, user }:
   const [isSellLoading, setIsSellLoading] = useState<{ [id: string]: boolean }>({});
 
   const onBuyRouteChanged = (route: BuyRoute) => {
-    setBuyRoutes((routes) => {
-      routes?.push(route);
-      return routes;
+    setRoutes((routes) => {
+      routes?.buyRoutes.push(route);
+      return routes ? {...routes} : undefined;
     });
     setIsBuyRouteEdit(false);
   };
   const onSellRouteChanged = (route: SellRoute) => {
-    setSellRoutes((routes) => {
-      sellRoutes?.push(route);
-      return routes;
+    setRoutes((routes) => {
+      routes?.sellRoutes.push(route);
+      return routes ? {...routes} : undefined;
     });
     setIsSellRouteEdit(false);
   };
 
   const deleteBuyRoute = (route: BuyRoute) => {
     setIsBuyLoading((obj) => update(obj, {[route.id]: true}));
-    console.log(isBuyLoading[route.id]);
     route.active = false;
     putBuyRoute(route)
-      .then(() => setBuyRoutes((routes) => routes?.filter((r) => r.id !== route.id)))
+      .then(() => setRoutes((routes) => update(routes, {buyRoutes: routes?.buyRoutes.filter((r) => r.id !== route.id)})))
       .finally(() => setIsBuyLoading((obj) => update(obj, {[route.id]: false})));
   };
   const deleteSellRoute = (route: SellRoute) => {
     setIsSellLoading((obj) => update(obj, {[route.id]: true}));
     route.active = false;
     putSellRoute(route)
-      .then(() => setSellRoutes((routes) => routes?.filter((r) => r.id !== route.id)))
+      .then(() => setRoutes((routes) => update(routes, {sellRoutes: routes?.sellRoutes.filter((r) => r.id !== route.id)})))
       .finally(() => setIsSellLoading((obj) => update(obj, {[route.id]: false})));
   };
 
@@ -87,9 +86,9 @@ const RouteList = ({ buyRoutes, setBuyRoutes, sellRoutes, setSellRoutes, user }:
         </View>
         {/* TODO: what if collision with deleted route? */}
         {/* TODO: details */}
-        {(buyRoutes?.length ?? 0) + (sellRoutes?.length ?? 0) > 0 ? (
+        {(routes?.buyRoutes.length ?? 0) + (routes?.sellRoutes.length ?? 0) > 0 ? (
           <>
-            {buyRoutes && buyRoutes.length > 0 && (
+            {routes?.buyRoutes && routes.buyRoutes.length > 0 && (
               <>
                 <SpacerV />
                 <H3 text={t("model.route.buy")} />
@@ -104,7 +103,7 @@ const RouteList = ({ buyRoutes, setBuyRoutes, sellRoutes, setSellRoutes, user }:
                   ]}
                   layout={[1, 1, 2, undefined]}
                 />
-                {buyRoutes.map((route) => (
+                {routes.buyRoutes.map((route) => (
                   <Row
                     key={route.id}
                     cells={[
@@ -123,7 +122,7 @@ const RouteList = ({ buyRoutes, setBuyRoutes, sellRoutes, setSellRoutes, user }:
                 ))}
               </>
             )}
-            {sellRoutes && sellRoutes.length > 0 && (
+            {routes?.sellRoutes && routes.sellRoutes.length > 0 && (
               <>
                 <SpacerV />
                 <H3 text={t("model.route.sell")} />
@@ -138,7 +137,7 @@ const RouteList = ({ buyRoutes, setBuyRoutes, sellRoutes, setSellRoutes, user }:
                   ]}
                   layout={[1, 1, 2, undefined]}
                 />
-                {sellRoutes.map((route) => (
+                {routes.sellRoutes.map((route) => (
                   <Row
                     key={route.id}
                     cells={[

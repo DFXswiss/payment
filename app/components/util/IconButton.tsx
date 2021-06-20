@@ -18,7 +18,7 @@ const IconButton = ({
   isLoading?: boolean;
 }) => (
   
-  <TouchableOpacity onPress={onPress} style={style}>
+  <TouchableOpacity onPress={onPress} style={style} disabled={isLoading}>
     {isLoading && (
       <View style={styles.loadingContainer}>
         <Loading />

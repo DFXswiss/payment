@@ -1,1 +1,1 @@
-const update = (obj: any, update: any) => ({...obj, ...update});
+export const update = (obj?: any, update?: any) => obj ? {...obj, ...update} : undefined;

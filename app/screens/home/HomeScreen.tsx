@@ -15,10 +15,9 @@ import withCredentials from "../../hocs/withCredentials";
 import { User } from "../../models/User";
 import { getActiveRoutes, getUser } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
-import { BuyRoute } from "../../models/BuyRoute";
-import { SellRoute } from "../../models/SellRoute";
 import { Credentials } from "../../services/AuthService";
 import RouteList from "./RouteList";
+import { PaymentRoutes } from "../../models/PaymentRoutes";
 
 const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   const { t } = useTranslation();
@@ -30,8 +29,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
 
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User>();
-  const [buyRoutes, setBuyRoutes] = useState<BuyRoute[]>();
-  const [sellRoutes, setSellRoutes] = useState<SellRoute[]>();
+  const [routes, setRoutes] = useState<PaymentRoutes>();
   const [isUserEdit, setIsUserEdit] = useState(false);
 
   const onUserChanged = (user: User) => {
@@ -42,8 +40,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   const reset = (): void => {
     setLoading(true);
     setUser(undefined);
-    setBuyRoutes([]);
-    setSellRoutes([]);
+    setRoutes(undefined);
     setIsUserEdit(false);
   };
 
@@ -52,10 +49,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
       if (credentials.isLoggedIn) {
         Promise.all([
           getUser().then((user) => setUser(user)),
-          getActiveRoutes().then((routes) => {
-            setBuyRoutes(routes.buyRoutes);
-            setSellRoutes(routes.sellRoutes);
-          }),
+          getActiveRoutes().then(setRoutes),
         ])
           // TODO: error handling everywhere
           .finally(() => setLoading(false));
@@ -107,12 +101,10 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
 
             <SpacerV height={50} />
 
-            {(buyRoutes || sellRoutes) && (
+            {routes && (
               <RouteList
-                buyRoutes={buyRoutes}
-                setBuyRoutes={setBuyRoutes}
-                sellRoutes={sellRoutes}
-                setSellRoutes={setSellRoutes}
+                routes={routes}
+                setRoutes={setRoutes}
                 user={user}
               />
             )}

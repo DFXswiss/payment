@@ -69,7 +69,7 @@ export const putBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
 export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
   return AuthService.Credentials
     .then((credentials) => fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}`, buildInit("POST", credentials, toSellRouteDto(route))) )
-    .then((dto) => {console.log(dto); console.log(fromSellRouteDto(dto)); return fromSellRouteDto(dto)});
+    .then((dto) => fromSellRouteDto(dto));
 };
 
 export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {

@@ -1,13 +1,13 @@
 import React, { ReactElement } from "react";
 import Modal from "modal-enhanced-react-native-web";
 import { StyleSheet, View, Text, TextStyle } from "react-native";
-import Colors from "../config/Colors";
+import Colors from "../../config/Colors";
 import { useTranslation } from "react-i18next";
-import { SpacerV } from "../elements/Spacers";
-import AppStyles from "../styles/AppStyles";
+import { SpacerV } from "../../elements/Spacers";
+import AppStyles from "../../styles/AppStyles";
 import { Icon } from "react-native-elements";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { H2 } from "../elements/Texts";
+import { H2 } from "../../elements/Texts";
 
 const DeFiModal = ({
   isVisible,

@@ -14,7 +14,7 @@ import AppStyles from "../../styles/AppStyles";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
 import Input from "../form/Input";
-import LoadingButton from "../LoadingButton";
+import LoadingButton from "../util/LoadingButton";
 
 const SellRouteEdit = ({
   isVisible,

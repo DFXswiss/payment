@@ -1,6 +1,6 @@
 import React, { ReactElement } from "react";
 import { View, Text, TextStyle } from "react-native";
-import AppStyles from "../styles/AppStyles";
+import AppStyles from "../../styles/AppStyles";
 
 // TODO: responsive table
 const Row = ({ cells, layout, textStyle }: { cells: (string | ReactElement)[], layout?: (number | undefined)[], textStyle?: TextStyle }) => {

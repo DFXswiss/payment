@@ -2,7 +2,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { Dimensions } from "react-native";
-import Sizes from "../config/Sizes";
+import Sizes from "../../config/Sizes";
 
 // use react-native-webview on native?
 const VideoPlayer = ({ src, maxWidth }: { src: string; maxWidth: number }) => {

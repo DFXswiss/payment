@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Button, NativeSyntheticEvent, NativeTouchEvent, View } from "react-native";
-import Colors from "../config/Colors";
-import AppStyles from "../styles/AppStyles";
+import Colors from "../../config/Colors";
+import AppStyles from "../../styles/AppStyles";
 import Loading from "./Loading";
 
 interface Props {

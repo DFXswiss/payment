@@ -1,0 +1,1 @@
+const update = (obj: any, update: any) => ({...obj, ...update});

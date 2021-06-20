@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, Button, View, Text, ScrollView } from "react-native";
+import { StyleSheet, Button, View, Text } from "react-native";
 import Form from "../components/form/Form";
 import Loading from "../components/util/Loading";
 import Colors from "../config/Colors";

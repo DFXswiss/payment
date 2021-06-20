@@ -1,5 +1,6 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
+import { Environment } from "../env/Environment";
 import SettingsService from "../services/SettingsService";
 
 export const languages = ["de", "en"];
@@ -7,7 +8,7 @@ export const languages = ["de", "en"];
 i18n.use(initReactI18next).init({
   resources: languages.reduce((obj, lang) => ({ ...obj, [lang]: require(`./${lang}.json`) }), {}),
   fallbackLng: languages[0],
-  debug: true,
+  debug: Environment.debug,
   ns: ["common"],
   defaultNS: "common",
 

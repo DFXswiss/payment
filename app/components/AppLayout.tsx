@@ -1,5 +1,5 @@
 import React, { ReactElement } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Sizes from "../config/Sizes";
 import AppStyles from "../styles/AppStyles";
 import Header from "./Header";
@@ -9,7 +9,7 @@ const AppLayout = ({ children }: {children: ReactElement | ReactElement[]}) => {
     <View style={[AppStyles.container, styles.container]}>
       <View style={[AppStyles.container, styles.appContainer]}>
         <Header></Header>
-        <ScrollView>{children}</ScrollView>
+        {children}
       </View>
     </View>
   );

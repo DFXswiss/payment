@@ -8,7 +8,7 @@ import Form from "../components/form/Form";
 import Loading from "../components/util/Loading";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
-import { SpacerV } from "../elements/Spacers";
+import { SpacerH, SpacerV } from "../elements/Spacers";
 import { Alert, H2, H3 } from "../elements/Texts";
 import SessionService from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
@@ -17,6 +17,8 @@ import { Environment } from "../env/Environment";
 import { changeLanguage } from "../i18n/i18n";
 import Input from "../components/form/Input";
 import AppLayout from "../components/AppLayout";
+import IconButton from "../components/util/IconButton";
+import Clipboard from "expo-clipboard";
 
 interface LoginData {
   userName: string;
@@ -24,9 +26,9 @@ interface LoginData {
 }
 
 const signingMessage = (address: string) =>
-  `By signing this message, you confirm that you are the sole owner of the provided Bitcoin address and are in possession of its private key.
-
-Your ID: ${address}`;
+  `By signing this message, you confirm that you are the sole owner of the provided DeFiChain address and are in possession of its private key. Your ID: ${address}`
+    .split(" ")
+    .join("_");
 
 const LoginScreen = () => {
   const nav = useNavigation();
@@ -122,7 +124,18 @@ const LoginScreen = () => {
                 <>
                   <SpacerV />
                   <H3 text={t("session.signing_message")}></H3>
-                  <Text style={styles.signingMessage}>{signingMessage(address)}</Text>
+
+                  <View style={[AppStyles.containerHorizontal, styles.signingMessage]}>
+                    <View style={styles.textContainer}>
+                      <Text>{signingMessage(address)}</Text>
+                    </View>
+                    <SpacerH />
+                    <IconButton
+                      icon="copy"
+                      color={Colors.Grey}
+                      onPress={() => Clipboard.setString(signingMessage(address))}
+                    />
+                  </View>
                   <SpacerV />
                   {/* TODO: verify go type */}
                   <Input name="password" label={t("model.user.signature")} returnKeyType="go" />
@@ -166,10 +179,13 @@ const styles = StyleSheet.create({
     maxWidth: 400,
   },
   signingMessage: {
-    padding: 5,
+    padding: 8,
     borderColor: Colors.Grey,
     borderRadius: 5,
     backgroundColor: Colors.LightGrey,
+  },
+  textContainer: {
+    flex: 1,
   },
 });
 

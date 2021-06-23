@@ -1,9 +1,10 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Observable, ReplaySubject } from "rxjs";
+import { Environment } from "../env/Environment";
 
 const SettingsKey = "settings";
 const DefaultSettings: Partial<AppSettings> = {
-  language: "de",
+  language: Environment.defaultLanguage,
 };
 
 export interface AppSettings {

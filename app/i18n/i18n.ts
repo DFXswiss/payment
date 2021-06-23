@@ -7,7 +7,7 @@ export const languages = ["de", "en"];
 
 i18n.use(initReactI18next).init({
   resources: languages.reduce((obj, lang) => ({ ...obj, [lang]: require(`./${lang}.json`) }), {}),
-  fallbackLng: languages[0],
+  fallbackLng: Environment.defaultLanguage,
   debug: Environment.debug,
   ns: ["common"],
   defaultNS: "common",

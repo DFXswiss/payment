@@ -13,12 +13,13 @@ import { Credentials } from "../services/AuthService";
 import SessionService from "../services/SessionService";
 import { ActionLink } from "../elements/Buttons";
 import { useNavigation } from "@react-navigation/native";
+import { Environment } from "../env/Environment";
 
 const Header = ({ credentials, settings }: { credentials?: Credentials, settings?: AppSettings }) => {
   const { t } = useTranslation();
   const nav = useNavigation();
 
-  const [selectedLanguage, setSelectedLanguage] = useState("de");
+  const [selectedLanguage, setSelectedLanguage] = useState(Environment.defaultLanguage);
 
   useEffect(() => {
     SettingsService.Settings.then((settings) => setSelectedLanguage(settings.language));

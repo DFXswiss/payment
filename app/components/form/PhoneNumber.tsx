@@ -9,7 +9,7 @@ import AppStyles from "../../styles/AppStyles";
 import { ControlProps } from "./Form";
 import { byIso } from "country-code-lookup";
 import { useTranslation } from "react-i18next";
-import Regex from "../../utils/Regex";
+import Validations from "../../utils/Validations";
 
 interface Props extends ControlProps {
   placeholder?: string;
@@ -60,15 +60,11 @@ const PhoneNumber = ({
   // TODO: phone codes alphabetically/numerically
   // TODO: auto-select phone codes with selected country
 
-  // TODO: bug when undefined-select
+  // TODO: bug when undefined-select (only if form already submitted)
 
-  // TODO: global validation rules?
   const updateRules = (rules?: any): any => ({
     ...rules,
-    pattern: {
-      value: Regex.Phone,
-      message: t("validation.code_and_number"),
-    },
+    ...Validations.Phone(t),
   });
 
   return (

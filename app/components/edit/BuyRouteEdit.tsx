@@ -8,7 +8,7 @@ import { Asset } from "../../models/Asset";
 import { BuyRoute } from "../../models/BuyRoute";
 import { getAssets, postBuyRoute } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
-import Regex from "../../utils/Regex";
+import Validations from "../../utils/Validations";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
 import Input from "../form/Input";
@@ -47,22 +47,8 @@ const BuyRouteEdit = ({
   // TODO: react on collisions (buy&sell)
 
   const rules: any = {
-    asset: {
-      required: {
-        value: true,
-        message: t("validation.required"),
-      },
-    },
-    iban: {
-      required: {
-        value: true,
-        message: t("validation.required"),
-      },
-      pattern: {
-        value: Regex.Iban,
-        message: t("validation.pattern_invalid"),
-      },
-    },
+    asset: Validations.Required(t),
+    iban: { ...Validations.Required(t), ...Validations.Iban(t) }
   };
 
   return (

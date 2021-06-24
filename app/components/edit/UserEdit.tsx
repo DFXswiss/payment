@@ -4,7 +4,6 @@ import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import Regex from "../../utils/Regex";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { Country } from "../../models/Country";
 import { User } from "../../models/User";
@@ -15,6 +14,7 @@ import Form from "../form/Form";
 import Input from "../form/Input";
 import PhoneNumber from "../form/PhoneNumber";
 import LoadingButton from "../util/LoadingButton";
+import Validations from "../../utils/Validations";
 
 interface Props {
   isVisible: boolean;
@@ -47,18 +47,8 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
   };
 
   const rules: any = {
-    mail: {
-      pattern: {
-        value: Regex.Mail,
-        message: t("validation.pattern_invalid"),
-      },
-    },
-    usedRef: {
-      pattern: {
-        value: /^\d{3}-\d{3}$/,
-        message: t("validation.pattern_invalid"),
-      },
-    },
+    mail: Validations.Mail(t),
+    usedRef: Validations.Ref(t),
   };
 
   return (

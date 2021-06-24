@@ -19,6 +19,7 @@ import Input from "../components/form/Input";
 import AppLayout from "../components/AppLayout";
 import IconButton from "../components/util/IconButton";
 import Clipboard from "expo-clipboard";
+import Validations from "../utils/Validations";
 
 interface LoginData {
   userName: string;
@@ -82,18 +83,8 @@ const LoginScreen = () => {
   }, []);
 
   const rules: any = {
-    userName: {
-      required: {
-        value: true,
-        message: t("validation.required"),
-      },
-    },
-    password: {
-      required: {
-        value: true,
-        message: t("validation.required"),
-      },
-    },
+    userName: Validations.Required(t),
+    password: Validations.Required(t),
   };
 
   // TODO: focus signature on enter

@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import Regex from "../../utils/Regex";
 import { SpacerV } from "../../elements/Spacers";
 import { Alert } from "../../elements/Texts";
 import { Fiat } from "../../models/Fiat";
@@ -15,6 +14,7 @@ import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
 import Input from "../form/Input";
 import LoadingButton from "../util/LoadingButton";
+import Validations from "../../utils/Validations";
 
 const SellRouteEdit = ({
   isVisible,
@@ -49,22 +49,8 @@ const SellRouteEdit = ({
   };
 
   const rules: any = {
-    fiat: {
-      required: {
-        value: true,
-        message: t("validation.required"),
-      },
-    },
-    iban: {
-      required: {
-        value: true,
-        message: t("validation.required"),
-      },
-      pattern: {
-        value: Regex.Iban,
-        message: t("validation.pattern_invalid"),
-      },
-    },
+    fiat: Validations.Required(t),
+    iban: { ...Validations.Required(t), ...Validations.Iban(t) },
   };
 
   const userDataMissing = () =>
@@ -72,7 +58,7 @@ const SellRouteEdit = ({
 
   return (
     <Form control={control} rules={rules} errors={errors} editable={!isSaving} onSubmit={handleSubmit(onSubmit)}>
-      <Alert label={t("model.user.data_missing")} />
+      <>{ userDataMissing() && <Alert label={t("model.user.data_missing")} />}</>
       <DeFiPicker
         name="fiat"
         label={t("model.route.fiat")}

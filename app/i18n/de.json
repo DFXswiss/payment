@@ -59,6 +59,7 @@
         "sell": "Crypto > Fiat",
         "new_buy": "Neue Route: Fiat > Crypto",
         "new_sell": "Neue Route: Crypto > Fiat",
+        "payment_info": "Zahlungsinformationen",
 
         "iban": "IBAN",
         "bank_usage": "Zahlungszweck",

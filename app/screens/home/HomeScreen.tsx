@@ -69,7 +69,7 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
       </DeFiModal>
 
       <View style={AppStyles.container}>
-        <H1 text={t("welcome")} style={AppStyles.center} />
+        <H1 text={t("general.welcome")} style={AppStyles.center} />
 
         <SpacerV height={50} />
 

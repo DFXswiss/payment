@@ -29,7 +29,8 @@ interface PhoneCode {
 
 const phoneCodes: PhoneCode[] = getCountries()
   .map((c) => ({ code: c, country: byIso(c)?.country ?? "", dialCode: `+${getCountryCallingCode(c)}` }))
-  .filter((p) => p.country);
+  .filter((p) => p.country)
+  .sort((a, b) => (a.dialCode + a.country) > (b.dialCode + b.country) ? 1 : -1);
 
 // TODO: join with DeFiPicker?
 const PhoneNumber = ({
@@ -57,7 +58,6 @@ const PhoneNumber = ({
     return code || number ? `${code} ${number}` : "";
   };
 
-  // TODO: phone codes alphabetically/numerically
   // TODO: auto-select phone codes with selected country
 
   // TODO: bug when undefined-select (only if form already submitted)

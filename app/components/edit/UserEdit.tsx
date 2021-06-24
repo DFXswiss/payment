@@ -4,7 +4,7 @@ import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { MailRegex } from "../../config/Regex";
+import Regex from "../../utils/Regex";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { Country } from "../../models/Country";
 import { User } from "../../models/User";
@@ -48,7 +48,7 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
   const rules: any = {
     mail: {
       pattern: {
-        value: MailRegex,
+        value: Regex.Mail,
         message: t("validation.pattern_invalid"),
       },
     },

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { IbanRegex } from "../../config/Regex";
+import Regex from "../../utils/Regex";
 import { SpacerV } from "../../elements/Spacers";
 import { Alert } from "../../elements/Texts";
 import { Fiat } from "../../models/Fiat";
@@ -61,7 +61,7 @@ const SellRouteEdit = ({
         message: t("validation.required"),
       },
       pattern: {
-        value: IbanRegex,
+        value: Regex.Iban,
         message: t("validation.pattern_invalid"),
       },
     },

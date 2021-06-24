@@ -3,12 +3,12 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { IbanRegex } from "../../config/Regex";
 import { SpacerV } from "../../elements/Spacers";
 import { Asset } from "../../models/Asset";
 import { BuyRoute } from "../../models/BuyRoute";
 import { getAssets, postBuyRoute } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
+import Regex from "../../utils/Regex";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
 import Input from "../form/Input";
@@ -59,7 +59,7 @@ const BuyRouteEdit = ({
         message: t("validation.required"),
       },
       pattern: {
-        value: IbanRegex,
+        value: Regex.Iban,
         message: t("validation.pattern_invalid"),
       },
     },

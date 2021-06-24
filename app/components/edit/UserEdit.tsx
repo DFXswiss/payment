@@ -13,6 +13,7 @@ import AppStyles from "../../styles/AppStyles";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
 import Input from "../form/Input";
+import PhoneNumber from "../form/PhoneNumber";
 import LoadingButton from "../util/LoadingButton";
 
 interface Props {
@@ -80,8 +81,7 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
       <DeFiPicker name="country" label={t("model.user.country")} items={countries.filter((c) => c.enable)} idProp="id" labelProp="name" />
       <SpacerV />
       <Input name="mail" label={t("model.user.mail")} />
-      {/* TODO: ländervorwahl */}
-      <Input name="phoneNumber" label={t("model.user.phone_number")} />
+      <PhoneNumber name="phoneNumber" label={t("model.user.phone_number")} placeholder="69 1234 5678" />
       <SpacerV />
       <Input name="usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />
       <SpacerV />

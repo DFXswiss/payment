@@ -15,7 +15,8 @@
     },
     "validation": {
       "required": "Pflichtfeld",
-      "pattern_invalid": "Ungültiges Format"
+      "pattern_invalid": "Ungültiges Format",
+      "code_and_number": "Bitte Vorwahl und Nummer ausfüllen"
     },
     "session": {
       "sign_up": "Anmelden / Registrieren",

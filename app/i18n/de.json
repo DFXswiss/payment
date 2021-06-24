@@ -1,6 +1,11 @@
 {
   "common": {
-    "welcome": "Willkommen!",
+    "general": {
+      "welcome": "Willkommen!",
+      "wiki": "Wiki",
+      "homepage": "Homepage",
+      "telegram": "Telegram"
+    },
     "action": {
       "login": "Login",
       "logout": "Logout",

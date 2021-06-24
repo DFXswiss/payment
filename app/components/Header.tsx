@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, View, Image, TouchableOpacity, Linking } from "react-native";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
 import { changeLanguage } from "../i18n/i18n";
@@ -15,7 +15,7 @@ import { ActionLink } from "../elements/Buttons";
 import { useNavigation } from "@react-navigation/native";
 import { Environment } from "../env/Environment";
 
-const Header = ({ credentials, settings }: { credentials?: Credentials, settings?: AppSettings }) => {
+const Header = ({ credentials, settings }: { credentials?: Credentials; settings?: AppSettings }) => {
   const { t } = useTranslation();
   const nav = useNavigation();
 
@@ -40,6 +40,24 @@ const Header = ({ credentials, settings }: { credentials?: Credentials, settings
 
       <View style={[AppStyles.containerHorizontal, AppStyles.mla, { alignItems: "baseline" }]}>
         {credentials?.isLoggedIn && <ActionLink onPress={() => logout()} label={t("action.logout")} />}
+
+        <ActionLink
+          style={AppStyles.ml10}
+          onPress={() => Linking.openURL("https://defichain-wiki.com/")}
+          label={t("general.wiki")}
+        />
+
+        <ActionLink
+          style={AppStyles.ml10}
+          onPress={() => Linking.openURL("https://fiat2defi.ch/")}
+          label={t("general.homepage")}
+        />
+
+        <ActionLink
+          style={AppStyles.ml10}
+          onPress={() => Linking.openURL("https://t.me/DeFiChange")}
+          label={t("general.telegram")}
+        />
 
         <Picker
           style={[AppStyles.ml10, styles.languageSelect]}

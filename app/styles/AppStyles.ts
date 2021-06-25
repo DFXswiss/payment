@@ -58,6 +58,9 @@ export default StyleSheet.create({
   hidden: {
     opacity: 0,
   },
+  noDisplay: {
+    display: "none",
+  },
   transparent: {
     opacity: 0.3,
   },
@@ -66,7 +69,7 @@ export default StyleSheet.create({
   },
   // spaces
   mra: {
-    marginRight: "auto"
+    marginRight: "auto",
   },
   mr10: {
     marginRight: 10,

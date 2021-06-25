@@ -10,10 +10,11 @@ interface Props extends ControlProps {
   placeholder?: string;
   onKeyPress?: (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => void;
   returnKeyType?: ReturnKeyTypeOptions;
+  secureTextEntry?: boolean;
 }
 
 // TODO: focus next field 
-const Input = ({ control, name, placeholder, label, labelStyle, rules, error, editable = true, onKeyPress, returnKeyType }: Props) => {
+const Input = ({ control, name, placeholder, label, labelStyle, rules, error, editable = true, onKeyPress, returnKeyType, secureTextEntry = false }: Props) => {
   return (
     <Controller
       control={control}
@@ -30,6 +31,7 @@ const Input = ({ control, name, placeholder, label, labelStyle, rules, error, ed
             onKeyPress={onKeyPress}
             returnKeyType={returnKeyType}
             placeholderTextColor={Colors.LightGrey}
+            secureTextEntry={secureTextEntry}
           />
           <Text style={AppStyles.textError}>{error && error.message}</Text>
         </View>

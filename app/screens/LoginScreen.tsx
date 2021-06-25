@@ -84,7 +84,7 @@ const LoginScreen = () => {
 
   const rules: any = {
     userName: Validations.Required(t),
-    password: Validations.Required(t),
+    password: addressEntered ? Validations.Required(t) : undefined,
   };
 
   // TODO: focus signature on enter
@@ -111,8 +111,7 @@ const LoginScreen = () => {
             />
 
             <>
-              {addressEntered && (
-                <>
+                <View style={addressEntered ? undefined : AppStyles.noDisplay}>
                   <SpacerV />
                   <H3 text={t("session.signing_message")}></H3>
 
@@ -129,9 +128,8 @@ const LoginScreen = () => {
                   </View>
                   <SpacerV />
                   {/* TODO: verify go type */}
-                  <Input name="password" label={t("model.user.signature")} returnKeyType="go" />
-                </>
-              )}
+                  <Input name="password" label={t("model.user.signature")} returnKeyType="go" secureTextEntry />
+                </View>
             </>
 
             <>

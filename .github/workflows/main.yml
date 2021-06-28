@@ -22,7 +22,7 @@ jobs:
           expo-version: 4.x
 
       - name: Install packages
-        run: expo install
+        run: npm install
 
       - name: Optimize assets
         run: npx expo-optimize

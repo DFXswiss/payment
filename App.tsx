@@ -7,6 +7,8 @@ import LoginScreen from "./app/screens/LoginScreen";
 import Routes from "./app/config/Routes";
 import "./app/i18n/i18n";
 import NotFoundScreen from "./app/screens/NotFoundScreen";
+import { navigationRef } from "./app/utils/NavigationHelper";
+import GtcScreen from "./app/screens/GtcScreen";
 
 const App = () => {
   const stack = createStackNavigator();
@@ -17,16 +19,18 @@ const App = () => {
       screens: {
         [Routes.Home]: "/",
         [Routes.Login]: "login",
+        [Routes.Gtc]: "gtc",
         [Routes.NotFound]: "*",
       },
     },
   };
 
   return (
-    <NavigationContainer linking={linking}>
+    <NavigationContainer linking={linking} ref={navigationRef}>
       <stack.Navigator screenOptions={{ headerShown: false }}>
         <stack.Screen name={Routes.Home} component={HomeScreen}></stack.Screen>
         <stack.Screen name={Routes.Login} component={LoginScreen}></stack.Screen>
+        <stack.Screen name={Routes.Gtc} component={GtcScreen}></stack.Screen>
         <stack.Screen name={Routes.NotFound} component={NotFoundScreen}></stack.Screen>
       </stack.Navigator>
     </NavigationContainer>

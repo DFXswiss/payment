@@ -1,44 +1,36 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Observable, ReplaySubject } from "rxjs";
 
-const CredentialsKey = "credentials";
+const SessionKey = "session";
 
-export interface ICredentials {
+export interface Credentials {
   address?: string;
   signature?: string;
+  walletId?: number;
 }
 
-export class Credentials implements ICredentials {
-  public address?: string;
-  public signature?: string;
-
-  public get isLoggedIn(): boolean {
-    return !!this.address;
-  }
-
-  public static create(credentials: ICredentials): Credentials {
-    return Object.assign(new Credentials(), credentials);
-  }
+export interface Session extends Credentials {
+  isLoggedIn: boolean;
 }
 
 class AuthServiceClass {
-  private credentials$ = new ReplaySubject<Credentials>();
+  private session$ = new ReplaySubject<Session>();
 
   constructor() {
-    this.Credentials.then((credentials) => this.credentials$.next(credentials));
+    this.Session.then((session) => this.session$.next(session));
   }
 
-  public get Credentials$(): Observable<Credentials> {
-    return this.credentials$;
+  public get Session$(): Observable<Session> {
+    return this.session$;
   }
 
-  public get Credentials(): Promise<Credentials> {
-    return AsyncStorage.getItem(CredentialsKey).then((data) => Credentials.create(JSON.parse(data ?? "{}")));
+  public get Session(): Promise<Session> {
+    return AsyncStorage.getItem(SessionKey).then((data) => JSON.parse(data ?? "{}"));
   }
 
-  public updateCredentials(credentials: ICredentials): Promise<void> {
-    return AsyncStorage.setItem(CredentialsKey, JSON.stringify(credentials)).then(() =>
-      this.credentials$.next(Credentials.create(credentials))
+  public updateSession(session: Session): Promise<void> {
+    return AsyncStorage.setItem(SessionKey, JSON.stringify(session)).then(() =>
+      this.session$.next(session)
     );
   }
 }

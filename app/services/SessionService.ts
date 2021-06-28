@@ -1,21 +1,31 @@
-
 import { getUser, postUser } from "./ApiService";
-import AuthService, { ICredentials } from "./AuthService";
-
-const WalletId = 1;
+import AuthService, { Credentials } from "./AuthService";
 
 class SessionServiceClass {
+  public register(credentials?: Credentials): Promise<void> {
+    return postUser({
+      address: credentials?.address ?? "",
+      signature: credentials?.signature ?? "",
+      walletId: credentials?.walletId ?? 0,
+    }).then(() => this.updateSession(true, credentials));
+  }
 
-  public login(credentials: ICredentials): Promise<void> {
-    return (
-      getUser(credentials)
-        .catch(() => postUser({ address: credentials.address ?? "", signature: credentials.signature ?? "", walletId: WalletId }))
-        .then(() => AuthService.updateCredentials(credentials))
-    );
+  public login(credentials: Credentials): Promise<void> {
+    return getUser(credentials)
+      .catch((error) => {
+        return this.updateSession(false, credentials).then(() => {
+          throw error;
+        });
+      })
+      .then(() => this.updateSession(true, credentials));
   }
 
   public logout(): Promise<void> {
-    return AuthService.updateCredentials({ address: undefined, signature: undefined });
+    return AuthService.updateSession({ address: undefined, signature: undefined, walletId: undefined, isLoggedIn: false });
+  }
+
+  private updateSession(isLoggedIn: boolean, credentials?: Credentials): Promise<void> {
+    return AuthService.updateSession({ ...credentials, isLoggedIn: isLoggedIn });
   }
 }
 

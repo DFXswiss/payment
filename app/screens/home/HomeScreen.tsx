@@ -1,4 +1,3 @@
-import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "react-native";
@@ -8,22 +7,20 @@ import Loading from "../../components/util/Loading";
 import Row from "../../components/util/Row";
 import UserEdit from "../../components/edit/UserEdit";
 import Colors from "../../config/Colors";
-import Routes from "../../config/Routes";
 import { SpacerV } from "../../elements/Spacers";
 import { H1, H2 } from "../../elements/Texts";
-import withCredentials from "../../hocs/withCredentials";
+import withSession from "../../hocs/withSession";
 import { User } from "../../models/User";
 import { getActiveRoutes, getUser } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
-import { Credentials } from "../../services/AuthService";
+import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
 import { PaymentRoutes } from "../../models/PaymentRoutes";
 import AppLayout from "../../components/AppLayout";
 import useGuard from "../../hooks/useGuard";
 
-const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
+const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
-  const nav = useNavigation();
 
   // TODO: full KYC Access
 
@@ -45,8 +42,8 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   };
 
   useEffect(() => {
-    if (credentials) {
-      if (credentials.isLoggedIn) {
+    if (session) {
+      if (session.isLoggedIn) {
         Promise.all([
           getUser().then((user) => setUser(user)),
           getActiveRoutes().then(setRoutes),
@@ -55,12 +52,11 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
           .finally(() => setLoading(false));
       } else {
         reset();
-        nav.navigate(Routes.Login);
       }
     }
-  }, [credentials]);
+  }, [session]);
   
-  useGuard(() => credentials && !credentials.isLoggedIn)
+  useGuard(() => session && !session.isLoggedIn, [session])
 
   return (
     <AppLayout>
@@ -129,4 +125,4 @@ const HomeScreen = ({ credentials }: { credentials?: Credentials }) => {
   );
 };
 
-export default withCredentials(HomeScreen);
+export default withSession(HomeScreen);

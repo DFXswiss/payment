@@ -6,16 +6,16 @@ import { changeLanguage } from "../i18n/i18n";
 import { Picker } from "@react-native-picker/picker";
 import AppStyles from "../styles/AppStyles";
 import { useTranslation } from "react-i18next";
-import withCredentials from "../hocs/withCredentials";
+import withSession from "../hocs/withSession";
 import SettingsService, { AppSettings } from "../services/SettingsService";
 import withSettings from "../hocs/withSettings";
-import { Credentials } from "../services/AuthService";
+import { Session } from "../services/AuthService";
 import SessionService from "../services/SessionService";
 import { ActionLink } from "../elements/Buttons";
 import { useNavigation } from "@react-navigation/native";
 import { Environment } from "../env/Environment";
 
-const Header = ({ credentials, settings }: { credentials?: Credentials; settings?: AppSettings }) => {
+const Header = ({ session, settings }: { session?: Session; settings?: AppSettings }) => {
   const { t } = useTranslation();
   const nav = useNavigation();
 
@@ -26,7 +26,7 @@ const Header = ({ credentials, settings }: { credentials?: Credentials; settings
   }, [settings]);
 
   const logout = () => SessionService.logout().then(() => nav.navigate(Routes.Login));
-  const goHome = () => nav.navigate(credentials?.isLoggedIn ? Routes.Home : Routes.Login);
+  const goHome = () => nav.navigate(session?.isLoggedIn ? Routes.Home : Routes.Login);
   const languageChanged = (language: string) => {
     setSelectedLanguage(language);
     changeLanguage(language);
@@ -39,7 +39,7 @@ const Header = ({ credentials, settings }: { credentials?: Credentials; settings
       </TouchableOpacity>
 
       <View style={[AppStyles.containerHorizontal, AppStyles.mla, { alignItems: "baseline" }]}>
-        {credentials?.isLoggedIn && <ActionLink onPress={() => logout()} label={t("action.logout")} />}
+        {session?.isLoggedIn && <ActionLink onPress={() => logout()} label={t("action.logout")} />}
 
         <ActionLink
           style={AppStyles.ml10}
@@ -90,4 +90,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withSettings(withCredentials(Header));
+export default withSettings(withSession(Header));

@@ -30,11 +30,14 @@ const signingMessage = (address: string) =>
   `By signing this message, you confirm that you are the sole owner of the provided DeFiChain address and are in possession of its private key. Your ID: ${address}`
     .split(" ")
     .join("_");
+const DefaultWalletId = 1;
 
 const LoginScreen = () => {
   const nav = useNavigation();
   const route = useRoute();
   const { t } = useTranslation();
+
+  const params = route.params as any;
 
   const {
     control,
@@ -64,17 +67,26 @@ const LoginScreen = () => {
       };
     }
 
-    SessionService.login({ address: data.userName, signature: data.password })
+    const walletId = +(params?.walletId ?? DefaultWalletId);
+
+    SessionService.login({ address: data.userName, signature: data.password, walletId: walletId })
       .finally(() => setIsProcessing(false))
       .then(() => nav.navigate(Routes.Home))
-      .catch(() => setError(true));
+      .catch(() => {
+        // new user
+        nav.navigate(Routes.Gtc);
+        return;
+
+        // TODO: error messages (if invalid address/signature)
+        setError(true);
+      });
   };
 
   useEffect(() => {
-    const params = route.params as any;
     if (params?.lang) {
       changeLanguage(params.lang);
     }
+
     if (params?.address && params?.signature) {
       setValue("userName", params.address);
       setValue("password", params.signature);
@@ -111,25 +123,25 @@ const LoginScreen = () => {
             />
 
             <>
-                <View style={addressEntered ? undefined : AppStyles.noDisplay}>
-                  <SpacerV />
-                  <H3 text={t("session.signing_message")}></H3>
+              <View style={addressEntered ? undefined : AppStyles.noDisplay}>
+                <SpacerV />
+                <H3 text={t("session.signing_message")}></H3>
 
-                  <View style={[AppStyles.containerHorizontal, styles.signingMessage]}>
-                    <View style={styles.textContainer}>
-                      <Text>{signingMessage(address)}</Text>
-                    </View>
-                    <SpacerH />
-                    <IconButton
-                      icon="copy"
-                      color={Colors.Grey}
-                      onPress={() => Clipboard.setString(signingMessage(address))}
-                    />
+                <View style={[AppStyles.containerHorizontal, styles.signingMessage]}>
+                  <View style={styles.textContainer}>
+                    <Text>{signingMessage(address)}</Text>
                   </View>
-                  <SpacerV />
-                  {/* TODO: verify go type */}
-                  <Input name="password" label={t("model.user.signature")} returnKeyType="go" secureTextEntry />
+                  <SpacerH />
+                  <IconButton
+                    icon="copy"
+                    color={Colors.Grey}
+                    onPress={() => Clipboard.setString(signingMessage(address))}
+                  />
                 </View>
+                <SpacerV />
+                {/* TODO: verify go type */}
+                <Input name="password" label={t("model.user.signature")} returnKeyType="go" secureTextEntry />
+              </View>
             </>
 
             <>

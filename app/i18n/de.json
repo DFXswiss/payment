@@ -13,7 +13,9 @@
       "save": "Speichern",
       "abort": "Abbrechen",
       "home": "Zurück zur Startseite",
-      "next": "Weiter"
+      "next": "Weiter",
+      "back": "Zurück",
+      "accept": "Akzeptieren"
     },
     "feedback": {
       "page_not_found": "Seite nicht gefunden!"
@@ -27,6 +29,9 @@
       "sign_up": "Anmelden / Registrieren",
       "signing_message": "Nachricht zum Signieren",
       "login_failed": "Login fehlgeschlagen!"
+    },
+    "gtc": {
+      "title": "Bitte akzeptiere unsere AGBs"
     },
     "model": {
       "user": {

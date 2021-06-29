@@ -162,7 +162,7 @@ const LoginScreen = () => {
                   disabled={isProcessing}
                 />
               </View>
-              <>{isProcessing && <Loading />}</>
+              {isProcessing && <Loading />}
             </View>
           </Form>
         </View>

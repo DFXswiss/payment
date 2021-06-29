@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, ReactNode } from "react";
 import { Control, FieldError } from "react-hook-form";
 import { NativeSyntheticEvent, TextInputKeyPressEventData, TextStyle } from "react-native";
 
@@ -13,7 +13,7 @@ export interface ControlProps {
 }
 
 interface Props {
-  children: ReactElement | ReactElement[];
+  children: ReactNode;
   control: Control<any>;
   rules: any;
   errors: any;
@@ -26,10 +26,10 @@ const Form = ({ children, control, rules, errors, editable = true, onSubmit }: P
     if (e.nativeEvent.key === "Enter" && onSubmit) onSubmit();
   };
 
-  const enrichElements = (elements: ReactElement[] | ReactElement): ReactElement[] | undefined => {
+  const enrichElements = (elements: ReactNode): ReactElement[] | undefined => {
     if (!elements) return undefined;
 
-    return (Array.isArray(elements) ? [...elements] : [elements]).map((element, i) => enrichElement(element, i));
+    return (Array.isArray(elements) ? [...elements] : [elements]).map((element, i) => enrichElement(element as ReactElement, i));
   };
 
   const enrichElement = (element: ReactElement, index: number): ReactElement => {

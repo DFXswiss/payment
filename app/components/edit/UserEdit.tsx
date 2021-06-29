@@ -72,11 +72,22 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
         <Input name="location" label={t("model.user.location")} />
       </View>
       <SpacerV />
-      <DeFiPicker name="country" label={t("model.user.country")} items={countries.filter((c) => c.enable)} idProp="id" labelProp="name" />
+      <DeFiPicker
+        name="country"
+        label={t("model.user.country")}
+        items={countries.filter((c) => c.enable)}
+        idProp="id"
+        labelProp="name"
+      />
       <SpacerV />
       <Input name="mail" label={t("model.user.mail")} />
       <SpacerV />
-      <PhoneNumber name="phoneNumber" label={t("model.user.phone_number")} placeholder="69 1234 5678" wrap={!Device.SM} />
+      <PhoneNumber
+        name="mobileNumber"
+        label={t("model.user.mobile_number")}
+        placeholder="69 1234 5678"
+        wrap={!Device.SM}
+      />
       <SpacerV />
       <Input name="usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />
       <SpacerV />

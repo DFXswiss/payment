@@ -32,7 +32,7 @@
       "login_failed": "Login fehlgeschlagen!"
     },
     "gtc": {
-      "title": "Bitte akzeptiere unsere AGBs",
+      "title": "Allgemeine Geschäftsbedingungen",
       "text": [
         { "title": "", "text": "Zuletzt aktualisiert: May 19th, 2021" },
         { "title": "", "text": "Im Falle von Unstimmigkeiten ist die englische Version maßgebend." },
@@ -78,7 +78,7 @@
         "location": "Ort",
         "country": "Land",
         "mail": "E-Mail Adresse",
-        "phone_number": "Telefonnummer",
+        "mobile_number": "Handynummer",
         "used_ref": "Verwendeter Ref-Code",
         "ref": "Ref-Code zum Verteilen"
       },

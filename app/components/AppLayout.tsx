@@ -1,8 +1,7 @@
-import React, { ReactElement, useEffect } from "react";
+import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { DefaultTheme, Snackbar } from "react-native-paper";
-import { Theme } from "react-native-paper/lib/typescript/types";
+import { Snackbar } from "react-native-paper";
 import Sizes from "../config/Sizes";
 import NotificationService from "../services/NotificationService";
 import AppStyles from "../styles/AppStyles";
@@ -11,8 +10,8 @@ import Header from "./Header";
 const AppLayout = ({ children }: { children: ReactElement | ReactElement[] }) => {
   const { t } = useTranslation();
 
-  const [snackVisible, setSnackVisible] = React.useState<boolean>(false);
-  const [snackText, setSnackText] = React.useState<string>();
+  const [snackVisible, setSnackVisible] = useState<boolean>(false);
+  const [snackText, setSnackText] = useState<string>();
 
   useEffect(() => {
     const subscription = NotificationService.Notifications$.subscribe((text) => {

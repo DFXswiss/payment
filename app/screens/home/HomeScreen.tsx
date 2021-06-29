@@ -29,8 +29,8 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const [routes, setRoutes] = useState<PaymentRoutes>();
   const [isUserEdit, setIsUserEdit] = useState(false);
 
-  const onUserChanged = (user: User) => {
-    setUser(user);
+  const onUserChanged = (newUser: User) => {
+    setUser(newUser);
     setIsUserEdit(false);
   };
 

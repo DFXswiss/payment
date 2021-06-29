@@ -45,7 +45,7 @@ export interface User extends NewUser {
   location: string;
   country: Country;
   mail: string;
-  phoneNumber: string;
+  mobileNumber: string;
 
   ref: string;
   usedRef: string;
@@ -65,7 +65,7 @@ export const fromUserDto = (user: UserDto): User => ({
   location: user.location,
   country: user.country,
   mail: user.mail,
-  phoneNumber: user.phone_number,
+  mobileNumber: user.phone_number,
   ref: user.ref,
   usedRef: user.used_ref,
   walletId: user.wallet_id,
@@ -84,7 +84,7 @@ export const toUserDto = (user: User): UserDto => ({
   location: user.location,
   country: user.country,
   mail: user.mail,
-  phone_number: user.phoneNumber,
+  phone_number: user.mobileNumber,
   ref: user.ref,
   used_ref: user.usedRef,
   wallet_id: user.walletId,

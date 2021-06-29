@@ -7,7 +7,7 @@ import { Picker } from "@react-native-picker/picker";
 import AppStyles from "../styles/AppStyles";
 import { useTranslation } from "react-i18next";
 import withSession from "../hocs/withSession";
-import SettingsService, { AppSettings } from "../services/SettingsService";
+import { AppSettings } from "../services/SettingsService";
 import withSettings from "../hocs/withSettings";
 import { Session } from "../services/AuthService";
 import SessionService from "../services/SessionService";
@@ -22,7 +22,9 @@ const Header = ({ session, settings }: { session?: Session; settings?: AppSettin
   const [selectedLanguage, setSelectedLanguage] = useState(Environment.defaultLanguage);
 
   useEffect(() => {
-    SettingsService.Settings.then((settings) => setSelectedLanguage(settings.language));
+    if (settings) {
+      setSelectedLanguage(settings.language);
+    }
   }, [settings]);
 
   const logout = () => SessionService.logout().then(() => nav.navigate(Routes.Login));
@@ -34,12 +36,12 @@ const Header = ({ session, settings }: { session?: Session; settings?: AppSettin
 
   return (
     <View style={[AppStyles.containerHorizontal, styles.container]}>
-      <TouchableOpacity activeOpacity={1} style={styles.logoTouch} onPress={() => goHome()}>
+      <TouchableOpacity activeOpacity={1} style={styles.logoTouch} onPress={goHome}>
         <Image style={styles.logo} source={require("../assets/logo_defichange.png")} />
       </TouchableOpacity>
 
       <View style={[AppStyles.containerHorizontal, AppStyles.mla, { alignItems: "baseline" }]}>
-        {session?.isLoggedIn && <ActionLink onPress={() => logout()} label={t("action.logout")} />}
+        {session?.isLoggedIn && <ActionLink onPress={logout} label={t("action.logout")} />}
 
         <ActionLink
           style={AppStyles.ml10}

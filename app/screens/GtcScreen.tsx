@@ -37,9 +37,9 @@ const GtcScreen = ({ session }: { session?: Session }) => {
   return (
     <AppLayout>
       <View style={AppStyles.container}>
-        <H3 style={AppStyles.center} text={t("gtc.title")} />
+        <H1 style={AppStyles.center} text={t("gtc.title")} />
 
-        <SpacerV />
+        <SpacerV height={50} />
 
         {[...Array(gtcLength).keys()].map((_, i) => (
           <View key={i}>
@@ -53,7 +53,7 @@ const GtcScreen = ({ session }: { session?: Session }) => {
         <View style={AppStyles.containerHorizontal}>
           <ActionLink label={t("action.back")} onPress={() => nav.navigate(Routes.Login)} />
           <View style={AppStyles.mla}>
-            <LoadingButton title={t("action.accept")} isLoading={isProcessing} onPress={() => register()} />
+            <LoadingButton title={t("action.accept")} isLoading={isProcessing} onPress={register} />
           </View>
         </View>
       </View>

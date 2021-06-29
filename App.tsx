@@ -19,7 +19,7 @@ const App = () => {
       screens: {
         [Routes.Home]: "/",
         [Routes.Login]: "login",
-        [Routes.Gtc]: "gtc",
+        [Routes.Gtc]: "legal",
         [Routes.NotFound]: "*",
       },
     },

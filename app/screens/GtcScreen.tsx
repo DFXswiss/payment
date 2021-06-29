@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { View, Text } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import AppLayout from "../components/AppLayout";
 import LoadingButton from "../components/util/LoadingButton";
 import Routes from "../config/Routes";
@@ -14,6 +14,8 @@ import useGuard from "../hooks/useGuard";
 import { Session } from "../services/AuthService";
 import SessionService from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
+
+const gtcLength = require("../i18n/de.json").common.gtc.text.length - 1;
 
 const GtcScreen = ({ session }: { session?: Session }) => {
   const nav = useNavigation();
@@ -37,22 +39,14 @@ const GtcScreen = ({ session }: { session?: Session }) => {
       <View style={AppStyles.container}>
         <H3 style={AppStyles.center} text={t("gtc.title")} />
 
-        <Text>TODO: add GTCs</Text>
-        <Text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate porro iste nisi ducimus, rerum eius.
-          Fugiat dicta iste reiciendis tenetur. Distinctio accusamus iusto, harum eos tempore commodi culpa numquam
-          unde?
-        </Text>
-        <Text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate porro iste nisi ducimus, rerum eius.
-          Fugiat dicta iste reiciendis tenetur. Distinctio accusamus iusto, harum eos tempore commodi culpa numquam
-          unde?
-        </Text>
-        <Text>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate porro iste nisi ducimus, rerum eius.
-          Fugiat dicta iste reiciendis tenetur. Distinctio accusamus iusto, harum eos tempore commodi culpa numquam
-          unde?
-        </Text>
+        <SpacerV />
+
+        {[...Array(gtcLength).keys()].map((_, i) => (
+          <View key={i}>
+            <H3 text={t(`gtc.text.${i}.title`)} />
+            <Text style={styles.gtcText}>{t(`gtc.text.${i}.text`)}</Text>
+          </View>
+        ))}
 
         <SpacerV />
 
@@ -66,5 +60,9 @@ const GtcScreen = ({ session }: { session?: Session }) => {
     </AppLayout>
   );
 };
+
+const styles = StyleSheet.create({
+  gtcText: { marginBottom: 10 }
+});
 
 export default withSession(GtcScreen);

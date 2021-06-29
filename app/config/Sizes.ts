@@ -1,3 +1,3 @@
 export default {
-  AppPadding: 10,
+  AppPadding: 20,
 };

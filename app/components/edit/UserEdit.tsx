@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { Dimensions, View } from "react-native";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { Country } from "../../models/Country";
 import { User } from "../../models/User";
@@ -51,6 +51,14 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
     usedRef: Validations.Ref(t),
   };
 
+  // TODO: dimensions API, hook?
+  // Breakpoint	Class infix	Dimensions
+  // X-Small	None	<576px
+  // Small	sm	≥576px
+  // Medium	md	≥768px
+  // Large	lg	≥992px
+  // Extra large	xl	≥1200px
+  // Extra extra large	xxl	≥1400px
   return (
     <Form control={control} rules={rules} errors={errors} editable={!isSaving} onSubmit={handleSubmit(onSubmit)}>
       <View style={AppStyles.containerHorizontalWrap}>
@@ -58,20 +66,24 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
         <SpacerH />
         <Input name="lastName" label={t("model.user.last_name")} />
       </View>
+      <SpacerV />
       <View style={AppStyles.containerHorizontalWrap}>
         <Input name="street" label={t("model.user.street")} />
         <SpacerH />
         <Input name="houseNumber" label={t("model.user.house_number")} />
       </View>
+      <SpacerV />
       <View style={AppStyles.containerHorizontalWrap}>
         <Input name="zip" label={t("model.user.zip")} />
         <SpacerH />
         <Input name="location" label={t("model.user.location")} />
       </View>
+      <SpacerV />
       <DeFiPicker name="country" label={t("model.user.country")} items={countries.filter((c) => c.enable)} idProp="id" labelProp="name" />
       <SpacerV />
       <Input name="mail" label={t("model.user.mail")} />
-      <PhoneNumber name="phoneNumber" label={t("model.user.phone_number")} placeholder="69 1234 5678" />
+      <SpacerV />
+      <PhoneNumber name="phoneNumber" label={t("model.user.phone_number")} placeholder="69 1234 5678" wrap={Dimensions.get("window").width < 576} />
       <SpacerV />
       <Input name="usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />
       <SpacerV />

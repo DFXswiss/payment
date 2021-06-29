@@ -32,6 +32,7 @@ const Header = ({ session, settings }: { session?: Session; settings?: AppSettin
     changeLanguage(language);
   };
 
+  // TODO: use aspect ratio?
   return (
     <View style={[AppStyles.containerHorizontal, styles.container]}>
       <TouchableOpacity activeOpacity={1} style={styles.logoTouch} onPress={() => goHome()}>

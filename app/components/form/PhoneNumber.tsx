@@ -4,7 +4,7 @@ import React from "react";
 import { Controller, useWatch } from "react-hook-form";
 import { View, Text, TextInput, NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native";
 import Colors from "../../config/Colors";
-import { SpacerH } from "../../elements/Spacers";
+import { SpacerH, SpacerV } from "../../elements/Spacers";
 import AppStyles from "../../styles/AppStyles";
 import { ControlProps } from "./Form";
 import { byIso } from "country-code-lookup";
@@ -14,6 +14,7 @@ import Validations from "../../utils/Validations";
 interface Props extends ControlProps {
   placeholder?: string;
   onKeyPress?: (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => void;
+  wrap?: boolean;
 }
 
 interface IPhoneNumber {
@@ -43,6 +44,7 @@ const PhoneNumber = ({
   error,
   editable = true,
   onKeyPress,
+  wrap = false,
 }: Props) => {
   const { t } = useTranslation();
   const phoneNumber = useWatch({ control, name: "phoneNumber", defaultValue: "" });
@@ -61,7 +63,7 @@ const PhoneNumber = ({
   // TODO: auto-select phone codes with selected country
 
   // TODO: bug when undefined-select (only if form already submitted)
-
+  // TODO: SonarLint
   const updateRules = (rules?: any): any => ({
     ...rules,
     ...Validations.Phone(t),
@@ -73,7 +75,7 @@ const PhoneNumber = ({
       render={({ field: { onChange, onBlur, value } }) => (
         <>
           {label && <Text style={[AppStyles.label, labelStyle]}>{label}</Text>}
-          <View style={AppStyles.containerHorizontal}>
+          <View style={!wrap && AppStyles.containerHorizontal}>
             <Picker
               style={[
                 AppStyles.control,
@@ -89,10 +91,10 @@ const PhoneNumber = ({
                 <Picker.Item key={code.code} label={`${code.country} ${code.dialCode}`} value={code.dialCode} />
               ))}
             </Picker>
-            <SpacerH />
+            { wrap ? <SpacerV height={5} /> : <SpacerH />}
             <TextInput
               onBlur={onBlur}
-              onChangeText={(value) => onChange(updateNumber({ number: value }))}
+              onChangeText={(val) => onChange(updateNumber({ number: val }))}
               value={parseNumber().number ?? ""}
               style={[
                 AppStyles.control,

@@ -5,8 +5,6 @@ import Colors from "../../config/Colors";
 import { useTranslation } from "react-i18next";
 import { SpacerV } from "../../elements/Spacers";
 import AppStyles from "../../styles/AppStyles";
-import { Icon } from "react-native-elements";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { H2 } from "../../elements/Texts";
 import IconButton from "./IconButton";
 
@@ -59,6 +57,7 @@ const styles = StyleSheet.create({
   container: {
     margin: "auto",
     maxHeight: "90vh",
+    maxWidth: "100%",
     backgroundColor: Colors.White,
   },
   scrollContainer: {

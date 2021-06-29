@@ -8,10 +8,11 @@ import LoadingButton from "../components/util/LoadingButton";
 import Routes from "../config/Routes";
 import { ActionLink } from "../elements/Buttons";
 import { SpacerV } from "../elements/Spacers";
-import { H3 } from "../elements/Texts";
+import { H1, H3 } from "../elements/Texts";
 import withSession from "../hocs/withSession";
 import useGuard from "../hooks/useGuard";
 import { Session } from "../services/AuthService";
+import NotificationService from "../services/NotificationService";
 import SessionService from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
 
@@ -30,8 +31,8 @@ const GtcScreen = ({ session }: { session?: Session }) => {
     setIsProcessing(true);
     SessionService.register(session)
       .finally(() => setIsProcessing(false))
-      .then(() => nav.navigate(Routes.Home));
-    // TODO: error handling
+      .then(() => nav.navigate(Routes.Home))
+      .catch(() => NotificationService.show(t("feedback.register_failed")));
   };
 
   return (

@@ -16,6 +16,8 @@ import PhoneNumber from "../form/PhoneNumber";
 import LoadingButton from "../util/LoadingButton";
 import Validations from "../../utils/Validations";
 import Device from "../../utils/Device";
+import NotificationService from "../../services/NotificationService";
+import { Alert } from "../../elements/Texts";
 
 interface Props {
   isVisible: boolean;
@@ -33,17 +35,26 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
   } = useForm<User>({ defaultValues: useMemo(() => user, [user]) });
 
   const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState(false);
   const [countries, setCountries] = useState<Country[]>([]);
 
-  useEffect(() => reset(user), [isVisible]);
   useEffect(() => {
-    getCountries().then(setCountries);
+    reset(user);
+    setError(false);
+  }, [isVisible]);
+  useEffect(() => {
+    getCountries()
+      .then(setCountries)
+      .catch(() => NotificationService.show(t("feedback.load_failed")));
   }, []);
 
   const onSubmit = (user: User) => {
     setIsSaving(true);
+    setError(false);
+
     putUser(user)
       .then((user) => onUserChanged(user))
+      .catch(() => setError(true))
       .finally(() => setIsSaving(false));
   };
 
@@ -91,6 +102,13 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
       <SpacerV />
       <Input name="usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />
       <SpacerV />
+
+      {error && (
+        <>
+          <Alert label={t("feedback.save_failed")} />
+          <SpacerV />
+        </>
+      )}
 
       <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
         <LoadingButton title={t("action.save")} isLoading={isSaving} onPress={handleSubmit(onSubmit)} />

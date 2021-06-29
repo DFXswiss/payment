@@ -1,6 +1,21 @@
 {
   "common": {
-    "welcome": "Welcome!",
-    "user_data": "Your User Data"
+    "general": {
+      "welcome": "Welcome!",
+      "wiki": "Wiki",
+      "homepage": "Homepage",
+      "telegram": "Telegram"
+    },
+    "action": {
+      "login": "Login",
+      "logout": "Logout",
+      "edit": "Edit",
+      "save": "Save",
+      "abort": "Abort",
+      "home": "Back to Home",
+      "next": "Next",
+      "back": "Back",
+      "accept": "Accept"
+    }
   }
 }

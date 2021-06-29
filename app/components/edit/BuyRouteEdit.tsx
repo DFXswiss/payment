@@ -4,9 +4,11 @@ import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SpacerV } from "../../elements/Spacers";
+import { Alert } from "../../elements/Texts";
 import { Asset } from "../../models/Asset";
 import { BuyRoute } from "../../models/BuyRoute";
 import { getAssets, postBuyRoute } from "../../services/ApiService";
+import NotificationService from "../../services/NotificationService";
 import AppStyles from "../../styles/AppStyles";
 import Validations from "../../utils/Validations";
 import DeFiPicker from "../form/DeFiPicker";
@@ -30,34 +32,58 @@ const BuyRouteEdit = ({
   } = useForm<BuyRoute>();
 
   const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState(false);
   const [assets, setAssets] = useState<Asset[]>([]);
 
-  useEffect(() => reset({ asset: assets[0] }), [isVisible]);
   useEffect(() => {
-    getAssets().then(setAssets);
+    reset({ asset: assets[0] });
+    setError(false);
+  }, [isVisible]);
+  useEffect(() => {
+    getAssets()
+      .then(setAssets)
+      .catch(() => NotificationService.show(t("feedback.load_failed")));
   }, []);
 
   const onSubmit = (route: BuyRoute) => {
     setIsSaving(true);
+    setError(false);
+
     postBuyRoute(route)
       .then((newRoute) => onRouteCreated(newRoute))
+      .catch(() => setError(true))
       .finally(() => setIsSaving(false));
   };
 
   // TODO: react on collisions (buy&sell)
 
+  // TODO: DeFiPicker does not reset on reset!
+
   const rules: any = {
     asset: Validations.Required(t),
-    iban: { ...Validations.Required(t), ...Validations.Iban(t) }
+    iban: { ...Validations.Required(t), ...Validations.Iban(t) },
   };
 
   return (
     <Form control={control} rules={rules} errors={errors} editable={!isSaving} onSubmit={handleSubmit(onSubmit)}>
-      <DeFiPicker name="asset" label={t("model.route.asset")} items={assets.filter((a) => a.buyable)} idProp="id" labelProp="name" />
+      <DeFiPicker
+        name="asset"
+        label={t("model.route.asset")}
+        items={assets.filter((a) => a.buyable)}
+        idProp="id"
+        labelProp="name"
+      />
       <SpacerV />
 
       <Input name="iban" label={t("model.route.iban")} placeholder="DE89 3704 0044 0532 0130 00" />
       <SpacerV />
+
+      {error && (
+        <>
+          <Alert label={t("feedback.save_failed")} />
+          <SpacerV />
+        </>
+      )}
 
       <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
         <LoadingButton title={t("action.save")} isLoading={isSaving} onPress={handleSubmit(onSubmit)} />

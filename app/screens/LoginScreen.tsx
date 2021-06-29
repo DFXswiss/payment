@@ -51,6 +51,8 @@ const LoginScreen = () => {
   const [error, setError] = useState(false);
   const [addressEntered, setAddressEntered] = useState(false);
 
+  // TODO: redirect to home if already logged in?
+
   const onSubmit = (direct: boolean) => (data: LoginData) => {
     if (!direct && !addressEntered) {
       setAddressEntered(true);
@@ -122,37 +124,35 @@ const LoginScreen = () => {
               placeholder="8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG"
             />
 
-            <>
-              <View style={addressEntered ? undefined : AppStyles.noDisplay}>
-                <SpacerV />
-                <H3 text={t("session.signing_message")}></H3>
+            <View style={addressEntered ? undefined : AppStyles.noDisplay}>
+              <SpacerV />
+              <H3 text={t("session.signing_message")}></H3>
 
-                <View style={[AppStyles.containerHorizontal, styles.signingMessage]}>
-                  <View style={styles.textContainer}>
-                    <Text>{signingMessage(address)}</Text>
-                  </View>
-                  <SpacerH />
-                  <IconButton
-                    icon="copy"
-                    color={Colors.Grey}
-                    onPress={() => Clipboard.setString(signingMessage(address))}
-                  />
+              <View style={[AppStyles.containerHorizontal, styles.signingMessage]}>
+                <View style={styles.textContainer}>
+                  <Text>{signingMessage(address)}</Text>
                 </View>
-                <SpacerV />
-                {/* TODO: verify go type */}
-                <Input name="password" label={t("model.user.signature")} returnKeyType="go" secureTextEntry />
+                <SpacerH />
+                <IconButton
+                  icon="copy"
+                  color={Colors.Grey}
+                  onPress={() => Clipboard.setString(signingMessage(address))}
+                />
               </View>
-            </>
+              <SpacerV />
+              {/* TODO: verify go type */}
+              <Input name="password" label={t("model.user.signature")} returnKeyType="go" secureTextEntry />
+            </View>
 
-            <>
-              {error && (
-                <>
-                  <SpacerV />
-                  <Alert label={t("session.login_failed")} />
-                </>
-              )}
-            </>
             <SpacerV />
+
+            {error && (
+              <>
+                <Alert label={t("session.login_failed")} />
+                <SpacerV />
+              </>
+            )}
+
             <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
               <View style={isProcessing && AppStyles.hidden}>
                 <Button

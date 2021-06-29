@@ -7,7 +7,7 @@ class NotificationServiceClass {
         return this.notifications$;
     }
 
-    public info(text: string): void {
+    public show(text: string): void {
         this.notifications$.next(text);
     }
 }

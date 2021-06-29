@@ -18,11 +18,13 @@ import RouteList from "./RouteList";
 import { PaymentRoutes } from "../../models/PaymentRoutes";
 import AppLayout from "../../components/AppLayout";
 import useGuard from "../../hooks/useGuard";
+import NotificationService from "../../services/NotificationService";
 
 const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
 
   // TODO: full KYC Access
+  // Button Limit erhöhen bei aktuellem KYC status display => Benutzerdaten => KYC Process starten
 
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User>();
@@ -44,19 +46,18 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   useEffect(() => {
     if (session) {
       if (session.isLoggedIn) {
-        Promise.all([
-          getUser().then((user) => setUser(user)),
-          getActiveRoutes().then(setRoutes),
-        ])
-          // TODO: error handling everywhere
+        Promise.all([getUser().then((user) => setUser(user)), getActiveRoutes().then(setRoutes)])
+          .catch(() => NotificationService.show(t("feedback.load_failed")))
           .finally(() => setLoading(false));
       } else {
         reset();
       }
     }
   }, [session]);
-  
-  useGuard(() => session && !session.isLoggedIn, [session])
+  // TODO: use cancelling if moved away?
+  // TODO: app insights
+
+  useGuard(() => session && !session.isLoggedIn, [session]);
 
   return (
     <AppLayout>
@@ -71,7 +72,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
         {isLoading && <Loading size="large" />}
 
-        {!isLoading ? (
+        {!isLoading && (
           <>
             {user && (
               <View>
@@ -88,7 +89,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                 {user.location ? <Row cells={[t("model.user.location"), user.location]} /> : null}
                 {user.country ? <Row cells={[t("model.user.country"), user.country.name]} /> : null}
                 {user.mail ? <Row cells={[t("model.user.mail"), user.mail]} /> : null}
-                {user.phoneNumber ? <Row cells={[t("model.user.phone_number"), user.phoneNumber]} /> : null}
+                {user.mobileNumber ? <Row cells={[t("model.user.mobile_number"), user.mobileNumber]} /> : null}
                 {user.usedRef ? <Row cells={[t("model.user.used_ref"), user.usedRef]} /> : null}
                 {/* TODO: KYC status, gebühr */}
 
@@ -99,15 +100,9 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
             <SpacerV height={50} />
 
-            {routes && (
-              <RouteList
-                routes={routes}
-                setRoutes={setRoutes}
-                user={user}
-              />
-            )}
+            {routes && <RouteList routes={routes} setRoutes={setRoutes} user={user} />}
           </>
-        ) : null}
+        )}
       </View>
     </AppLayout>
 

@@ -15,6 +15,7 @@ import Form from "../form/Form";
 import Input from "../form/Input";
 import LoadingButton from "../util/LoadingButton";
 import Validations from "../../utils/Validations";
+import NotificationService from "../../services/NotificationService";
 
 const SellRouteEdit = ({
   isVisible,
@@ -34,17 +35,26 @@ const SellRouteEdit = ({
   } = useForm<SellRoute>();
 
   const [isSaving, setIsSaving] = useState(false);
+  const [error, setError] = useState(false);
   const [fiats, setFiats] = useState<Fiat[]>([]);
 
-  useEffect(() => reset({ fiat: fiats[0] }), [isVisible]);
   useEffect(() => {
-    getFiats().then(setFiats);
+    reset({ fiat: fiats[0] });
+    setError(false);
+  }, [isVisible]);
+  useEffect(() => {
+    getFiats()
+      .then(setFiats)
+      .catch(() => NotificationService.show(t("feedback.load_failed")));
   }, []);
 
   const onSubmit = (route: SellRoute) => {
     setIsSaving(true);
+    setError(false);
+
     postSellRoute(route)
       .then((newRoute) => onRouteCreated(newRoute))
+      .catch(() => setError(true))
       .finally(() => setIsSaving(false));
   };
 
@@ -53,12 +63,11 @@ const SellRouteEdit = ({
     iban: { ...Validations.Required(t), ...Validations.Iban(t) },
   };
 
-  const userDataMissing = () =>
-    !(user?.firstName && user?.lastName && user?.street && user?.zip && user?.location && user?.country && user?.phoneNumber);
+  const userDataMissing = () => !(user?.firstName && user?.lastName && user?.street && user?.zip && user?.location && user?.country && user?.mobileNumber);
 
   return (
     <Form control={control} rules={rules} errors={errors} editable={!isSaving} onSubmit={handleSubmit(onSubmit)}>
-      <>{ userDataMissing() && <Alert label={t("model.user.data_missing")} />}</>
+      {userDataMissing() && <Alert label={t("model.user.data_missing")} />}
       <DeFiPicker
         name="fiat"
         label={t("model.route.fiat")}
@@ -70,6 +79,13 @@ const SellRouteEdit = ({
 
       <Input name="iban" label={t("model.route.iban")} placeholder="DE89 3704 0044 0532 0130 00" />
       <SpacerV />
+
+      {error && (
+        <>
+          <Alert label={t("feedback.save_failed")} />
+          <SpacerV />
+        </>
+      )}
 
       <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
         <LoadingButton

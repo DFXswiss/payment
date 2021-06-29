@@ -17,6 +17,7 @@ import { PaymentRoutes } from "../../models/PaymentRoutes";
 import { SellRoute } from "../../models/SellRoute";
 import { User } from "../../models/User";
 import { putBuyRoute, putSellRoute } from "../../services/ApiService";
+import NotificationService from "../../services/NotificationService";
 import AppStyles from "../../styles/AppStyles";
 import { update } from "../../utils/Utils";
 
@@ -54,6 +55,7 @@ const RouteList = ({ routes, setRoutes, user }: Props) => {
     route.active = false;
     putBuyRoute(route)
       .then(() => setRoutes((routes) => update(routes, {buyRoutes: routes?.buyRoutes.filter((r) => r.id !== route.id)})))
+      .catch(() => NotificationService.show(t("feedback.delete_failed")))
       .finally(() => setIsBuyLoading((obj) => update(obj, {[route.id]: false})));
   };
   const deleteSellRoute = (route: SellRoute) => {
@@ -61,6 +63,7 @@ const RouteList = ({ routes, setRoutes, user }: Props) => {
     route.active = false;
     putSellRoute(route)
       .then(() => setRoutes((routes) => update(routes, {sellRoutes: routes?.sellRoutes.filter((r) => r.id !== route.id)})))
+      .catch(() => NotificationService.show(t("feedback.delete_failed")))
       .finally(() => setIsSellLoading((obj) => update(obj, {[route.id]: false})));
   };
 

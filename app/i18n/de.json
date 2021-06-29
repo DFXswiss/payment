@@ -19,7 +19,11 @@
       "accept": "Akzeptieren"
     },
     "feedback": {
-      "page_not_found": "Seite nicht gefunden!"
+      "page_not_found": "Seite nicht gefunden!",
+      "load_failed": "Fehler beim Laden der Daten!",
+      "register_failed": "Fehler beim Registrieren!",
+      "delete_failed": "Fehler beim Löschen!",
+      "save_failed": "Fehler beim Speichern!"
     },
     "validation": {
       "required": "Pflichtfeld",

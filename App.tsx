@@ -9,9 +9,8 @@ import "./app/i18n/i18n";
 import NotFoundScreen from "./app/screens/NotFoundScreen";
 import { navigationRef } from "./app/utils/NavigationHelper";
 import GtcScreen from "./app/screens/GtcScreen";
-import { Provider, DefaultTheme } from "react-native-paper";
-
-// TODO: theme + use paper
+import { Provider } from "react-native-paper";
+import AppTheme from "./app/styles/AppTheme";
 
 const App = () => {
   const stack = createStackNavigator();
@@ -29,15 +28,15 @@ const App = () => {
   };
 
   return (
-    <Provider theme={DefaultTheme}>
-    <NavigationContainer linking={linking} ref={navigationRef}>
-      <stack.Navigator screenOptions={{ headerShown: false }}>
-        <stack.Screen name={Routes.Home} component={HomeScreen}></stack.Screen>
-        <stack.Screen name={Routes.Login} component={LoginScreen}></stack.Screen>
-        <stack.Screen name={Routes.Gtc} component={GtcScreen}></stack.Screen>
-        <stack.Screen name={Routes.NotFound} component={NotFoundScreen}></stack.Screen>
-      </stack.Navigator>
-    </NavigationContainer>
+    <Provider theme={AppTheme}>
+      <NavigationContainer linking={linking} ref={navigationRef}>
+        <stack.Navigator screenOptions={{ headerShown: false }}>
+          <stack.Screen name={Routes.Home} component={HomeScreen}></stack.Screen>
+          <stack.Screen name={Routes.Login} component={LoginScreen}></stack.Screen>
+          <stack.Screen name={Routes.Gtc} component={GtcScreen}></stack.Screen>
+          <stack.Screen name={Routes.NotFound} component={NotFoundScreen}></stack.Screen>
+        </stack.Navigator>
+      </NavigationContainer>
     </Provider>
   );
 };

@@ -1,5 +1,6 @@
 import React from "react";
-import { Text, TextStyle, TouchableOpacity, View } from "react-native";
+import { TextStyle, View } from "react-native";
+import { Text } from "react-native-paper";
 import Colors from "../config/Colors";
 import AppStyles from "../styles/AppStyles";
 

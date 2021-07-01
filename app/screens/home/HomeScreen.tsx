@@ -55,7 +55,6 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     }
   }, [session]);
   // TODO: use cancelling if moved away?
-  // TODO: app insights
 
   useGuard(() => session && !session.isLoggedIn, [session]);
 

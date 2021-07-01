@@ -2,7 +2,8 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Paragraph } from "react-native-paper";
 import AppLayout from "../components/AppLayout";
 import LoadingButton from "../components/util/LoadingButton";
 import Routes from "../config/Routes";
@@ -44,8 +45,8 @@ const GtcScreen = ({ session }: { session?: Session }) => {
 
         {[...Array(gtcLength).keys()].map((_, i) => (
           <View key={i}>
-            <H3 text={t(`gtc.text.${i}.title`)} />
-            <Text style={styles.gtcText}>{t(`gtc.text.${i}.text`)}</Text>
+            {t(`gtc.text.${i}.title`) ? <H3 style={styles.title} text={t(`gtc.text.${i}.title`)} /> : null}
+            <Paragraph>{t(`gtc.text.${i}.text`)}</Paragraph>
           </View>
         ))}
 
@@ -63,7 +64,7 @@ const GtcScreen = ({ session }: { session?: Session }) => {
 };
 
 const styles = StyleSheet.create({
-  gtcText: { marginBottom: 10 }
+  title: { marginTop: 10 },
 });
 
 export default withSession(GtcScreen);

@@ -1,5 +1,6 @@
 import React from "react";
-import { Text, TextStyle, TouchableOpacity } from "react-native";
+import { TextStyle, TouchableOpacity } from "react-native";
+import { Text } from "react-native-paper";
 import AppStyles from "../styles/AppStyles";
 
 export const ActionLink = ({ onPress, label, style }: { onPress: () => void; label: string; style?: TextStyle }) => (

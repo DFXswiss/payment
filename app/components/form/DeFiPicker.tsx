@@ -1,7 +1,8 @@
 import { Picker } from "@react-native-picker/picker";
 import React from "react";
 import { Controller } from "react-hook-form";
-import { View, Text } from "react-native";
+import { View } from "react-native";
+import { Text } from "react-native-paper";
 import Colors from "../../config/Colors";
 import AppStyles from "../../styles/AppStyles";
 import { ControlProps } from "./Form";

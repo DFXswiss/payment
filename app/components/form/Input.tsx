@@ -1,7 +1,8 @@
 import React from "react";
 import { Controller } from "react-hook-form";
 import { ReturnKeyTypeOptions } from "react-native";
-import { View, Text, TextInput, NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native";
+import { View, TextInput, NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native";
+import { Text } from "react-native-paper";
 import Colors from "../../config/Colors";
 import AppStyles from "../../styles/AppStyles";
 import { ControlProps } from "./Form";

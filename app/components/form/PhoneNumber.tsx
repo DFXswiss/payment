@@ -2,7 +2,7 @@ import { Picker } from "@react-native-picker/picker";
 import { getCountries, getCountryCallingCode } from "libphonenumber-js";
 import React from "react";
 import { Controller, useWatch } from "react-hook-form";
-import { View, Text, TextInput, NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native";
+import { View, TextInput, NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native";
 import Colors from "../../config/Colors";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import AppStyles from "../../styles/AppStyles";
@@ -10,6 +10,7 @@ import { ControlProps } from "./Form";
 import { byIso } from "country-code-lookup";
 import { useTranslation } from "react-i18next";
 import Validations from "../../utils/Validations";
+import { Text } from "react-native-paper";
 
 interface Props extends ControlProps {
   placeholder?: string;
@@ -63,7 +64,6 @@ const PhoneNumber = ({
   // TODO: auto-select phone codes with selected country
 
   // TODO: bug when undefined-select (only if form already submitted)
-  // TODO: SonarLint
   const updateRules = (rules?: any): any => ({
     ...rules,
     ...Validations.Phone(t),

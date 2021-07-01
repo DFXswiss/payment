@@ -1,5 +1,6 @@
 import React, { ReactElement } from "react";
-import { View, Text, TextStyle } from "react-native";
+import { View, TextStyle } from "react-native";
+import { Text } from "react-native-paper";
 import AppStyles from "../../styles/AppStyles";
 
 // TODO: responsive table

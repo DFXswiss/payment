@@ -18,7 +18,7 @@ import { PaymentRoutes } from "../../models/PaymentRoutes";
 import AppLayout from "../../components/AppLayout";
 import useGuard from "../../hooks/useGuard";
 import NotificationService from "../../services/NotificationService";
-import { DataTable } from "react-native-paper";
+import { DataTable, FAB, Portal } from "react-native-paper";
 import Device from "../../utils/Device";
 import { CompactCell, CompactRow } from "../../elements/Tables";
 
@@ -31,7 +31,10 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User>();
   const [routes, setRoutes] = useState<PaymentRoutes>();
+  const [fabOpen, setFabOpen] = useState<boolean>(false);
   const [isUserEdit, setIsUserEdit] = useState(false);
+  const [isBuyRouteEdit, setIsBuyRouteEdit] = useState(false);
+  const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
 
   const onUserChanged = (newUser: User) => {
     setUser(newUser);
@@ -76,6 +79,20 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
   return (
     <AppLayout>
+      <Portal>
+        <FAB.Group
+          open={fabOpen}
+          icon={fabOpen ? "close" : "pencil"}
+          actions={[
+            { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true) },
+            { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true) },
+            { icon: "plus", label: t("model.route.sell"), onPress: () => setIsSellRouteEdit(true) },
+          ]}
+          onStateChange={({ open }: { open: boolean }) => setFabOpen(open)}
+          visible={!Device.SM}
+        />
+      </Portal>
+
       <DeFiModal isVisible={isUserEdit} setIsVisible={setIsUserEdit} title={t("model.user.edit")}>
         <UserEdit isVisible={isUserEdit} user={user} onUserChanged={onUserChanged} />
       </DeFiModal>
@@ -93,9 +110,11 @@ const HomeScreen = ({ session }: { session?: Session }) => {
               <View>
                 <View style={AppStyles.containerHorizontal}>
                   <H2 text={t("model.user.your_data")} />
-                  <View style={AppStyles.mla}>
-                    <Button color={Colors.Primary} title={t("action.edit")} onPress={() => setIsUserEdit(true)} />
-                  </View>
+                  {Device.SM && (
+                    <View style={AppStyles.mla}>
+                      <Button color={Colors.Primary} title={t("action.edit")} onPress={() => setIsUserEdit(true)} />
+                    </View>
+                  )}
                 </View>
                 <SpacerV />
 
@@ -115,7 +134,17 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
             <SpacerV height={50} />
 
-            {routes && <RouteList routes={routes} setRoutes={setRoutes} user={user} />}
+            {routes && (
+              <RouteList
+                user={user}
+                routes={routes}
+                setRoutes={setRoutes}
+                isBuyRouteEdit={isBuyRouteEdit}
+                setIsBuyRouteEdit={setIsBuyRouteEdit}
+                isSellRouteEdit={isSellRouteEdit}
+                setIsSellRouteEdit={setIsSellRouteEdit}
+              />
+            )}
           </>
         )}
       </View>

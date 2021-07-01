@@ -20,19 +20,30 @@ import { User } from "../../models/User";
 import { putBuyRoute, putSellRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import AppStyles from "../../styles/AppStyles";
+import Device from "../../utils/Device";
 import { update } from "../../utils/Utils";
 
 interface Props {
+  user?: User;
   routes?: PaymentRoutes;
   setRoutes: Dispatch<SetStateAction<PaymentRoutes | undefined>>;
-  user?: User;
+  isBuyRouteEdit: boolean;
+  setIsBuyRouteEdit: Dispatch<SetStateAction<boolean>>;
+  isSellRouteEdit: boolean;
+  setIsSellRouteEdit: Dispatch<SetStateAction<boolean>>;
 }
 
-const RouteList = ({ routes, setRoutes, user }: Props) => {
+const RouteList = ({
+  user,
+  routes,
+  setRoutes,
+  isBuyRouteEdit,
+  setIsBuyRouteEdit,
+  isSellRouteEdit,
+  setIsSellRouteEdit,
+}: Props) => {
   const { t } = useTranslation();
 
-  const [isBuyRouteEdit, setIsBuyRouteEdit] = useState(false);
-  const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
   const [isBuyLoading, setIsBuyLoading] = useState<{ [id: string]: boolean }>({});
   const [isSellLoading, setIsSellLoading] = useState<{ [id: string]: boolean }>({});
 
@@ -79,13 +90,17 @@ const RouteList = ({ routes, setRoutes, user }: Props) => {
 
       <View style={AppStyles.containerHorizontal}>
         <H2 text={t("model.route.routes")} />
-        <Text style={AppStyles.mla}>{t("model.route.new")}</Text>
-        <View style={AppStyles.ml10}>
-          <Button color={Colors.Primary} title={t("model.route.buy")} onPress={() => setIsBuyRouteEdit(true)} />
-        </View>
-        <View style={AppStyles.ml10}>
-          <Button color={Colors.Primary} title={t("model.route.sell")} onPress={() => setIsSellRouteEdit(true)} />
-        </View>
+        {Device.SM && (
+          <>
+            <Text style={AppStyles.mla}>{t("model.route.new")}</Text>
+            <View style={AppStyles.ml10}>
+              <Button color={Colors.Primary} title={t("model.route.buy")} onPress={() => setIsBuyRouteEdit(true)} />
+            </View>
+            <View style={AppStyles.ml10}>
+              <Button color={Colors.Primary} title={t("model.route.sell")} onPress={() => setIsSellRouteEdit(true)} />
+            </View>
+          </>
+        )}
       </View>
 
       {/* TODO: what if collision with deleted route? */}

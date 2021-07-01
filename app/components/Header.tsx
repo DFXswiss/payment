@@ -2,12 +2,11 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, View, Image, TouchableOpacity, Linking } from "react-native";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
-import { changeLanguage } from "../i18n/i18n";
 import { Picker } from "@react-native-picker/picker";
 import AppStyles from "../styles/AppStyles";
 import { useTranslation } from "react-i18next";
 import withSession from "../hocs/withSession";
-import { AppSettings } from "../services/SettingsService";
+import SettingsService, { AppSettings } from "../services/SettingsService";
 import withSettings from "../hocs/withSettings";
 import { Session } from "../services/AuthService";
 import SessionService from "../services/SessionService";
@@ -30,8 +29,7 @@ const Header = ({ session, settings }: { session?: Session; settings?: AppSettin
   const logout = () => SessionService.logout().then(() => nav.navigate(Routes.Login));
   const goHome = () => nav.navigate(session?.isLoggedIn ? Routes.Home : Routes.Login);
   const languageChanged = (language: string) => {
-    setSelectedLanguage(language);
-    changeLanguage(language);
+    SettingsService.updateSettings({ language: language });
   };
 
   return (

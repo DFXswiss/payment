@@ -14,13 +14,13 @@ import SessionService from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
 import VideoPlayer from "../components/util/VideoPlayer";
 import { Environment } from "../env/Environment";
-import { changeLanguage } from "../i18n/i18n";
 import Input from "../components/form/Input";
 import AppLayout from "../components/AppLayout";
 import IconButton from "../components/util/IconButton";
 import Clipboard from "expo-clipboard";
 import Validations from "../utils/Validations";
 import { Text } from "react-native-paper";
+import SettingsService from "../services/SettingsService";
 
 interface LoginData {
   userName: string;
@@ -87,7 +87,7 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (params?.lang) {
-      changeLanguage(params.lang);
+      SettingsService.updateSettings({ language: params.lang });
     }
 
     if (params?.address && params?.signature) {

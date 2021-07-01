@@ -1,6 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Observable, ReplaySubject } from "rxjs";
+import { lastValueFrom, Observable, ReplaySubject } from "rxjs";
+import { first } from "rxjs/operators";
 import { Environment } from "../env/Environment";
+import i18n from "../i18n/i18n";
 
 const SettingsKey = "settings";
 const DefaultSettings: Partial<AppSettings> = {
@@ -15,7 +17,10 @@ class SettingsServiceClass {
   private settings$ = new ReplaySubject<AppSettings>();
 
   constructor() {
-    this.Settings.then((settings) => this.settings$.next(settings));
+    this.Settings.then((settings) => {
+      this.settings$.next(settings);
+      i18n.changeLanguage(settings.language);
+    });
   }
 
   public get Settings$(): Observable<AppSettings> {
@@ -27,9 +32,16 @@ class SettingsServiceClass {
   }
 
   public updateSettings(update: Partial<AppSettings>): Promise<void> {
-    return this.Settings.then((settings) => ({ ...settings, ...update }))
-      .then((settings) => AsyncStorage.setItem(SettingsKey, JSON.stringify(settings)).then(() => settings))
-      .then((settings) => this.settings$.next(settings));
+    // wait for init
+    return lastValueFrom(this.settings$.pipe(first())).then(() => {
+      if (update.language) {
+        i18n.changeLanguage(update.language);
+      }
+
+      return this.Settings.then((settings) => ({ ...settings, ...update }))
+        .then((settings) => AsyncStorage.setItem(SettingsKey, JSON.stringify(settings)).then(() => settings))
+        .then((settings) => this.settings$.next(settings));
+    });
   }
 }
 

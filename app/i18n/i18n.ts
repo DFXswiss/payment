@@ -18,8 +18,3 @@ i18n.use(initReactI18next).init({
 });
 
 export default i18n;
-
-export const changeLanguage = (language: string) => {
-  i18n.changeLanguage(language);
-  SettingsService.updateSettings({ language: language });
-};

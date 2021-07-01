@@ -16,10 +16,6 @@ export default StyleSheet.create({
     flexWrap: "wrap",
     alignItems: "center",
   },
-  row: {
-    alignSelf: "stretch",
-    flexDirection: "row",
-  },
   cell: {
     flex: 1,
     alignSelf: "stretch",
@@ -46,6 +42,10 @@ export default StyleSheet.create({
   },
   textError: {
     color: Colors.Error,
+  },
+  // table
+  compactRow: {
+    minHeight: 30,
   },
   // style
   i: {

@@ -135,10 +135,6 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 };
 
 const styles = StyleSheet.create({
-  // TODO: global compact table style?
-  row: {
-    minHeight: 30,
-  },
   dataCell: {
     flex: Device.SM ? 2 : 1,
   },

@@ -4,12 +4,11 @@ import { SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
 import { View, Button } from "react-native";
 import { Icon } from "react-native-elements";
-import { Text } from "react-native-paper";
+import { DataTable, Text } from "react-native-paper";
 import BuyRouteEdit from "../../components/edit/BuyRouteEdit";
 import SellRouteEdit from "../../components/edit/SellRouteEdit";
 import DeFiModal from "../../components/util/DeFiModal";
 import IconButton from "../../components/util/IconButton";
-import Row from "../../components/util/Row";
 import Colors from "../../config/Colors";
 import { SpacerV } from "../../elements/Spacers";
 import { H2, H3 } from "../../elements/Texts";
@@ -39,33 +38,33 @@ const RouteList = ({ routes, setRoutes, user }: Props) => {
   const onBuyRouteChanged = (route: BuyRoute) => {
     setRoutes((routes) => {
       routes?.buyRoutes.push(route);
-      return routes ? {...routes} : undefined;
+      return routes ? { ...routes } : undefined;
     });
     setIsBuyRouteEdit(false);
   };
   const onSellRouteChanged = (route: SellRoute) => {
     setRoutes((routes) => {
       routes?.sellRoutes.push(route);
-      return routes ? {...routes} : undefined;
+      return routes ? { ...routes } : undefined;
     });
     setIsSellRouteEdit(false);
   };
 
   const deleteBuyRoute = (route: BuyRoute) => {
-    setIsBuyLoading((obj) => update(obj, {[route.id]: true}));
+    setIsBuyLoading((obj) => update(obj, { [route.id]: true }));
     route.active = false;
     putBuyRoute(route)
       .then(() => setRoutes((routes) => update(routes, {buyRoutes: routes?.buyRoutes.filter((r) => r.id !== route.id)})))
       .catch(() => NotificationService.show(t("feedback.delete_failed")))
-      .finally(() => setIsBuyLoading((obj) => update(obj, {[route.id]: false})));
+      .finally(() => setIsBuyLoading((obj) => update(obj, { [route.id]: false })));
   };
   const deleteSellRoute = (route: SellRoute) => {
-    setIsSellLoading((obj) => update(obj, {[route.id]: true}));
+    setIsSellLoading((obj) => update(obj, { [route.id]: true }));
     route.active = false;
     putSellRoute(route)
       .then(() => setRoutes((routes) => update(routes, {sellRoutes: routes?.sellRoutes.filter((r) => r.id !== route.id)})))
       .catch(() => NotificationService.show(t("feedback.delete_failed")))
-      .finally(() => setIsSellLoading((obj) => update(obj, {[route.id]: false})));
+      .finally(() => setIsSellLoading((obj) => update(obj, { [route.id]: false })));
   };
 
   return (
@@ -87,80 +86,81 @@ const RouteList = ({ routes, setRoutes, user }: Props) => {
           <Button color={Colors.Primary} title={t("model.route.sell")} onPress={() => setIsSellRouteEdit(true)} />
         </View>
       </View>
+
       {/* TODO: what if collision with deleted route? */}
       {/* => reactivate route */}
       {/* multiple times same asset with different iban possible */}
       {/* TODO: details */}
+
       {(routes?.buyRoutes.length ?? 0) + (routes?.sellRoutes.length ?? 0) > 0 ? (
         <>
           {routes?.buyRoutes && routes.buyRoutes.length > 0 && (
             <>
               <SpacerV />
               <H3 text={t("model.route.buy")} />
-              <SpacerV />
-              <Row
-                textStyle={AppStyles.b}
-                cells={[
-                  t("model.route.asset"),
-                  t("model.route.iban"),
-                  t("model.route.bank_usage"),
-                  <Icon name="delete" color={Colors.Primary} style={AppStyles.hidden} />,
-                ]}
-                layout={[1, 1, 2, undefined]}
-              />
-              {routes.buyRoutes.map((route) => (
-                <Row
-                  key={route.id}
-                  cells={[
-                    route.asset.name,
-                    route.iban,
-                    route.bankUsage,
-                    <IconButton
-                      type="material"
-                      icon="delete"
-                      color={Colors.Primary}
-                      onPress={() => deleteBuyRoute(route)}
-                      isLoading={isBuyLoading[route.id]}
-                    />,
-                  ]}
-                  layout={[1, 1, 2, undefined]}
-                />
-              ))}
+
+              <DataTable>
+                <DataTable.Header>
+                  <DataTable.Title style={{ flex: 1 }}>{t("model.route.asset")}</DataTable.Title>
+                  <DataTable.Title style={{ flex: 1 }}>{t("model.route.iban")}</DataTable.Title>
+                  <DataTable.Title style={{ flex: 2 }}>{t("model.route.bank_usage")}</DataTable.Title>
+                  <DataTable.Title style={{ flex: undefined }}>
+                    <Icon name="delete" color={Colors.Primary} style={AppStyles.hidden} />
+                  </DataTable.Title>
+                </DataTable.Header>
+
+                {routes.buyRoutes.map((route) => (
+                  <DataTable.Row key={route.id} style={AppStyles.compactRow}>
+                    <DataTable.Cell style={{ flex: 1 }}>{route.asset.name}</DataTable.Cell>
+                    <DataTable.Cell style={{ flex: 1 }}>{route.iban}</DataTable.Cell>
+                    <DataTable.Cell style={{ flex: 2 }}>{route.bankUsage}</DataTable.Cell>
+                    <DataTable.Cell style={{ flex: undefined }}>
+                      <IconButton
+                        type="material"
+                        icon="delete"
+                        color={Colors.Primary}
+                        onPress={() => deleteBuyRoute(route)}
+                        isLoading={isBuyLoading[route.id]}
+                      />
+                    </DataTable.Cell>
+                  </DataTable.Row>
+                ))}
+              </DataTable>
             </>
           )}
           {routes?.sellRoutes && routes.sellRoutes.length > 0 && (
             <>
-              <SpacerV />
+              <SpacerV height={20} />
               <H3 text={t("model.route.sell")} />
-              <SpacerV />
-              <Row
-                textStyle={AppStyles.b}
-                cells={[
-                  t("model.route.fiat"),
-                  t("model.route.iban"),
-                  t("model.route.deposit_address"),
-                  <Icon name="delete" color={Colors.Primary} style={AppStyles.hidden} />,
-                ]}
-                layout={[1, 1, 2, undefined]}
-              />
-              {routes.sellRoutes.map((route) => (
-                <Row
-                  key={route.id}
-                  cells={[
-                    route.fiat.name,
-                    route.iban,
-                    route.depositAddress,
-                    <IconButton
-                      type="material"
-                      icon="delete"
-                      color={Colors.Primary}
-                      onPress={() => deleteSellRoute(route)}
-                      isLoading={isSellLoading[route.id]}
-                    />,
-                  ]}
-                  layout={[1, 1, 2, undefined]}
-                />
-              ))}
+
+              <DataTable>
+                {/* TODO: add compact table components */}
+                <DataTable.Header>
+                  <DataTable.Title style={{ flex: 1 }}>{t("model.route.fiat")}</DataTable.Title>
+                  <DataTable.Title style={{ flex: 1 }}>{t("model.route.iban")}</DataTable.Title>
+                  <DataTable.Title style={{ flex: 2 }}>{t("model.route.deposit_address")}</DataTable.Title>
+                  <DataTable.Title style={{ flex: undefined }}>
+                    <Icon name="delete" color={Colors.Primary} style={AppStyles.hidden} />
+                  </DataTable.Title>
+                </DataTable.Header>
+
+                {routes.sellRoutes.map((route) => (
+                  <DataTable.Row key={route.id} style={AppStyles.compactRow}>
+                    <DataTable.Cell style={{ flex: 1 }}>{route.fiat.name}</DataTable.Cell>
+                    <DataTable.Cell style={{ flex: 1 }}>{route.iban}</DataTable.Cell>
+                    <DataTable.Cell style={{ flex: 2 }}>{route.depositAddress}</DataTable.Cell>
+                    <DataTable.Cell style={{ flex: undefined }}>
+                      <IconButton
+                        type="material"
+                        icon="delete"
+                        color={Colors.Primary}
+                        onPress={() => deleteSellRoute(route)}
+                        isLoading={isSellLoading[route.id]}
+                      />
+                    </DataTable.Cell>
+                  </DataTable.Row>
+                ))}
+              </DataTable>
             </>
           )}
         </>

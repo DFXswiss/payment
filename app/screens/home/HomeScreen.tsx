@@ -21,6 +21,7 @@ import NotificationService from "../../services/NotificationService";
 import { DataTable, FAB, Portal } from "react-native-paper";
 import Device from "../../utils/Device";
 import { CompactCell, CompactRow } from "../../elements/Tables";
+import { useIsFocused } from "@react-navigation/native";
 
 const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
@@ -89,7 +90,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
             { icon: "plus", label: t("model.route.sell"), onPress: () => setIsSellRouteEdit(true) },
           ]}
           onStateChange={({ open }: { open: boolean }) => setFabOpen(open)}
-          visible={!Device.SM}
+          visible={useIsFocused() && !Device.SM}
         />
       </Portal>
 

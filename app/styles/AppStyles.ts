@@ -43,10 +43,6 @@ export default StyleSheet.create({
   textError: {
     color: Colors.Error,
   },
-  // table
-  compactRow: {
-    minHeight: 30,
-  },
   // style
   i: {
     fontStyle: "italic",

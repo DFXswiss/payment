@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, ReactNode } from "react";
 import Modal from "modal-enhanced-react-native-web";
 import { StyleSheet, View, TextStyle, ScrollView } from "react-native";
 import Colors from "../../config/Colors";
@@ -21,7 +21,7 @@ const DeFiModal = ({
   style?: TextStyle;
   title: string;
   save?: string;
-  children: ReactElement;
+  children: ReactNode;
 }) => {
   const { t } = useTranslation();
 

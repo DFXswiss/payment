@@ -20,6 +20,7 @@ import useGuard from "../../hooks/useGuard";
 import NotificationService from "../../services/NotificationService";
 import { DataTable } from "react-native-paper";
 import Device from "../../utils/Device";
+import { CompactCell, CompactRow } from "../../elements/Tables";
 
 const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
@@ -102,10 +103,10 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                   {userData(user).map(
                     (d) =>
                       d.condition && (
-                        <DataTable.Row key={d.label} style={styles.row}>
-                          <DataTable.Cell>{t(d.label)}</DataTable.Cell>
-                          <DataTable.Cell style={styles.dataCell}>{d.value}</DataTable.Cell>
-                        </DataTable.Row>
+                        <CompactRow key={d.label}>
+                          <CompactCell>{t(d.label)}</CompactCell>
+                          <CompactCell style={styles.dataCell}>{d.value}</CompactCell>
+                        </CompactRow>
                       )
                   )}
                 </DataTable>

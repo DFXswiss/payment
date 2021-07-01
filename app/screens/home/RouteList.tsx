@@ -11,6 +11,7 @@ import DeFiModal from "../../components/util/DeFiModal";
 import IconButton from "../../components/util/IconButton";
 import Colors from "../../config/Colors";
 import { SpacerV } from "../../elements/Spacers";
+import { CompactRow, CompactCell, CompactHeader, CompactTitle } from "../../elements/Tables";
 import { H2, H3 } from "../../elements/Texts";
 import { BuyRoute } from "../../models/BuyRoute";
 import { PaymentRoutes } from "../../models/PaymentRoutes";
@@ -100,21 +101,21 @@ const RouteList = ({ routes, setRoutes, user }: Props) => {
               <H3 text={t("model.route.buy")} />
 
               <DataTable>
-                <DataTable.Header>
-                  <DataTable.Title style={{ flex: 1 }}>{t("model.route.asset")}</DataTable.Title>
-                  <DataTable.Title style={{ flex: 1 }}>{t("model.route.iban")}</DataTable.Title>
-                  <DataTable.Title style={{ flex: 2 }}>{t("model.route.bank_usage")}</DataTable.Title>
-                  <DataTable.Title style={{ flex: undefined }}>
+                <CompactHeader>
+                  <CompactTitle style={{ flex: 1 }}>{t("model.route.asset")}</CompactTitle>
+                  <CompactTitle style={{ flex: 1 }}>{t("model.route.iban")}</CompactTitle>
+                  <CompactTitle style={{ flex: 2 }}>{t("model.route.bank_usage")}</CompactTitle>
+                  <CompactTitle style={{ flex: undefined }}>
                     <Icon name="delete" color={Colors.Primary} style={AppStyles.hidden} />
-                  </DataTable.Title>
-                </DataTable.Header>
+                  </CompactTitle>
+                </CompactHeader>
 
                 {routes.buyRoutes.map((route) => (
-                  <DataTable.Row key={route.id} style={AppStyles.compactRow}>
-                    <DataTable.Cell style={{ flex: 1 }}>{route.asset.name}</DataTable.Cell>
-                    <DataTable.Cell style={{ flex: 1 }}>{route.iban}</DataTable.Cell>
-                    <DataTable.Cell style={{ flex: 2 }}>{route.bankUsage}</DataTable.Cell>
-                    <DataTable.Cell style={{ flex: undefined }}>
+                  <CompactRow key={route.id}>
+                    <CompactCell style={{ flex: 1 }}>{route.asset.name}</CompactCell>
+                    <CompactCell style={{ flex: 1 }}>{route.iban}</CompactCell>
+                    <CompactCell style={{ flex: 2 }}>{route.bankUsage}</CompactCell>
+                    <CompactCell style={{ flex: undefined }}>
                       <IconButton
                         type="material"
                         icon="delete"
@@ -122,8 +123,8 @@ const RouteList = ({ routes, setRoutes, user }: Props) => {
                         onPress={() => deleteBuyRoute(route)}
                         isLoading={isBuyLoading[route.id]}
                       />
-                    </DataTable.Cell>
-                  </DataTable.Row>
+                    </CompactCell>
+                  </CompactRow>
                 ))}
               </DataTable>
             </>
@@ -134,22 +135,21 @@ const RouteList = ({ routes, setRoutes, user }: Props) => {
               <H3 text={t("model.route.sell")} />
 
               <DataTable>
-                {/* TODO: add compact table components */}
-                <DataTable.Header>
-                  <DataTable.Title style={{ flex: 1 }}>{t("model.route.fiat")}</DataTable.Title>
-                  <DataTable.Title style={{ flex: 1 }}>{t("model.route.iban")}</DataTable.Title>
-                  <DataTable.Title style={{ flex: 2 }}>{t("model.route.deposit_address")}</DataTable.Title>
-                  <DataTable.Title style={{ flex: undefined }}>
+                <CompactHeader>
+                  <CompactTitle style={{ flex: 1 }}>{t("model.route.fiat")}</CompactTitle>
+                  <CompactTitle style={{ flex: 1 }}>{t("model.route.iban")}</CompactTitle>
+                  <CompactTitle style={{ flex: 2 }}>{t("model.route.deposit_address")}</CompactTitle>
+                  <CompactTitle style={{ flex: undefined }}>
                     <Icon name="delete" color={Colors.Primary} style={AppStyles.hidden} />
-                  </DataTable.Title>
-                </DataTable.Header>
+                  </CompactTitle>
+                </CompactHeader>
 
                 {routes.sellRoutes.map((route) => (
-                  <DataTable.Row key={route.id} style={AppStyles.compactRow}>
-                    <DataTable.Cell style={{ flex: 1 }}>{route.fiat.name}</DataTable.Cell>
-                    <DataTable.Cell style={{ flex: 1 }}>{route.iban}</DataTable.Cell>
-                    <DataTable.Cell style={{ flex: 2 }}>{route.depositAddress}</DataTable.Cell>
-                    <DataTable.Cell style={{ flex: undefined }}>
+                  <CompactRow key={route.id}>
+                    <CompactCell style={{ flex: 1 }}>{route.fiat.name}</CompactCell>
+                    <CompactCell style={{ flex: 1 }}>{route.iban}</CompactCell>
+                    <CompactCell style={{ flex: 2 }}>{route.depositAddress}</CompactCell>
+                    <CompactCell style={{ flex: undefined }}>
                       <IconButton
                         type="material"
                         icon="delete"
@@ -157,8 +157,8 @@ const RouteList = ({ routes, setRoutes, user }: Props) => {
                         onPress={() => deleteSellRoute(route)}
                         isLoading={isSellLoading[route.id]}
                       />
-                    </DataTable.Cell>
-                  </DataTable.Row>
+                    </CompactCell>
+                  </CompactRow>
                 ))}
               </DataTable>
             </>

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "react-native";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import DeFiModal from "../../components/util/DeFiModal";
 import Loading from "../../components/util/Loading";
-import Row from "../../components/util/Row";
 import UserEdit from "../../components/edit/UserEdit";
 import Colors from "../../config/Colors";
 import { SpacerV } from "../../elements/Spacers";
@@ -19,6 +18,8 @@ import { PaymentRoutes } from "../../models/PaymentRoutes";
 import AppLayout from "../../components/AppLayout";
 import useGuard from "../../hooks/useGuard";
 import NotificationService from "../../services/NotificationService";
+import { DataTable } from "react-native-paper";
+import Device from "../../utils/Device";
 
 const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
@@ -42,6 +43,20 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     setRoutes(undefined);
     setIsUserEdit(false);
   };
+
+  const userData = (user: User) => [
+    { condition: user.address, label: "model.user.address", value: user.address },
+    { condition: user.firstName || user.lastName, label: "model.user.name", value: `${user.firstName} ${user.lastName}` },
+    { condition: user.street || user.houseNumber, label: "model.user.home", value: `${user.street} ${user.houseNumber}` },
+    { condition: user.zip, label: "model.user.zip", value: user.zip },
+    { condition: user.location, label: "model.user.location", value: user.location },
+    { condition: user.country, label: "model.user.country", value: user.country.name },
+    { condition: user.mail, label: "model.user.mail", value: user.mail },
+    { condition: user.mobileNumber, label: "model.user.mobile_number", value: user.mobileNumber },
+    { condition: user.usedRef, label: "model.user.used_ref", value: user.usedRef },
+    // TODO: KYC status, gebühr
+    { condition: user.ref, label: "model.user.ref", value: user.ref },
+  ];
 
   useEffect(() => {
     if (session) {
@@ -81,19 +96,19 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                     <Button color={Colors.Primary} title={t("action.edit")} onPress={() => setIsUserEdit(true)} />
                   </View>
                 </View>
-                {user.address ? <Row cells={[t("model.user.address"), user.address]} /> : null}
-                {user.firstName || user.lastName ? (<Row cells={[t("model.user.name"), `${user.firstName} ${user.lastName}`]} />) : null}
-                {user.street || user.houseNumber ? (<Row cells={[t("model.user.home"), `${user.street} ${user.houseNumber}`]} />) : null}
-                {user.zip ? <Row cells={[t("model.user.zip"), user.zip]} /> : null}
-                {user.location ? <Row cells={[t("model.user.location"), user.location]} /> : null}
-                {user.country ? <Row cells={[t("model.user.country"), user.country.name]} /> : null}
-                {user.mail ? <Row cells={[t("model.user.mail"), user.mail]} /> : null}
-                {user.mobileNumber ? <Row cells={[t("model.user.mobile_number"), user.mobileNumber]} /> : null}
-                {user.usedRef ? <Row cells={[t("model.user.used_ref"), user.usedRef]} /> : null}
-                {/* TODO: KYC status, gebühr */}
-
                 <SpacerV />
-                {user.ref ? <Row cells={[t("model.user.ref"), user.ref]} /> : null}
+
+                <DataTable>
+                  {userData(user).map(
+                    (d) =>
+                      d.condition && (
+                        <DataTable.Row key={d.label} style={styles.row}>
+                          <DataTable.Cell>{t(d.label)}</DataTable.Cell>
+                          <DataTable.Cell style={styles.dataCell}>{d.value}</DataTable.Cell>
+                        </DataTable.Row>
+                      )
+                  )}
+                </DataTable>
               </View>
             )}
 
@@ -118,5 +133,15 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     // </View>
   );
 };
+
+const styles = StyleSheet.create({
+  // TODO: global compact table style?
+  row: {
+    minHeight: 30,
+  },
+  dataCell: {
+    flex: Device.SM ? 2 : 1,
+  },
+});
 
 export default withSession(HomeScreen);

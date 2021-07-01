@@ -48,7 +48,7 @@ const PhoneNumber = ({
   wrap = false,
 }: Props) => {
   const { t } = useTranslation();
-  const phoneNumber = useWatch({ control, name: "phoneNumber", defaultValue: "" });
+  const phoneNumber = useWatch({ control, name: name, defaultValue: "" });
 
   // TODO: improve performance
   const parseNumber = (): IPhoneNumber => {

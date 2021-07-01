@@ -90,7 +90,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
             { icon: "plus", label: t("model.route.sell"), onPress: () => setIsSellRouteEdit(true) },
           ]}
           onStateChange={({ open }: { open: boolean }) => setFabOpen(open)}
-          visible={useIsFocused() && !Device.SM}
+          visible={useIsFocused() && !isLoading && !Device.SM}
         />
       </Portal>
 

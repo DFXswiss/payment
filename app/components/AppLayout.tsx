@@ -1,6 +1,6 @@
 import React, { ReactElement, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View, useWindowDimensions } from "react-native";
 import { Portal, Snackbar } from "react-native-paper";
 import Sizes from "../config/Sizes";
 import NotificationService from "../services/NotificationService";
@@ -13,6 +13,7 @@ const AppLayout = ({ children }: { children: ReactElement | ReactElement[] }) =>
   const [snackVisible, setSnackVisible] = useState<boolean>(false);
   const [snackText, setSnackText] = useState<string>();
 
+  const height = useWindowDimensions().height;
   useEffect(() => {
     const subscription = NotificationService.Notifications$.subscribe((text) => {
       setSnackText(text);
@@ -23,7 +24,7 @@ const AppLayout = ({ children }: { children: ReactElement | ReactElement[] }) =>
   }, []);
 
   return (
-    <View style={styles.pageContainer}>
+    <View style={{ height: height }}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <View style={[AppStyles.container, styles.container]}>
           <View style={[AppStyles.container, styles.appContainer]}>
@@ -50,9 +51,6 @@ const AppLayout = ({ children }: { children: ReactElement | ReactElement[] }) =>
 };
 
 const styles = StyleSheet.create({
-  pageContainer: {
-    height: "100vh",
-  },
   scrollContainer: {
     minHeight: "100%",
   },

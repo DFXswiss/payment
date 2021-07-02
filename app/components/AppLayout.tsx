@@ -9,11 +9,11 @@ import Header from "./Header";
 
 const AppLayout = ({ children }: { children: ReactElement | ReactElement[] }) => {
   const { t } = useTranslation();
+  const windowHeight = useWindowDimensions().height;
 
   const [snackVisible, setSnackVisible] = useState<boolean>(false);
   const [snackText, setSnackText] = useState<string>();
 
-  const height = useWindowDimensions().height;
   useEffect(() => {
     const subscription = NotificationService.Notifications$.subscribe((text) => {
       setSnackText(text);
@@ -24,28 +24,29 @@ const AppLayout = ({ children }: { children: ReactElement | ReactElement[] }) =>
   }, []);
 
   return (
-    <View style={{ height: height }}>
-      <ScrollView contentContainerStyle={styles.scrollContainer}>
-        <View style={[AppStyles.container, styles.container]}>
-          <View style={[AppStyles.container, styles.appContainer]}>
-            <Header></Header>
-            {children}
-
-            <Portal>
-              <Snackbar
-                visible={snackVisible}
-                onDismiss={() => setSnackVisible(false)}
-                action={{ label: t("action.close") }}
-                duration={Snackbar.DURATION_MEDIUM}
-                style={styles.snack}
-                wrapperStyle={styles.snackWrapper}
-              >
-                {snackText}
-              </Snackbar>
-            </Portal>
+    <View style={{ height: windowHeight }}>
+      <Portal.Host>
+        <ScrollView contentContainerStyle={styles.scrollContainer}>
+          <View style={[AppStyles.container, styles.container]}>
+            <View style={[AppStyles.container, styles.appContainer]}>
+              <Header></Header>
+              {children}
+              <Portal>
+                <Snackbar
+                  visible={snackVisible}
+                  onDismiss={() => setSnackVisible(false)}
+                  action={{ label: t("action.close") }}
+                  duration={Snackbar.DURATION_MEDIUM}
+                  style={styles.snack}
+                  wrapperStyle={styles.snackWrapper}
+                >
+                  {snackText}
+                </Snackbar>
+              </Portal>
+            </View>
           </View>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </Portal.Host>
     </View>
   );
 };

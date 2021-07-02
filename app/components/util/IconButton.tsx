@@ -1,35 +1,38 @@
 import React from "react";
-import { StyleSheet, TextStyle, TouchableOpacity, View } from "react-native";
-import { Icon } from "react-native-elements";
+import { StyleSheet, TextStyle, View } from "react-native";
+import { IconButton as PaperIconButton } from "react-native-paper";
 import AppStyles from "../../styles/AppStyles";
 import Loading from "./Loading";
 
 const IconButton = ({
-  type = "font-awesome-5",
   icon,
   onPress,
   style,
   color,
   isLoading = false,
+  disabled = false,
 }: {
-  type?: string;
   icon: string;
-  onPress: () => void;
+  onPress?: () => void;
   style?: TextStyle;
   color: string;
   isLoading?: boolean;
+  disabled?: boolean;
 }) => (
-  
-  <TouchableOpacity onPress={onPress} style={style} disabled={isLoading}>
+  <View style={style}>
     {isLoading && (
       <View style={styles.loadingContainer}>
         <Loading />
       </View>
     )}
-    <View style={isLoading && AppStyles.hidden}>
-      <Icon type={type} name={icon} color={color} />
-    </View>
-  </TouchableOpacity>
+    <PaperIconButton
+      icon={icon}
+      color={color}
+      onPress={onPress}
+      disabled={disabled || isLoading}
+      style={isLoading && AppStyles.hidden}
+    ></PaperIconButton>
+  </View>
 );
 
 const styles = StyleSheet.create({

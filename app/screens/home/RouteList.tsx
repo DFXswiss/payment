@@ -3,7 +3,6 @@ import { Dispatch } from "react";
 import { SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
 import { View, Button } from "react-native";
-import { Icon } from "react-native-elements";
 import { DataTable, Text } from "react-native-paper";
 import BuyRouteEdit from "../../components/edit/BuyRouteEdit";
 import SellRouteEdit from "../../components/edit/SellRouteEdit";
@@ -122,7 +121,7 @@ const RouteList = ({
                   <CompactTitle style={{ flex: 1 }}>{t("model.route.iban")}</CompactTitle>
                   <CompactTitle style={{ flex: 2 }}>{t("model.route.bank_usage")}</CompactTitle>
                   <CompactTitle style={{ flex: undefined }}>
-                    <Icon name="delete" color={Colors.Primary} style={AppStyles.hidden} />
+                    <IconButton icon="delete" color={Colors.Primary} style={AppStyles.hidden} disabled={true} />
                   </CompactTitle>
                 </CompactHeader>
 
@@ -133,7 +132,6 @@ const RouteList = ({
                     <CompactCell style={{ flex: 2 }}>{route.bankUsage}</CompactCell>
                     <CompactCell style={{ flex: undefined }}>
                       <IconButton
-                        type="material"
                         icon="delete"
                         color={Colors.Primary}
                         onPress={() => deleteBuyRoute(route)}
@@ -156,7 +154,7 @@ const RouteList = ({
                   <CompactTitle style={{ flex: 1 }}>{t("model.route.iban")}</CompactTitle>
                   <CompactTitle style={{ flex: 2 }}>{t("model.route.deposit_address")}</CompactTitle>
                   <CompactTitle style={{ flex: undefined }}>
-                    <Icon name="delete" color={Colors.Primary} style={AppStyles.hidden} />
+                    <IconButton icon="delete" color={Colors.Primary} style={AppStyles.hidden} disabled={true} />
                   </CompactTitle>
                 </CompactHeader>
 
@@ -167,7 +165,6 @@ const RouteList = ({
                     <CompactCell style={{ flex: 2 }}>{route.depositAddress}</CompactCell>
                     <CompactCell style={{ flex: undefined }}>
                       <IconButton
-                        type="material"
                         icon="delete"
                         color={Colors.Primary}
                         onPress={() => deleteSellRoute(route)}

@@ -135,7 +135,7 @@ const LoginScreen = () => {
                 </View>
                 <SpacerH />
                 <IconButton
-                  icon="copy"
+                  icon="content-copy"
                   color={Colors.Grey}
                   onPress={() => Clipboard.setString(signingMessage(address))}
                 />

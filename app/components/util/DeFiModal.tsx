@@ -33,7 +33,7 @@ const DeFiModal = ({
           <View style={[AppStyles.containerHorizontal]}>
             <H2 text={title} style={AppStyles.mr20} />
             <View style={AppStyles.mla}>
-              <IconButton type="material" icon="close" color={Colors.Grey} onPress={() => setIsVisible(false)} />
+              <IconButton icon="close" color={Colors.Grey} onPress={() => setIsVisible(false)} />
             </View>
           </View>
           <SpacerV />

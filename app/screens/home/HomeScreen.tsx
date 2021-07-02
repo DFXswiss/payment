@@ -26,6 +26,7 @@ import { useDevice } from "../../hooks/useDevice";
 const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const device = useDevice();
+  const isFocused = useIsFocused();
 
   // TODO: full KYC Access
   // Button Limit erhöhen bei aktuellem KYC status display => Benutzerdaten => KYC Process starten
@@ -77,6 +78,8 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   }, [session]);
   // TODO: use cancelling if moved away?
 
+  const showButtons = (isFocused && user && !isLoading && !device.SM) ?? false;
+
   useGuard(() => session && !session.isLoggedIn, [session]);
 
   return (
@@ -91,7 +94,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
             { icon: "plus", label: t("model.route.sell"), onPress: () => setIsSellRouteEdit(true) },
           ]}
           onStateChange={({ open }: { open: boolean }) => setFabOpen(open)}
-          visible={useIsFocused() && !isLoading && !device.SM}
+          visible={showButtons}
         />
       </Portal>
 

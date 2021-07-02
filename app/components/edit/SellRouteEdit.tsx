@@ -63,11 +63,11 @@ const SellRouteEdit = ({
     iban: { ...Validations.Required(t), ...Validations.Iban(t) },
   };
 
-  const userDataMissing = () => !(user?.firstName && user?.lastName && user?.street && user?.zip && user?.location && user?.country && user?.mobileNumber);
+  const userDataMissing = !(user?.firstName && user?.lastName && user?.street && user?.zip && user?.location && user?.country && user?.mobileNumber);
 
   return (
     <Form control={control} rules={rules} errors={errors} editable={!isSaving} onSubmit={handleSubmit(onSubmit)}>
-      {userDataMissing() && <Alert label={t("model.user.data_missing")} />}
+      {userDataMissing && <Alert label={t("model.user.data_missing")} />}
       <DeFiPicker
         name="fiat"
         label={t("model.route.fiat")}
@@ -90,7 +90,7 @@ const SellRouteEdit = ({
       <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
         <LoadingButton
           title={t("action.save")}
-          disabled={userDataMissing()}
+          disabled={userDataMissing}
           isLoading={isSaving}
           onPress={handleSubmit(onSubmit)}
         />

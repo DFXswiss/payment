@@ -15,9 +15,9 @@ import Input from "../form/Input";
 import PhoneNumber from "../form/PhoneNumber";
 import LoadingButton from "../util/LoadingButton";
 import Validations from "../../utils/Validations";
-import Device from "../../utils/Device";
 import NotificationService from "../../services/NotificationService";
 import { Alert } from "../../elements/Texts";
+import { useDevice } from "../../hooks/useDevice";
 
 interface Props {
   isVisible: boolean;
@@ -27,6 +27,7 @@ interface Props {
 
 const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
   const { t } = useTranslation();
+  const device = useDevice();
   const {
     control,
     handleSubmit,
@@ -97,7 +98,7 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
         name="mobileNumber"
         label={t("model.user.mobile_number")}
         placeholder="69 1234 5678"
-        wrap={!Device.SM}
+        wrap={!device.SM}
       />
       <SpacerV />
       <Input name="usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />

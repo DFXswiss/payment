@@ -13,6 +13,7 @@ import Colors from "../../config/Colors";
 import { SpacerV } from "../../elements/Spacers";
 import { CompactRow, CompactCell, CompactHeader, CompactTitle } from "../../elements/Tables";
 import { H2, H3 } from "../../elements/Texts";
+import { useDevice } from "../../hooks/useDevice";
 import { BuyRoute } from "../../models/BuyRoute";
 import { PaymentRoutes } from "../../models/PaymentRoutes";
 import { SellRoute } from "../../models/SellRoute";
@@ -20,7 +21,6 @@ import { User } from "../../models/User";
 import { putBuyRoute, putSellRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import AppStyles from "../../styles/AppStyles";
-import Device from "../../utils/Device";
 import { update } from "../../utils/Utils";
 
 interface Props {
@@ -43,6 +43,7 @@ const RouteList = ({
   setIsSellRouteEdit,
 }: Props) => {
   const { t } = useTranslation();
+  const device = useDevice();
 
   const [isBuyLoading, setIsBuyLoading] = useState<{ [id: string]: boolean }>({});
   const [isSellLoading, setIsSellLoading] = useState<{ [id: string]: boolean }>({});
@@ -90,7 +91,7 @@ const RouteList = ({
 
       <View style={AppStyles.containerHorizontal}>
         <H2 text={t("model.route.routes")} />
-        {Device.SM && (
+        {device.SM && (
           <>
             <Text style={AppStyles.mla}>{t("model.route.new")}</Text>
             <View style={AppStyles.ml10}>

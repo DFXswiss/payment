@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Button } from "react-native";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import DeFiModal from "../../components/util/DeFiModal";
 import Loading from "../../components/util/Loading";
 import UserEdit from "../../components/edit/UserEdit";
@@ -19,12 +19,13 @@ import AppLayout from "../../components/AppLayout";
 import useGuard from "../../hooks/useGuard";
 import NotificationService from "../../services/NotificationService";
 import { DataTable, FAB, Portal } from "react-native-paper";
-import Device from "../../utils/Device";
 import { CompactCell, CompactRow } from "../../elements/Tables";
 import { useIsFocused } from "@react-navigation/native";
+import { useDevice } from "../../hooks/useDevice";
 
 const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
+  const device = useDevice();
 
   // TODO: full KYC Access
   // Button Limit erhöhen bei aktuellem KYC status display => Benutzerdaten => KYC Process starten
@@ -90,7 +91,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
             { icon: "plus", label: t("model.route.sell"), onPress: () => setIsSellRouteEdit(true) },
           ]}
           onStateChange={({ open }: { open: boolean }) => setFabOpen(open)}
-          visible={useIsFocused() && !isLoading && !Device.SM}
+          visible={useIsFocused() && !isLoading && !device.SM}
         />
       </Portal>
 
@@ -111,7 +112,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
               <View>
                 <View style={AppStyles.containerHorizontal}>
                   <H2 text={t("model.user.your_data")} />
-                  {Device.SM && (
+                  {device.SM && (
                     <View style={AppStyles.mla}>
                       <Button color={Colors.Primary} title={t("action.edit")} onPress={() => setIsUserEdit(true)} />
                     </View>
@@ -125,7 +126,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                       d.condition && (
                         <CompactRow key={d.label}>
                           <CompactCell>{t(d.label)}</CompactCell>
-                          <CompactCell style={styles.dataCell}>{d.value}</CompactCell>
+                          <CompactCell style={{ flex: device.SM ? 2 : 1 }}>{d.value}</CompactCell>
                         </CompactRow>
                       )
                   )}
@@ -164,11 +165,5 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     // </View>
   );
 };
-
-const styles = StyleSheet.create({
-  dataCell: {
-    flex: Device.SM ? 2 : 1,
-  },
-});
 
 export default withSession(HomeScreen);

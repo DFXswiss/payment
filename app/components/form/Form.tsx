@@ -21,11 +21,8 @@ interface Props {
   onSubmit?: () => void;
 }
 
+// TODO: auto focus on next input field?
 const Form = ({ children, control, rules, errors, editable = true, onSubmit }: Props) => {
-  const handleKeyPress = (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
-    if (e.nativeEvent.key === "Enter" && onSubmit) onSubmit();
-  };
-
   const enrichElements = (elements: ReactNode): ReactElement[] | undefined => {
     if (!elements) return undefined;
 
@@ -48,7 +45,7 @@ const Form = ({ children, control, rules, errors, editable = true, onSubmit }: P
         rules: rules[element.props.name],
         error: errors[element.props.name],
         editable: editable,
-        onKeyPress: (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => handleKeyPress(e),
+        onSubmit: onSubmit,
       };
     }
 

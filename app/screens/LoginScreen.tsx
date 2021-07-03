@@ -141,8 +141,8 @@ const LoginScreen = () => {
                 />
               </View>
               <SpacerV />
-              {/* TODO: verify go type */}
-              <Input name="password" label={t("model.user.signature")} returnKeyType="go" secureTextEntry />
+              {/* TODO: verify send type */}
+              <Input name="password" label={t("model.user.signature")} returnKeyType="send" secureTextEntry />
             </View>
 
             <SpacerV />

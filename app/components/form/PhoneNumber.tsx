@@ -14,7 +14,7 @@ import { Text } from "react-native-paper";
 
 interface Props extends ControlProps {
   placeholder?: string;
-  onKeyPress?: (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => void;
+  onSubmit?: () => void;
   wrap?: boolean;
 }
 
@@ -44,7 +44,7 @@ const PhoneNumber = ({
   rules,
   error,
   editable = true,
-  onKeyPress,
+  onSubmit,
   wrap = false,
 }: Props) => {
   const { t } = useTranslation();
@@ -103,7 +103,7 @@ const PhoneNumber = ({
               ]}
               placeholder={placeholder}
               editable={editable}
-              onKeyPress={onKeyPress}
+              onSubmitEditing={onSubmit}
               placeholderTextColor={Colors.LightGrey}
             />
           </View>

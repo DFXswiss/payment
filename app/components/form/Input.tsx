@@ -9,13 +9,13 @@ import { ControlProps } from "./Form";
 
 interface Props extends ControlProps {
   placeholder?: string;
-  onKeyPress?: (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => void;
+  onSubmit?: () => void;
   returnKeyType?: ReturnKeyTypeOptions;
   secureTextEntry?: boolean;
 }
 
 // TODO: focus next field 
-const Input = ({ control, name, placeholder, label, labelStyle, rules, error, editable = true, onKeyPress, returnKeyType, secureTextEntry = false }: Props) => {
+const Input = ({ control, name, placeholder, label, labelStyle, rules, error, editable = true, onSubmit, returnKeyType, secureTextEntry = false }: Props) => {
   return (
     <Controller
       control={control}
@@ -29,7 +29,7 @@ const Input = ({ control, name, placeholder, label, labelStyle, rules, error, ed
             style={[AppStyles.control, error && { borderColor: Colors.Error }, !editable && AppStyles.controlDisabled]}
             placeholder={placeholder}
             editable={editable}
-            onKeyPress={onKeyPress}
+            onSubmitEditing={onSubmit}
             returnKeyType={returnKeyType}
             placeholderTextColor={Colors.LightGrey}
             secureTextEntry={secureTextEntry}

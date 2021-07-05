@@ -49,11 +49,11 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
       .catch(() => NotificationService.show(t("feedback.load_failed")));
   }, []);
 
-  const onSubmit = (user: User) => {
+  const onSubmit = (updatedUser: User) => {
     setIsSaving(true);
     setError(false);
 
-    putUser(user)
+    putUser(updatedUser)
       .then((user) => onUserChanged(user))
       .catch(() => setError(true))
       .finally(() => setIsSaving(false));

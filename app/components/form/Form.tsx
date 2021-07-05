@@ -1,6 +1,6 @@
-import React, { ReactElement, ReactNode } from "react";
+import React, { ReactElement, ReactNode, RefAttributes } from "react";
 import { Control, FieldError } from "react-hook-form";
-import { NativeSyntheticEvent, TextInputKeyPressEventData, TextStyle } from "react-native";
+import { TextStyle } from "react-native";
 
 export interface ControlProps {
   control?: Control<any>;
@@ -29,7 +29,7 @@ const Form = ({ children, control, rules, errors, editable = true, onSubmit }: P
     return (Array.isArray(elements) ? [...elements] : [elements]).map((element, i) => enrichElement(element as ReactElement, i));
   };
 
-  const enrichElement = (element: ReactElement, index: number): ReactElement => {
+  const enrichElement = (element: ReactElement & RefAttributes<any>, index: number): ReactElement => {
     if (!element.props) return element;
 
     let props = {
@@ -41,6 +41,7 @@ const Form = ({ children, control, rules, errors, editable = true, onSubmit }: P
     if (element.props.name) {
       props = {
         ...props,
+        ref: element.ref,
         control: control,
         rules: rules[element.props.name],
         error: errors[element.props.name],

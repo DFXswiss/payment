@@ -1,11 +1,9 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, Button, View } from "react-native";
+import { StyleSheet, View, TextInput } from "react-native";
 import Form from "../components/form/Form";
-import Loading from "../components/util/Loading";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
 import { SpacerH, SpacerV } from "../elements/Spacers";
@@ -21,6 +19,7 @@ import Clipboard from "expo-clipboard";
 import Validations from "../utils/Validations";
 import { Text } from "react-native-paper";
 import SettingsService from "../services/SettingsService";
+import LoadingButton from "../components/util/LoadingButton";
 
 interface LoginData {
   userName: string;
@@ -54,9 +53,12 @@ const LoginScreen = () => {
 
   // TODO: redirect to home if already logged in?
 
+  const passwordRef = useRef<TextInput>();
+
   const onSubmit = (direct: boolean) => (data: LoginData) => {
     if (!direct && !addressEntered) {
       setAddressEntered(true);
+      passwordRef.current?.focus();
       return;
     }
 
@@ -102,7 +104,6 @@ const LoginScreen = () => {
     password: addressEntered ? Validations.Required(t) : undefined,
   };
 
-  // TODO: focus signature on enter
   return (
     <AppLayout>
       <View style={[AppStyles.container, styles.container]}>
@@ -122,6 +123,7 @@ const LoginScreen = () => {
               name="userName"
               label={t("model.user.legacy_address")}
               returnKeyType="next"
+              blurOnSubmit={false}
               placeholder="8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG"
             />
 
@@ -142,7 +144,13 @@ const LoginScreen = () => {
               </View>
               <SpacerV />
               {/* TODO: verify send type */}
-              <Input name="password" label={t("model.user.signature")} returnKeyType="send" secureTextEntry />
+              <Input
+                name="password"
+                label={t("model.user.signature")}
+                returnKeyType="send"
+                ref={passwordRef}
+                secureTextEntry
+              />
             </View>
 
             <SpacerV />
@@ -155,15 +163,11 @@ const LoginScreen = () => {
             )}
 
             <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
-              <View style={isProcessing && AppStyles.hidden}>
-                <Button
-                  color={Colors.Primary}
-                  title={t(addressEntered ? "action.login" : "action.next")}
-                  onPress={handleSubmit(onSubmit(false))}
-                  disabled={isProcessing}
-                />
-              </View>
-              {isProcessing && <Loading />}
+              <LoadingButton
+                title={t(addressEntered ? "action.login" : "action.next")}
+                isLoading={isProcessing}
+                onPress={handleSubmit(onSubmit(false))}
+              />
             </View>
           </Form>
         </View>

@@ -2,13 +2,14 @@ import React, { useState } from "react";
 import { Dispatch } from "react";
 import { SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
-import { View, Button } from "react-native";
+import { View } from "react-native";
 import { DataTable, Text } from "react-native-paper";
 import BuyRouteEdit from "../../components/edit/BuyRouteEdit";
 import SellRouteEdit from "../../components/edit/SellRouteEdit";
 import DeFiModal from "../../components/util/DeFiModal";
 import IconButton from "../../components/util/IconButton";
 import Colors from "../../config/Colors";
+import { DeFiButton } from "../../elements/Buttons";
 import { SpacerV } from "../../elements/Spacers";
 import { CompactRow, CompactCell, CompactHeader, CompactTitle } from "../../elements/Tables";
 import { H2, H3 } from "../../elements/Texts";
@@ -94,10 +95,10 @@ const RouteList = ({
           <>
             <Text style={AppStyles.mla}>{t("model.route.new")}</Text>
             <View style={AppStyles.ml10}>
-              <Button color={Colors.Primary} title={t("model.route.buy")} onPress={() => setIsBuyRouteEdit(true)} />
+              <DeFiButton mode="contained" onPress={() => setIsBuyRouteEdit(true)}>{t("model.route.buy")}</DeFiButton>
             </View>
             <View style={AppStyles.ml10}>
-              <Button color={Colors.Primary} title={t("model.route.sell")} onPress={() => setIsSellRouteEdit(true)} />
+              <DeFiButton mode="contained" onPress={() => setIsSellRouteEdit(true)}>{t("model.route.sell")}</DeFiButton>
             </View>
           </>
         )}

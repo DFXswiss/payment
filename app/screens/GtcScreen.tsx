@@ -1,13 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { Paragraph } from "react-native-paper";
 import AppLayout from "../components/AppLayout";
-import LoadingButton from "../components/util/LoadingButton";
 import Routes from "../config/Routes";
-import { ActionLink } from "../elements/Buttons";
+import { ActionLink, DeFiButton } from "../elements/Buttons";
 import { SpacerV } from "../elements/Spacers";
 import { H1, H3 } from "../elements/Texts";
 import withSession from "../hocs/withSession";
@@ -55,7 +53,9 @@ const GtcScreen = ({ session }: { session?: Session }) => {
         <View style={AppStyles.containerHorizontal}>
           <ActionLink label={t("action.back")} onPress={() => nav.navigate(Routes.Login)} />
           <View style={AppStyles.mla}>
-            <LoadingButton title={t("action.accept")} isLoading={isProcessing} onPress={register} />
+            <DeFiButton mode="contained" loading={isProcessing} onPress={register}>
+              {t("action.accept")}
+            </DeFiButton>
           </View>
         </View>
       </View>

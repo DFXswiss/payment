@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
+import { DeFiButton } from "../../elements/Buttons";
 import { SpacerV } from "../../elements/Spacers";
 import { Alert } from "../../elements/Texts";
 import { Asset } from "../../models/Asset";
@@ -14,7 +15,6 @@ import Validations from "../../utils/Validations";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
 import Input from "../form/Input";
-import LoadingButton from "../util/LoadingButton";
 
 const BuyRouteEdit = ({
   isVisible,
@@ -86,7 +86,9 @@ const BuyRouteEdit = ({
       )}
 
       <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
-        <LoadingButton title={t("action.save")} isLoading={isSaving} onPress={handleSubmit(onSubmit)} />
+        <DeFiButton mode="contained" loading={isSaving} onPress={handleSubmit(onSubmit)}>
+          {t("action.save")}
+        </DeFiButton>
       </View>
     </Form>
   );

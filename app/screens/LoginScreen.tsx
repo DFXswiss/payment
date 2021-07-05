@@ -19,7 +19,7 @@ import Clipboard from "expo-clipboard";
 import Validations from "../utils/Validations";
 import { Text } from "react-native-paper";
 import SettingsService from "../services/SettingsService";
-import LoadingButton from "../components/util/LoadingButton";
+import { DeFiButton } from "../elements/Buttons";
 
 interface LoginData {
   userName: string;
@@ -53,7 +53,7 @@ const LoginScreen = () => {
 
   // TODO: redirect to home if already logged in?
 
-  const passwordRef = useRef<TextInput>();
+  const passwordRef = useRef<TextInput>(null);
 
   const onSubmit = (direct: boolean) => (data: LoginData) => {
     if (!direct && !addressEntered) {
@@ -163,11 +163,7 @@ const LoginScreen = () => {
             )}
 
             <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
-              <LoadingButton
-                title={t(addressEntered ? "action.login" : "action.next")}
-                isLoading={isProcessing}
-                onPress={handleSubmit(onSubmit(false))}
-              />
+              <DeFiButton mode="contained" loading={isProcessing} onPress={handleSubmit(onSubmit(false))}>{t(addressEntered ? "action.login" : "action.next")}</DeFiButton>
             </View>
           </Form>
         </View>

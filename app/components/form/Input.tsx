@@ -10,7 +10,7 @@ interface Props extends ControlProps {
   onSubmit?: () => void;
 }
 
-const Input = forwardRef<TextInput, Props & TextInputProps>(({ control, name, label, labelStyle, rules, error, editable = true, onSubmit, ...props }: Props & TextInputProps, ref) => {
+const Input = forwardRef<TextInput | null, Props & TextInputProps>(({ control, name, label, labelStyle, rules, error, editable = true, onSubmit, ...props }: Props & TextInputProps, ref) => {
   return (
     <Controller
       control={control}

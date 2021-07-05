@@ -13,11 +13,11 @@ import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
 import Input from "../form/Input";
 import PhoneNumber from "../form/PhoneNumber";
-import LoadingButton from "../util/LoadingButton";
 import Validations from "../../utils/Validations";
 import NotificationService from "../../services/NotificationService";
 import { Alert } from "../../elements/Texts";
 import { useDevice } from "../../hooks/useDevice";
+import { DeFiButton } from "../../elements/Buttons";
 
 interface Props {
   isVisible: boolean;
@@ -112,7 +112,7 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
       )}
 
       <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
-        <LoadingButton title={t("action.save")} isLoading={isSaving} onPress={handleSubmit(onSubmit)} />
+        <DeFiButton mode="contained" loading={isSaving} onPress={handleSubmit(onSubmit)}>{t("action.save")}</DeFiButton>
       </View>
     </Form>
   );

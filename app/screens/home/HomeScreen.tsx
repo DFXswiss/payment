@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Button } from "react-native";
 import { View } from "react-native";
 import DeFiModal from "../../components/util/DeFiModal";
 import Loading from "../../components/util/Loading";
 import UserEdit from "../../components/edit/UserEdit";
-import Colors from "../../config/Colors";
 import { SpacerV } from "../../elements/Spacers";
 import { H1, H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
@@ -22,6 +20,7 @@ import { DataTable, FAB, Portal } from "react-native-paper";
 import { CompactCell, CompactRow } from "../../elements/Tables";
 import { useIsFocused } from "@react-navigation/native";
 import { useDevice } from "../../hooks/useDevice";
+import { DeFiButton } from "../../elements/Buttons";
 
 const userData = (user: User) => [
   { condition: user.address, label: "model.user.address", value: user.address },
@@ -116,7 +115,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                   <H2 text={t("model.user.your_data")} />
                   {device.SM && (
                     <View style={AppStyles.mla}>
-                      <Button color={Colors.Primary} title={t("action.edit")} onPress={() => setIsUserEdit(true)} />
+                      <DeFiButton mode="contained" onPress={() => setIsUserEdit(true)}>{t("action.edit")}</DeFiButton>
                     </View>
                   )}
                 </View>

@@ -38,15 +38,6 @@ const DeFiModal = ({
           </View>
           <SpacerV />
           {children}
-
-          {/* TODO: default close buttons? */}
-          {/* <Spacer />
-          <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
-            <Button color={Colors.LightGrey} title={t("action.abort")} onPress={() => setIsVisible(false)} />
-            <View style={AppStyles.ml10}>
-              <Button color={Colors.Primary} title={save} onPress={() => setIsVisible(false)} />
-            </View>
-          </View> */}
         </ScrollView>
       </View>
     </Modal>

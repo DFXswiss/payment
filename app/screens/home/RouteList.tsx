@@ -128,7 +128,7 @@ const RouteList = ({
 
                 {routes.buyRoutes.map((route) => (
                   <CompactRow key={route.id}>
-                    <CompactCell style={{ flex: 1 }}>{route.asset.name}</CompactCell>
+                    <CompactCell style={{ flex: 1 }}>{route.asset?.name}</CompactCell>
                     <CompactCell style={{ flex: 1 }}>{route.iban}</CompactCell>
                     <CompactCell style={{ flex: 2 }}>{route.bankUsage}</CompactCell>
                     <CompactCell style={{ flex: undefined }}>
@@ -161,7 +161,7 @@ const RouteList = ({
 
                 {routes.sellRoutes.map((route) => (
                   <CompactRow key={route.id}>
-                    <CompactCell style={{ flex: 1 }}>{route.fiat.name}</CompactCell>
+                    <CompactCell style={{ flex: 1 }}>{route.fiat?.name}</CompactCell>
                     <CompactCell style={{ flex: 1 }}>{route.iban}</CompactCell>
                     <CompactCell style={{ flex: 2 }}>{route.depositAddress}</CompactCell>
                     <CompactCell style={{ flex: undefined }}>

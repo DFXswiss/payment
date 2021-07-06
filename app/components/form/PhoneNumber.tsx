@@ -1,16 +1,15 @@
-import { Picker } from "@react-native-picker/picker";
 import { getCountries, getCountryCallingCode } from "libphonenumber-js";
-import React from "react";
+import React, { useState } from "react";
 import { Controller, useWatch } from "react-hook-form";
-import { View, TextInput, NativeSyntheticEvent, TextInputKeyPressEventData } from "react-native";
-import Colors from "../../config/Colors";
+import { View } from "react-native";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import AppStyles from "../../styles/AppStyles";
 import { ControlProps } from "./Form";
 import { byIso } from "country-code-lookup";
 import { useTranslation } from "react-i18next";
 import Validations from "../../utils/Validations";
-import { Text } from "react-native-paper";
+import { HelperText, TextInput } from "react-native-paper";
+import DropDown from "react-native-paper-dropdown";
 
 interface Props extends ControlProps {
   placeholder?: string;
@@ -20,6 +19,7 @@ interface Props extends ControlProps {
 
 interface IPhoneNumber {
   code?: string;
+  dialCode?: string;
   number?: string;
 }
 
@@ -32,7 +32,7 @@ interface PhoneCode {
 const phoneCodes: PhoneCode[] = getCountries()
   .map((c) => ({ code: c, country: byIso(c)?.country ?? "", dialCode: `+${getCountryCallingCode(c)}` }))
   .filter((p) => p.country)
-  .sort((a, b) => (a.dialCode + a.country) > (b.dialCode + b.country) ? 1 : -1);
+  .sort((a, b) => (a.dialCode + a.country > b.dialCode + b.country ? 1 : -1));
 
 // TODO: join with DeFiPicker?
 const PhoneNumber = ({
@@ -40,30 +40,31 @@ const PhoneNumber = ({
   name,
   placeholder,
   label,
-  labelStyle,
   rules,
   error,
-  editable = true,
+  disabled = false,
   onSubmit,
   wrap = false,
 }: Props) => {
   const { t } = useTranslation();
   const phoneNumber = useWatch({ control, name: name, defaultValue: "" });
 
-  // TODO: improve performance
+  const [showDropDown, setShowDropDown] = useState(false);
+
   const parseNumber = (): IPhoneNumber => {
-    const code = phoneCodes.find((c) => phoneNumber?.startsWith(c.dialCode))?.dialCode;
-    const number = phoneNumber?.replace(code, "").trimLeft();
-    return { code, number };
+    const code = phoneCodes.find((c) => phoneNumber?.startsWith(c.dialCode));
+    const number = phoneNumber?.replace(code?.dialCode, "").trimLeft();
+    return { code: code?.code, number: number, dialCode: code?.dialCode };
   };
   const updateNumber = (update: Partial<IPhoneNumber>) => {
-    const { code, number } = { ...parseNumber(), ...update };
-    return code || number ? `${code} ${number}` : "";
+    const { dialCode, number } = { ...parseNumber(), ...update };
+    return dialCode || number ? `${dialCode} ${number}` : "";
   };
 
+  // TODO: improve performance
   // TODO: auto-select phone codes with selected country
+  // TODO: does not work with countries with same phone code! (fix with performance)
 
-  // TODO: bug when undefined-select (only if form already submitted)
   const updateRules = (rules?: any): any => ({
     ...rules,
     ...Validations.Phone(t),
@@ -74,40 +75,40 @@ const PhoneNumber = ({
       control={control}
       render={({ field: { onChange, onBlur, value } }) => (
         <>
-          {label && <Text style={[AppStyles.label, labelStyle]}>{label}</Text>}
           <View style={!wrap && AppStyles.containerHorizontal}>
-            <Picker
-              style={[
-                AppStyles.control,
-                error && { borderColor: Colors.Error },
-                !editable && AppStyles.controlDisabled, // TODO: this color is different than input's ???
-              ]}
-              selectedValue={parseNumber().code}
-              onValueChange={(itemValue, itemIndex) => onChange(updateNumber({ code: itemValue }))}
-              enabled={editable}
-            >
-              {!rules?.required && <Picker.Item label="" value={undefined} />}
-              {phoneCodes?.map((code) => (
-                <Picker.Item key={code.code} label={`${code.country} ${code.dialCode}`} value={code.dialCode} />
-              ))}
-            </Picker>
-            { wrap ? <SpacerV height={5} /> : <SpacerH />}
+            <DropDown
+              label={label}
+              value={parseNumber().code}
+              setValue={(value) =>
+                onChange(updateNumber({ dialCode: phoneCodes.find((c) => c.code == value)?.dialCode }))
+              }
+              list={(rules?.required ? [] : [{ label: " ", value: undefined as unknown as string }]).concat(
+                phoneCodes?.map((code) => ({ label: `${code.country} ${code.dialCode}`, value: code.code }))
+              )}
+              visible={showDropDown}
+              showDropDown={() => setShowDropDown(!disabled)}
+              onDismiss={() => setShowDropDown(false)}
+              inputProps={{
+                onBlur: onBlur,
+                right: <TextInput.Icon name={"menu-down"} />,
+                error: Boolean(error),
+                disabled: disabled,
+              }}
+            />
+            {wrap ? <SpacerV height={5} /> : <SpacerH />}
             <TextInput
               onBlur={onBlur}
-              onChangeText={(val) => onChange(updateNumber({ number: val }))}
+              onChangeText={(value) => onChange(updateNumber({ number: value }))}
               value={parseNumber().number ?? ""}
-              style={[
-                AppStyles.control,
-                error && { borderColor: Colors.Error },
-                !editable && AppStyles.controlDisabled,
-              ]}
               placeholder={placeholder}
-              editable={editable}
+              disabled={disabled}
+              error={Boolean(error)}
               onSubmitEditing={onSubmit}
-              placeholderTextColor={Colors.LightGrey}
             />
           </View>
-          <Text style={AppStyles.textError}>{error && error.message}</Text>
+          <HelperText type="error" visible={Boolean(error)}>
+            {error && error.message}
+          </HelperText>
         </>
       )}
       name={name}

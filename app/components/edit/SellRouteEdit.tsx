@@ -66,7 +66,7 @@ const SellRouteEdit = ({
   const userDataMissing = !(user?.firstName && user?.lastName && user?.street && user?.zip && user?.location && user?.country && user?.mobileNumber);
 
   return (
-    <Form control={control} rules={rules} errors={errors} editable={!isSaving} onSubmit={handleSubmit(onSubmit)}>
+    <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
       {userDataMissing && <Alert label={t("model.user.data_missing")} />}
       <DeFiPicker
         name="fiat"

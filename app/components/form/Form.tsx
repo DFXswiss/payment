@@ -6,10 +6,9 @@ export interface ControlProps {
   control?: Control<any>;
   name: string;
   label?: string;
-  labelStyle?: TextStyle;
   rules?: any;
   error?: FieldError | undefined;
-  editable?: boolean;
+  disabled?: boolean;
 }
 
 interface Props {
@@ -17,12 +16,12 @@ interface Props {
   control: Control<any>;
   rules: any;
   errors: any;
-  editable?: boolean;
+  disabled?: boolean;
   onSubmit?: () => void;
 }
 
 // TODO: auto focus on next input field?
-const Form = ({ children, control, rules, errors, editable = true, onSubmit }: Props) => {
+const Form = ({ children, control, rules, errors, disabled = false, onSubmit }: Props) => {
   const enrichElements = (elements: ReactNode): ReactElement[] | undefined => {
     if (!elements) return undefined;
 
@@ -45,7 +44,7 @@ const Form = ({ children, control, rules, errors, editable = true, onSubmit }: P
         control: control,
         rules: rules[element.props.name],
         error: errors[element.props.name],
-        editable: editable,
+        disabled: disabled,
         onSubmit: onSubmit,
       };
     }

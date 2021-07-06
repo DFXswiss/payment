@@ -1,10 +1,7 @@
-import { Picker } from "@react-native-picker/picker";
-import React from "react";
+import React, { useState } from "react";
 import { Controller } from "react-hook-form";
-import { View } from "react-native";
-import { Text } from "react-native-paper";
-import Colors from "../../config/Colors";
-import AppStyles from "../../styles/AppStyles";
+import { HelperText, TextInput } from "react-native-paper";
+import DropDown from "react-native-paper-dropdown";
 import { ControlProps } from "./Form";
 
 interface Props extends ControlProps {
@@ -13,37 +10,36 @@ interface Props extends ControlProps {
   labelProp: string;
 }
 
-const DeFiPicker = ({
-  control,
-  name,
-  label,
-  labelStyle,
-  rules,
-  error,
-  editable,
-  items,
-  idProp,
-  labelProp,
-}: Props) => {
+// TODO: empty option moves label
+const DeFiPicker = ({ control, name, label, rules, error, disabled, items, idProp, labelProp }: Props) => {
+  const [showDropDown, setShowDropDown] = useState(false);
+
   return (
     <Controller
       control={control}
       render={({ field: { onChange, onBlur, value } }) => (
-        <View style={AppStyles.cell}>
-          {label && <Text style={[AppStyles.label, labelStyle]}>{label}</Text>}
-          <Picker
-            style={[AppStyles.control, error && { borderColor: Colors.Error }, !editable && AppStyles.controlDisabled]}
-            selectedValue={value && value[idProp]}
-            onValueChange={(itemValue, itemIndex) => onChange(items.find((i) => i[idProp] == itemValue))}
-            enabled={editable}
-          >
-            {!rules?.required && <Picker.Item label="" value={undefined} />}
-            {items?.map((item) => (
-              <Picker.Item key={item[idProp]} label={item[labelProp]} value={item[idProp]} />
-            ))}
-          </Picker>
-          <Text style={AppStyles.textError}>{error && error.message}</Text>
-        </View>
+        <>
+          <DropDown
+            label={label}
+            value={value && value[idProp]}
+            setValue={(value) => onChange(items.find((i) => i[idProp] == value))}
+            list={(rules?.required ? [] : [{ label: " ", value: undefined as unknown as string }]).concat(
+              items?.map((item) => ({ label: item[labelProp], value: item[idProp] }))
+            )}
+            visible={showDropDown}
+            showDropDown={() => setShowDropDown(!disabled)}
+            onDismiss={() => setShowDropDown(false)}
+            inputProps={{
+              onBlur: onBlur,
+              right: <TextInput.Icon name={"menu-down"} />,
+              error: Boolean(error),
+              disabled: disabled,
+            }}
+          />
+          <HelperText type="error" visible={Boolean(error)}>
+            {error && error.message}
+          </HelperText>
+        </>
       )}
       name={name}
       rules={rules}

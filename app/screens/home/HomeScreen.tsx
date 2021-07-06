@@ -23,16 +23,16 @@ import { useDevice } from "../../hooks/useDevice";
 import { DeFiButton } from "../../elements/Buttons";
 
 const userData = (user: User) => [
-  { condition: user.address, label: "model.user.address", value: user.address },
-  { condition: user.firstName || user.lastName, label: "model.user.name", value: `${user.firstName} ${user.lastName}` },
-  { condition: user.street || user.houseNumber, label: "model.user.home", value: `${user.street} ${user.houseNumber}` },
-  { condition: user.zip, label: "model.user.zip", value: user.zip },
-  { condition: user.location, label: "model.user.location", value: user.location },
-  { condition: user.country, label: "model.user.country", value: user.country.name },
-  { condition: user.mail, label: "model.user.mail", value: user.mail },
-  { condition: user.mobileNumber, label: "model.user.mobile_number", value: user.mobileNumber },
-  { condition: user.usedRef, label: "model.user.used_ref", value: user.usedRef },
-  { condition: user.ref, label: "model.user.ref", value: user.ref },
+  { condition: Boolean(user.address), label: "model.user.address", value: user.address },
+  { condition: Boolean(user.firstName || user.lastName), label: "model.user.name", value: `${user.firstName} ${user.lastName}` },
+  { condition: Boolean(user.street || user.houseNumber), label: "model.user.home", value: `${user.street} ${user.houseNumber}` },
+  { condition: Boolean(user.zip), label: "model.user.zip", value: user.zip },
+  { condition: Boolean(user.location), label: "model.user.location", value: user.location },
+  { condition: Boolean(user.country), label: "model.user.country", value: user.country?.name },
+  { condition: Boolean(user.mail), label: "model.user.mail", value: user.mail },
+  { condition: Boolean(user.mobileNumber), label: "model.user.mobile_number", value: user.mobileNumber },
+  { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef },
+  { condition: Boolean(user.ref), label: "model.user.ref", value: user.ref },
 ];
 
 const HomeScreen = ({ session }: { session?: Session }) => {

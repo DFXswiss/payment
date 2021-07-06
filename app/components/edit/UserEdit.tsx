@@ -65,7 +65,7 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
   };
 
   return (
-    <Form control={control} rules={rules} errors={errors} editable={!isSaving} onSubmit={handleSubmit(onSubmit)}>
+    <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
       <View style={AppStyles.containerHorizontalWrap}>
         <Input name="firstName" label={t("model.user.first_name")} />
         <SpacerH />

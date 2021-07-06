@@ -57,15 +57,13 @@ const BuyRouteEdit = ({
 
   // TODO: react on collisions (buy&sell)
 
-  // TODO: DeFiPicker does not reset on reset!
-
   const rules: any = {
     asset: Validations.Required(t),
     iban: { ...Validations.Required(t), ...Validations.Iban(t) },
   };
 
   return (
-    <Form control={control} rules={rules} errors={errors} editable={!isSaving} onSubmit={handleSubmit(onSubmit)}>
+    <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
       <DeFiPicker
         name="asset"
         label={t("model.route.asset")}

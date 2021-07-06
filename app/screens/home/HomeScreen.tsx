@@ -115,7 +115,9 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                   <H2 text={t("model.user.your_data")} />
                   {device.SM && (
                     <View style={AppStyles.mla}>
-                      <DeFiButton mode="contained" onPress={() => setIsUserEdit(true)}>{t("action.edit")}</DeFiButton>
+                      <DeFiButton mode="contained" onPress={() => setIsUserEdit(true)}>
+                        {t("action.edit")}
+                      </DeFiButton>
                     </View>
                   )}
                 </View>

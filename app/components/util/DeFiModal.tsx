@@ -1,46 +1,49 @@
-import React, { ReactElement, ReactNode } from "react";
-import Modal from "modal-enhanced-react-native-web";
+import React, { ReactNode } from "react";
 import { StyleSheet, View, TextStyle, ScrollView } from "react-native";
 import Colors from "../../config/Colors";
-import { useTranslation } from "react-i18next";
 import { SpacerV } from "../../elements/Spacers";
 import AppStyles from "../../styles/AppStyles";
 import { H2 } from "../../elements/Texts";
 import IconButton from "./IconButton";
+import { Modal, Portal } from "react-native-paper";
 
 const DeFiModal = ({
   isVisible,
   setIsVisible,
   style,
   title,
-  save,
   children,
 }: {
   isVisible: boolean;
   setIsVisible: (isVisible: boolean) => void;
   style?: TextStyle;
   title: string;
-  save?: string;
   children: ReactNode;
 }) => {
-  const { t } = useTranslation();
-
-  // TODO: close on escape
   return (
-    <Modal isVisible={isVisible} onBackdropPress={() => setIsVisible(false)}>
-      <View style={[styles.container, style]}>
+    <Portal>
+      <Modal
+        visible={isVisible}
+        onDismiss={() => setIsVisible(false)}
+        contentContainerStyle={[styles.container, style]}
+      >
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View style={[AppStyles.containerHorizontal]}>
             <H2 text={title} style={AppStyles.mr20} />
             <View style={AppStyles.mla}>
-              <IconButton icon="close" color={Colors.Grey} onPress={() => setIsVisible(false)} />
+              <IconButton
+                icon="close"
+                color={Colors.Grey}
+                onPress={() => setIsVisible(false)}
+                style={styles.closeIcon}
+              />
             </View>
           </View>
           <SpacerV />
           {children}
         </ScrollView>
-      </View>
-    </Modal>
+      </Modal>
+    </Portal>
   );
 };
 
@@ -53,6 +56,10 @@ const styles = StyleSheet.create({
   },
   scrollContainer: {
     padding: 15,
+  },
+  closeIcon: {
+    marginTop: -10,
+    marginRight: -10,
   },
 });
 

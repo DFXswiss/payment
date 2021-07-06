@@ -67,7 +67,12 @@ const SellRouteEdit = ({
 
   return (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
-      {userDataMissing && <Alert label={t("model.user.data_missing")} />}
+      {userDataMissing && (
+        <>
+          <Alert label={t("model.user.data_missing")} />
+          <SpacerV />
+        </>
+      )}
       <DeFiPicker
         name="fiat"
         label={t("model.route.fiat")}

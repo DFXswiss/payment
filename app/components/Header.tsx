@@ -59,6 +59,21 @@ const Header = ({ session, settings }: { session?: Session; settings?: AppSettin
           label={t("general.telegram")}
         />
 
+        {/* TODO: dropdown? */}
+        {/* <DropDown
+          value={selectedLanguage}
+          setValue={(value) => languageChanged(`${value}`)}
+          list={[{label: "Deutsch", value: "de"}, {label: "English", value: "en"}]}
+          visible={showDropDown}
+          showDropDown={() => setShowDropDown(true)}
+          onDismiss={() => setShowDropDown(false)}
+          inputProps={{
+            right: <TextInput.Icon name={"menu-down"} />,
+            dense: true,
+            underlineColor: "white",
+            style: {color: Colors.Primary, backgroundColor: "white", maxWidth: 120}
+          }}
+        /> */}
         <Picker
           style={[AppStyles.ml10, styles.languageSelect]}
           selectedValue={selectedLanguage}

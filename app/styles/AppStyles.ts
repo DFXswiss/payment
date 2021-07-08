@@ -40,9 +40,6 @@ export default StyleSheet.create({
     padding: 10,
     borderRadius: 5,
   },
-  textError: {
-    color: Colors.Error,
-  },
   // style
   i: {
     fontStyle: "italic",
@@ -80,27 +77,5 @@ export default StyleSheet.create({
   },
   ml20: {
     marginLeft: 20,
-  },
-  // form
-  label: {
-    paddingVertical: 5,
-    fontSize: 14,
-    fontWeight: "bold",
-    color: Colors.Grey,
-  },
-  control: {
-    borderStyle: "solid",
-    borderWidth: 1,
-    borderRadius: 5,
-    borderColor: Colors.Grey,
-    paddingVertical: 5,
-    paddingLeft: 5,
-    height: 40,
-    color: Colors.Black,
-    fontSize: 14,
-  },
-  controlDisabled: {
-    color: Colors.Grey,
-    backgroundColor: Colors.LightGrey,
   },
 });

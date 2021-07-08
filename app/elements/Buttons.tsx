@@ -9,6 +9,7 @@ export const ActionLink = ({ onPress, label, style }: { onPress: () => void; lab
   </TouchableOpacity>
 );
 
+// TODO: use the paper button props?
 export const DeFiButton = ({ loading, disabled, ...props }: any) => (
   <Button loading={loading} disabled={loading || disabled} contentStyle={(loading || disabled) && { cursor: "default" }} {...props}>
     {props.children}

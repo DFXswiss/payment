@@ -116,7 +116,7 @@ const LoginScreen = () => {
             control={control}
             rules={rules}
             errors={errors}
-            editable={!isProcessing}
+            disabled={isProcessing}
             onSubmit={handleSubmit(onSubmit(false))}
           >
             <Input

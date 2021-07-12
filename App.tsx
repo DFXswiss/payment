@@ -15,6 +15,7 @@ import HeaderContent from "./app/components/HeaderContent";
 import Sizes from "./app/config/Sizes";
 import { View } from "react-native";
 import { useDevice } from "./app/hooks/useDevice";
+import RefScreen from "./app/screens/RefScreen";
 
 const DrawerContent = () => {
   const device = useDevice();
@@ -38,6 +39,7 @@ const App = () => {
       screens: {
         [Routes.Home]: "/",
         [Routes.Login]: "login",
+        [Routes.Ref]: "ref",
         [Routes.Gtc]: "legal",
         [Routes.NotFound]: "*",
       },
@@ -50,6 +52,7 @@ const App = () => {
         <drawer.Navigator screenOptions={{ headerShown: false }} drawerContent={(props) => <DrawerContent />}>
           <drawer.Screen name={Routes.Home} component={HomeScreen} />
           <drawer.Screen name={Routes.Login} component={LoginScreen} />
+          <drawer.Screen name={Routes.Ref} component={RefScreen} />
           <drawer.Screen name={Routes.Gtc} component={GtcScreen} />
           <drawer.Screen name={Routes.NotFound} component={NotFoundScreen} />
         </drawer.Navigator>

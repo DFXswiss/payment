@@ -15,7 +15,8 @@
       "home": "Zurück zur Startseite",
       "next": "Weiter",
       "back": "Zurück",
-      "accept": "Akzeptieren"
+      "accept": "Akzeptieren",
+      "ok": "OK"
     },
     "feedback": {
       "page_not_found": "Seite nicht gefunden!",
@@ -33,6 +34,9 @@
       "sign_up": "Anmelden / Registrieren",
       "signing_message": "Nachricht zum Signieren",
       "login_failed": "Login fehlgeschlagen!"
+    },
+    "ref": {
+      "continue_without_ref": "Weiter ohne Ref-Code"
     },
     "gtc": {
       "title": "Allgemeine Geschäftsbedingungen",

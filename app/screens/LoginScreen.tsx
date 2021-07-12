@@ -79,7 +79,7 @@ const LoginScreen = () => {
       .then(() => nav.navigate(Routes.Home))
       .catch(() => {
         // new user
-        nav.navigate(Routes.Gtc);
+        nav.navigate(Routes.Ref);
         return;
 
         // TODO: error messages (if invalid address/signature)

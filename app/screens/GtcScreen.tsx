@@ -34,6 +34,7 @@ const GtcScreen = ({ session }: { session?: Session }) => {
       .catch(() => NotificationService.show(t("feedback.register_failed")));
   };
 
+  // TODO: scroll to bottom button
   return (
     <AppLayout>
       <View style={AppStyles.container}>

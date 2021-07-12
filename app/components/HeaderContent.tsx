@@ -73,7 +73,7 @@ const HeaderContent = ({ session, settings }: { session?: Session; settings?: Ap
         }}
       /> */}
       <Picker
-        style={[margin, styles.languageSelect]}
+        style={[margin, styles.languageSelect, {backgroundColor: Colors.White}]}
         selectedValue={selectedLanguage}
         onValueChange={(itemValue, itemIndex) => languageChanged(itemValue)}
       >

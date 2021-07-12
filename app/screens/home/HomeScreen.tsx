@@ -101,8 +101,6 @@ const HomeScreen = ({ session }: { session?: Session }) => {
       </DeFiModal>
 
       <View style={AppStyles.container}>
-        <H1 text={t("general.welcome")} style={AppStyles.center} />
-
         <SpacerV height={50} />
 
         {isLoading && <Loading size="large" />}

@@ -1,7 +1,6 @@
 import "react-native-gesture-handler";
 import React from "react";
 import { LinkingOptions, NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./app/screens/home/HomeScreen";
 import LoginScreen from "./app/screens/LoginScreen";
 import Routes from "./app/config/Routes";
@@ -11,9 +10,27 @@ import { navigationRef } from "./app/utils/NavigationHelper";
 import GtcScreen from "./app/screens/GtcScreen";
 import { Provider } from "react-native-paper";
 import AppTheme from "./app/styles/AppTheme";
+import { createDrawerNavigator } from "@react-navigation/drawer";
+import HeaderContent from "./app/components/HeaderContent";
+import Sizes from "./app/config/Sizes";
+import { View } from "react-native";
+import { useDevice } from "./app/hooks/useDevice";
+
+const DrawerContent = () => {
+  const device = useDevice();
+  return (
+    <>
+      {!device.SM && (
+        <View style={{ padding: Sizes.AppPadding }}>
+          <HeaderContent />
+        </View>
+      )}
+    </>
+  );
+};
 
 const App = () => {
-  const stack = createStackNavigator();
+  const drawer = createDrawerNavigator();
   const linking: LinkingOptions = {
     prefixes: [],
     config: {
@@ -30,12 +47,12 @@ const App = () => {
   return (
     <Provider theme={AppTheme}>
       <NavigationContainer linking={linking} ref={navigationRef}>
-        <stack.Navigator screenOptions={{ headerShown: false }}>
-          <stack.Screen name={Routes.Home} component={HomeScreen}></stack.Screen>
-          <stack.Screen name={Routes.Login} component={LoginScreen}></stack.Screen>
-          <stack.Screen name={Routes.Gtc} component={GtcScreen}></stack.Screen>
-          <stack.Screen name={Routes.NotFound} component={NotFoundScreen}></stack.Screen>
-        </stack.Navigator>
+        <drawer.Navigator screenOptions={{ headerShown: false }} drawerContent={(props) => <DrawerContent />}>
+          <drawer.Screen name={Routes.Home} component={HomeScreen} />
+          <drawer.Screen name={Routes.Login} component={LoginScreen} />
+          <drawer.Screen name={Routes.Gtc} component={GtcScreen} />
+          <drawer.Screen name={Routes.NotFound} component={NotFoundScreen} />
+        </drawer.Navigator>
       </NavigationContainer>
     </Provider>
   );

@@ -78,4 +78,7 @@ export default StyleSheet.create({
   ml20: {
     marginLeft: 20,
   },
+  mt10: {
+    marginTop: 10,
+  },
 });

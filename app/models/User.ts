@@ -1,5 +1,7 @@
 import { Country } from "./Country";
 
+// TODO: birthday, staatsangehörigkeit, language, email-settings, KYC status, gebühr
+
 export interface NewUserDto {
   address: string;
   signature: string;

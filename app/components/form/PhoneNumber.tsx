@@ -18,8 +18,7 @@ interface Props extends ControlProps {
 }
 
 interface IPhoneNumber {
-  code?: string;
-  dialCode?: string;
+  code?: PhoneCode;
   number?: string;
 }
 
@@ -50,21 +49,27 @@ const PhoneNumber = ({
   const phoneNumber = useWatch({ control, name: name, defaultValue: "" });
 
   const [showDropDown, setShowDropDown] = useState(false);
+  const [phoneCode, setPhoneCode] = useState<PhoneCode>();
 
   const parseNumber = (): IPhoneNumber => {
-    const code = phoneCodes.find((c) => phoneNumber?.startsWith(c.dialCode));
-    const number = phoneNumber?.replace(code?.dialCode, "").trimLeft();
-    return { code: code?.code, number: number, dialCode: code?.dialCode };
+    const code = phoneCode ?? phoneCodes.find((c) => phoneNumber?.startsWith(c.dialCode));
+    const tempNumber = phoneNumber?.replace(code?.dialCode, "").trimLeft();
+    return { code: code, number: tempNumber };
   };
-  const updateNumber = (update: Partial<IPhoneNumber>) => {
-    const { dialCode, number } = { ...parseNumber(), ...update };
-    return dialCode || number ? `${dialCode} ${number}` : "";
+  const updateCode = (code?: PhoneCode): string => {
+    const { number } = parseNumber();
+    setPhoneCode(code);
+    return getNumber(code, number);
+  }
+  const updateNumber = (number?: string): string => {
+    const { code } = parseNumber();
+    return getNumber(code, number);
   };
+  const getNumber = (code?: PhoneCode, number?: string) => {
+    return code?.dialCode || number ? `${code?.dialCode} ${number}` : "";
+  }
 
-  // TODO: improve performance
   // TODO: auto-select phone codes with selected country
-  // TODO: does not work with countries with same phone code! (fix with performance)
-
   const updateRules = (rules?: any): any => ({
     ...rules,
     ...Validations.Phone(t),
@@ -78,9 +83,9 @@ const PhoneNumber = ({
           <View style={!wrap && AppStyles.containerHorizontal}>
             <DropDown
               label={label}
-              value={parseNumber().code}
+              value={parseNumber().code?.code}
               setValue={(value) =>
-                onChange(updateNumber({ dialCode: phoneCodes.find((c) => c.code == value)?.dialCode }))
+                onChange(updateCode(phoneCodes.find((c) => c.code == value)))
               }
               list={(rules?.required ? [] : [{ label: " ", value: undefined as unknown as string }]).concat(
                 phoneCodes?.map((code) => ({ label: `${code.country} ${code.dialCode}`, value: code.code }))
@@ -98,7 +103,7 @@ const PhoneNumber = ({
             {wrap ? <SpacerV height={5} /> : <SpacerH />}
             <TextInput
               onBlur={onBlur}
-              onChangeText={(value) => onChange(updateNumber({ number: value }))}
+              onChangeText={(value) => onChange(updateNumber(value))}
               value={parseNumber().number ?? ""}
               placeholder={placeholder}
               disabled={disabled}

@@ -1,4 +1,4 @@
-import React, {  } from "react";
+import React from "react";
 import { StyleSheet, View, Image, TouchableOpacity } from "react-native";
 import Routes from "../config/Routes";
 import AppStyles from "../styles/AppStyles";
@@ -24,11 +24,9 @@ const Header = ({ session }: { session?: Session }) => {
         <Image style={styles.logo} source={require("../assets/logo_defichange.png")} />
       </TouchableOpacity>
 
-      {device.SM && (
-        <View style={AppStyles.mla}>
-          <HeaderContent />
-        </View>
-      )}
+      <View style={[AppStyles.mla, !device.SM && AppStyles.noDisplay]}>
+        <HeaderContent />
+      </View>
     </View>
   );
 };

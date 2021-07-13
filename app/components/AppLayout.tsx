@@ -1,4 +1,4 @@
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View, useWindowDimensions } from "react-native";
 import { Portal, Snackbar } from "react-native-paper";
@@ -8,7 +8,7 @@ import AppStyles from "../styles/AppStyles";
 import Header from "./Header";
 
 // TODO: button style on mobile
-const AppLayout = ({ children }: { children: ReactElement | ReactElement[] }) => {
+const AppLayout = ({ children }: { children: ReactNode }) => {
   const { t } = useTranslation();
   const windowHeight = useWindowDimensions().height;
 

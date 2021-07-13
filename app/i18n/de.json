@@ -3,7 +3,8 @@
     "general": {
       "wiki": "Wiki",
       "homepage": "Homepage",
-      "telegram": "Telegram"
+      "telegram": "Telegram",
+      "select_language": "Sprache auswählen"
     },
     "action": {
       "login": "Login",

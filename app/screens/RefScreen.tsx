@@ -49,9 +49,9 @@ const RefScreen = () => {
         </Dialog>
       </Portal>
 
+      <SpacerV height={20} />
       <H1 style={AppStyles.center} text={t("model.user.ref")} />
-
-      <SpacerV height={50} />
+      <SpacerV height={20} />
 
       <View style={AppStyles.alignCenter}>
         <View style={AppStyles.singleColFormContainer}>

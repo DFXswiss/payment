@@ -38,9 +38,10 @@ const GtcScreen = ({ session }: { session?: Session }) => {
   return (
     <AppLayout>
       <View style={AppStyles.container}>
+        
+        <SpacerV height={20} />
         <H1 style={AppStyles.center} text={t("gtc.title")} />
-
-        <SpacerV height={50} />
+        <SpacerV height={20} />
 
         {[...Array(gtcLength).keys()].map((_, i) => (
           <View key={i}>

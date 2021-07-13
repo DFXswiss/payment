@@ -100,57 +100,55 @@ const HomeScreen = ({ session }: { session?: Session }) => {
         <UserEdit isVisible={isUserEdit} user={user} onUserChanged={onUserChanged} />
       </DeFiModal>
 
-      <View style={AppStyles.container}>
-        <SpacerV height={50} />
+      <SpacerV height={50} />
 
-        {isLoading && <Loading size="large" />}
+      {isLoading && <Loading size="large" />}
 
-        {!isLoading && (
-          <>
-            {user && (
-              <View>
-                <View style={AppStyles.containerHorizontal}>
-                  <H2 text={t("model.user.your_data")} />
-                  {device.SM && (
-                    <View style={AppStyles.mla}>
-                      <DeFiButton mode="contained" onPress={() => setIsUserEdit(true)}>
-                        {t("action.edit")}
-                      </DeFiButton>
-                    </View>
-                  )}
-                </View>
-                <SpacerV />
-
-                <DataTable>
-                  {userData(user).map(
-                    (d) =>
-                      d.condition && (
-                        <CompactRow key={d.label}>
-                          <CompactCell>{t(d.label)}</CompactCell>
-                          <CompactCell style={{ flex: device.SM ? 2 : 1 }}>{d.value}</CompactCell>
-                        </CompactRow>
-                      )
-                  )}
-                </DataTable>
+      {!isLoading && (
+        <>
+          {user && (
+            <View>
+              <View style={AppStyles.containerHorizontal}>
+                <H2 text={t("model.user.your_data")} />
+                {device.SM && (
+                  <View style={AppStyles.mla}>
+                    <DeFiButton mode="contained" onPress={() => setIsUserEdit(true)}>
+                      {t("action.edit")}
+                    </DeFiButton>
+                  </View>
+                )}
               </View>
-            )}
+              <SpacerV />
 
-            <SpacerV height={50} />
+              <DataTable>
+                {userData(user).map(
+                  (d) =>
+                    d.condition && (
+                      <CompactRow key={d.label}>
+                        <CompactCell>{t(d.label)}</CompactCell>
+                        <CompactCell style={{ flex: device.SM ? 2 : 1 }}>{d.value}</CompactCell>
+                      </CompactRow>
+                    )
+                )}
+              </DataTable>
+            </View>
+          )}
 
-            {routes && (
-              <RouteList
-                user={user}
-                routes={routes}
-                setRoutes={setRoutes}
-                isBuyRouteEdit={isBuyRouteEdit}
-                setIsBuyRouteEdit={setIsBuyRouteEdit}
-                isSellRouteEdit={isSellRouteEdit}
-                setIsSellRouteEdit={setIsSellRouteEdit}
-              />
-            )}
-          </>
-        )}
-      </View>
+          <SpacerV height={50} />
+
+          {routes && (
+            <RouteList
+              user={user}
+              routes={routes}
+              setRoutes={setRoutes}
+              isBuyRouteEdit={isBuyRouteEdit}
+              setIsBuyRouteEdit={setIsBuyRouteEdit}
+              isSellRouteEdit={isSellRouteEdit}
+              setIsSellRouteEdit={setIsSellRouteEdit}
+            />
+          )}
+        </>
+      )}
     </AppLayout>
 
     // TODO: remove change logo PNG

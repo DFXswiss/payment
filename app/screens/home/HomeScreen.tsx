@@ -18,7 +18,6 @@ import useGuard from "../../hooks/useGuard";
 import NotificationService from "../../services/NotificationService";
 import { DataTable, FAB, Portal } from "react-native-paper";
 import { CompactCell, CompactRow } from "../../elements/Tables";
-import { useIsFocused } from "@react-navigation/native";
 import { useDevice } from "../../hooks/useDevice";
 import { DeFiButton } from "../../elements/Buttons";
 
@@ -38,7 +37,6 @@ const userData = (user: User) => [
 const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const device = useDevice();
-  const isFocused = useIsFocused();
 
   // TODO: full KYC Access
   // Button Limit erhöhen bei aktuellem KYC status display => Benutzerdaten => KYC Process starten
@@ -76,7 +74,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   }, [session]);
   // TODO: use cancelling if moved away?
 
-  const showButtons = (isFocused && user && !isLoading && !device.SM) ?? false;
+  const showButtons = (user && !isLoading && !device.SM) ?? false;
 
   useGuard(() => session && !session.isLoggedIn, [session]);
 
@@ -150,18 +148,6 @@ const HomeScreen = ({ session }: { session?: Session }) => {
         </>
       )}
     </AppLayout>
-
-    // TODO: remove change logo PNG
-    // <View style={[AppStyles.container, styles.container]}>
-    //   <Image
-    //     style={styles.image}
-    //     source={require("../assets/change_logo.png")}
-    //   />
-    //   <Text style={styles.text}>
-    //     <Text style={{ color: colors.Primary }}>DEFI</Text>CHANGE
-    //   </Text>
-    //   <Text>{t('coming_soon')}</Text>
-    // </View>
   );
 };
 

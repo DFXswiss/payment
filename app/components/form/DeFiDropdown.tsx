@@ -48,7 +48,7 @@ const DeFiDropdown = <T extends { [key: string]: any }>({ value, setValue, items
       </Portal>
 
       <DeFiButton
-        icon="menu-down"
+        icon="chevron-down"
         mode="outlined"
         onPress={() => setVisible(true)}
         contentStyle={styles.button}

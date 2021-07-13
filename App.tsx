@@ -48,7 +48,7 @@ const App = () => {
   return (
     <Provider theme={AppTheme}>
       <NavigationContainer linking={linking} ref={navigationRef}>
-        <drawer.Navigator screenOptions={{ headerShown: false }} drawerContent={(props) => <DrawerContent />}>
+        <drawer.Navigator screenOptions={{ headerShown: false }} drawerContent={() => <DrawerContent />}>
           <drawer.Screen name={Routes.Home} component={HomeScreen} />
           <drawer.Screen name={Routes.Login} component={LoginScreen} />
           <drawer.Screen name={Routes.Ref} component={RefScreen} />

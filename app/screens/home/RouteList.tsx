@@ -105,7 +105,7 @@ const RouteList = ({
       </View>
 
       {/* TODO: what if collision with deleted route? */}
-      {/* => reactivate route */}
+      {/* => reactivate route (check before push?) */}
       {/* multiple times same asset with different iban possible */}
       {/* TODO: details */}
 

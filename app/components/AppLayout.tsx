@@ -1,11 +1,14 @@
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { createRef, ReactNode, RefObject, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View, useWindowDimensions } from "react-native";
 import { Portal, Snackbar } from "react-native-paper";
 import Sizes from "../config/Sizes";
 import NotificationService from "../services/NotificationService";
+import ScrollService from "../services/ScrollService";
 import AppStyles from "../styles/AppStyles";
 import Header from "./Header";
+
+export const scrollRef: RefObject<ScrollView> = createRef();
 
 // TODO: button style on mobile
 const AppLayout = ({ children }: { children: ReactNode }) => {
@@ -27,7 +30,12 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
   return (
     <View style={{ height: windowHeight }}>
       <Portal.Host>
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          ref={scrollRef}
+          onScroll={(event) => ScrollService.ScrollPosition = event.nativeEvent.contentSize.height - event.nativeEvent.contentOffset.y - windowHeight}
+          scrollEventThrottle={100}
+        >
           <View style={[AppStyles.container, styles.container]}>
             <View style={[AppStyles.container, styles.appContainer]}>
               <Header></Header>

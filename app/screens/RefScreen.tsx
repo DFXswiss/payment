@@ -12,7 +12,7 @@ import Routes from "../config/Routes";
 import { ActionLink, DeFiButton } from "../elements/Buttons";
 import { SpacerV } from "../elements/Spacers";
 import { H1 } from "../elements/Texts";
-import { StorageKeys, storeValue } from "../services/StorageService";
+import StorageService from "../services/StorageService";
 import AppStyles from "../styles/AppStyles";
 import Validations from "../utils/Validations";
 
@@ -29,7 +29,7 @@ const RefScreen = () => {
   const [dialogVisible, setDialogVisible] = useState(false);
 
   const onSubmit = ({ usedRef }: { usedRef: string }) => {
-    storeValue(StorageKeys.Ref, usedRef).then(() => nav.navigate(Routes.Gtc));
+    StorageService.storeValue(StorageService.Keys.Ref, usedRef).then(() => nav.navigate(Routes.Gtc));
   };
 
   const rules: any = {

@@ -1,10 +1,10 @@
 import { getUser, postUser } from "./ApiService";
 import AuthService, { Credentials } from "./AuthService";
-import { deleteValue, getPrimitive, StorageKeys } from "./StorageService";
+import StorageService from "./StorageService";
 
 class SessionServiceClass {
   public register(credentials?: Credentials): Promise<void> {
-    return getPrimitive<string>(StorageKeys.Ref)
+    return StorageService.getPrimitive<string>(StorageService.Keys.Ref)
       .then((ref) =>
         postUser({
           address: credentials?.address ?? "",
@@ -13,7 +13,7 @@ class SessionServiceClass {
           usedRef: ref,
         })
       )
-      .then(() => deleteValue(StorageKeys.Ref))
+      .then(() => StorageService.deleteValue(StorageService.Keys.Ref))
       .then(() => this.updateSession(true, credentials));
   }
 

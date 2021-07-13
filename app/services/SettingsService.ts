@@ -2,7 +2,7 @@ import { lastValueFrom, Observable, ReplaySubject } from "rxjs";
 import { first } from "rxjs/operators";
 import { Environment } from "../env/Environment";
 import i18n from "../i18n/i18n";
-import { getValue, storeValue } from "./StorageService";
+import StorageService from "./StorageService";
 
 const SettingsKey = "settings";
 const DefaultSettings: Partial<AppSettings> = {
@@ -28,7 +28,7 @@ class SettingsServiceClass {
   }
 
   public get Settings(): Promise<AppSettings> {
-    return getValue<AppSettings>(SettingsKey)
+    return StorageService.getValue<AppSettings>(SettingsKey)
       .then((settings) => ({ ...DefaultSettings, ...settings }));
   }
 
@@ -40,7 +40,7 @@ class SettingsServiceClass {
       }
 
       return this.Settings.then((settings) => ({ ...settings, ...update }))
-        .then((settings) => storeValue(SettingsKey, settings))
+        .then((settings) => StorageService.storeValue(SettingsKey, settings))
         .then((settings) => this.settings$.next(settings));
     });
   }

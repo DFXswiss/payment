@@ -1,5 +1,5 @@
 import { Observable, ReplaySubject } from "rxjs";
-import { getValue, storeValue } from "./StorageService";
+import StorageService from "./StorageService";
 
 const SessionKey = "session";
 
@@ -25,11 +25,11 @@ class AuthServiceClass {
   }
 
   public get Session(): Promise<Session> {
-    return getValue(SessionKey);
+    return StorageService.getValue(SessionKey);
   }
 
   public updateSession(session: Session): Promise<void> {
-    return storeValue(SessionKey, session).then(() => this.session$.next(session));
+    return StorageService.storeValue(SessionKey, session).then(() => this.session$.next(session));
   }
 }
 

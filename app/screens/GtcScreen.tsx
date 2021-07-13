@@ -37,7 +37,7 @@ const GtcScreen = ({ session, scrollPosition }: { session?: Session, scrollPosit
 
   return (
     <AppLayout>
-      {scrollPosition > 100 && <Portal>
+      {scrollPosition > 250 && <Portal>
         <FAB icon="chevron-down" style={styles.fab} onPress={() => scrollRef.current?.scrollToEnd({animated: true})} />
       </Portal>}
 

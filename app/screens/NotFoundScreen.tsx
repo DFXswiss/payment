@@ -15,7 +15,7 @@ const NotFoundScreen = () => {
 
   return (
     <AppLayout>
-      <View style={[AppStyles.container, styles.container]}>
+      <View style={[AppStyles.container, AppStyles.alignCenter]}>
         <H1 text={t("feedback.page_not_found")} />
         <SpacerV height={30} />
         <ActionLink onPress={() => nav.navigate(Routes.Home)} label={t("action.home")} />
@@ -23,11 +23,5 @@ const NotFoundScreen = () => {
     </AppLayout>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-  },
-});
 
 export default NotFoundScreen;

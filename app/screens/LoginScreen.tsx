@@ -106,12 +106,12 @@ const LoginScreen = () => {
 
   return (
     <AppLayout>
-      <View style={[AppStyles.container, styles.container]}>
+      <View style={[AppStyles.container, AppStyles.alignCenter]}>
         <SpacerV height={20} />
         <VideoPlayer src="https://www.youtube.com/embed/DubUrIPFajA" maxWidth={600} />
         <SpacerV height={30} />
         <H2 text={t("session.sign_up")} />
-        <View style={styles.formContainer}>
+        <View style={AppStyles.singleColFormContainer}>
           <Form
             control={control}
             rules={rules}
@@ -172,13 +172,6 @@ const LoginScreen = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    alignItems: "center",
-  },
-  formContainer: {
-    width: "100%",
-    maxWidth: 400,
-  },
   signingMessage: {
     padding: 8,
     borderColor: Colors.Grey,

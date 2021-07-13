@@ -20,6 +20,9 @@ export default StyleSheet.create({
     flex: 1,
     alignSelf: "stretch",
   },
+  alignCenter: {
+    alignItems: "center",
+  },
   // elements
   link: {
     color: Colors.Primary,
@@ -80,5 +83,9 @@ export default StyleSheet.create({
   },
   mt10: {
     marginTop: 10,
+  },
+  singleColFormContainer: {
+    width: "100%",
+    maxWidth: 400,
   },
 });

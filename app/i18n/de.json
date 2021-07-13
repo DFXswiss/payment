@@ -87,8 +87,9 @@
         "country": "Land",
         "mail": "E-Mail Adresse",
         "mobile_number": "Handynummer",
+        "ref": "Referral-Code",
         "used_ref": "Verwendeter Ref-Code",
-        "ref": "Ref-Code zum Verteilen"
+        "own_ref": "Ref-Code zum Verteilen"
       },
       "route": {
         "routes": "Payment Routen",

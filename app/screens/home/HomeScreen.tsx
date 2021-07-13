@@ -32,7 +32,7 @@ const userData = (user: User) => [
   { condition: Boolean(user.mail), label: "model.user.mail", value: user.mail },
   { condition: Boolean(user.mobileNumber), label: "model.user.mobile_number", value: user.mobileNumber },
   { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef },
-  { condition: Boolean(user.ref), label: "model.user.ref", value: user.ref },
+  { condition: Boolean(user.ref), label: "model.user.own_ref", value: user.ref },
 ];
 
 const HomeScreen = ({ session }: { session?: Session }) => {

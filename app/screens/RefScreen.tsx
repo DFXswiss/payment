@@ -8,6 +8,7 @@ import AppLayout from "../components/AppLayout";
 import Routes from "../config/Routes";
 import { ActionLink, DeFiButton } from "../elements/Buttons";
 import { SpacerV } from "../elements/Spacers";
+import { StorageKeys, storeValue } from "../services/StorageService";
 import AppStyles from "../styles/AppStyles";
 
 const RefScreen = () => {
@@ -17,7 +18,8 @@ const RefScreen = () => {
   const [dialogVisible, setDialogVisible] = useState(false);
 
   const proceed = () => {
-    nav.navigate(Routes.Gtc);
+    storeValue(StorageKeys.Ref, "my-ref")
+      .then(() => nav.navigate(Routes.Gtc));
   };
 
   return (

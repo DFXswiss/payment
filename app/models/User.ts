@@ -6,18 +6,21 @@ export interface NewUserDto {
   address: string;
   signature: string;
   wallet_id: number;
+  used_ref?: string;
 }
 
 export interface NewUser {
   address: string;
   signature: string;
   walletId: number;
+  usedRef?: string;
 }
 
 export const toNewUserDto = (user: NewUser): NewUserDto => ({
   address: user.address,
   signature: user.signature,
   wallet_id: user.walletId,
+  used_ref: user.usedRef,
 });
 
 export interface UserDto extends NewUserDto {

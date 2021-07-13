@@ -17,7 +17,7 @@ interface Props extends ControlProps {
   wrap?: boolean;
 }
 
-interface IPhoneNumber {
+interface PhoneNumber {
   code?: PhoneCode;
   number?: string;
 }
@@ -51,7 +51,7 @@ const PhoneNumber = ({
   const [showDropDown, setShowDropDown] = useState(false);
   const [phoneCode, setPhoneCode] = useState<PhoneCode>();
 
-  const parseNumber = (): IPhoneNumber => {
+  const parseNumber = (): PhoneNumber => {
     const code = phoneCode ?? phoneCodes.find((c) => phoneNumber?.startsWith(c.dialCode));
     const tempNumber = phoneNumber?.replace(code?.dialCode, "").trimLeft();
     return { code: code, number: tempNumber };

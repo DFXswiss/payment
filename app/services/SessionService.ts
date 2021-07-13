@@ -1,13 +1,20 @@
 import { getUser, postUser } from "./ApiService";
 import AuthService, { Credentials } from "./AuthService";
+import { deleteValue, getPrimitive, StorageKeys } from "./StorageService";
 
 class SessionServiceClass {
   public register(credentials?: Credentials): Promise<void> {
-    return postUser({
-      address: credentials?.address ?? "",
-      signature: credentials?.signature ?? "",
-      walletId: credentials?.walletId ?? 0,
-    }).then(() => this.updateSession(true, credentials));
+    return getPrimitive<string>(StorageKeys.Ref)
+      .then((ref) =>
+        postUser({
+          address: credentials?.address ?? "",
+          signature: credentials?.signature ?? "",
+          walletId: credentials?.walletId ?? 0,
+          usedRef: ref,
+        })
+      )
+      .then(() => deleteValue(StorageKeys.Ref))
+      .then(() => this.updateSession(true, credentials));
   }
 
   public login(credentials: Credentials): Promise<void> {

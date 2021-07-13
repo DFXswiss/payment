@@ -1,8 +1,8 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { lastValueFrom, Observable, ReplaySubject } from "rxjs";
 import { first } from "rxjs/operators";
 import { Environment } from "../env/Environment";
 import i18n from "../i18n/i18n";
+import { getValue, storeValue } from "./StorageService";
 
 const SettingsKey = "settings";
 const DefaultSettings: Partial<AppSettings> = {
@@ -28,7 +28,8 @@ class SettingsServiceClass {
   }
 
   public get Settings(): Promise<AppSettings> {
-    return AsyncStorage.getItem(SettingsKey).then((data) => ({ ...DefaultSettings, ...JSON.parse(data ?? "{}") }));
+    return getValue<AppSettings>(SettingsKey)
+      .then((settings) => ({ ...DefaultSettings, ...settings }));
   }
 
   public updateSettings(update: Partial<AppSettings>): Promise<void> {
@@ -39,7 +40,7 @@ class SettingsServiceClass {
       }
 
       return this.Settings.then((settings) => ({ ...settings, ...update }))
-        .then((settings) => AsyncStorage.setItem(SettingsKey, JSON.stringify(settings)).then(() => settings))
+        .then((settings) => storeValue(SettingsKey, settings))
         .then((settings) => this.settings$.next(settings));
     });
   }

@@ -1,5 +1,5 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Observable, ReplaySubject } from "rxjs";
+import { getValue, storeValue } from "./StorageService";
 
 const SessionKey = "session";
 
@@ -25,13 +25,11 @@ class AuthServiceClass {
   }
 
   public get Session(): Promise<Session> {
-    return AsyncStorage.getItem(SessionKey).then((data) => JSON.parse(data ?? "{}"));
+    return getValue(SessionKey);
   }
 
   public updateSession(session: Session): Promise<void> {
-    return AsyncStorage.setItem(SessionKey, JSON.stringify(session)).then(() =>
-      this.session$.next(session)
-    );
+    return storeValue(SessionKey, session).then(() => this.session$.next(session));
   }
 }
 

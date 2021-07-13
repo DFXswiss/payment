@@ -16,16 +16,15 @@ import Sizes from "./app/config/Sizes";
 import { View } from "react-native";
 import { useDevice } from "./app/hooks/useDevice";
 import RefScreen from "./app/screens/RefScreen";
+import AppStyles from "./app/styles/AppStyles";
 
 const DrawerContent = () => {
   const device = useDevice();
   return (
     <>
-      {!device.SM && (
-        <View style={{ padding: Sizes.AppPadding }}>
-          <HeaderContent />
-        </View>
-      )}
+      <View style={[{ padding: Sizes.AppPadding }, device.SM && AppStyles.noDisplay]}>
+        <HeaderContent />
+      </View>
     </>
   );
 };

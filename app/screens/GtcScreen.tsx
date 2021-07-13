@@ -52,6 +52,7 @@ const GtcScreen = ({ session }: { session?: Session }) => {
         <SpacerV />
 
         <View style={AppStyles.containerHorizontal}>
+          {/* TODO: toast appears on back button click */}
           <ActionLink label={t("action.back")} onPress={() => nav.navigate(Routes.Login)} />
           <View style={AppStyles.mla}>
             <DeFiButton mode="contained" loading={isProcessing} onPress={register}>

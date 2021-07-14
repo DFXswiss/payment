@@ -1,14 +1,11 @@
 import React, { createRef, ReactNode, RefObject, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { ScrollView, StyleSheet, View, useWindowDimensions } from "react-native";
-import { Portal, Snackbar } from "react-native-paper";
+import { FAB, Portal, Snackbar } from "react-native-paper";
 import Sizes from "../config/Sizes";
 import NotificationService from "../services/NotificationService";
-import ScrollService from "../services/ScrollService";
 import AppStyles from "../styles/AppStyles";
 import Header from "./Header";
-
-export const scrollRef: RefObject<ScrollView> = createRef();
 
 // TODO: button style on mobile
 const AppLayout = ({ children }: { children: ReactNode }) => {
@@ -17,6 +14,8 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
 
   const [snackVisible, setSnackVisible] = useState<boolean>(false);
   const [snackText, setSnackText] = useState<string>();
+  const [contentSize, setContentSize] = useState(0);
+  const [contentOffset, setContentOffset] = useState(0);
 
   useEffect(() => {
     const subscription = NotificationService.Notifications$.subscribe((text) => {
@@ -27,13 +26,17 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
+  const scrollPosition = contentSize - contentOffset - windowHeight;
+  const scrollRef: RefObject<ScrollView> = createRef();
+
   return (
     <View style={{ height: windowHeight }}>
       <Portal.Host>
         <ScrollView
           contentContainerStyle={styles.scrollContainer}
           ref={scrollRef}
-          onScroll={(event) => ScrollService.ScrollPosition = event.nativeEvent.contentSize.height - event.nativeEvent.contentOffset.y - windowHeight}
+          onContentSizeChange={(_, height) => setContentSize(height)}
+          onScroll={(scrollEvent) => setContentOffset(scrollEvent.nativeEvent.contentOffset.y)}
           scrollEventThrottle={100}
         >
           <View style={[AppStyles.container, styles.container]}>
@@ -51,6 +54,13 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
                 >
                   {snackText}
                 </Snackbar>
+                {contentSize > 10000 && scrollPosition > 250 && (
+                  <FAB
+                    icon="chevron-down"
+                    style={styles.fab}
+                    onPress={() => {console.log("SCROLL!!"); scrollRef.current?.scrollToEnd({ animated: true })}}
+                  />
+                )}
               </Portal>
             </View>
           </View>
@@ -78,6 +88,12 @@ const styles = StyleSheet.create({
   },
   snack: {
     maxWidth: 500,
+  },
+  fab: {
+    position: "absolute",
+    margin: 16,
+    right: 0,
+    bottom: 0,
   },
 });
 

@@ -2,13 +2,12 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
-import { FAB, Paragraph, Portal } from "react-native-paper";
-import AppLayout, { scrollRef } from "../components/AppLayout";
+import { Paragraph } from "react-native-paper";
+import AppLayout from "../components/AppLayout";
 import Routes from "../config/Routes";
 import { ActionLink, DeFiButton } from "../elements/Buttons";
 import { SpacerV } from "../elements/Spacers";
 import { H1, H3 } from "../elements/Texts";
-import withScroll from "../hocs/withScroll";
 import withSession from "../hocs/withSession";
 import useGuard from "../hooks/useGuard";
 import { Session } from "../services/AuthService";
@@ -18,7 +17,7 @@ import AppStyles from "../styles/AppStyles";
 
 const gtcLength = require("../i18n/de.json").common.gtc.text.length - 1;
 
-const GtcScreen = ({ session, scrollPosition }: { session?: Session; scrollPosition: number }) => {
+const GtcScreen = ({ session }: { session?: Session }) => {
   const nav = useNavigation();
   const { t } = useTranslation();
 
@@ -37,16 +36,6 @@ const GtcScreen = ({ session, scrollPosition }: { session?: Session; scrollPosit
 
   return (
     <AppLayout>
-      <Portal>
-        {scrollPosition > 250 && (
-          <FAB
-            icon="chevron-down"
-            style={styles.fab}
-            onPress={() => scrollRef.current?.scrollToEnd({ animated: true })}
-          />
-        )}
-      </Portal>
-
       <SpacerV height={20} />
       <H1 style={AppStyles.center} text={t("gtc.title")} />
       <SpacerV height={20} />
@@ -75,12 +64,6 @@ const GtcScreen = ({ session, scrollPosition }: { session?: Session; scrollPosit
 
 const styles = StyleSheet.create({
   title: { marginTop: 10 },
-  fab: {
-    position: "absolute",
-    margin: 16,
-    right: 0,
-    bottom: 0,
-  },
 });
 
-export default withScroll(withSession(GtcScreen));
+export default withSession(GtcScreen);

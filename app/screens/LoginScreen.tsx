@@ -20,6 +20,9 @@ import Validations from "../utils/Validations";
 import { Text } from "react-native-paper";
 import SettingsService from "../services/SettingsService";
 import { DeFiButton } from "../elements/Buttons";
+import withSession from "../hocs/withSession";
+import { Session } from "../services/AuthService";
+import useGuard from "../hooks/useGuard";
 
 interface LoginData {
   userName: string;
@@ -32,12 +35,10 @@ const signingMessage = (address: string) =>
     .join("_");
 const DefaultWalletId = 1;
 
-const LoginScreen = () => {
+const LoginScreen = ({session}: {session?: Session}) => {
   const nav = useNavigation();
   const route = useRoute();
   const { t } = useTranslation();
-
-  const params = route.params as any;
 
   const {
     control,
@@ -51,7 +52,7 @@ const LoginScreen = () => {
   const [error, setError] = useState(false);
   const [addressEntered, setAddressEntered] = useState(false);
 
-  // TODO: redirect to home if already logged in?
+  useGuard(() => session && session.isLoggedIn, [session], Routes.Home);
 
   const passwordRef = useRef<TextInput>(null);
 
@@ -71,6 +72,7 @@ const LoginScreen = () => {
         password: "Hwj3sJjBxMOnkPxZkGtqinGdASIOM6ffGDCcQsWA7kRIIjMP5/HMyuZwlLnBKuD6weD5c/8HIzMrmi6GpCmFU04=",
       };
     }
+
 
     const walletId = +(params?.walletId ?? DefaultWalletId);
 
@@ -99,6 +101,7 @@ const LoginScreen = () => {
     }
   }, []);
 
+  const params = route.params as any;
   const rules: any = {
     userName: {...Validations.Required(t), ...Validations.Address(t)},
     password: addressEntered ? Validations.Required(t) : undefined,
@@ -183,4 +186,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default withSession(LoginScreen);

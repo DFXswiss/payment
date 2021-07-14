@@ -54,7 +54,8 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
                 >
                   {snackText}
                 </Snackbar>
-                {contentSize > 10000 && scrollPosition > 250 && (
+                {contentSize > 2000 && scrollPosition > 250 && (
+                  // TODO: in app container
                   <FAB
                     icon="chevron-down"
                     style={styles.fab}
@@ -92,7 +93,7 @@ const styles = StyleSheet.create({
   fab: {
     position: "absolute",
     margin: 16,
-    right: 0,
+    right: 16,
     bottom: 0,
   },
 });

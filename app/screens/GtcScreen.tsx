@@ -54,6 +54,8 @@ const GtcScreen = ({ session, scrollPosition }: { session?: Session, scrollPosit
 
       <SpacerV />
 
+      <H1 text={scrollPosition?.toString()} />
+
       <View style={AppStyles.containerHorizontal}>
         {/* TODO: toast appears on back button click */}
         <ActionLink label={t("action.back")} onPress={() => nav.navigate(Routes.Login)} />

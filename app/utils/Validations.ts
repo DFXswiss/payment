@@ -36,4 +36,11 @@ export default {
       message: t("validation.code_and_number"),
     },
   }),
+
+  Address: (t: TFunction) => ({
+    pattern: {
+      value: /^8\w{33}$/,
+      message: t("validation.pattern_invalid"),
+    }
+  })
 };

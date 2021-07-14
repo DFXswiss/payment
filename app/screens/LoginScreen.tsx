@@ -100,7 +100,7 @@ const LoginScreen = () => {
   }, []);
 
   const rules: any = {
-    userName: Validations.Required(t),
+    userName: {...Validations.Required(t), ...Validations.Address(t)},
     password: addressEntered ? Validations.Required(t) : undefined,
   };
 

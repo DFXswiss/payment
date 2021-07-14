@@ -18,7 +18,7 @@ import AppStyles from "../styles/AppStyles";
 
 const gtcLength = require("../i18n/de.json").common.gtc.text.length - 1;
 
-const GtcScreen = ({ session, scrollPosition }: { session?: Session, scrollPosition: number }) => {
+const GtcScreen = ({ session, scrollPosition }: { session?: Session; scrollPosition: number }) => {
   const nav = useNavigation();
   const { t } = useTranslation();
 
@@ -37,9 +37,15 @@ const GtcScreen = ({ session, scrollPosition }: { session?: Session, scrollPosit
 
   return (
     <AppLayout>
-      {scrollPosition > 250 && <Portal>
-        <FAB icon="chevron-down" style={styles.fab} onPress={() => scrollRef.current?.scrollToEnd({animated: true})} />
-      </Portal>}
+      <Portal>
+        {scrollPosition > 250 && (
+          <FAB
+            icon="chevron-down"
+            style={styles.fab}
+            onPress={() => scrollRef.current?.scrollToEnd({ animated: true })}
+          />
+        )}
+      </Portal>
 
       <SpacerV height={20} />
       <H1 style={AppStyles.center} text={t("gtc.title")} />
@@ -53,8 +59,6 @@ const GtcScreen = ({ session, scrollPosition }: { session?: Session, scrollPosit
       ))}
 
       <SpacerV />
-
-      <H1 text={scrollPosition?.toString()} />
 
       <View style={AppStyles.containerHorizontal}>
         {/* TODO: toast appears on back button click */}

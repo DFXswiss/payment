@@ -8,8 +8,9 @@ import { Dialog, Paragraph, Portal, Button } from "react-native-paper";
 import AppLayout from "../components/AppLayout";
 import Form from "../components/form/Form";
 import Input from "../components/form/Input";
+import ButtonContainer from "../components/util/ButtonContainer";
 import Routes from "../config/Routes";
-import { ActionLink, DeFiButton } from "../elements/Buttons";
+import { DeFiButton } from "../elements/Buttons";
 import { SpacerV } from "../elements/Spacers";
 import { H1 } from "../elements/Texts";
 import StorageService from "../services/StorageService";
@@ -57,19 +58,20 @@ const RefScreen = () => {
         <View style={AppStyles.singleColFormContainer}>
           <Form control={control} rules={rules} errors={errors} onSubmit={handleSubmit(onSubmit)}>
             <Input name="usedRef" label={t("model.user.ref")} placeholder="xxx-xxx" />
-            <View style={AppStyles.containerHorizontal}>
-              <ActionLink label={t("ref.continue_without_ref")} onPress={() => setDialogVisible(true)} />
-              <View style={AppStyles.mla}>
-                <DeFiButton mode="contained" onPress={handleSubmit(onSubmit)}>
-                  {t("action.next")}
-                </DeFiButton>
-              </View>
-            </View>
+
+            <SpacerV />
+
+            <ButtonContainer>
+              <DeFiButton link onPress={() => setDialogVisible(true)}>
+                {t("ref.continue_without_ref")}
+              </DeFiButton>
+              <DeFiButton mode="contained" onPress={handleSubmit(onSubmit)}>
+                {t("action.next")}
+              </DeFiButton>
+            </ButtonContainer>
           </Form>
         </View>
       </View>
-
-      <SpacerV />
     </AppLayout>
   );
 };

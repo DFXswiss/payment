@@ -27,6 +27,9 @@ export default StyleSheet.create({
   link: {
     color: Colors.Primary,
   },
+  buttonLink: {
+    marginHorizontal: 0,
+  },
   h1: {
     fontSize: 30,
     fontWeight: "bold",

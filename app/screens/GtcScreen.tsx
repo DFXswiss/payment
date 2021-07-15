@@ -4,8 +4,9 @@ import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { Paragraph } from "react-native-paper";
 import AppLayout from "../components/AppLayout";
+import ButtonContainer from "../components/util/ButtonContainer";
 import Routes from "../config/Routes";
-import { ActionLink, DeFiButton } from "../elements/Buttons";
+import { DeFiButton } from "../elements/Buttons";
 import { SpacerV } from "../elements/Spacers";
 import { H1, H3 } from "../elements/Texts";
 import withSession from "../hocs/withSession";
@@ -43,27 +44,28 @@ const GtcScreen = ({ session }: { session?: Session }) => {
       {[...Array(gtcLength).keys()].map((_, i) => (
         <View key={i}>
           {t(`gtc.text.${i}.title`) ? <H3 style={styles.title} text={t(`gtc.text.${i}.title`)} /> : null}
-          <Paragraph>{t(`gtc.text.${i}.text`)}</Paragraph>
+          <Paragraph style={styles.paragraph}>{t(`gtc.text.${i}.text`)}</Paragraph>
         </View>
       ))}
 
       <SpacerV />
 
-      <View style={AppStyles.containerHorizontal}>
+      <ButtonContainer>
         {/* TODO: toast appears on back button click */}
-        <ActionLink label={t("action.back")} onPress={() => nav.navigate(Routes.Login)} />
-        <View style={AppStyles.mla}>
-          <DeFiButton mode="contained" loading={isProcessing} onPress={register}>
-            {t("action.accept")}
-          </DeFiButton>
-        </View>
-      </View>
+        <DeFiButton link onPress={() => nav.navigate(Routes.Login)}>
+          {t("action.back")}
+        </DeFiButton>
+        <DeFiButton mode="contained" loading={isProcessing} onPress={register}>
+          {t("action.accept")}
+        </DeFiButton>
+      </ButtonContainer>
     </AppLayout>
   );
 };
 
 const styles = StyleSheet.create({
   title: { marginTop: 10 },
+  paragraph: { textAlign: "justify" },
 });
 
 export default withSession(GtcScreen);

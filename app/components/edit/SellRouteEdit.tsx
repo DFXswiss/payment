@@ -16,6 +16,7 @@ import Input from "../form/Input";
 import Validations from "../../utils/Validations";
 import NotificationService from "../../services/NotificationService";
 import { DeFiButton } from "../../elements/Buttons";
+import ButtonContainer from "../util/ButtonContainer";
 
 const SellRouteEdit = ({
   isVisible,
@@ -92,11 +93,11 @@ const SellRouteEdit = ({
         </>
       )}
 
-      <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
+      <ButtonContainer>
         <DeFiButton mode="contained" loading={isSaving} disabled={userDataMissing} onPress={handleSubmit(onSubmit)}>
           {t("action.save")}
         </DeFiButton>
-      </View>
+      </ButtonContainer>
     </Form>
   );
 };

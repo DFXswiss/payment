@@ -7,7 +7,6 @@ import NotificationService from "../services/NotificationService";
 import AppStyles from "../styles/AppStyles";
 import Header from "./Header";
 
-// TODO: button style on mobile
 const AppLayout = ({ children }: { children: ReactNode }) => {
   const { t } = useTranslation();
   const dimensions = useWindowDimensions();

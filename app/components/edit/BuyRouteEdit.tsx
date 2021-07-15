@@ -15,6 +15,7 @@ import Validations from "../../utils/Validations";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
 import Input from "../form/Input";
+import ButtonContainer from "../util/ButtonContainer";
 
 const BuyRouteEdit = ({
   isVisible,
@@ -83,11 +84,11 @@ const BuyRouteEdit = ({
         </>
       )}
 
-      <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
+      <ButtonContainer>
         <DeFiButton mode="contained" loading={isSaving} onPress={handleSubmit(onSubmit)}>
           {t("action.save")}
         </DeFiButton>
-      </View>
+      </ButtonContainer>
     </Form>
   );
 };

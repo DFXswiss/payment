@@ -18,6 +18,7 @@ import NotificationService from "../../services/NotificationService";
 import { Alert } from "../../elements/Texts";
 import { useDevice } from "../../hooks/useDevice";
 import { DeFiButton } from "../../elements/Buttons";
+import ButtonContainer from "../util/ButtonContainer";
 
 interface Props {
   isVisible: boolean;
@@ -111,9 +112,9 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
         </>
       )}
 
-      <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
+      <ButtonContainer>
         <DeFiButton mode="contained" loading={isSaving} onPress={handleSubmit(onSubmit)}>{t("action.save")}</DeFiButton>
-      </View>
+      </ButtonContainer>
     </Form>
   );
 };

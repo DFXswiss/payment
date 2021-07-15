@@ -23,6 +23,7 @@ import { DeFiButton } from "../elements/Buttons";
 import withSession from "../hocs/withSession";
 import { Session } from "../services/AuthService";
 import useGuard from "../hooks/useGuard";
+import ButtonContainer from "../components/util/ButtonContainer";
 
 interface LoginData {
   userName: string;
@@ -164,9 +165,9 @@ const LoginScreen = ({session}: {session?: Session}) => {
               </>
             )}
 
-            <View style={[AppStyles.containerHorizontal, AppStyles.mla]}>
+            <ButtonContainer>
               <DeFiButton mode="contained" loading={isProcessing} onPress={handleSubmit(onSubmit(false))}>{t(addressEntered ? "action.login" : "action.next")}</DeFiButton>
-            </View>
+            </ButtonContainer>
           </Form>
         </View>
       </View>

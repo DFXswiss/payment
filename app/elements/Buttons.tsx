@@ -10,8 +10,14 @@ export const ActionLink = ({ onPress, label, style }: { onPress: () => void; lab
 );
 
 // TODO: use the paper button props?
-export const DeFiButton = ({ loading, disabled, ...props }: any) => (
-  <Button loading={loading} disabled={loading || disabled} contentStyle={(loading || disabled) && { cursor: "default" }} {...props}>
+export const DeFiButton = ({ link, loading, disabled, ...props }: any) => (
+  <Button
+    loading={loading}
+    disabled={loading || disabled}
+    contentStyle={[props.contentStyle, (loading || disabled) && { cursor: "default" }]}
+    labelStyle={[props.labelStyle, link && AppStyles.buttonLink]}
+    {...props}
+  >
     {props.children}
   </Button>
 );

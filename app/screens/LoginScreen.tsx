@@ -20,9 +20,6 @@ import Validations from "../utils/Validations";
 import { Text } from "react-native-paper";
 import SettingsService from "../services/SettingsService";
 import { DeFiButton } from "../elements/Buttons";
-import withSession from "../hocs/withSession";
-import { Session } from "../services/AuthService";
-import useGuard from "../hooks/useGuard";
 import ButtonContainer from "../components/util/ButtonContainer";
 
 interface LoginData {
@@ -37,7 +34,7 @@ const signingMessage = (address: string) =>
 const DefaultWalletId = 1;
 
 // TODO: reset on logout?
-const LoginScreen = ({ session }: { session?: Session }) => {
+const LoginScreen = () => {
   const nav = useNavigation();
   const route = useRoute();
   const { t } = useTranslation();
@@ -53,8 +50,6 @@ const LoginScreen = ({ session }: { session?: Session }) => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(false);
   const [addressEntered, setAddressEntered] = useState(false);
-
-  useGuard(() => session && session.isLoggedIn, [session], Routes.Home);
 
   const passwordRef = useRef<TextInput>(null);
 
@@ -189,4 +184,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withSession(LoginScreen);
+export default LoginScreen;

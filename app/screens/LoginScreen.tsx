@@ -36,7 +36,8 @@ const signingMessage = (address: string) =>
     .join("_");
 const DefaultWalletId = 1;
 
-const LoginScreen = ({session}: {session?: Session}) => {
+// TODO: reset on logout?
+const LoginScreen = ({ session }: { session?: Session }) => {
   const nav = useNavigation();
   const route = useRoute();
   const { t } = useTranslation();
@@ -74,7 +75,6 @@ const LoginScreen = ({session}: {session?: Session}) => {
       };
     }
 
-
     const walletId = +(params?.walletId ?? DefaultWalletId);
 
     SessionService.login({ address: data.userName, signature: data.password, walletId: walletId })
@@ -104,7 +104,7 @@ const LoginScreen = ({session}: {session?: Session}) => {
 
   const params = route.params as any;
   const rules: any = {
-    userName: {...Validations.Required(t), ...Validations.Address(t)},
+    userName: { ...Validations.Required(t), ...Validations.Address(t) },
     password: addressEntered ? Validations.Required(t) : undefined,
   };
 
@@ -166,7 +166,9 @@ const LoginScreen = ({session}: {session?: Session}) => {
             )}
 
             <ButtonContainer>
-              <DeFiButton mode="contained" loading={isProcessing} onPress={handleSubmit(onSubmit(false))}>{t(addressEntered ? "action.login" : "action.next")}</DeFiButton>
+              <DeFiButton mode="contained" loading={isProcessing} onPress={handleSubmit(onSubmit(false))}>
+                {t(addressEntered ? "action.login" : "action.next")}
+              </DeFiButton>
             </ButtonContainer>
           </Form>
         </View>

@@ -1,8 +1,6 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 import { DeFiButton } from "../../elements/Buttons";
 import { SpacerV } from "../../elements/Spacers";
 import { Alert } from "../../elements/Texts";
@@ -10,7 +8,6 @@ import { Asset } from "../../models/Asset";
 import { BuyRoute } from "../../models/BuyRoute";
 import { getAssets, postBuyRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
-import AppStyles from "../../styles/AppStyles";
 import Validations from "../../utils/Validations";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";

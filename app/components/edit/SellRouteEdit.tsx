@@ -1,15 +1,12 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
 import { SpacerV } from "../../elements/Spacers";
 import { Alert } from "../../elements/Texts";
 import { Fiat } from "../../models/Fiat";
 import { SellRoute } from "../../models/SellRoute";
 import { User } from "../../models/User";
 import { getFiats, postSellRoute } from "../../services/ApiService";
-import AppStyles from "../../styles/AppStyles";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
 import Input from "../form/Input";

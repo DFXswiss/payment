@@ -1,29 +1,14 @@
-import React, { createRef, ReactNode, RefObject, useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
+import React, { createRef, ReactNode, RefObject, useState } from "react";
 import { ScrollView, StyleSheet, View, useWindowDimensions } from "react-native";
-import { FAB, Portal, Snackbar } from "react-native-paper";
+import { FAB, Portal } from "react-native-paper";
 import Sizes from "../config/Sizes";
-import NotificationService from "../services/NotificationService";
 import AppStyles from "../styles/AppStyles";
 import Header from "./Header";
 
 const AppLayout = ({ children }: { children: ReactNode }) => {
-  const { t } = useTranslation();
   const dimensions = useWindowDimensions();
-
-  const [snackVisible, setSnackVisible] = useState<boolean>(false);
-  const [snackText, setSnackText] = useState<string>();
   const [contentSize, setContentSize] = useState(0);
   const [contentOffset, setContentOffset] = useState(0);
-
-  useEffect(() => {
-    const subscription = NotificationService.Notifications$.subscribe((text) => {
-      setSnackText(text);
-      setSnackVisible(true);
-    });
-
-    return () => subscription.unsubscribe();
-  }, []);
 
   const scrollPosition = contentSize - contentOffset - dimensions.height;
   const scrollRef: RefObject<ScrollView> = createRef();
@@ -43,16 +28,6 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
               <Header></Header>
               {children}
               <Portal>
-                <Snackbar
-                  visible={snackVisible}
-                  onDismiss={() => setSnackVisible(false)}
-                  action={{ label: t("action.close") }}
-                  duration={Snackbar.DURATION_MEDIUM}
-                  style={styles.snack}
-                  wrapperStyle={styles.snackWrapper}
-                >
-                  {snackText}
-                </Snackbar>
                 <FAB
                   icon="chevron-down"
                   style={[styles.fab, { right: Math.max(0, (dimensions.width - Sizes.AppWidth) / 2) }]}
@@ -79,13 +54,6 @@ const styles = StyleSheet.create({
   appContainer: {
     width: "100%",
     maxWidth: Sizes.AppWidth,
-  },
-  snackWrapper: {
-    bottom: Sizes.AppPadding,
-    alignItems: "center",
-  },
-  snack: {
-    maxWidth: 500,
   },
   fab: {
     position: "absolute",

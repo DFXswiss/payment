@@ -62,15 +62,26 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   };
 
   useEffect(() => {
+    let applyUpdate = true;
     if (session) {
       if (session.isLoggedIn) {
-        Promise.all([getUser().then((user) => setUser(user)), getActiveRoutes().then(setRoutes)])
+        Promise.all([getUser(), getActiveRoutes()])
+          .then(([user, routes]) => {
+            if (applyUpdate) {
+              setUser(user);
+              setRoutes(routes);
+            }
+          })
           .catch(() => NotificationService.show(t("feedback.load_failed")))
           .finally(() => setLoading(false));
       } else {
         reset();
       }
     }
+
+    return () => {
+      applyUpdate = false;
+    };
   }, [session]);
   // TODO: use cancelling if moved away?
 

@@ -10,7 +10,7 @@ import Header from "./Header";
 // TODO: button style on mobile
 const AppLayout = ({ children }: { children: ReactNode }) => {
   const { t } = useTranslation();
-  const windowHeight = useWindowDimensions().height;
+  const dimensions = useWindowDimensions();
 
   const [snackVisible, setSnackVisible] = useState<boolean>(false);
   const [snackText, setSnackText] = useState<string>();
@@ -26,11 +26,11 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
     return () => subscription.unsubscribe();
   }, []);
 
-  const scrollPosition = contentSize - contentOffset - windowHeight;
+  const scrollPosition = contentSize - contentOffset - dimensions.height;
   const scrollRef: RefObject<ScrollView> = createRef();
 
   return (
-    <View style={{ height: windowHeight }}>
+    <View style={{ height: dimensions.height }}>
       <Portal.Host>
         <ScrollView
           contentContainerStyle={styles.scrollContainer}
@@ -55,11 +55,10 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
                   {snackText}
                 </Snackbar>
                 {contentSize > 2000 && scrollPosition > 250 && (
-                  // TODO: in app container
                   <FAB
                     icon="chevron-down"
-                    style={styles.fab}
-                    onPress={() => {console.log("SCROLL!!"); scrollRef.current?.scrollToEnd({ animated: true })}}
+                    style={[styles.fab, { right: Math.max(0, (dimensions.width - Sizes.AppWidth) / 2) }]}
+                    onPress={() => scrollRef.current?.scrollToEnd({ animated: true })}
                   />
                 )}
               </Portal>
@@ -81,7 +80,7 @@ const styles = StyleSheet.create({
   },
   appContainer: {
     width: "100%",
-    maxWidth: 800,
+    maxWidth: Sizes.AppWidth,
   },
   snackWrapper: {
     bottom: Sizes.AppPadding,
@@ -93,7 +92,6 @@ const styles = StyleSheet.create({
   fab: {
     position: "absolute",
     margin: 16,
-    right: 16,
     bottom: 0,
   },
 });

@@ -1,4 +1,5 @@
 import { Environment } from "../env/Environment";
+import { AuthResponse } from "../models/ApiDto";
 import { Asset, AssetType } from "../models/Asset";
 import { BuyRoute, BuyRouteDto, fromBuyRouteDto, toBuyRouteDto } from "../models/BuyRoute";
 import { Country } from "../models/Country";
@@ -6,9 +7,10 @@ import { Fiat } from "../models/Fiat";
 import { fromActivePaymentRoutesDto, fromPaymentRoutesDto, PaymentRoutes, PaymentRoutesDto } from "../models/PaymentRoutes";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import { fromUserDto, NewUser, toNewUserDto, toUserDto, User, UserDto } from "../models/User";
-import AuthService, { Credentials } from "./AuthService";
+import AuthService, { Credentials, Session } from "./AuthService";
 
 const BaseUrl = Environment.api.baseUrl;
+const AuthUrl = "auth";
 const UserUrl = "user";
 const BuyUrl = "fiat2crypto";
 const SellUrl = "crypto2fiat";
@@ -17,23 +19,26 @@ const AssetUrl = "asset";
 const FiatUrl = "fiat";
 const CountryUrl = "country";
 
-// --- USER --- //
-export const getUser = (credentials?: Credentials): Promise<User> => {
-  return AuthService.Session
-    .then((s) => fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, buildInit("GET", credentials ?? s)))
-    .then((dto: UserDto) => fromUserDto(dto));
+
+// --- AUTH --- //
+export const signIn = (credentials?: Credentials): Promise<string> => {
+  return fetchFrom<AuthResponse>(`${BaseUrl}/${AuthUrl}/signIn`, buildInit("POST", undefined, credentials))
+    .then((resp) => resp.accessToken);
 };
 
-export const postUser = (user: NewUser): Promise<User> => {
-  return fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, buildInit("POST", user, toNewUserDto(user)))
+export const signUp = (user: NewUser): Promise<string> => {
+  return fetchFrom<AuthResponse>(`${BaseUrl}/${AuthUrl}/signUp`, buildInit("POST", undefined, toNewUserDto(user)))
+    .then((resp) => resp.accessToken);
+}
+
+// --- USER --- //
+export const getUser = (): Promise<User> => {
+  return AuthService.Session.then((s) => fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, buildInit("GET", s)))
     .then((dto: UserDto) => fromUserDto(dto));
 };
 
 export const putUser = (user: User): Promise<User> => {
-  return AuthService.Session
-    .then((session) =>
-      fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}/${session.address}`, buildInit("PUT", session, toUserDto(user)))
-    )
+  return AuthService.Session.then((session) => fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}/${session.address}`, buildInit("PUT", session, toUserDto(user))))
     .then((dto: UserDto) => fromUserDto(dto));
 };
 
@@ -92,15 +97,23 @@ export const getCountries = (): Promise<Country[]> => {
 };
 
 // --- HELPERS --- //
-const buildInit = (method: "GET" | "PUT" | "POST", credentials?: Credentials, data?: any): RequestInit => ({
+const buildInit = (method: "GET" | "PUT" | "POST", session?: Session, data?: any): RequestInit => ({
   method: method,
   headers: {
     "Content-Type": "application/json",
-    Authorization: credentials ? "Basic " + btoa(`${credentials.address}:${credentials.signature}`) : "",
+    Authorization: session ? "Bearer " + session.accessToken : "",
   },
   body: JSON.stringify(data),
 });
 
 const fetchFrom = <T>(url: string, init?: RequestInit): Promise<T> => {
-  return fetch(url, init).then((response) => response.json());
+  return fetch(url, init).then((response) => {
+    if (response.ok) {
+      return response.json();
+    }
+    return response.json().then((body) => {
+      throw body;
+    });
+  });
+};
 };

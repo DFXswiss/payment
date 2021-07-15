@@ -1,4 +1,5 @@
-import { getUser, postUser } from "./ApiService";
+import { ApiError } from "../models/ApiDto";
+import { signIn, signUp } from "./ApiService";
 import AuthService, { Credentials } from "./AuthService";
 import StorageService from "./StorageService";
 
@@ -6,33 +7,34 @@ class SessionServiceClass {
   public register(credentials?: Credentials): Promise<void> {
     return StorageService.getPrimitive<string>(StorageService.Keys.Ref)
       .then((ref) =>
-        postUser({
+        signUp({
           address: credentials?.address ?? "",
           signature: credentials?.signature ?? "",
           walletId: credentials?.walletId ?? 0,
           usedRef: ref,
         })
       )
-      .then(() => StorageService.deleteValue(StorageService.Keys.Ref))
-      .then(() => this.updateSession(true, credentials));
+      // TODO: login for token?
+      .then((accessToken) => this.updateSession(credentials, accessToken))
+      .then(() => StorageService.deleteValue(StorageService.Keys.Ref));
   }
 
   public login(credentials: Credentials): Promise<void> {
-    return getUser(credentials)
-      .catch((error) => {
-        return this.updateSession(false, credentials).then(() => {
+    return signIn(credentials)
+      .catch((error: ApiError) => {
+        return this.updateSession(credentials).then(() => {
           throw error;
         });
       })
-      .then(() => this.updateSession(true, credentials));
+      .then((accessToken) => this.updateSession(credentials, accessToken));
   }
 
   public logout(): Promise<void> {
-    return AuthService.updateSession({ address: undefined, signature: undefined, walletId: undefined, isLoggedIn: false });
+    return AuthService.updateSession({ address: undefined, signature: undefined, walletId: undefined, accessToken: undefined });
   }
 
-  private updateSession(isLoggedIn: boolean, credentials?: Credentials): Promise<void> {
-    return AuthService.updateSession({ ...credentials, isLoggedIn: isLoggedIn });
+  private updateSession(credentials?: Credentials, accessToken?: string): Promise<void> {
+    return AuthService.updateSession({ ...credentials, accessToken: accessToken });
   }
 }
 

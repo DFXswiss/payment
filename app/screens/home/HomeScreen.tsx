@@ -20,6 +20,7 @@ import { DataTable, FAB, Portal } from "react-native-paper";
 import { CompactCell, CompactRow } from "../../elements/Tables";
 import { useDevice } from "../../hooks/useDevice";
 import { DeFiButton } from "../../elements/Buttons";
+import useLoader from "../../hooks/useLoader";
 
 const userData = (user: User) => [
   { condition: Boolean(user.address), label: "model.user.address", value: user.address },
@@ -61,29 +62,30 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     setIsUserEdit(false);
   };
 
-  useEffect(() => {
-    let applyUpdate = true;
-    if (session) {
-      if (session.isLoggedIn) {
-        Promise.all([getUser(), getActiveRoutes()])
-          .then(([user, routes]) => {
-            if (applyUpdate) {
-              setUser(user);
-              setRoutes(routes);
-            }
-          })
-          .catch(() => NotificationService.show(t("feedback.load_failed")))
-          .finally(() => setLoading(false));
-      } else {
-        reset();
+  useLoader(
+    (cancelled) => {
+      if (session) {
+        if (session.isLoggedIn) {
+          Promise.all([getUser(), getActiveRoutes()])
+            .then(([user, routes]) => {
+              if (!cancelled()) {
+                setUser(user);
+                setRoutes(routes);
+              }
+            })
+            .catch(() => NotificationService.show(t("feedback.load_failed")))
+            .finally(() => {
+              if (!cancelled()) {
+                setLoading(false);
+              }
+            });
+        } else {
+          reset();
+        }
       }
-    }
-
-    return () => {
-      applyUpdate = false;
-    };
-  }, [session]);
-  // TODO: use cancelling if moved away?
+    },
+    [session]
+  );
 
   const showButtons = (user && !isLoading && !device.SM) ?? false;
 

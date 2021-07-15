@@ -51,7 +51,6 @@ const GtcScreen = ({ session }: { session?: Session }) => {
       <SpacerV />
 
       <ButtonContainer>
-        {/* TODO: toast appears on back button click */}
         <DeFiButton link onPress={() => nav.navigate(Routes.Login)}>
           {t("action.back")}
         </DeFiButton>

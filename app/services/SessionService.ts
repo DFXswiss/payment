@@ -14,7 +14,6 @@ class SessionServiceClass {
           usedRef: ref,
         })
       )
-      // TODO: login for token?
       .then((accessToken) => this.updateSession(credentials, accessToken))
       .then(() => StorageService.deleteValue(StorageService.Keys.Ref));
   }

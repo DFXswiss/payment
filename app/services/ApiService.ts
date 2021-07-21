@@ -38,7 +38,7 @@ export const getUser = (): Promise<User> => {
 };
 
 export const putUser = (user: User): Promise<User> => {
-  return fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}/${user.address}`, "PUT", toUserDto(user))
+  return fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, "PUT", toUserDto(user))
     .then((dto: UserDto) => fromUserDto(dto));
 };
 

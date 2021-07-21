@@ -66,7 +66,7 @@ const PhoneNumber = ({
     return getNumber(code, number);
   };
   const getNumber = (code?: PhoneCode, number?: string) => {
-    return code?.dialCode || number ? `${code?.dialCode} ${number}` : "";
+    return code?.dialCode || number ? `${code?.dialCode} ${number ? number : ''}` : "";
   }
 
   // TODO: auto-select phone codes with selected country

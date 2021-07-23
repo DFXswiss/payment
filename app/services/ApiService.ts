@@ -1,10 +1,9 @@
 import { Environment } from "../env/Environment";
 import { AuthResponse } from "../models/ApiDto";
-import { Asset, AssetType } from "../models/Asset";
+import { Asset } from "../models/Asset";
 import { BuyRoute, BuyRouteDto, fromBuyRouteDto, toBuyRouteDto } from "../models/BuyRoute";
 import { Country } from "../models/Country";
 import { Fiat } from "../models/Fiat";
-import { fromActivePaymentRoutesDto, fromPaymentRoutesDto, PaymentRoutes, PaymentRoutesDto } from "../models/PaymentRoutes";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import { fromUserDto, NewUser, toNewUserDto, toUserDto, User, UserDto } from "../models/User";
 import AuthService, { Credentials, Session } from "./AuthService";
@@ -12,9 +11,8 @@ import AuthService, { Credentials, Session } from "./AuthService";
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
 const UserUrl = "user";
-const BuyUrl = "fiat2crypto";
-const SellUrl = "crypto2fiat";
-const RouteUrl = "registration";
+const BuyUrl = "buy";
+const SellUrl = "sell";
 const AssetUrl = "asset";
 const FiatUrl = "fiat";
 const CountryUrl = "country";
@@ -43,19 +41,10 @@ export const putUser = (user: User): Promise<User> => {
 };
 
 // --- PAYMENT ROUTES --- //
-export const getRoutes = (): Promise<PaymentRoutes> => {
-  return getRoutesDto()
-    .then((routes) => fromPaymentRoutesDto(routes));
-};
-
-export const getActiveRoutes = (): Promise<PaymentRoutes> => {
-  return getRoutesDto()
-    .then((routes) => fromActivePaymentRoutesDto(routes));
-};
-
-const getRoutesDto = (): Promise<PaymentRoutesDto> => {
-  return fetchFrom<PaymentRoutesDto>(`${BaseUrl}/${RouteUrl}`);
-};
+export const getBuyRoutes = (): Promise<BuyRoute[]> => {
+  return fetchFrom<BuyRouteDto[]>(`${BaseUrl}/${BuyUrl}`)
+    .then((dtoList) => dtoList.map(dto => fromBuyRouteDto(dto)));
+}
 
 export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
   return fetchFrom<BuyRouteDto>(`${BaseUrl}/${BuyUrl}`, "POST", toBuyRouteDto(route))
@@ -66,6 +55,11 @@ export const putBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
   return fetchFrom<BuyRouteDto>(`${BaseUrl}/${BuyUrl}/${route.id}`, "PUT", toBuyRouteDto(route))
     .then((dto) => fromBuyRouteDto(dto));
 };
+
+export const getSellRoutes = (): Promise<SellRoute[]> => {
+  return fetchFrom<SellRouteDto[]>(`${BaseUrl}/${SellUrl}`)
+    .then((dtoList) => dtoList.map(dto => fromSellRouteDto(dto)));
+}
 
 export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
   return fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}`, "POST", toSellRouteDto(route))
@@ -93,7 +87,7 @@ export const getCountries = (): Promise<Country[]> => {
 // --- HELPERS --- //
 const fetchFrom = <T>(url: string, method: "GET" | "PUT" | "POST" = "GET", data?: any): Promise<T> => {
   return AuthService.Session
-      // TODO: logout if token expired!
+      // TODO: logout if token expired and if 401 return!
       .then((session) => buildInit(method, session, data))
       .then((init) => fetch(url, init))
       .then((response) => {

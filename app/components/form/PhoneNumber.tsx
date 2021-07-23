@@ -10,6 +10,7 @@ import { useTranslation } from "react-i18next";
 import Validations from "../../utils/Validations";
 import { HelperText, TextInput } from "react-native-paper";
 import DropDown from "react-native-paper-dropdown";
+import { join } from "../../utils/Utils";
 
 interface Props extends ControlProps {
   placeholder?: string;
@@ -60,14 +61,14 @@ const PhoneNumber = ({
     const { number } = parseNumber();
     setPhoneCode(code);
     return getNumber(code, number);
-  }
+  };
   const updateNumber = (number?: string): string => {
     const { code } = parseNumber();
     return getNumber(code, number);
   };
   const getNumber = (code?: PhoneCode, number?: string) => {
-    return code?.dialCode || number ? `${code?.dialCode} ${number ? number : ''}` : "";
-  }
+    return code?.dialCode || number ? join([code?.dialCode, number], " ") : "";
+  };
 
   // TODO: auto-select phone codes with selected country
   const updateRules = (rules?: any): any => ({

@@ -15,7 +15,6 @@ import { CompactRow, CompactCell, CompactHeader, CompactTitle } from "../../elem
 import { H2, H3 } from "../../elements/Texts";
 import { useDevice } from "../../hooks/useDevice";
 import { BuyRoute } from "../../models/BuyRoute";
-import { PaymentRoutes } from "../../models/PaymentRoutes";
 import { SellRoute } from "../../models/SellRoute";
 import { User } from "../../models/User";
 import { putBuyRoute, putSellRoute } from "../../services/ApiService";
@@ -25,8 +24,10 @@ import { update } from "../../utils/Utils";
 
 interface Props {
   user?: User;
-  routes?: PaymentRoutes;
-  setRoutes: Dispatch<SetStateAction<PaymentRoutes | undefined>>;
+  buyRoutes?: BuyRoute[];
+  setBuyRoutes: Dispatch<SetStateAction<BuyRoute[] | undefined>>;
+  sellRoutes?: SellRoute[];
+  setSellRoutes: Dispatch<SetStateAction<SellRoute[] | undefined>>;
   isBuyRouteEdit: boolean;
   setIsBuyRouteEdit: Dispatch<SetStateAction<boolean>>;
   isSellRouteEdit: boolean;
@@ -35,8 +36,10 @@ interface Props {
 
 const RouteList = ({
   user,
-  routes,
-  setRoutes,
+  buyRoutes,
+  setBuyRoutes,
+  sellRoutes,
+  setSellRoutes,
   isBuyRouteEdit,
   setIsBuyRouteEdit,
   isSellRouteEdit,
@@ -48,17 +51,17 @@ const RouteList = ({
   const [isBuyLoading, setIsBuyLoading] = useState<{ [id: string]: boolean }>({});
   const [isSellLoading, setIsSellLoading] = useState<{ [id: string]: boolean }>({});
 
-  const onBuyRouteChanged = (route: BuyRoute) => {
-    setRoutes((routes) => {
-      routes?.buyRoutes.push(route);
-      return routes ? { ...routes } : undefined;
+  const onBuyRouteCreated = (route: BuyRoute) => {
+    setBuyRoutes((routes) => {
+      routes?.push(route);
+      return routes;
     });
     setIsBuyRouteEdit(false);
   };
   const onSellRouteChanged = (route: SellRoute) => {
-    setRoutes((routes) => {
-      routes?.sellRoutes.push(route);
-      return routes ? { ...routes } : undefined;
+    setSellRoutes((routes) => {
+      routes?.push(route);
+      return routes;
     });
     setIsSellRouteEdit(false);
   };
@@ -67,7 +70,7 @@ const RouteList = ({
     setIsBuyLoading((obj) => update(obj, { [route.id]: true }));
     route.active = false;
     putBuyRoute(route)
-      .then(() => setRoutes((routes) => update(routes, {buyRoutes: routes?.buyRoutes.filter((r) => r.id !== route.id)})))
+      .then(() => setBuyRoutes((routes) => routes?.filter((r) => r.id !== route.id)))
       .catch(() => NotificationService.show(t("feedback.delete_failed")))
       .finally(() => setIsBuyLoading((obj) => update(obj, { [route.id]: false })));
   };
@@ -75,7 +78,7 @@ const RouteList = ({
     setIsSellLoading((obj) => update(obj, { [route.id]: true }));
     route.active = false;
     putSellRoute(route)
-      .then(() => setRoutes((routes) => update(routes, {sellRoutes: routes?.sellRoutes.filter((r) => r.id !== route.id)})))
+      .then(() => setSellRoutes((routes) => routes?.filter((r) => r.id !== route.id)))
       .catch(() => NotificationService.show(t("feedback.delete_failed")))
       .finally(() => setIsSellLoading((obj) => update(obj, { [route.id]: false })));
   };
@@ -83,7 +86,7 @@ const RouteList = ({
   return (
     <>
       <DeFiModal isVisible={isBuyRouteEdit} setIsVisible={setIsBuyRouteEdit} title={t("model.route.new_buy")}>
-        <BuyRouteEdit isVisible={isBuyRouteEdit} onRouteCreated={onBuyRouteChanged} />
+        <BuyRouteEdit isVisible={isBuyRouteEdit} onRouteCreated={onBuyRouteCreated} />
       </DeFiModal>
       <DeFiModal isVisible={isSellRouteEdit} setIsVisible={setIsSellRouteEdit} title={t("model.route.new_sell")}>
         <SellRouteEdit isVisible={isSellRouteEdit} user={user} onRouteCreated={onSellRouteChanged} />
@@ -95,10 +98,14 @@ const RouteList = ({
           <>
             <Text style={AppStyles.mla}>{t("model.route.new")}</Text>
             <View style={AppStyles.ml10}>
-              <DeFiButton mode="contained" onPress={() => setIsBuyRouteEdit(true)}>{t("model.route.buy")}</DeFiButton>
+              <DeFiButton mode="contained" onPress={() => setIsBuyRouteEdit(true)}>
+                {t("model.route.buy")}
+              </DeFiButton>
             </View>
             <View style={AppStyles.ml10}>
-              <DeFiButton mode="contained" onPress={() => setIsSellRouteEdit(true)}>{t("model.route.sell")}</DeFiButton>
+              <DeFiButton mode="contained" onPress={() => setIsSellRouteEdit(true)}>
+                {t("model.route.sell")}
+              </DeFiButton>
             </View>
           </>
         )}
@@ -109,9 +116,9 @@ const RouteList = ({
       {/* multiple times same asset with different iban possible */}
       {/* TODO: details */}
 
-      {(routes?.buyRoutes.length ?? 0) + (routes?.sellRoutes.length ?? 0) > 0 ? (
+      {(buyRoutes?.length ?? 0) + (sellRoutes?.length ?? 0) > 0 ? (
         <>
-          {routes?.buyRoutes && routes.buyRoutes.length > 0 && (
+          {buyRoutes && buyRoutes.length > 0 && (
             <>
               <SpacerV />
               <H3 text={t("model.route.buy")} />
@@ -126,7 +133,7 @@ const RouteList = ({
                   </CompactTitle>
                 </CompactHeader>
 
-                {routes.buyRoutes.map((route) => (
+                {buyRoutes.map((route) => (
                   <CompactRow key={route.id}>
                     <CompactCell style={{ flex: 1 }}>{route.asset?.name}</CompactCell>
                     <CompactCell style={{ flex: 1 }}>{route.iban}</CompactCell>
@@ -144,7 +151,7 @@ const RouteList = ({
               </DataTable>
             </>
           )}
-          {routes?.sellRoutes && routes.sellRoutes.length > 0 && (
+          {sellRoutes && sellRoutes.length > 0 && (
             <>
               <SpacerV height={20} />
               <H3 text={t("model.route.sell")} />
@@ -159,7 +166,7 @@ const RouteList = ({
                   </CompactTitle>
                 </CompactHeader>
 
-                {routes.sellRoutes.map((route) => (
+                {sellRoutes.map((route) => (
                   <CompactRow key={route.id}>
                     <CompactCell style={{ flex: 1 }}>{route.fiat?.name}</CompactCell>
                     <CompactCell style={{ flex: 1 }}>{route.iban}</CompactCell>

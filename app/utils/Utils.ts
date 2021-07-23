@@ -1,1 +1,2 @@
 export const update = (obj?: any, update?: any) => obj ? {...obj, ...update} : undefined;
+export const join = (array: any[], separator: string = ', ') => array.reduce((prev, curr) => curr ? (prev ? prev + separator + curr : curr) : prev, "");

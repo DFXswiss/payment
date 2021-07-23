@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import DeFiModal from "../../components/util/DeFiModal";
 import Loading from "../../components/util/Loading";
 import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
-import { H1, H2 } from "../../elements/Texts";
+import { H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
 import { User } from "../../models/User";
-import { getActiveRoutes, getUser } from "../../services/ApiService";
+import { getBuyRoutes, getSellRoutes, getUser } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
-import { PaymentRoutes } from "../../models/PaymentRoutes";
 import AppLayout from "../../components/AppLayout";
 import useGuard from "../../hooks/useGuard";
 import NotificationService from "../../services/NotificationService";
@@ -21,11 +20,14 @@ import { CompactCell, CompactRow } from "../../elements/Tables";
 import { useDevice } from "../../hooks/useDevice";
 import { DeFiButton } from "../../elements/Buttons";
 import useLoader from "../../hooks/useLoader";
+import { BuyRoute } from "../../models/BuyRoute";
+import { SellRoute } from "../../models/SellRoute";
+import { join } from "../../utils/Utils";
 
 const userData = (user: User) => [
   { condition: Boolean(user.address), label: "model.user.address", value: user.address },
-  { condition: Boolean(user.firstName || user.lastName), label: "model.user.name", value: `${user.firstName} ${user.lastName}` },
-  { condition: Boolean(user.street || user.houseNumber), label: "model.user.home", value: `${user.street} ${user.houseNumber}` },
+  { condition: Boolean(user.firstName || user.lastName), label: "model.user.name", value: join([user.firstName, user.lastName], " ") },
+  { condition: Boolean(user.street || user.houseNumber), label: "model.user.home", value: join([user.street, user.houseNumber], " ") },
   { condition: Boolean(user.zip), label: "model.user.zip", value: user.zip },
   { condition: Boolean(user.location), label: "model.user.location", value: user.location },
   { condition: Boolean(user.country), label: "model.user.country", value: user.country?.name },
@@ -44,7 +46,8 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User>();
-  const [routes, setRoutes] = useState<PaymentRoutes>();
+  const [buyRoutes, setBuyRoutes] = useState<BuyRoute[]>();
+  const [sellRoutes, setSellRoutes] = useState<SellRoute[]>();
   const [fabOpen, setFabOpen] = useState<boolean>(false);
   const [isUserEdit, setIsUserEdit] = useState(false);
   const [isBuyRouteEdit, setIsBuyRouteEdit] = useState(false);
@@ -58,7 +61,8 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const reset = (): void => {
     setLoading(true);
     setUser(undefined);
-    setRoutes(undefined);
+    setBuyRoutes(undefined);
+    setSellRoutes(undefined);
     setIsUserEdit(false);
   };
 
@@ -66,11 +70,12 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     (cancelled) => {
       if (session) {
         if (session.isLoggedIn) {
-          Promise.all([getUser(), getActiveRoutes()])
-            .then(([user, routes]) => {
+          Promise.all([getUser(), getBuyRoutes(), getSellRoutes()])
+            .then(([user, buyRoutes, sellRoutes]) => {
               if (!cancelled()) {
                 setUser(user);
-                setRoutes(routes);
+                setBuyRoutes(buyRoutes);
+                setSellRoutes(sellRoutes);
               }
             })
             .catch(() => NotificationService.show(t("feedback.load_failed")))
@@ -147,11 +152,13 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
           <SpacerV height={50} />
 
-          {routes && (
+          {(buyRoutes || sellRoutes) && (
             <RouteList
               user={user}
-              routes={routes}
-              setRoutes={setRoutes}
+              buyRoutes={buyRoutes}
+              setBuyRoutes={setBuyRoutes}
+              sellRoutes={sellRoutes}
+              setSellRoutes={setSellRoutes}
               isBuyRouteEdit={isBuyRouteEdit}
               setIsBuyRouteEdit={setIsBuyRouteEdit}
               isSellRouteEdit={isSellRouteEdit}

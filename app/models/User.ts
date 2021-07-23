@@ -5,8 +5,8 @@ import { Country } from "./Country";
 export interface NewUserDto {
   address: string;
   signature: string;
-  wallet_id: number;
-  used_ref?: string;
+  walletId: number;
+  usedRef?: string;
 }
 
 export interface NewUser {
@@ -19,26 +19,25 @@ export interface NewUser {
 export const toNewUserDto = (user: NewUser): NewUserDto => ({
   address: user.address,
   signature: user.signature,
-  wallet_id: user.walletId,
-  used_ref: user.usedRef,
+  walletId: user.walletId,
+  usedRef: user.usedRef,
 });
 
 export interface UserDto extends NewUserDto {
   firstname: string;
   surname: string;
   street: string;
-  house_number: string;
+  houseNumber: string;
   zip: string;
   location: string;
   country: Country;
   mail: string;
-  phone_number: string;
+  phone: string;
 
   ref: string;
-  used_ref: string;
+  usedRef: string;
 
-  created: string;
-  IP: string;
+  ip: string;
 }
 
 export interface User extends NewUser {
@@ -55,7 +54,6 @@ export interface User extends NewUser {
   ref: string;
   usedRef: string;
 
-  created: Date;
   ip: string;
 }
 
@@ -65,17 +63,16 @@ export const fromUserDto = (user: UserDto): User => ({
   firstName: user.firstname,
   lastName: user.surname,
   street: user.street,
-  houseNumber: user.house_number,
+  houseNumber: user.houseNumber,
   zip: user.zip,
   location: user.location,
   country: user.country,
   mail: user.mail,
-  mobileNumber: user.phone_number,
+  mobileNumber: user.phone,
   ref: user.ref,
-  usedRef: user.used_ref,
-  walletId: user.wallet_id,
-  created: new Date(user.created),
-  ip: user.IP,
+  usedRef: user.usedRef,
+  walletId: user.walletId,
+  ip: user.ip,
 });
 
 export const toUserDto = (user: User): UserDto => ({
@@ -84,15 +81,14 @@ export const toUserDto = (user: User): UserDto => ({
   firstname: user.firstName,
   surname: user.lastName,
   street: user.street,
-  house_number: user.houseNumber,
+  houseNumber: user.houseNumber,
   zip: user.zip,
   location: user.location,
   country: user.country,
   mail: user.mail,
-  phone_number: user.mobileNumber,
+  phone: user.mobileNumber,
   ref: user.ref,
-  used_ref: user.usedRef,
-  wallet_id: user.walletId,
-  created: user.created.toString(),
-  IP: user.ip,
+  usedRef: user.usedRef,
+  walletId: user.walletId,
+  ip: user.ip,
 });

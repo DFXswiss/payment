@@ -25,7 +25,7 @@ const GtcScreen = ({ session }: { session?: Session }) => {
   const [isProcessing, setIsProcessing] = useState(false);
 
   useGuard(() => session && !(session.address && session.signature), [session]);
-  useGuard(() => session && session.isLoggedIn, [session], Routes.Home);
+  useGuard(() => session && session.isLoggedIn && !isProcessing, [session], Routes.Home);
 
   const register = () => {
     setIsProcessing(true);

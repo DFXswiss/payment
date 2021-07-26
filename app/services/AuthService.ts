@@ -10,14 +10,11 @@ export interface Credentials {
   walletId?: number;
 }
 
-export interface ISession extends Credentials {
+export interface ISession {
   accessToken?: string;
 }
 
 export class Session implements ISession {
-  public address?: string;
-  public signature?: string;
-  public walletId?: number;
   public accessToken?: string;
 
   public get isLoggedIn() {
@@ -67,9 +64,6 @@ class AuthServiceClass {
 
   public deleteSession(): Promise<void> {
     return this.updateSession({
-      address: undefined,
-      signature: undefined,
-      walletId: undefined,
       accessToken: undefined,
     });
   }

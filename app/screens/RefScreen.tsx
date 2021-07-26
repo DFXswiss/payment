@@ -15,7 +15,7 @@ import { SpacerV } from "../elements/Spacers";
 import { H1 } from "../elements/Texts";
 import withSession from "../hocs/withSession";
 import useGuard from "../hooks/useGuard";
-import { Session } from "../services/AuthService";
+import { Credentials, Session } from "../services/AuthService";
 import StorageService from "../services/StorageService";
 import AppStyles from "../styles/AppStyles";
 import Validations from "../utils/Validations";
@@ -34,7 +34,11 @@ const RefScreen = ({ session }: { session?: Session }) => {
 
   const [dialogVisible, setDialogVisible] = useState(false);
 
-  useGuard(() => session && !(session.address && session.signature), [session]);
+  
+  useGuard(() =>
+    StorageService.getValue<Credentials>(StorageService.Keys.Credentials)
+      .then((credentials) => !(credentials.address && credentials.signature))
+  );
   useGuard(() => session && session.isLoggedIn, [session], Routes.Home);
 
   const onSubmit = ({ usedRef }: { usedRef: string }) => {

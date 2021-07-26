@@ -2,7 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 class StorageServiceClass {
   public Keys = {
-    Ref: "ref"
+    Ref: "ref",
+    Credentials: "credentials"
   }
   
   public storeValue<T>(key: string, value: T): Promise<T> {

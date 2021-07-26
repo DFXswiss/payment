@@ -11,9 +11,10 @@ import { SpacerV } from "../elements/Spacers";
 import { H1, H3 } from "../elements/Texts";
 import withSession from "../hocs/withSession";
 import useGuard from "../hooks/useGuard";
-import { Session } from "../services/AuthService";
+import { Credentials, Session } from "../services/AuthService";
 import NotificationService from "../services/NotificationService";
 import SessionService from "../services/SessionService";
+import StorageService from "../services/StorageService";
 import AppStyles from "../styles/AppStyles";
 
 const gtcLength = require("../i18n/de.json").common.gtc.text.length - 1;
@@ -24,12 +25,15 @@ const GtcScreen = ({ session }: { session?: Session }) => {
 
   const [isProcessing, setIsProcessing] = useState(false);
 
-  useGuard(() => session && !(session.address && session.signature), [session]);
+  useGuard(() =>
+    StorageService.getValue<Credentials>(StorageService.Keys.Credentials)
+      .then((credentials) => !(credentials.address && credentials.signature))
+  );
   useGuard(() => session && session.isLoggedIn && !isProcessing, [session], Routes.Home);
 
   const register = () => {
     setIsProcessing(true);
-    SessionService.register(session)
+    SessionService.register()
       .finally(() => setIsProcessing(false))
       .then(() => nav.navigate(Routes.Home))
       .catch(() => NotificationService.show(t("feedback.register_failed")));

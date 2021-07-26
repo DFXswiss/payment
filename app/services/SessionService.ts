@@ -4,9 +4,12 @@ import AuthService, { Credentials } from "./AuthService";
 import StorageService from "./StorageService";
 
 class SessionServiceClass {
-  public register(credentials?: Credentials): Promise<void> {
-    return StorageService.getPrimitive<string>(StorageService.Keys.Ref)
-      .then((ref) =>
+  public register(): Promise<void> {
+    return Promise.all([
+      StorageService.getValue<Credentials>(StorageService.Keys.Credentials),
+      StorageService.getPrimitive<string>(StorageService.Keys.Ref),
+    ])
+      .then(([credentials, ref]) =>
         signUp({
           address: credentials?.address ?? "",
           signature: credentials?.signature ?? "",
@@ -14,26 +17,32 @@ class SessionServiceClass {
           usedRef: ref,
         })
       )
-      .then((accessToken) => this.updateSession(credentials, accessToken))
-      .then(() => StorageService.deleteValue(StorageService.Keys.Ref));
+      .then((accessToken) => this.updateSession(accessToken))
+      .then(() =>
+        Promise.all([
+          StorageService.deleteValue(StorageService.Keys.Credentials),
+          StorageService.deleteValue(StorageService.Keys.Ref),
+        ])
+      )
+      .then();
   }
 
   public login(credentials: Credentials): Promise<void> {
     return signIn(credentials)
       .catch((error: ApiError) => {
-        return this.updateSession(credentials).then(() => {
+        return StorageService.storeValue(StorageService.Keys.Credentials, credentials).then(() => {
           throw error;
         });
       })
-      .then((accessToken) => this.updateSession(credentials, accessToken));
+      .then((accessToken) => this.updateSession(accessToken));
   }
 
   public logout(): Promise<void> {
     return AuthService.deleteSession();
   }
 
-  private updateSession(credentials?: Credentials, accessToken?: string): Promise<void> {
-    return AuthService.updateSession({ ...credentials, accessToken: accessToken });
+  private updateSession(accessToken?: string): Promise<void> {
+    return AuthService.updateSession({ accessToken: accessToken });
   }
 }
 

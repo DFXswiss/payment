@@ -57,6 +57,7 @@ const RefScreen = () => {
       <View style={AppStyles.alignCenter}>
         <View style={AppStyles.singleColFormContainer}>
           <Form control={control} rules={rules} errors={errors} onSubmit={handleSubmit(onSubmit)}>
+            {/* TODO: auto-format for all ref inputs */}
             <Input name="usedRef" label={t("model.user.ref")} placeholder="xxx-xxx" />
 
             <SpacerV />

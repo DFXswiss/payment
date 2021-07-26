@@ -47,6 +47,13 @@ const Main = () => {
       },
     },
   };
+  const screens = [
+    { route: Routes.Home, screen: HomeScreen },
+    { route: Routes.Login, screen: LoginScreen },
+    { route: Routes.Ref, screen: RefScreen },
+    { route: Routes.Gtc, screen: GtcScreen },
+    { route: Routes.NotFound, screen: NotFoundScreen },
+  ];
 
   const [snackVisible, setSnackVisible] = useState<boolean>(false);
   const [snackText, setSnackText] = useState<string>();
@@ -78,11 +85,7 @@ const Main = () => {
 
         <NavigationContainer linking={linking} ref={navigationRef}>
           <drawer.Navigator screenOptions={{ headerShown: false }} drawerContent={() => <DrawerContent />}>
-            <drawer.Screen name={Routes.Home} component={HomeScreen} />
-            <drawer.Screen name={Routes.Login} component={LoginScreen} />
-            <drawer.Screen name={Routes.Ref} component={RefScreen} />
-            <drawer.Screen name={Routes.Gtc} component={GtcScreen} />
-            <drawer.Screen name={Routes.NotFound} component={NotFoundScreen} />
+            {screens.map((screen) => <drawer.Screen key={screen.route} name={screen.route} component={screen.screen} options={{ unmountOnBlur: true }} />)}
           </drawer.Navigator>
         </NavigationContainer>
       </Portal.Host>

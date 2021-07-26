@@ -33,7 +33,6 @@ const signingMessage = (address: string) =>
     .join("_");
 const DefaultWalletId = 1;
 
-// TODO: reset on logout?
 const LoginScreen = () => {
   const nav = useNavigation();
   const route = useRoute();

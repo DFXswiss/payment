@@ -29,7 +29,7 @@ class SessionServiceClass {
   }
 
   public logout(): Promise<void> {
-    return AuthService.updateSession({ address: undefined, signature: undefined, walletId: undefined, accessToken: undefined });
+    return AuthService.deleteSession();
   }
 
   private updateSession(credentials?: Credentials, accessToken?: string): Promise<void> {

@@ -30,7 +30,7 @@ const HeaderContent = ({ session, settings }: { session?: Session; settings?: Ap
     }
   }, [settings]);
 
-  const logout = () => SessionService.logout().then(() => navigate(Routes.Login));
+  const logout = () => SessionService.logout();
   const languageChanged = (update: SetStateAction<Language | undefined>) => {
     const language = typeof update === "function" ? update(selectedLanguage) : update;
     SettingsService.updateSettings({ language: language?.key });

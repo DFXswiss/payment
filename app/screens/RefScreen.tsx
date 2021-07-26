@@ -13,13 +13,16 @@ import Routes from "../config/Routes";
 import { DeFiButton } from "../elements/Buttons";
 import { SpacerV } from "../elements/Spacers";
 import { H1 } from "../elements/Texts";
+import withSession from "../hocs/withSession";
+import useGuard from "../hooks/useGuard";
+import { Session } from "../services/AuthService";
 import StorageService from "../services/StorageService";
 import AppStyles from "../styles/AppStyles";
 import Validations from "../utils/Validations";
 
 const allowedRefCodes = ["000-000", "000-001", "000-002", "000-003", "000-004"];
 
-const RefScreen = () => {
+const RefScreen = ({ session }: { session?: Session }) => {
   const nav = useNavigation();
   const { t } = useTranslation();
 
@@ -30,6 +33,9 @@ const RefScreen = () => {
   } = useForm();
 
   const [dialogVisible, setDialogVisible] = useState(false);
+
+  useGuard(() => session && !(session.address && session.signature), [session]);
+  useGuard(() => session && session.isLoggedIn, [session], Routes.Home);
 
   const onSubmit = ({ usedRef }: { usedRef: string }) => {
     StorageService.storeValue(StorageService.Keys.Ref, usedRef).then(() => nav.navigate(Routes.Gtc));
@@ -90,4 +96,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RefScreen;
+export default withSession(RefScreen);

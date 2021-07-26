@@ -87,7 +87,7 @@ export const getCountries = (): Promise<Country[]> => {
 // --- HELPERS --- //
 const fetchFrom = <T>(url: string, method: "GET" | "PUT" | "POST" = "GET", data?: any): Promise<T> => {
   return AuthService.Session
-      // TODO: logout if token expired and if 401 return!
+      // TODO: logout if 401 return!
       .then((session) => buildInit(method, session, data))
       .then((init) => fetch(url, init))
       .then((response) => {

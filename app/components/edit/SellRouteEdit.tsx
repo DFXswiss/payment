@@ -6,7 +6,7 @@ import { Alert } from "../../elements/Texts";
 import { Fiat } from "../../models/Fiat";
 import { SellRoute } from "../../models/SellRoute";
 import { User } from "../../models/User";
-import { getFiats, postSellRoute } from "../../services/ApiService";
+import { getFiats, postSellRoute, putSellRoute } from "../../services/ApiService";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
 import Input from "../form/Input";
@@ -17,10 +17,12 @@ import ButtonContainer from "../util/ButtonContainer";
 
 const SellRouteEdit = ({
   isVisible,
+  routes,
   onRouteCreated,
   user,
 }: {
   isVisible: boolean;
+  routes?: SellRoute[];
   onRouteCreated: (route: SellRoute) => void;
   user?: User;
 }) => {
@@ -50,7 +52,12 @@ const SellRouteEdit = ({
     setIsSaving(true);
     setError(false);
 
-    postSellRoute(route)
+
+    // re-activate the route, if it already existed
+    const existingRoute = routes?.find((r) => !r.active && r.fiat.id === route.fiat.id && r.iban === route.iban);
+    if (existingRoute) existingRoute.active = true;
+
+    (existingRoute ? putSellRoute(existingRoute) : postSellRoute(route))
       .then((newRoute) => onRouteCreated(newRoute))
       .catch(() => setError(true))
       .finally(() => setIsSaving(false));

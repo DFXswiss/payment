@@ -6,7 +6,7 @@ import { SpacerV } from "../../elements/Spacers";
 import { Alert } from "../../elements/Texts";
 import { Asset } from "../../models/Asset";
 import { BuyRoute } from "../../models/BuyRoute";
-import { getAssets, postBuyRoute } from "../../services/ApiService";
+import { getAssets, postBuyRoute, putBuyRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import Validations from "../../utils/Validations";
 import DeFiPicker from "../form/DeFiPicker";
@@ -16,9 +16,11 @@ import ButtonContainer from "../util/ButtonContainer";
 
 const BuyRouteEdit = ({
   isVisible,
+  routes,
   onRouteCreated,
 }: {
   isVisible: boolean;
+  routes?: BuyRoute[];
   onRouteCreated: (route: BuyRoute) => void;
 }) => {
   const { t } = useTranslation();
@@ -47,7 +49,11 @@ const BuyRouteEdit = ({
     setIsSaving(true);
     setError(false);
 
-    postBuyRoute(route)
+    // re-activate the route, if it already existed
+    const existingRoute = routes?.find((r) => !r.active && r.asset.id === route.asset.id && r.iban === route.iban);
+    if (existingRoute) existingRoute.active = true;
+
+    (existingRoute ? putBuyRoute(existingRoute) : postBuyRoute(route))
       .then((newRoute) => onRouteCreated(newRoute))
       .catch(() => setError(true))
       .finally(() => setIsSaving(false));

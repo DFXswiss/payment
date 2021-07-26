@@ -49,6 +49,7 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
       .then(setCountries)
       .catch(() => NotificationService.show(t("feedback.load_failed")));
   }, []);
+  // TODO: isLoading (on every edit component!)
 
   const onSubmit = (updatedUser: User) => {
     setIsSaving(true);

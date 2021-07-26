@@ -51,6 +51,9 @@ const RouteList = ({
   const [isBuyLoading, setIsBuyLoading] = useState<{ [id: string]: boolean }>({});
   const [isSellLoading, setIsSellLoading] = useState<{ [id: string]: boolean }>({});
 
+  const activeBuyRoutes = buyRoutes?.filter((r) => r.active);
+  const activeSellRoutes = sellRoutes?.filter((r) => r.active);
+
   const onBuyRouteCreated = (route: BuyRoute) => {
     setBuyRoutes((routes) => {
       routes?.push(route);
@@ -58,7 +61,7 @@ const RouteList = ({
     });
     setIsBuyRouteEdit(false);
   };
-  const onSellRouteChanged = (route: SellRoute) => {
+  const onSellRouteCreated = (route: SellRoute) => {
     setSellRoutes((routes) => {
       routes?.push(route);
       return routes;
@@ -86,10 +89,10 @@ const RouteList = ({
   return (
     <>
       <DeFiModal isVisible={isBuyRouteEdit} setIsVisible={setIsBuyRouteEdit} title={t("model.route.new_buy")}>
-        <BuyRouteEdit isVisible={isBuyRouteEdit} onRouteCreated={onBuyRouteCreated} />
+        <BuyRouteEdit isVisible={isBuyRouteEdit} routes={buyRoutes} onRouteCreated={onBuyRouteCreated} />
       </DeFiModal>
       <DeFiModal isVisible={isSellRouteEdit} setIsVisible={setIsSellRouteEdit} title={t("model.route.new_sell")}>
-        <SellRouteEdit isVisible={isSellRouteEdit} user={user} onRouteCreated={onSellRouteChanged} />
+        <SellRouteEdit isVisible={isSellRouteEdit} routes={sellRoutes} user={user} onRouteCreated={onSellRouteCreated} />
       </DeFiModal>
 
       <View style={AppStyles.containerHorizontal}>
@@ -111,14 +114,13 @@ const RouteList = ({
         )}
       </View>
 
-      {/* TODO: what if collision with deleted route? */}
-      {/* => reactivate route (check before push?) */}
-      {/* multiple times same asset with different iban possible */}
+      {/* multiple times same asset with different iban possible (verify) */}
+      {/* TODO: verify all: create, delete, reactivate */}
       {/* TODO: details */}
 
-      {(buyRoutes?.length ?? 0) + (sellRoutes?.length ?? 0) > 0 ? (
+      {(activeBuyRoutes?.length ?? 0) + (activeSellRoutes?.length ?? 0) > 0 ? (
         <>
-          {buyRoutes && buyRoutes.length > 0 && (
+          {activeBuyRoutes && activeBuyRoutes.length > 0 && (
             <>
               <SpacerV />
               <H3 text={t("model.route.buy")} />
@@ -133,7 +135,7 @@ const RouteList = ({
                   </CompactTitle>
                 </CompactHeader>
 
-                {buyRoutes.map((route) => (
+                {activeBuyRoutes.map((route) => (
                   <CompactRow key={route.id}>
                     <CompactCell style={{ flex: 1 }}>{route.asset?.name}</CompactCell>
                     <CompactCell style={{ flex: 1 }}>{route.iban}</CompactCell>
@@ -151,7 +153,7 @@ const RouteList = ({
               </DataTable>
             </>
           )}
-          {sellRoutes && sellRoutes.length > 0 && (
+          {activeSellRoutes && activeSellRoutes.length > 0 && (
             <>
               <SpacerV height={20} />
               <H3 text={t("model.route.sell")} />
@@ -166,7 +168,7 @@ const RouteList = ({
                   </CompactTitle>
                 </CompactHeader>
 
-                {sellRoutes.map((route) => (
+                {activeSellRoutes.map((route) => (
                   <CompactRow key={route.id}>
                     <CompactCell style={{ flex: 1 }}>{route.fiat?.name}</CompactCell>
                     <CompactCell style={{ flex: 1 }}>{route.iban}</CompactCell>

@@ -64,10 +64,10 @@ const PhoneNumber = ({
   };
   const updateNumber = (number?: string): string => {
     const { code } = parseNumber();
-    return getNumber(code, number);
+    return getNumber(code, number?.replace(" ", ""));
   };
   const getNumber = (code?: PhoneCode, number?: string) => {
-    return code?.dialCode || number ? join([code?.dialCode, number], " ") : "";
+    return join([code?.dialCode, number], " ");
   };
 
   // TODO: auto-select phone codes with selected country

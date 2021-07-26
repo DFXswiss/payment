@@ -98,7 +98,7 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
       <PhoneNumber
         name="mobileNumber"
         label={t("model.user.mobile_number")}
-        placeholder="69 1234 5678"
+        placeholder="6912345678"
         wrap={!device.SM}
       />
       <SpacerV />

@@ -17,6 +17,8 @@ import StorageService from "../services/StorageService";
 import AppStyles from "../styles/AppStyles";
 import Validations from "../utils/Validations";
 
+const allowedRefCodes = ["000-000", "000-001", "000-002", "000-003", "000-004"];
+
 const RefScreen = () => {
   const nav = useNavigation();
   const { t } = useTranslation();
@@ -34,7 +36,11 @@ const RefScreen = () => {
   };
 
   const rules: any = {
-    usedRef: { ...Validations.Required(t), ...Validations.Ref(t) },
+    usedRef: {
+      ...Validations.Required(t),
+      ...Validations.Ref(t),
+      validate: (ref: string) => (allowedRefCodes.find((c) => c === ref) ? true : t("validation.invalid_ref")),
+    },
   };
 
   return (

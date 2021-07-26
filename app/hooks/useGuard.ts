@@ -6,12 +6,12 @@ const useGuard = (isUnauthorized: () => boolean | undefined, deps: DependencyLis
   const nav = useNavigation();
   const isFocused = useIsFocused();
 
-
+  // TODO: fix race condition component unmount problems
   useEffect(() => {
     if (isFocused && isUnauthorized()) {
       nav.navigate(fallBackRoute);
     }
-  }, [isFocused, ...deps])
+  }, [isFocused, ...deps]);
 }
 
 export default useGuard;

@@ -29,7 +29,8 @@
     "validation": {
       "required": "Pflichtfeld",
       "pattern_invalid": "Ungültiges Format",
-      "code_and_number": "Bitte Vorwahl und Nummer ausfüllen"
+      "code_and_number": "Bitte Vorwahl und Nummer ausfüllen",
+      "invalid_ref": "Ungültiger Ref-Code"
     },
     "session": {
       "sign_up": "Anmelden / Registrieren",

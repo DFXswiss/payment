@@ -18,6 +18,7 @@ import Sizes from "./config/Sizes";
 import { useDevice } from "./hooks/useDevice";
 import NotificationService from "./services/NotificationService";
 import AppStyles from "./styles/AppStyles";
+import AdminScreen from "./screens/AdminScreen";
 
 const DrawerContent = () => {
   const device = useDevice();
@@ -43,6 +44,7 @@ const Main = () => {
         [Routes.Login]: "login",
         [Routes.Ref]: "ref",
         [Routes.Gtc]: "legal",
+        [Routes.Admin]: "admin",
         [Routes.NotFound]: "*",
       },
     },
@@ -52,6 +54,7 @@ const Main = () => {
     { route: Routes.Login, screen: LoginScreen },
     { route: Routes.Ref, screen: RefScreen },
     { route: Routes.Gtc, screen: GtcScreen },
+    { route: Routes.Admin, screen: AdminScreen },
     { route: Routes.NotFound, screen: NotFoundScreen },
   ];
 

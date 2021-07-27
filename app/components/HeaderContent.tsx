@@ -1,17 +1,21 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { SetStateAction, useState } from "react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View, Linking } from "react-native";
+import Routes from "../config/Routes";
 import { DeFiButton } from "../elements/Buttons";
 import { Environment } from "../env/Environment";
 import withSession from "../hocs/withSession";
 import withSettings from "../hocs/withSettings";
 import { useDevice } from "../hooks/useDevice";
 import { Language, Languages } from "../i18n/i18n";
+import { UserRole } from "../models/ApiDto";
 import { Session } from "../services/AuthService";
 import SessionService from "../services/SessionService";
 import SettingsService, { AppSettings } from "../services/SettingsService";
 import AppStyles from "../styles/AppStyles";
+import { navigate } from "../utils/NavigationHelper";
 import DeFiDropdown from "./form/DeFiDropdown";
 
 const getLanguage = (key: string): Language | undefined => Languages.find((l) => l.key === key);
@@ -45,6 +49,12 @@ const HeaderContent = ({ session, settings }: { session?: Session; settings?: Ap
       {session?.isLoggedIn && (
         <DeFiButton onPress={logout} style={styles.button} compact>
           {t("action.logout")}
+        </DeFiButton>
+      )}
+
+      {session?.role == UserRole.Admin && (
+        <DeFiButton onPress={() => navigate(Routes.Admin)} style={styles.button} compact>
+          {t("admin.title")}
         </DeFiButton>
       )}
 

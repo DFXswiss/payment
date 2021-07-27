@@ -56,14 +56,24 @@ const RouteList = ({
 
   const onBuyRouteCreated = (route: BuyRoute) => {
     setBuyRoutes((routes) => {
-      routes?.push(route);
+      const oldRoute = routes?.find((r) => r.id === route.id);
+      if (oldRoute) {
+        Object.assign(oldRoute, route);
+      } else {
+        routes?.push(route);
+      }
       return routes;
     });
     setIsBuyRouteEdit(false);
   };
   const onSellRouteCreated = (route: SellRoute) => {
     setSellRoutes((routes) => {
-      routes?.push(route);
+      const oldRoute = routes?.find((r) => r.id === route.id);
+      if (oldRoute) {
+        Object.assign(oldRoute, route);
+      } else {
+        routes?.push(route);
+      }
       return routes;
     });
     setIsSellRouteEdit(false);
@@ -71,17 +81,15 @@ const RouteList = ({
 
   const deleteBuyRoute = (route: BuyRoute) => {
     setIsBuyLoading((obj) => update(obj, { [route.id]: true }));
-    route.active = false;
-    putBuyRoute(route)
-      .then(() => setBuyRoutes((routes) => routes?.filter((r) => r.id !== route.id)))
+    putBuyRoute({...route, ...{active: false}})
+      .then(() => route.active = false)
       .catch(() => NotificationService.show(t("feedback.delete_failed")))
       .finally(() => setIsBuyLoading((obj) => update(obj, { [route.id]: false })));
   };
   const deleteSellRoute = (route: SellRoute) => {
     setIsSellLoading((obj) => update(obj, { [route.id]: true }));
-    route.active = false;
-    putSellRoute(route)
-      .then(() => setSellRoutes((routes) => routes?.filter((r) => r.id !== route.id)))
+    putSellRoute({...route, ...{active: false}})
+      .then(() => route.active = false)
       .catch(() => NotificationService.show(t("feedback.delete_failed")))
       .finally(() => setIsSellLoading((obj) => update(obj, { [route.id]: false })));
   };
@@ -172,7 +180,7 @@ const RouteList = ({
                   <CompactRow key={route.id}>
                     <CompactCell style={{ flex: 1 }}>{route.fiat?.name}</CompactCell>
                     <CompactCell style={{ flex: 1 }}>{route.iban}</CompactCell>
-                    <CompactCell style={{ flex: 2 }}>{route.depositId}</CompactCell>
+                    <CompactCell style={{ flex: 2 }}>{route.deposit?.address}</CompactCell>
                     <CompactCell style={{ flex: undefined }}>
                       <IconButton
                         icon="delete"

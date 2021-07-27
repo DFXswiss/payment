@@ -7,7 +7,6 @@ import { Fiat } from "../models/Fiat";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import { fromUserDto, NewUser, toNewUserDto, toUserDto, User, UserDto } from "../models/User";
 import AuthService, { Credentials, Session } from "./AuthService";
-import SessionService from "./SessionService";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -52,7 +51,7 @@ export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
 };
 
 export const putBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
-  return fetchFrom<BuyRouteDto>(`${BaseUrl}/${BuyUrl}/${route.id}`, "PUT", toBuyRouteDto(route))
+  return fetchFrom<BuyRouteDto>(`${BaseUrl}/${BuyUrl}`, "PUT", toBuyRouteDto(route))
     .then((dto) => fromBuyRouteDto(dto));
 };
 
@@ -67,7 +66,7 @@ export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
 };
 
 export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
-  return fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}/${route.id}`, "PUT", toSellRouteDto(route))
+  return fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}`, "PUT", toSellRouteDto(route))
     .then((dto) => fromSellRouteDto(dto));
 };
 

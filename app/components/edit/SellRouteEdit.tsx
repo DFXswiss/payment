@@ -68,7 +68,7 @@ const SellRouteEdit = ({
     iban: { ...Validations.Required(t), ...Validations.Iban(t) },
   };
 
-  const userDataMissing = !(user?.firstName && user?.lastName && user?.street && user?.zip && user?.location && user?.country && user?.mobileNumber && user?.mail);
+  const userDataMissing = !(user?.firstName && user?.lastName && user?.street && user?.houseNumber && user?.zip && user?.location && user?.country && user?.mobileNumber && user?.mail);
 
   return (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>

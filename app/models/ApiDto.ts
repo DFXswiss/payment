@@ -9,6 +9,7 @@ export interface AuthResponse {
 }
 
 export enum UserRole {
+  Unknown = "Unknown",
   User = "User",
   Admin = "Admin"
 }

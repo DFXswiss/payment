@@ -23,6 +23,7 @@ import useLoader from "../../hooks/useLoader";
 import { BuyRoute } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
 import { join } from "../../utils/Utils";
+import useAuthGuard from "../../hooks/useAuthGuard";
 
 const userData = (user: User) => [
   { condition: Boolean(user.address), label: "model.user.address", value: user.address },
@@ -94,7 +95,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
   const showButtons = (user && !isLoading && !device.SM) ?? false;
 
-  useGuard(() => session && !session.isLoggedIn, [session]);
+  useAuthGuard(session);
 
   return (
     <AppLayout>

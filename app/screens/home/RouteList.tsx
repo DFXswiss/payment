@@ -122,8 +122,6 @@ const RouteList = ({
         )}
       </View>
 
-      {/* multiple times same asset with different iban possible (verify) */}
-      {/* TODO: verify all: create, delete, reactivate */}
       {/* TODO: details */}
 
       {(activeBuyRoutes?.length ?? 0) + (activeSellRoutes?.length ?? 0) > 0 ? (

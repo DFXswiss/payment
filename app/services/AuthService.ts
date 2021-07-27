@@ -41,7 +41,7 @@ export class Session implements ISession {
     if (this.accessToken) {
       const jwt: JWT = jwtDecode(this.accessToken);
       this.address = jwt.address;
-      this.role = UserRole.Admin; //jwt.role;
+      this.role = jwt.role;
       this.expires = new Date(jwt.exp * 1000);
     }
   }

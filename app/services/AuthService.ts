@@ -1,5 +1,6 @@
 import jwtDecode from "jwt-decode";
 import { Observable, ReplaySubject } from "rxjs";
+import { UserRole } from "../models/ApiDto";
 import StorageService from "./StorageService";
 
 const SessionKey = "session";
@@ -14,22 +15,36 @@ export interface ISession {
   accessToken?: string;
 }
 
+interface JWT {
+  exp: number;
+  iat: number;
+  address: string;
+  role: UserRole;
+}
+
 export class Session implements ISession {
   public accessToken?: string;
+  public address?: string;
+  public role?: UserRole;
+  public expires?: Date;
 
-  public get isLoggedIn() {
+  public get isLoggedIn(): boolean {
     return Boolean(this.accessToken);
   }
 
-  public static create(session: ISession): Session {
-    return Object.assign(new Session(), session);
+  public get isExpired(): boolean {
+    return this.expires != null && Date.now() > this.expires.getTime();
   }
-}
 
-interface JWT {
-  address: string;
-  exp: number;
-  iat: number;
+  constructor(session?: ISession) {
+    this.accessToken = session?.accessToken;
+    if (this.accessToken) {
+      const jwt: JWT = jwtDecode(this.accessToken);
+      this.address = jwt.address;
+      this.role = UserRole.Admin; //jwt.role;
+      this.expires = new Date(jwt.exp * 1000);
+    }
+  }
 }
 
 class AuthServiceClass {
@@ -38,7 +53,7 @@ class AuthServiceClass {
   constructor() {
     this.Session
       .then((session) => this.session$.next(session))
-      .catch((_) => this.session$.next(Session.create({})));
+      .catch((_) => this.session$.next(new Session()));
   }
 
   public get Session$(): Observable<Session> {
@@ -47,9 +62,9 @@ class AuthServiceClass {
 
   public get Session(): Promise<Session> {
     return StorageService.getValue<ISession>(SessionKey)
-      .then(Session.create)
+      .then((session) => new Session(session))
       .then((session) => {
-        if (this.isTokenExpired(session.accessToken)) {
+        if (session.isExpired) {
           this.deleteSession();
           throw new Error("Access token expired!");
         }
@@ -59,18 +74,13 @@ class AuthServiceClass {
   }
 
   public updateSession(session: ISession): Promise<void> {
-    return StorageService.storeValue(SessionKey, session).then(() => this.session$.next(Session.create(session)));
+    return StorageService.storeValue(SessionKey, session).then(() => this.session$.next(new Session(session)));
   }
 
   public deleteSession(): Promise<void> {
     return this.updateSession({
       accessToken: undefined,
     });
-  }
-
-  private isTokenExpired(accessToken?: string): boolean {
-    const token: JWT | undefined = accessToken ? jwtDecode(accessToken) : undefined;
-    return token != null && Date.now() > token.exp * 1000;
   }
 }
 

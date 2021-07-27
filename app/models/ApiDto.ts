@@ -7,3 +7,8 @@ export interface ApiError {
 export interface AuthResponse {
   accessToken: string;
 }
+
+export enum UserRole {
+  User = "User",
+  Admin = "Admin"
+}

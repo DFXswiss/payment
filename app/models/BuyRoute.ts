@@ -4,7 +4,7 @@ export interface BuyRouteDto {
   id: string;
   address: string;
   asset: Asset;
-  bank_usage: string;
+  bankUsage: string;
   iban: string;
   active: boolean;
 }
@@ -22,7 +22,7 @@ export const fromBuyRouteDto = (route: BuyRouteDto): BuyRoute => ({
   id: route.id,
   address: route.address,
   asset: route.asset,
-  bankUsage: route.bank_usage,
+  bankUsage: route.bankUsage,
   iban: route.iban,
   active: route.active,
 });
@@ -31,7 +31,7 @@ export const toBuyRouteDto = (route: BuyRoute): BuyRouteDto => ({
   id: route.id,
   address: route.address,
   asset: route.asset,
-  bank_usage: route.bankUsage,
+  bankUsage: route.bankUsage,
   iban: route.iban,
   active: route.active,
 });

@@ -102,22 +102,6 @@ resource cdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
     }
   }
 }
-// resource profiles_Default_name_cdne_dfx_payment_dev_stdfxapidev_z6_web_core_windows_net 'Microsoft.Cdn/profiles/endpoints/origins@2020-09-01' = {
-//   parent: profiles_Default_name_cdne_dfx_payment_dev
-//   name: 'stdfxapidev-z6-web-core-windows-net'
-//   properties: {
-//     hostName: 'stdfxapidev.z6.web.core.windows.net'
-//     httpPort: 80
-//     httpsPort: 443
-//     originHostHeader: 'stdfxapidev.z6.web.core.windows.net'
-//     priority: 1
-//     weight: 1000
-//     enabled: true
-//   }
-//   dependsOn: [
-//     cdnProfile
-//   ]
-// }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
   name: storageAccountName
@@ -133,38 +117,3 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-04-01' = {
     accessTier: 'Hot'
   }
 }
-
-// resource defaultBlobContainer 'Microsoft.Storage/storageAccounts/blobServices@2021-04-01' = {
-//   parent: storageAccount
-//   name: 'default'
-//   properties: {
-//     changeFeed: {
-//       enabled: false
-//     }
-//     restorePolicy: {
-//       enabled: false
-//     }
-//     containerDeleteRetentionPolicy: {
-//       enabled: true
-//       days: 7
-//     }
-//     cors: {
-//       corsRules: []
-//     }
-//     deleteRetentionPolicy: {
-//       enabled: true
-//       days: 7
-//     }
-//     isVersioningEnabled: false
-//   }
-// }
-
-// resource webBlobContainer 'Microsoft.Storage/storageAccounts/blobServices/containers@2021-04-01' = {
-//   parent: defaultBlobContainer
-//   name: '$web'
-//   properties: {
-//     defaultEncryptionScope: '$account-encryption-key'
-//     denyEncryptionScopeOverride: false
-//     publicAccess: 'None'
-//   }
-// }

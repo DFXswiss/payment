@@ -12,11 +12,21 @@ jobs:
     name: Build and deploy
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.PRD_CREDENTIALS }}
+      
+      - name: Node setup
+        uses: actions/setup-node@v1
         with:
           node-version: 14.x
-      - uses: expo/expo-github-action@v5
+
+      - name: Expo setup
+        uses: expo/expo-github-action@v5
         with:
           expo-version: 4.x
 
@@ -33,11 +43,21 @@ jobs:
       - name: Build for web
         run: expo build:web
 
-      - name: Deploy to all-inkl
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+      - name: Deploy to Azure
+        uses: azure/CLI@v1
         with:
-          server: w01bfd03.kasserver.com
-          username: w01bfd03
-          password: ${{ secrets.ftp_password }}
-          local-dir: ./web-build/
-          server-dir: payment.fiat2defi.ch/
+          azcliversion: 2.0.72
+          inlineScript: |
+            az storage blob upload-batch --account-name stdfxpayprd -d '$web' -s ./web-build
+
+      - name: Purge CDN endpoint
+        uses: azure/CLI@v1
+        with:
+          azcliversion: 2.0.72
+          inlineScript: |
+            az cdn endpoint purge --content-paths  "/*" --profile-name cdnp-dfx-pay-prd --name cdne-dfx-pay-prd --resource-group rg-dfx-pay-prd
+      
+      - name: Logout
+        run: |
+              az logout
+        if: always()

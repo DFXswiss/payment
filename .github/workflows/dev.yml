@@ -36,7 +36,7 @@ jobs:
 
         # fix --release-channel not available for web yet
       - name: Select environment
-        run: cp -f app/env/Environment.Prod.ts app/env/Environment.ts
+        run: cp -f app/env/Environment.dev.ts app/env/Environment.ts
 
       - name: Build for web
         run: expo build:web

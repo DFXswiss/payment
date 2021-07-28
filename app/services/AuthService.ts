@@ -1,6 +1,6 @@
 import jwtDecode from "jwt-decode";
 import { Observable, ReplaySubject } from "rxjs";
-import { UserRole } from "../models/ApiDto";
+import { UserRole } from "../models/User";
 import StorageService from "./StorageService";
 
 const SessionKey = "session";

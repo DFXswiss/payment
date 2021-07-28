@@ -6,7 +6,7 @@ import { SpacerV } from "../elements/Spacers";
 import { H1 } from "../elements/Texts";
 import withSession from "../hocs/withSession";
 import useAuthGuard from "../hooks/useAuthGuard";
-import { UserRole } from "../models/ApiDto";
+import { UserRole } from "../models/User";
 import { Session } from "../services/AuthService";
 import AppStyles from "../styles/AppStyles";
 
@@ -21,7 +21,8 @@ const AdminScreen = ({ session }: { session?: Session }) => {
       <H1 style={AppStyles.center} text={t("admin.title")} />
       <SpacerV height={20} />
 
-      <Text>TODO</Text>
+      <Text>TODO: transaction upload</Text>
+      <Text>TODO: user list</Text>
     </AppLayout>
   );
 };

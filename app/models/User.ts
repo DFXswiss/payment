@@ -2,6 +2,20 @@ import { Country } from "./Country";
 
 // TODO: birthday, staatsangehörigkeit, language, email-settings, KYC status, gebühr
 
+export enum UserRole {
+  Unknown = "Unknown",
+  User = "User",
+  Admin = "Admin",
+  EMPLOYEE = "Employee",
+  VIP = "VIP",
+}
+
+export enum UserStatus {
+  NA = 'NA',
+  ACTIVE = 'Active',
+  KYC = 'KYC',
+}
+
 export interface NewUserDto {
   address: string;
   signature: string;
@@ -37,6 +51,7 @@ export interface UserDto extends NewUserDto {
   ref: string;
   usedRef: string;
 
+  status: UserStatus;
   ip: string;
 }
 
@@ -54,6 +69,7 @@ export interface User extends NewUser {
   ref: string;
   usedRef: string;
 
+  status: UserStatus;
   ip: string;
 }
 
@@ -72,6 +88,7 @@ export const fromUserDto = (user: UserDto): User => ({
   ref: user.ref,
   usedRef: user.usedRef,
   walletId: user.walletId,
+  status: user.status,
   ip: user.ip,
 });
 
@@ -90,5 +107,6 @@ export const toUserDto = (user: User): UserDto => ({
   ref: user.ref,
   usedRef: user.usedRef,
   walletId: user.walletId,
+  status: user.status,
   ip: user.ip,
 });

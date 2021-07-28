@@ -10,7 +10,7 @@ import withSession from "../hocs/withSession";
 import withSettings from "../hocs/withSettings";
 import { useDevice } from "../hooks/useDevice";
 import { Language, Languages } from "../i18n/i18n";
-import { UserRole } from "../models/ApiDto";
+import { UserRole } from "../models/User";
 import { Session } from "../services/AuthService";
 import SessionService from "../services/SessionService";
 import SettingsService, { AppSettings } from "../services/SettingsService";

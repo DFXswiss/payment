@@ -1,4 +1,4 @@
-import { UserRole } from "../models/ApiDto";
+import { UserRole } from "../models/User";
 import { Session } from "../services/AuthService";
 import useGuard from "./useGuard";
 

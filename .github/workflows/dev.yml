@@ -46,7 +46,7 @@ jobs:
         with:
           azcliversion: 2.0.72
           inlineScript: |
-            az storage blob upload-batch --account-name stdfxpaydev -d '$web' -s .
+            az storage blob upload-batch --account-name stdfxpaydev -d '$web' -s ./web-build
 
       - name: Purge CDN endpoint
         uses: azure/CLI@v1

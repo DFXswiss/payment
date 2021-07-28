@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import { Dispatch } from "react";
-import { SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { DataTable, Text } from "react-native-paper";
@@ -55,29 +53,22 @@ const RouteList = ({
   const activeSellRoutes = sellRoutes?.filter((r) => r.active);
 
   const onBuyRouteCreated = (route: BuyRoute) => {
-    setBuyRoutes((routes) => {
-      const oldRoute = routes?.find((r) => r.id === route.id);
-      if (oldRoute) {
-        Object.assign(oldRoute, route);
-      } else {
-        routes?.push(route);
-      }
-      return routes;
-    });
+    setBuyRoutes((routes) => updateRoutes(route, routes));
     setIsBuyRouteEdit(false);
   };
   const onSellRouteCreated = (route: SellRoute) => {
-    setSellRoutes((routes) => {
-      const oldRoute = routes?.find((r) => r.id === route.id);
-      if (oldRoute) {
-        Object.assign(oldRoute, route);
-      } else {
-        routes?.push(route);
-      }
-      return routes;
-    });
+    setSellRoutes((routes) => updateRoutes(route, routes));
     setIsSellRouteEdit(false);
   };
+  const updateRoutes: <T extends BuyRoute | SellRoute>(route: T, routes?: T[]) => T[] | undefined = (route, routes) => {
+    const oldRoute = routes?.find((r) => r.id === route.id);
+    if (oldRoute) {
+      Object.assign(oldRoute, route);
+    } else {
+      routes?.push(route);
+    }
+    return routes;
+  }
 
   const deleteBuyRoute = (route: BuyRoute) => {
     setIsBuyLoading((obj) => update(obj, { [route.id]: true }));
@@ -114,6 +105,9 @@ const RouteList = ({
               </DeFiButton>
             </View>
             <View style={AppStyles.ml10}>
+              {/* TODO: check if user complete => if not open user edit => "Next" on button => open new route modal */}
+              {/* TODO: disable for now */}
+              {/* TODO: SonarLink */}
               <DeFiButton mode="contained" onPress={() => setIsSellRouteEdit(true)}>
                 {t("model.route.sell")}
               </DeFiButton>

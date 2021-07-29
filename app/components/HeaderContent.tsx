@@ -36,6 +36,7 @@ const HeaderContent = ({ session, settings }: { session?: Session; settings?: Ap
   const languageChanged = (update: SetStateAction<Language | undefined>) => {
     const language = typeof update === "function" ? update(selectedLanguage) : update;
     SettingsService.updateSettings({ language: language?.key });
+    // TODO: update user!
   };
 
   const links = [

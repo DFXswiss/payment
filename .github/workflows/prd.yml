@@ -1,4 +1,4 @@
-name: CI/CD Prd
+name: CI/CD PRD
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 
 jobs:
   build:
-    name: Build and deploy
+    name: Build and deploy to PRD
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -43,14 +43,14 @@ jobs:
       - name: Build for web
         run: expo build:web
 
-      - name: Deploy to Azure Storage
+      - name: Deploy to Azure Storage (PRD)
         uses: azure/CLI@v1
         with:
           azcliversion: 2.0.72
           inlineScript: |
             az storage blob upload-batch --account-name stdfxpayprd -d '$web' -s ./web-build
 
-      - name: Purge CDN endpoint
+      - name: Purge CDN endpoint (PRD)
         uses: azure/CLI@v1
         with:
           azcliversion: 2.0.72

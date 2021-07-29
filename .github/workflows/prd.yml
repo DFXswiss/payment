@@ -43,7 +43,7 @@ jobs:
       - name: Build for web
         run: expo build:web
 
-      - name: Deploy to Azure
+      - name: Deploy to Azure Storage
         uses: azure/CLI@v1
         with:
           azcliversion: 2.0.72

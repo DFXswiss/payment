@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
+import { ActivityIndicator } from "react-native-paper";
 import { DeFiButton } from "../../elements/Buttons";
 import { SpacerV } from "../../elements/Spacers";
 import { Alert } from "../../elements/Texts";
@@ -30,6 +31,7 @@ const BuyRouteEdit = ({
     reset,
   } = useForm<BuyRoute>();
 
+  const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(false);
   const [assets, setAssets] = useState<Asset[]>([]);
@@ -41,7 +43,8 @@ const BuyRouteEdit = ({
   useEffect(() => {
     getAssets()
       .then(setAssets)
-      .catch(() => NotificationService.show(t("feedback.load_failed")));
+      .catch(() => NotificationService.show(t("feedback.load_failed")))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const onSubmit = (route: BuyRoute) => {
@@ -65,7 +68,9 @@ const BuyRouteEdit = ({
     iban: [Validations.Required(t), Validations.Iban(t)]
   });
 
-  return (
+  return isLoading ? (
+    <ActivityIndicator size="large" />
+  ) : (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
       <DeFiPicker
         name="asset"

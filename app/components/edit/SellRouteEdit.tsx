@@ -15,6 +15,7 @@ import NotificationService from "../../services/NotificationService";
 import { DeFiButton } from "../../elements/Buttons";
 import ButtonContainer from "../util/ButtonContainer";
 import { createRules } from "../../utils/Utils";
+import { ActivityIndicator } from "react-native-paper";
 
 const SellRouteEdit = ({
   routes,
@@ -31,6 +32,7 @@ const SellRouteEdit = ({
     reset,
   } = useForm<SellRoute>();
 
+  const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(false);
   const [fiats, setFiats] = useState<Fiat[]>([]);
@@ -42,7 +44,8 @@ const SellRouteEdit = ({
   useEffect(() => {
     getFiats()
       .then(setFiats)
-      .catch(() => NotificationService.show(t("feedback.load_failed")));
+      .catch(() => NotificationService.show(t("feedback.load_failed")))
+      .finally(() => setIsLoading(false));
   }, []);
 
   const onSubmit = (route: SellRoute) => {
@@ -65,7 +68,9 @@ const SellRouteEdit = ({
     iban: [Validations.Required(t), Validations.Iban(t)],
   });
 
-  return (
+  return isLoading ? (
+    <ActivityIndicator size="large" />
+  ) : (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
       <DeFiPicker
         name="fiat"

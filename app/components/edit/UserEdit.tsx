@@ -18,6 +18,7 @@ import { useDevice } from "../../hooks/useDevice";
 import { DeFiButton } from "../../elements/Buttons";
 import ButtonContainer from "../util/ButtonContainer";
 import { createRules } from "../../utils/Utils";
+import { ActivityIndicator } from "react-native-paper";
 
 interface Props {
   user?: User;
@@ -35,6 +36,7 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
     reset,
   } = useForm<User>({ defaultValues: useMemo(() => user, [user]) });
 
+  const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(false);
   const [countries, setCountries] = useState<Country[]>([]);
@@ -46,9 +48,9 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
   useEffect(() => {
     getCountries()
       .then(setCountries)
-      .catch(() => NotificationService.show(t("feedback.load_failed")));
+      .catch(() => NotificationService.show(t("feedback.load_failed")))
+      .finally(() => setIsLoading(false));
   }, []);
-  // TODO: isLoading (on every edit component!)
 
   const onSubmit = (updatedUser: User) => {
     setIsSaving(true);
@@ -73,7 +75,9 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
     usedRef: Validations.Ref(t),
   });
 
-  return (
+  return isLoading ? (
+    <ActivityIndicator size="large" />
+  ) : (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
       {allDataRequired && (
         <>
@@ -127,7 +131,9 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
       )}
 
       <ButtonContainer>
-        <DeFiButton mode="contained" loading={isSaving} onPress={handleSubmit(onSubmit)}>{t(allDataRequired ? "action.next" : "action.save")}</DeFiButton>
+        <DeFiButton mode="contained" loading={isSaving} onPress={handleSubmit(onSubmit)}>
+          {t(allDataRequired ? "action.next" : "action.save")}
+        </DeFiButton>
       </ButtonContainer>
     </Form>
   );

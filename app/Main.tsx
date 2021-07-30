@@ -77,7 +77,7 @@ const Main = () => {
           <Snackbar
             visible={snackVisible}
             onDismiss={() => setSnackVisible(false)}
-            action={{ label: t("action.close") }}
+            action={{ label: '', icon: 'close' }}
             duration={Snackbar.DURATION_MEDIUM}
             style={styles.snack}
             wrapperStyle={styles.snackWrapper}

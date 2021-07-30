@@ -1,6 +1,4 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { SetStateAction, useState } from "react";
-import { useEffect } from "react";
+import React, { SetStateAction, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View, Linking } from "react-native";
 import Routes from "../config/Routes";
@@ -9,8 +7,9 @@ import { Environment } from "../env/Environment";
 import withSession from "../hocs/withSession";
 import withSettings from "../hocs/withSettings";
 import { useDevice } from "../hooks/useDevice";
-import { Language, Languages } from "../i18n/i18n";
+import { Language } from "../models/Language";
 import { UserRole } from "../models/User";
+import { putUserLanguage } from "../services/ApiService";
 import { Session } from "../services/AuthService";
 import SessionService from "../services/SessionService";
 import SettingsService, { AppSettings } from "../services/SettingsService";
@@ -19,25 +18,26 @@ import { navigate } from "../utils/NavigationHelper";
 import { resolve } from "../utils/Utils";
 import DeFiDropdown from "./form/DeFiDropdown";
 
-const getLanguage = (key: string): Language | undefined => Languages.find((l) => l.key === key);
-
 const HeaderContent = ({ session, settings }: { session?: Session; settings?: AppSettings }) => {
   const { t } = useTranslation();
   const device = useDevice();
 
-  const [selectedLanguage, setSelectedLanguage] = useState(getLanguage(Environment.defaultLanguage));
+  const [selectedLanguage, setSelectedLanguage] = useState(Environment.defaultLanguage);
 
   useEffect(() => {
     if (settings) {
-      setSelectedLanguage(getLanguage(settings.language));
+      setSelectedLanguage(settings.language);
     }
   }, [settings]);
 
   const logout = () => SessionService.logout();
+  const getLanguage = (symbol: string): Language | undefined => SettingsService.Languages.find((l) => l.symbol === symbol);
   const languageChanged = (update: SetStateAction<Language | undefined>) => {
-    const language = resolve(update, selectedLanguage);
-    SettingsService.updateSettings({ language: language?.key });
-    // TODO: update user!
+    const language = resolve(update, getLanguage(selectedLanguage));
+    if (language) {
+      SettingsService.updateSettings({ language: language.symbol });
+      putUserLanguage(language);
+    }
   };
 
   const links = [
@@ -66,15 +66,17 @@ const HeaderContent = ({ session, settings }: { session?: Session; settings?: Ap
         </DeFiButton>
       ))}
 
-      <DeFiDropdown
-        value={selectedLanguage}
-        setValue={languageChanged}
-        items={Languages}
-        idProp="key"
-        labelProp="label"
-        title={t("general.select_language")}
-        style={styles.button}
-      ></DeFiDropdown>
+      {SettingsService.Languages?.length > 0 && (
+        <DeFiDropdown
+          value={getLanguage(selectedLanguage)}
+          setValue={languageChanged}
+          items={SettingsService.Languages}
+          idProp="symbol"
+          labelProp="foreignName"
+          title={t("general.select_language")}
+          style={styles.button}
+        ></DeFiDropdown>
+      )}
     </View>
   );
 };

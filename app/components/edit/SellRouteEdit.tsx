@@ -64,8 +64,8 @@ const SellRouteEdit = ({
   };
 
   const rules: any = createRules({
-    fiat: Validations.Required(t),
-    iban: [Validations.Required(t), Validations.Iban(t)],
+    fiat: Validations.Required,
+    iban: [Validations.Required, Validations.Iban],
   });
 
   return isLoading ? (

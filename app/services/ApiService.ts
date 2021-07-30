@@ -4,6 +4,7 @@ import { Asset } from "../models/Asset";
 import { BuyRoute, BuyRouteDto, fromBuyRouteDto, toBuyRouteDto } from "../models/BuyRoute";
 import { Country } from "../models/Country";
 import { Fiat } from "../models/Fiat";
+import { Language } from "../models/Language";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import { fromUserDto, NewUser, toNewUserDto, toUserDto, User, UserDto } from "../models/User";
 import AuthService, { Credentials, Session } from "./AuthService";
@@ -16,6 +17,7 @@ const SellUrl = "sell";
 const AssetUrl = "asset";
 const FiatUrl = "fiat";
 const CountryUrl = "country";
+const LanguageUrl = "language";
 
 // --- AUTH --- //
 export const signIn = (credentials?: Credentials): Promise<string> => {
@@ -37,6 +39,11 @@ export const getUser = (): Promise<User> => {
 export const putUser = (user: User): Promise<User> => {
   return fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, "PUT", toUserDto(user))
     .then((dto: UserDto) => fromUserDto(dto));
+};
+
+export const putUserLanguage = (language: Language): Promise<void> => {
+  return AuthService.Session
+    .then((session) =>fetchFrom<void>(`${BaseUrl}/${UserUrl}`, "PUT", {address: session.address, language }));
 };
 
 // --- PAYMENT ROUTES --- //
@@ -81,6 +88,10 @@ export const getFiats = (): Promise<Fiat[]> => {
 
 export const getCountries = (): Promise<Country[]> => {
   return fetchFrom<Country[]>(`${BaseUrl}/${CountryUrl}`);
+};
+
+export const getLanguages = (): Promise<Language[]> => {
+  return fetchFrom<Language[]>(`${BaseUrl}/${LanguageUrl}`);
 };
 
 // --- HELPERS --- //

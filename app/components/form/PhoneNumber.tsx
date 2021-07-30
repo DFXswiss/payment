@@ -73,7 +73,7 @@ const PhoneNumber = ({
   // TODO: auto-select phone codes with selected country
   const updateRules = (rules?: any): any => ({
     ...rules,
-    ...Validations.Phone(t),
+    ...Validations.Phone,
   });
 
   return (

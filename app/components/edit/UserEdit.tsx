@@ -63,16 +63,16 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
   };
 
   const rules: any = createRules({
-    firstName: allDataRequired && Validations.Required(t),
-    lastName: allDataRequired && Validations.Required(t),
-    street: allDataRequired && Validations.Required(t),
-    houseNumber: allDataRequired && Validations.Required(t),
-    zip: allDataRequired && Validations.Required(t),
-    location: allDataRequired && Validations.Required(t),
-    country: allDataRequired && Validations.Required(t),
-    mobileNumber: allDataRequired && Validations.Required(t),
-    mail: [Validations.Mail(t), allDataRequired && Validations.Required(t)],
-    usedRef: Validations.Ref(t),
+    firstName: allDataRequired && Validations.Required,
+    lastName: allDataRequired && Validations.Required,
+    street: allDataRequired && Validations.Required,
+    houseNumber: allDataRequired && Validations.Required,
+    zip: allDataRequired && Validations.Required,
+    location: allDataRequired && Validations.Required,
+    country: allDataRequired && Validations.Required,
+    mobileNumber: allDataRequired && Validations.Required,
+    mail: [Validations.Mail, allDataRequired && Validations.Required],
+    usedRef: Validations.Ref,
   });
 
   return isLoading ? (

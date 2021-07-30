@@ -1,6 +1,7 @@
 import { ApiError } from "../models/ApiDto";
-import { signIn, signUp } from "./ApiService";
+import { getUser, signIn, signUp } from "./ApiService";
 import AuthService, { Credentials } from "./AuthService";
+import SettingsService from "./SettingsService";
 import StorageService from "./StorageService";
 
 class SessionServiceClass {
@@ -34,7 +35,9 @@ class SessionServiceClass {
           throw error;
         });
       })
-      .then((accessToken) => this.updateSession(accessToken));
+      .then((accessToken) => this.updateSession(accessToken))
+      .then(() => getUser())
+      .then((user) => user.language ? SettingsService.updateSettings({language: user.language}) : undefined);
   }
 
   public logout(): Promise<void> {

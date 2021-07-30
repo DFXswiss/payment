@@ -2,18 +2,13 @@ import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import { Environment } from "../env/Environment";
 
-export interface Language {
-  label: string;
-  key: string;
-}
-
-export const Languages: Language[] = [
-  { label: "Deutsch", key: "de" },
-  { label: "English", key: "en" },
-];
-
 i18n.use(initReactI18next).init({
-  resources: Languages.reduce((obj, lang) => ({ ...obj, [lang.key]: require(`./${lang.key}.json`) }), {}),
+  resources: {
+      DE: require("./de.json"),
+      EN: require("./en.json"),
+      FR: require("./fr.json"),
+      IT: require("./it.json"),
+  },
   fallbackLng: Environment.defaultLanguage,
   debug: Environment.debug,
   ns: ["common"],

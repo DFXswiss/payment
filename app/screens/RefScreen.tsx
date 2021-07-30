@@ -1,6 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React from "react";
-import { useState } from "react";
+import React,{ useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
@@ -48,8 +47,8 @@ const RefScreen = ({ session }: { session?: Session }) => {
 
   const rules: any = createRules({
     usedRef: [
-      Validations.Required(t),
-      Validations.Ref(t),
+      Validations.Required,
+      Validations.Ref,
       Validations.Custom((ref: string) => (allowedRefCodes.find((c) => c === ref) ? true : (t("validation.invalid_ref") as string)))
     ]
   });

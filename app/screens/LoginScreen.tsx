@@ -99,8 +99,8 @@ const LoginScreen = () => {
 
   const params = route.params as any;
   const rules: any = createRules({
-    userName: [Validations.Required(t), Validations.Address(t)],
-    password: addressEntered && Validations.Required(t),
+    userName: [Validations.Required, Validations.Address],
+    password: addressEntered && Validations.Required,
   });
 
   return (

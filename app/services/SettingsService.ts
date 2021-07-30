@@ -2,6 +2,9 @@ import { lastValueFrom, Observable, ReplaySubject } from "rxjs";
 import { first } from "rxjs/operators";
 import { Environment } from "../env/Environment";
 import i18n from "../i18n/i18n";
+import { Language } from "../models/Language";
+import { getLanguages } from "./ApiService";
+import NotificationService from "./NotificationService";
 import StorageService from "./StorageService";
 
 const SettingsKey = "settings";
@@ -16,11 +19,17 @@ export interface AppSettings {
 class SettingsServiceClass {
   private settings$ = new ReplaySubject<AppSettings>();
 
+  public Languages: Language[] = [];
+
   constructor() {
     this.Settings.then((settings) => {
       this.settings$.next(settings);
       i18n.changeLanguage(settings.language);
     });
+
+    getLanguages()
+      .then((languages) => this.Languages = languages)
+      .catch(() => NotificationService.show(i18n.t("feedback.load_failed")));
   }
 
   public get Settings$(): Observable<AppSettings> {

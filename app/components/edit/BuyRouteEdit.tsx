@@ -64,8 +64,8 @@ const BuyRouteEdit = ({
   // TODO: react on collisions (buy&sell)
 
   const rules: any = createRules({
-    asset: Validations.Required(t),
-    iban: [Validations.Required(t), Validations.Iban(t)]
+    asset: Validations.Required,
+    iban: [Validations.Required, Validations.Iban]
   });
 
   return isLoading ? (

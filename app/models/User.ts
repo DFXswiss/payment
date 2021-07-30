@@ -52,6 +52,7 @@ export interface UserDto extends NewUserDto {
   usedRef: string;
 
   status: UserStatus;
+  language: string;
   ip: string;
 }
 
@@ -70,6 +71,7 @@ export interface User extends NewUser {
   usedRef: string;
 
   status: UserStatus;
+  language: string;
   ip: string;
 }
 
@@ -89,6 +91,7 @@ export const fromUserDto = (user: UserDto): User => ({
   usedRef: user.usedRef,
   walletId: user.walletId,
   status: user.status,
+  language: user.language,
   ip: user.ip,
 });
 
@@ -108,5 +111,6 @@ export const toUserDto = (user: User): UserDto => ({
   usedRef: user.usedRef,
   walletId: user.walletId,
   status: user.status,
+  language: user.language,
   ip: user.ip,
 });

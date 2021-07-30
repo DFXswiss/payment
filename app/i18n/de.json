@@ -17,7 +17,8 @@
       "next": "Weiter",
       "back": "Zurück",
       "accept": "Akzeptieren",
-      "ok": "OK"
+      "ok": "OK",
+      "delete": "Löschen"
     },
     "feedback": {
       "page_not_found": "Seite nicht gefunden!",
@@ -105,12 +106,15 @@
         "new_buy": "Neue Route: Fiat > Crypto",
         "new_sell": "Neue Route: Crypto > Fiat",
         "payment_info": "Zahlungsinformationen",
+        "details": "Routendetails",
 
         "iban": "IBAN",
         "bank_usage": "Zahlungszweck",
+        "copy_bank_usage": "Zahlungszweck kopieren",
         "asset": "Asset",
         "fiat": "Währung",
-        "deposit_address": "Depositadresse"
+        "deposit_address": "Depositadresse",
+        "copy_deposit_address": "Depositadresse kopieren"
       }
     }
   }

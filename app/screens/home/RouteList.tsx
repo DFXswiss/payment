@@ -6,7 +6,6 @@ import BuyRouteEdit from "../../components/edit/BuyRouteEdit";
 import SellRouteEdit from "../../components/edit/SellRouteEdit";
 import DeFiModal from "../../components/util/DeFiModal";
 import IconButton from "../../components/util/IconButton";
-import Colors from "../../config/Colors";
 import { DeFiButton } from "../../elements/Buttons";
 import { SpacerV } from "../../elements/Spacers";
 import { CompactRow, CompactCell, CompactHeader, CompactTitle } from "../../elements/Tables";
@@ -19,6 +18,8 @@ import NotificationService from "../../services/NotificationService";
 import AppStyles from "../../styles/AppStyles";
 import { updateObject } from "../../utils/Utils";
 import Clipboard from "expo-clipboard";
+import ButtonContainer from "../../components/util/ButtonContainer";
+import { DeviceClass } from "../../utils/Device";
 
 interface Props {
   buyRoutes?: BuyRoute[];
@@ -30,6 +31,22 @@ interface Props {
   isSellRouteEdit: boolean;
   setIsSellRouteEdit: Dispatch<SetStateAction<boolean>>;
 }
+
+const IconPlaceholder = ({ icon }: { icon: string }) => (
+  <IconButton icon={icon} style={AppStyles.hidden} disabled={true} />
+);
+const Placeholders = ({ device }: { device: DeviceClass }) => (
+  <>
+    {device.SM ? (
+      <>
+        <IconPlaceholder icon="content-copy" />
+        <IconPlaceholder icon="delete" />
+      </>
+    ) : (
+      <IconPlaceholder icon="magnify" />
+    )}
+  </>
+);
 
 const RouteList = ({
   buyRoutes,
@@ -46,6 +63,7 @@ const RouteList = ({
 
   const [isBuyLoading, setIsBuyLoading] = useState<{ [id: string]: boolean }>({});
   const [isSellLoading, setIsSellLoading] = useState<{ [id: string]: boolean }>({});
+  const [detailRoute, setDetailRoute] = useState<SellRoute | BuyRoute | undefined>(undefined);
 
   const activeBuyRoutes = buyRoutes?.filter((r) => r.active);
   const activeSellRoutes = sellRoutes?.filter((r) => r.active);
@@ -91,6 +109,68 @@ const RouteList = ({
       <DeFiModal isVisible={isSellRouteEdit} setIsVisible={setIsSellRouteEdit} title={t("model.route.new_sell")}>
         <SellRouteEdit routes={sellRoutes} onRouteCreated={onSellRouteCreated} />
       </DeFiModal>
+      <DeFiModal
+        isVisible={Boolean(detailRoute)}
+        setIsVisible={() => setDetailRoute(undefined)}
+        title={t("model.route.details")}
+        style={{ width: 1000 }}
+      >
+        {detailRoute && (
+          <>
+            <DataTable>
+              {"asset" in detailRoute ? (
+                <CompactRow>
+                  <CompactCell style={{ flex: 1 }}>{t("model.route.asset")}</CompactCell>
+                  <CompactCell style={{ flex: 2 }}>{detailRoute.asset?.name}</CompactCell>
+                </CompactRow>
+              ) : (
+                <CompactRow>
+                  <CompactCell style={{ flex: 1 }}>{t("model.route.fiat")}</CompactCell>
+                  <CompactCell style={{ flex: 2 }}>{detailRoute.fiat?.name}</CompactCell>
+                </CompactRow>
+              )}
+              <CompactRow>
+                <CompactCell style={{ flex: 1 }}>{t("model.route.iban")}</CompactCell>
+                <CompactCell style={{ flex: 2 }}>{detailRoute.iban}</CompactCell>
+              </CompactRow>
+              {"bankUsage" in detailRoute ? (
+                <CompactRow>
+                  <CompactCell style={{ flex: 1 }}>{t("model.route.bank_usage")}</CompactCell>
+                  <CompactCell style={{ flex: 2 }}>{detailRoute.bankUsage}</CompactCell>
+                </CompactRow>
+              ) : (
+                <CompactRow>
+                  <CompactCell style={{ flex: 1 }}>{t("model.route.deposit_address")}</CompactCell>
+                  <CompactCell style={{ flex: 2 }}>{detailRoute.deposit?.address}</CompactCell>
+                </CompactRow>
+              )}
+            </DataTable>
+
+            <SpacerV height={20} />
+
+            <View>
+              <ButtonContainer>
+                <DeFiButton
+                  onPress={() =>
+                    "asset" in detailRoute
+                      ? Clipboard.setString(detailRoute.bankUsage)
+                      : Clipboard.setString(detailRoute.deposit?.address)
+                  }
+                >
+                  {t("asset" in detailRoute ? "model.route.copy_bank_usage" : "model.route.copy_deposit_address")}
+                </DeFiButton>
+                <DeFiButton
+                  mode="contained"
+                  loading={"asset" in detailRoute ? isBuyLoading[detailRoute.id] : isSellLoading[detailRoute.id]}
+                  onPress={() => ("asset" in detailRoute ? deleteBuyRoute(detailRoute) : deleteSellRoute(detailRoute))}
+                >
+                  {t("action.delete")}
+                </DeFiButton>
+              </ButtonContainer>
+            </View>
+          </>
+        )}
+      </DeFiModal>
 
       <View style={AppStyles.containerHorizontal}>
         <H2 text={t("model.route.routes")} />
@@ -125,26 +205,31 @@ const RouteList = ({
               <DataTable>
                 <CompactHeader>
                   <CompactTitle style={{ flex: 1 }}>{t("model.route.asset")}</CompactTitle>
-                  <CompactTitle style={{ flex: 1 }}>{t("model.route.iban")}</CompactTitle>
-                  <CompactTitle style={{ flex: 2 }}>{t("model.route.bank_usage")}</CompactTitle>
+                  <CompactTitle style={{ flex: 2 }}>{t("model.route.iban")}</CompactTitle>
+                  {device.SM && <CompactTitle style={{ flex: 2 }}>{t("model.route.bank_usage")}</CompactTitle>}
                   <CompactTitle style={{ flex: undefined }}>
-                    <IconButton icon="content-copy" style={AppStyles.hidden} disabled={true} />
-                    <IconButton icon="delete" style={AppStyles.hidden} disabled={true} />
+                    <Placeholders device={device} />
                   </CompactTitle>
                 </CompactHeader>
 
                 {activeBuyRoutes.map((route) => (
                   <CompactRow key={route.id}>
                     <CompactCell style={{ flex: 1 }}>{route.asset?.name}</CompactCell>
-                    <CompactCell style={{ flex: 1 }}>{route.iban}</CompactCell>
-                    <CompactCell style={{ flex: 2 }}>{route.bankUsage}</CompactCell>
+                    <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>
+                    {device.SM && <CompactCell style={{ flex: 2 }}>{route.bankUsage}</CompactCell>}
                     <CompactCell style={{ flex: undefined }}>
-                      <IconButton icon="content-copy" onPress={() => Clipboard.setString(route.bankUsage)} />
-                      <IconButton
-                        icon="delete"
-                        onPress={() => deleteBuyRoute(route)}
-                        isLoading={isBuyLoading[route.id]}
-                      />
+                      {device.SM ? (
+                        <>
+                          <IconButton icon="content-copy" onPress={() => Clipboard.setString(route.bankUsage)} />
+                          <IconButton
+                            icon="delete"
+                            onPress={() => deleteBuyRoute(route)}
+                            isLoading={isBuyLoading[route.id]}
+                          />
+                        </>
+                      ) : (
+                        <IconButton icon="magnify" onPress={() => setDetailRoute(route)} />
+                      )}
                     </CompactCell>
                   </CompactRow>
                 ))}
@@ -159,26 +244,31 @@ const RouteList = ({
               <DataTable>
                 <CompactHeader>
                   <CompactTitle style={{ flex: 1 }}>{t("model.route.fiat")}</CompactTitle>
-                  <CompactTitle style={{ flex: 1 }}>{t("model.route.iban")}</CompactTitle>
-                  <CompactTitle style={{ flex: 2 }}>{t("model.route.deposit_address")}</CompactTitle>
+                  <CompactTitle style={{ flex: 2 }}>{t("model.route.iban")}</CompactTitle>
+                  {device.SM && <CompactTitle style={{ flex: 2 }}>{t("model.route.deposit_address")}</CompactTitle>}
                   <CompactTitle style={{ flex: undefined }}>
-                    <IconButton icon="content-copy" style={AppStyles.hidden} disabled={true} />
-                    <IconButton icon="delete" style={AppStyles.hidden} disabled={true} />
+                    <Placeholders device={device} />
                   </CompactTitle>
                 </CompactHeader>
 
                 {activeSellRoutes.map((route) => (
                   <CompactRow key={route.id}>
                     <CompactCell style={{ flex: 1 }}>{route.fiat?.name}</CompactCell>
-                    <CompactCell style={{ flex: 1 }}>{route.iban}</CompactCell>
-                    <CompactCell style={{ flex: 2 }}>{route.deposit?.address}</CompactCell>
+                    <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>
+                    {device.SM && <CompactCell style={{ flex: 2 }}>{route.deposit?.address}</CompactCell>}
                     <CompactCell style={{ flex: undefined }}>
-                      <IconButton icon="content-copy" onPress={() => Clipboard.setString(route.deposit?.address)} />
-                      <IconButton
-                        icon="delete"
-                        onPress={() => deleteSellRoute(route)}
-                        isLoading={isSellLoading[route.id]}
-                      />
+                      {device.SM ? (
+                        <>
+                          <IconButton icon="content-copy" onPress={() => Clipboard.setString(route.deposit?.address)} />
+                          <IconButton
+                            icon="delete"
+                            onPress={() => deleteSellRoute(route)}
+                            isLoading={isSellLoading[route.id]}
+                          />
+                        </>
+                      ) : (
+                        <IconButton icon="magnify" onPress={() => setDetailRoute(route)} />
+                      )}
                     </CompactCell>
                   </CompactRow>
                 ))}

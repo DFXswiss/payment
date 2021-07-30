@@ -18,6 +18,7 @@ import { putBuyRoute, putSellRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import AppStyles from "../../styles/AppStyles";
 import { updateObject } from "../../utils/Utils";
+import Clipboard from "expo-clipboard";
 
 interface Props {
   buyRoutes?: BuyRoute[];
@@ -65,19 +66,19 @@ const RouteList = ({
       routes?.push(route);
     }
     return routes;
-  }
+  };
 
   const deleteBuyRoute = (route: BuyRoute) => {
     setIsBuyLoading((obj) => updateObject(obj, { [route.id]: true }));
-    putBuyRoute(updateObject(route, {active: false}))
-      .then(() => route.active = false)
+    putBuyRoute(updateObject(route, { active: false }))
+      .then(() => (route.active = false))
       .catch(() => NotificationService.show(t("feedback.delete_failed")))
       .finally(() => setIsBuyLoading((obj) => updateObject(obj, { [route.id]: false })));
   };
   const deleteSellRoute = (route: SellRoute) => {
     setIsSellLoading((obj) => updateObject(obj, { [route.id]: true }));
-    putSellRoute(updateObject(route, {active: false}))
-      .then(() => route.active = false)
+    putSellRoute(updateObject(route, { active: false }))
+      .then(() => (route.active = false))
       .catch(() => NotificationService.show(t("feedback.delete_failed")))
       .finally(() => setIsSellLoading((obj) => updateObject(obj, { [route.id]: false })));
   };
@@ -113,7 +114,6 @@ const RouteList = ({
       </View>
 
       {/* TODO: details */}
-      {/* TODO: copy buttons for bank_usage and deposit_address */}
 
       {(activeBuyRoutes?.length ?? 0) + (activeSellRoutes?.length ?? 0) > 0 ? (
         <>
@@ -128,7 +128,8 @@ const RouteList = ({
                   <CompactTitle style={{ flex: 1 }}>{t("model.route.iban")}</CompactTitle>
                   <CompactTitle style={{ flex: 2 }}>{t("model.route.bank_usage")}</CompactTitle>
                   <CompactTitle style={{ flex: undefined }}>
-                    <IconButton icon="delete" color={Colors.Primary} style={AppStyles.hidden} disabled={true} />
+                    <IconButton icon="content-copy" style={AppStyles.hidden} disabled={true} />
+                    <IconButton icon="delete" style={AppStyles.hidden} disabled={true} />
                   </CompactTitle>
                 </CompactHeader>
 
@@ -138,9 +139,9 @@ const RouteList = ({
                     <CompactCell style={{ flex: 1 }}>{route.iban}</CompactCell>
                     <CompactCell style={{ flex: 2 }}>{route.bankUsage}</CompactCell>
                     <CompactCell style={{ flex: undefined }}>
+                      <IconButton icon="content-copy" onPress={() => Clipboard.setString(route.bankUsage)} />
                       <IconButton
                         icon="delete"
-                        color={Colors.Primary}
                         onPress={() => deleteBuyRoute(route)}
                         isLoading={isBuyLoading[route.id]}
                       />
@@ -161,7 +162,8 @@ const RouteList = ({
                   <CompactTitle style={{ flex: 1 }}>{t("model.route.iban")}</CompactTitle>
                   <CompactTitle style={{ flex: 2 }}>{t("model.route.deposit_address")}</CompactTitle>
                   <CompactTitle style={{ flex: undefined }}>
-                    <IconButton icon="delete" color={Colors.Primary} style={AppStyles.hidden} disabled={true} />
+                    <IconButton icon="content-copy" style={AppStyles.hidden} disabled={true} />
+                    <IconButton icon="delete" style={AppStyles.hidden} disabled={true} />
                   </CompactTitle>
                 </CompactHeader>
 
@@ -171,9 +173,9 @@ const RouteList = ({
                     <CompactCell style={{ flex: 1 }}>{route.iban}</CompactCell>
                     <CompactCell style={{ flex: 2 }}>{route.deposit?.address}</CompactCell>
                     <CompactCell style={{ flex: undefined }}>
+                      <IconButton icon="content-copy" onPress={() => Clipboard.setString(route.deposit?.address)} />
                       <IconButton
                         icon="delete"
-                        color={Colors.Primary}
                         onPress={() => deleteSellRoute(route)}
                         isLoading={isSellLoading[route.id]}
                       />

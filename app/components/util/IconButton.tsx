@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, TextStyle, View } from "react-native";
 import { IconButton as PaperIconButton } from "react-native-paper";
+import Colors from "../../config/Colors";
 import AppStyles from "../../styles/AppStyles";
 import Loading from "./Loading";
 
@@ -8,14 +9,14 @@ const IconButton = ({
   icon,
   onPress,
   style,
-  color,
+  color = Colors.Primary,
   isLoading = false,
   disabled = false,
 }: {
   icon: string;
   onPress?: () => void;
   style?: TextStyle;
-  color: string;
+  color?: string;
   isLoading?: boolean;
   disabled?: boolean;
 }) => (

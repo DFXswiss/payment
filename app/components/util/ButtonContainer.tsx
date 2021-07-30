@@ -1,5 +1,4 @@
-import React from "react";
-import { ReactElement } from "react";
+import React, { ReactElement } from "react";
 import { StyleSheet, View } from "react-native";
 import { Spacer } from "../../elements/Spacers";
 import { useDevice } from "../../hooks/useDevice";
@@ -8,13 +7,15 @@ import AppStyles from "../../styles/AppStyles";
 const ButtonContainer = ({ children }: { children: ReactElement | ReactElement[] }) => {
   const device = useDevice();
 
-  if (Array.isArray(children)) {
-    children = children.reduce((prev: ReactElement[], curr, i) => prev.concat(<Spacer key={"spacer" + i} />, curr), []);
-    children.shift();
+  if (!Array.isArray(children)) {
+    children = [children];
+  }
+  
+  children = children.reduce((prev: ReactElement[], curr, i) => prev.concat(<Spacer key={"spacer" + i} />, curr), []);
+  children.shift();
 
-    if (children.length == 1) {
-      children.unshift(<View key="placer" style={styles.placer} />);
-    }
+  if (children.length == 1) {
+    children.unshift(<View key="placer" style={styles.placer} />);
   }
 
   return <View style={device.SM ? [AppStyles.containerHorizontal, styles.large] : styles.small}>{children}</View>;

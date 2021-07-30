@@ -113,6 +113,7 @@ const RouteList = ({
       </View>
 
       {/* TODO: details */}
+      {/* TODO: copy buttons for bank_usage and deposit_address */}
 
       {(activeBuyRoutes?.length ?? 0) + (activeSellRoutes?.length ?? 0) > 0 ? (
         <>

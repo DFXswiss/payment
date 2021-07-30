@@ -22,8 +22,8 @@ const DeFiPicker = ({ control, name, label, rules, error, disabled, items, idPro
           <DropDown
             label={label}
             value={value && value[idProp]}
-            setValue={(value) => onChange(items.find((i) => i[idProp] == value))}
-            list={(rules?.required ? [] : [{ label: " ", value: undefined as unknown as string }]).concat(
+            setValue={(value) => onChange(value ? items.find((i) => i[idProp] == value) : null)}
+            list={(rules?.required ? [] : [{ label: " ", value: null as unknown as string }]).concat(
               items?.map((item) => ({ label: item[labelProp], value: item[idProp] }))
             )}
             visible={showDropDown}

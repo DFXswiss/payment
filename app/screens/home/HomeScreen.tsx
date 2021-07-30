@@ -119,7 +119,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
           actions={[
             { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true) },
             { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true) },
-            { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true) },
+            // { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true) }, // TODO: reactivate
           ]}
           onStateChange={({ open }: { open: boolean }) => setFabOpen(open)}
           visible={showButtons}

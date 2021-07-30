@@ -102,10 +102,9 @@ const RouteList = ({
               </DeFiButton>
             </View>
             <View style={AppStyles.ml10}>
-              {/* TODO: check if user complete => if not open user edit => "Next" on button => open new route modal */}
-              {/* TODO: disable for now */}
               {/* TODO: SonarLink */}
-              <DeFiButton mode="contained" onPress={() => setIsSellRouteEdit(true)}>
+              {/* TODO: reactivate */}
+              <DeFiButton mode="contained" onPress={() => setIsSellRouteEdit(true)} disabled={true}>
                 {t("model.route.sell")}
               </DeFiButton>
             </View>

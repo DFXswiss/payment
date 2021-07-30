@@ -1,7 +1,7 @@
 import React from "react";
 import { TextStyle, TouchableOpacity } from "react-native";
 import { Button, Text } from "react-native-paper";
-import AppStyles from "../styles/AppStyles";
+import AppStyles, { DefaultCursor } from "../styles/AppStyles";
 
 export const ActionLink = ({ onPress, label, style }: { onPress: () => void; label: string; style?: TextStyle }) => (
   <TouchableOpacity onPress={onPress} style={style}>
@@ -14,7 +14,7 @@ export const DeFiButton = ({ link, loading, disabled, ...props }: any) => (
   <Button
     loading={loading}
     disabled={loading || disabled}
-    contentStyle={[props.contentStyle, (loading || disabled) && { cursor: "default" }]}
+    contentStyle={[props.contentStyle, (loading || disabled) && DefaultCursor]}
     labelStyle={[props.labelStyle, link && AppStyles.buttonLink]}
     {...props}
   >

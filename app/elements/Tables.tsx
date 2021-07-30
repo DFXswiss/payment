@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import { StyleSheet, StyleProp, TextStyle } from "react-native";
 import { DataTable } from "react-native-paper";
+import { DefaultCursor } from "../styles/AppStyles";
 
 interface Props {
   children: ReactNode;
@@ -40,9 +41,7 @@ const styles = StyleSheet.create({
   },
   row: {
     minHeight: 30,
-    cursor: "default",
+    ...DefaultCursor
   },
-  cell: {
-    cursor: "default",
-  },
+  cell: DefaultCursor
 });

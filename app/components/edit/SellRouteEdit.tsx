@@ -14,17 +14,14 @@ import Validations from "../../utils/Validations";
 import NotificationService from "../../services/NotificationService";
 import { DeFiButton } from "../../elements/Buttons";
 import ButtonContainer from "../util/ButtonContainer";
+import { createRules } from "../../utils/Utils";
 
 const SellRouteEdit = ({
-  isVisible,
   routes,
   onRouteCreated,
-  user,
 }: {
-  isVisible: boolean;
   routes?: SellRoute[];
   onRouteCreated: (route: SellRoute) => void;
-  user?: User;
 }) => {
   const { t } = useTranslation();
   const {
@@ -41,7 +38,7 @@ const SellRouteEdit = ({
   useEffect(() => {
     reset({ fiat: fiats[0] });
     setError(false);
-  }, [isVisible]);
+  }, []);
   useEffect(() => {
     getFiats()
       .then(setFiats)
@@ -63,21 +60,13 @@ const SellRouteEdit = ({
       .finally(() => setIsSaving(false));
   };
 
-  const rules: any = {
+  const rules: any = createRules({
     fiat: Validations.Required(t),
-    iban: { ...Validations.Required(t), ...Validations.Iban(t) },
-  };
-
-  const userDataMissing = !(user?.firstName && user?.lastName && user?.street && user?.houseNumber && user?.zip && user?.location && user?.country && user?.mobileNumber && user?.mail);
+    iban: [Validations.Required(t), Validations.Iban(t)],
+  });
 
   return (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
-      {userDataMissing && (
-        <>
-          <Alert label={t("model.user.data_missing")} />
-          <SpacerV />
-        </>
-      )}
       <DeFiPicker
         name="fiat"
         label={t("model.route.fiat")}
@@ -98,7 +87,7 @@ const SellRouteEdit = ({
       )}
 
       <ButtonContainer>
-        <DeFiButton mode="contained" loading={isSaving} disabled={userDataMissing} onPress={handleSubmit(onSubmit)}>
+        <DeFiButton mode="contained" loading={isSaving} onPress={handleSubmit(onSubmit)}>
           {t("action.save")}
         </DeFiButton>
       </ButtonContainer>

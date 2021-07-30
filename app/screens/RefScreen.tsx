@@ -18,6 +18,7 @@ import useGuard from "../hooks/useGuard";
 import { Credentials, Session } from "../services/AuthService";
 import StorageService from "../services/StorageService";
 import AppStyles from "../styles/AppStyles";
+import { createRules } from "../utils/Utils";
 import Validations from "../utils/Validations";
 
 const allowedRefCodes = ["000-000", "000-001", "000-002", "000-003", "000-004"];
@@ -45,13 +46,13 @@ const RefScreen = ({ session }: { session?: Session }) => {
     StorageService.storeValue(StorageService.Keys.Ref, usedRef).then(() => nav.navigate(Routes.Gtc));
   };
 
-  const rules: any = {
-    usedRef: {
-      ...Validations.Required(t),
-      ...Validations.Ref(t),
-      validate: (ref: string) => (allowedRefCodes.find((c) => c === ref) ? true : t("validation.invalid_ref")),
-    },
-  };
+  const rules: any = createRules({
+    usedRef: [
+      Validations.Required(t),
+      Validations.Ref(t),
+      Validations.Custom((ref: string) => (allowedRefCodes.find((c) => c === ref) ? true : (t("validation.invalid_ref") as string)))
+    ]
+  });
 
   return (
     <AppLayout>

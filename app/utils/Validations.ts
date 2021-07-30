@@ -42,5 +42,9 @@ export default {
       value: /^8\w{33}$/,
       message: t("validation.pattern_invalid"),
     }
+  }),
+
+  Custom: (validator: (value: any) => true | string) => ({
+    validate: validator
   })
 };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import DeFiModal from "../../components/util/DeFiModal";
@@ -13,7 +13,6 @@ import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
 import AppLayout from "../../components/AppLayout";
-import useGuard from "../../hooks/useGuard";
 import NotificationService from "../../services/NotificationService";
 import { DataTable, FAB, Portal } from "react-native-paper";
 import { CompactCell, CompactRow } from "../../elements/Tables";
@@ -22,7 +21,7 @@ import { DeFiButton } from "../../elements/Buttons";
 import useLoader from "../../hooks/useLoader";
 import { BuyRoute } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import { join } from "../../utils/Utils";
+import { join, resolve } from "../../utils/Utils";
 import useAuthGuard from "../../hooks/useAuthGuard";
 
 const userData = (user: User) => [
@@ -54,6 +53,20 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const [isBuyRouteEdit, setIsBuyRouteEdit] = useState(false);
   const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
 
+  const sellRouteEdit = (update: SetStateAction<boolean>) => {
+    const userDataComplete = user?.firstName && user?.lastName && user?.street && user?.houseNumber && user?.zip && user?.location && user?.country && user?.mobileNumber && user?.mail;
+    if (!userDataComplete && resolve(update, isSellRouteEdit)) {
+      setIsUserEdit(true)
+    }
+
+    setIsSellRouteEdit(update);
+  }
+  const userEdit = (edit: boolean) => {
+    setIsUserEdit(edit);
+    if (!edit) {
+      setIsSellRouteEdit(false);
+    }
+  }
   const onUserChanged = (newUser: User) => {
     setUser(newUser);
     setIsUserEdit(false);
@@ -106,15 +119,15 @@ const HomeScreen = ({ session }: { session?: Session }) => {
           actions={[
             { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true) },
             { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true) },
-            { icon: "plus", label: t("model.route.sell"), onPress: () => setIsSellRouteEdit(true) },
+            { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true) },
           ]}
           onStateChange={({ open }: { open: boolean }) => setFabOpen(open)}
           visible={showButtons}
         />
       </Portal>
 
-      <DeFiModal isVisible={isUserEdit} setIsVisible={setIsUserEdit} title={t("model.user.edit")}>
-        <UserEdit isVisible={isUserEdit} user={user} onUserChanged={onUserChanged} />
+      <DeFiModal isVisible={isUserEdit} setIsVisible={userEdit} title={t("model.user.edit")}>
+        <UserEdit user={user} onUserChanged={onUserChanged} allDataRequired={isSellRouteEdit} />
       </DeFiModal>
 
       <SpacerV height={50} />
@@ -155,15 +168,14 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
           {(buyRoutes || sellRoutes) && (
             <RouteList
-              user={user}
               buyRoutes={buyRoutes}
               setBuyRoutes={setBuyRoutes}
               sellRoutes={sellRoutes}
               setSellRoutes={setSellRoutes}
               isBuyRouteEdit={isBuyRouteEdit}
               setIsBuyRouteEdit={setIsBuyRouteEdit}
-              isSellRouteEdit={isSellRouteEdit}
-              setIsSellRouteEdit={setIsSellRouteEdit}
+              isSellRouteEdit={isSellRouteEdit && !isUserEdit}
+              setIsSellRouteEdit={sellRouteEdit}
             />
           )}
         </>

@@ -8,6 +8,7 @@ import { Asset } from "../../models/Asset";
 import { BuyRoute } from "../../models/BuyRoute";
 import { getAssets, postBuyRoute, putBuyRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
+import { createRules } from "../../utils/Utils";
 import Validations from "../../utils/Validations";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
@@ -15,11 +16,9 @@ import Input from "../form/Input";
 import ButtonContainer from "../util/ButtonContainer";
 
 const BuyRouteEdit = ({
-  isVisible,
   routes,
   onRouteCreated,
 }: {
-  isVisible: boolean;
   routes?: BuyRoute[];
   onRouteCreated: (route: BuyRoute) => void;
 }) => {
@@ -38,7 +37,7 @@ const BuyRouteEdit = ({
   useEffect(() => {
     reset({ asset: assets[0] });
     setError(false);
-  }, [isVisible]);
+  }, []);
   useEffect(() => {
     getAssets()
       .then(setAssets)
@@ -61,10 +60,10 @@ const BuyRouteEdit = ({
 
   // TODO: react on collisions (buy&sell)
 
-  const rules: any = {
+  const rules: any = createRules({
     asset: Validations.Required(t),
-    iban: { ...Validations.Required(t), ...Validations.Iban(t) },
-  };
+    iban: [Validations.Required(t), Validations.Iban(t)]
+  });
 
   return (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>

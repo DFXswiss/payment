@@ -21,6 +21,7 @@ import { Text } from "react-native-paper";
 import SettingsService from "../services/SettingsService";
 import { DeFiButton } from "../elements/Buttons";
 import ButtonContainer from "../components/util/ButtonContainer";
+import { createRules } from "../utils/Utils";
 
 interface LoginData {
   userName: string;
@@ -97,10 +98,10 @@ const LoginScreen = () => {
   }, []);
 
   const params = route.params as any;
-  const rules: any = {
-    userName: { ...Validations.Required(t), ...Validations.Address(t) },
-    password: addressEntered ? Validations.Required(t) : undefined,
-  };
+  const rules: any = createRules({
+    userName: [Validations.Required(t), Validations.Address(t)],
+    password: addressEntered && Validations.Required(t),
+  });
 
   return (
     <AppLayout>

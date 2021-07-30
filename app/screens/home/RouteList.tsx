@@ -14,14 +14,12 @@ import { H2, H3 } from "../../elements/Texts";
 import { useDevice } from "../../hooks/useDevice";
 import { BuyRoute } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import { User } from "../../models/User";
 import { putBuyRoute, putSellRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import AppStyles from "../../styles/AppStyles";
-import { update } from "../../utils/Utils";
+import { updateObject } from "../../utils/Utils";
 
 interface Props {
-  user?: User;
   buyRoutes?: BuyRoute[];
   setBuyRoutes: Dispatch<SetStateAction<BuyRoute[] | undefined>>;
   sellRoutes?: SellRoute[];
@@ -33,7 +31,6 @@ interface Props {
 }
 
 const RouteList = ({
-  user,
   buyRoutes,
   setBuyRoutes,
   sellRoutes,
@@ -71,27 +68,27 @@ const RouteList = ({
   }
 
   const deleteBuyRoute = (route: BuyRoute) => {
-    setIsBuyLoading((obj) => update(obj, { [route.id]: true }));
-    putBuyRoute({...route, ...{active: false}})
+    setIsBuyLoading((obj) => updateObject(obj, { [route.id]: true }));
+    putBuyRoute(updateObject(route, {active: false}))
       .then(() => route.active = false)
       .catch(() => NotificationService.show(t("feedback.delete_failed")))
-      .finally(() => setIsBuyLoading((obj) => update(obj, { [route.id]: false })));
+      .finally(() => setIsBuyLoading((obj) => updateObject(obj, { [route.id]: false })));
   };
   const deleteSellRoute = (route: SellRoute) => {
-    setIsSellLoading((obj) => update(obj, { [route.id]: true }));
-    putSellRoute({...route, ...{active: false}})
+    setIsSellLoading((obj) => updateObject(obj, { [route.id]: true }));
+    putSellRoute(updateObject(route, {active: false}))
       .then(() => route.active = false)
       .catch(() => NotificationService.show(t("feedback.delete_failed")))
-      .finally(() => setIsSellLoading((obj) => update(obj, { [route.id]: false })));
+      .finally(() => setIsSellLoading((obj) => updateObject(obj, { [route.id]: false })));
   };
 
   return (
     <>
       <DeFiModal isVisible={isBuyRouteEdit} setIsVisible={setIsBuyRouteEdit} title={t("model.route.new_buy")}>
-        <BuyRouteEdit isVisible={isBuyRouteEdit} routes={buyRoutes} onRouteCreated={onBuyRouteCreated} />
+        <BuyRouteEdit routes={buyRoutes} onRouteCreated={onBuyRouteCreated} />
       </DeFiModal>
       <DeFiModal isVisible={isSellRouteEdit} setIsVisible={setIsSellRouteEdit} title={t("model.route.new_sell")}>
-        <SellRouteEdit isVisible={isSellRouteEdit} routes={sellRoutes} user={user} onRouteCreated={onSellRouteCreated} />
+        <SellRouteEdit routes={sellRoutes} onRouteCreated={onSellRouteCreated} />
       </DeFiModal>
 
       <View style={AppStyles.containerHorizontal}>

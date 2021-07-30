@@ -16,6 +16,7 @@ import SessionService from "../services/SessionService";
 import SettingsService, { AppSettings } from "../services/SettingsService";
 import AppStyles from "../styles/AppStyles";
 import { navigate } from "../utils/NavigationHelper";
+import { resolve } from "../utils/Utils";
 import DeFiDropdown from "./form/DeFiDropdown";
 
 const getLanguage = (key: string): Language | undefined => Languages.find((l) => l.key === key);
@@ -34,7 +35,7 @@ const HeaderContent = ({ session, settings }: { session?: Session; settings?: Ap
 
   const logout = () => SessionService.logout();
   const languageChanged = (update: SetStateAction<Language | undefined>) => {
-    const language = typeof update === "function" ? update(selectedLanguage) : update;
+    const language = resolve(update, selectedLanguage);
     SettingsService.updateSettings({ language: language?.key });
     // TODO: update user!
   };

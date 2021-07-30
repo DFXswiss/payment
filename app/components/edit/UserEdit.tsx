@@ -1,6 +1,4 @@
-import React, { useEffect } from "react";
-import { useState } from "react";
-import { useMemo } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -19,14 +17,15 @@ import { Alert } from "../../elements/Texts";
 import { useDevice } from "../../hooks/useDevice";
 import { DeFiButton } from "../../elements/Buttons";
 import ButtonContainer from "../util/ButtonContainer";
+import { createRules } from "../../utils/Utils";
 
 interface Props {
-  isVisible: boolean;
   user?: User;
   onUserChanged: (user: User) => void;
+  allDataRequired: boolean;
 }
 
-const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
+const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
   const { t } = useTranslation();
   const device = useDevice();
   const {
@@ -43,7 +42,7 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
   useEffect(() => {
     reset(user);
     setError(false);
-  }, [isVisible]);
+  }, []);
   useEffect(() => {
     getCountries()
       .then(setCountries)
@@ -61,13 +60,27 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
       .finally(() => setIsSaving(false));
   };
 
-  const rules: any = {
-    mail: Validations.Mail(t),
+  const rules: any = createRules({
+    firstName: allDataRequired && Validations.Required(t),
+    lastName: allDataRequired && Validations.Required(t),
+    street: allDataRequired && Validations.Required(t),
+    houseNumber: allDataRequired && Validations.Required(t),
+    zip: allDataRequired && Validations.Required(t),
+    location: allDataRequired && Validations.Required(t),
+    country: allDataRequired && Validations.Required(t),
+    mobileNumber: allDataRequired && Validations.Required(t),
+    mail: [Validations.Mail(t), allDataRequired && Validations.Required(t)],
     usedRef: Validations.Ref(t),
-  };
+  });
 
   return (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
+      {allDataRequired && (
+        <>
+          <Alert label={t("model.user.data_missing")} />
+          <SpacerV />
+        </>
+      )}
       <View style={AppStyles.containerHorizontalWrap}>
         <Input name="firstName" label={t("model.user.first_name")} />
         <SpacerH />
@@ -114,7 +127,7 @@ const UserEdit = ({ isVisible, user, onUserChanged }: Props) => {
       )}
 
       <ButtonContainer>
-        <DeFiButton mode="contained" loading={isSaving} onPress={handleSubmit(onSubmit)}>{t("action.save")}</DeFiButton>
+        <DeFiButton mode="contained" loading={isSaving} onPress={handleSubmit(onSubmit)}>{t(allDataRequired ? "action.next" : "action.save")}</DeFiButton>
       </ButtonContainer>
     </Form>
   );

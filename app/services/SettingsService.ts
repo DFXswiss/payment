@@ -28,7 +28,10 @@ class SettingsServiceClass {
     });
 
     getLanguages()
-      .then((languages) => this.Languages = languages)
+      .then((languages) => (this.Languages = languages))
+      .then(() => this.Settings)
+      .then((settings) => this.Languages.find((l) => l.symbol == settings.language)?.symbol ?? Environment.defaultLanguage)
+      .then((currentLanguage) => this.updateSettings({ language: currentLanguage }))
       .catch(() => NotificationService.show(i18n.t("feedback.load_failed")));
   }
 

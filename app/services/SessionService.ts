@@ -37,7 +37,7 @@ class SessionServiceClass {
       })
       .then((accessToken) => this.updateSession(accessToken))
       .then(() => getUser())
-      .then((user) => user.language ? SettingsService.updateSettings({language: user.language}) : undefined);
+      .then((user) => user.language ? SettingsService.updateSettings({language: user.language.symbol}) : undefined);
   }
 
   public logout(): Promise<void> {

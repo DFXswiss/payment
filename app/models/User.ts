@@ -1,4 +1,5 @@
 import { Country } from "./Country";
+import { Language } from "./Language";
 
 // TODO: birthday, staatsangehörigkeit, language, email-settings, KYC status, gebühr
 
@@ -52,7 +53,7 @@ export interface UserDto extends NewUserDto {
   usedRef: string;
 
   status: UserStatus;
-  language: string;
+  language: Language;
   ip: string;
 }
 
@@ -71,7 +72,7 @@ export interface User extends NewUser {
   usedRef: string;
 
   status: UserStatus;
-  language: string;
+  language: Language;
   ip: string;
 }
 

@@ -48,6 +48,16 @@ const Placeholders = ({ device }: { device: DeviceClass }) => (
   </>
 );
 
+const routeData = (route: SellRoute | BuyRoute) => [
+  "asset" in route
+    ? { label: "model.route.asset", value: route.asset?.name }
+    : { label: "model.route.fiat", value: route.fiat?.name },
+  { label: "model.route.iban", value: route.iban },
+  "bankUsage" in route
+    ? { label: "model.route.bank_usage", value: route.bankUsage }
+    : { label: "model.route.deposit_address", value: route.deposit?.address },
+];
+
 const RouteList = ({
   buyRoutes,
   setBuyRoutes,
@@ -88,14 +98,14 @@ const RouteList = ({
 
   const deleteBuyRoute = (route: BuyRoute) => {
     setIsBuyLoading((obj) => updateObject(obj, { [route.id]: true }));
-    putBuyRoute(updateObject(route, { active: false }))
+    return putBuyRoute(updateObject(route, { active: false }))
       .then(() => (route.active = false))
       .catch(() => NotificationService.show(t("feedback.delete_failed")))
       .finally(() => setIsBuyLoading((obj) => updateObject(obj, { [route.id]: false })));
   };
   const deleteSellRoute = (route: SellRoute) => {
     setIsSellLoading((obj) => updateObject(obj, { [route.id]: true }));
-    putSellRoute(updateObject(route, { active: false }))
+    return putSellRoute(updateObject(route, { active: false }))
       .then(() => (route.active = false))
       .catch(() => NotificationService.show(t("feedback.delete_failed")))
       .finally(() => setIsSellLoading((obj) => updateObject(obj, { [route.id]: false })));
@@ -118,32 +128,12 @@ const RouteList = ({
         {detailRoute && (
           <>
             <DataTable>
-              {"asset" in detailRoute ? (
-                <CompactRow>
-                  <CompactCell style={{ flex: 1 }}>{t("model.route.asset")}</CompactCell>
-                  <CompactCell style={{ flex: 2 }}>{detailRoute.asset?.name}</CompactCell>
+              {routeData(detailRoute).map((data) => (
+                <CompactRow key={data.label}>
+                  <CompactCell style={{ flex: 1 }}>{t(data.label)}</CompactCell>
+                  <CompactCell style={{ flex: 2 }}>{data.value}</CompactCell>
                 </CompactRow>
-              ) : (
-                <CompactRow>
-                  <CompactCell style={{ flex: 1 }}>{t("model.route.fiat")}</CompactCell>
-                  <CompactCell style={{ flex: 2 }}>{detailRoute.fiat?.name}</CompactCell>
-                </CompactRow>
-              )}
-              <CompactRow>
-                <CompactCell style={{ flex: 1 }}>{t("model.route.iban")}</CompactCell>
-                <CompactCell style={{ flex: 2 }}>{detailRoute.iban}</CompactCell>
-              </CompactRow>
-              {"bankUsage" in detailRoute ? (
-                <CompactRow>
-                  <CompactCell style={{ flex: 1 }}>{t("model.route.bank_usage")}</CompactCell>
-                  <CompactCell style={{ flex: 2 }}>{detailRoute.bankUsage}</CompactCell>
-                </CompactRow>
-              ) : (
-                <CompactRow>
-                  <CompactCell style={{ flex: 1 }}>{t("model.route.deposit_address")}</CompactCell>
-                  <CompactCell style={{ flex: 2 }}>{detailRoute.deposit?.address}</CompactCell>
-                </CompactRow>
-              )}
+              ))}
             </DataTable>
 
             <SpacerV height={20} />
@@ -162,7 +152,9 @@ const RouteList = ({
                 <DeFiButton
                   mode="contained"
                   loading={"asset" in detailRoute ? isBuyLoading[detailRoute.id] : isSellLoading[detailRoute.id]}
-                  onPress={() => ("asset" in detailRoute ? deleteBuyRoute(detailRoute) : deleteSellRoute(detailRoute))}
+                  onPress={() => {
+                    ("asset" in detailRoute ? deleteBuyRoute(detailRoute) : deleteSellRoute(detailRoute)).then(() => setDetailRoute(undefined));
+                  }}
                 >
                   {t("action.delete")}
                 </DeFiButton>

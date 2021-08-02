@@ -1,6 +1,6 @@
 import { getCountries, getCountryCallingCode } from "libphonenumber-js";
 import React, { useState } from "react";
-import { Controller, useWatch } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { View } from "react-native";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import AppStyles from "../../styles/AppStyles";
@@ -47,24 +47,21 @@ const PhoneNumber = ({
   wrap = false,
 }: Props) => {
   const { t } = useTranslation();
-  const phoneNumber = useWatch({ control, name: name, defaultValue: "" });
 
   const [showDropDown, setShowDropDown] = useState(false);
   const [phoneCode, setPhoneCode] = useState<PhoneCode>();
 
-  const parseNumber = (): PhoneNumber => {
+  const parseNumber = (phoneNumber: string): PhoneNumber => {
     const code = phoneCode ?? phoneCodes.find((c) => phoneNumber?.startsWith(c.dialCode));
-    const tempNumber = phoneNumber?.replace(code?.dialCode, "").trimLeft();
+    const tempNumber = phoneNumber?.replace(code?.dialCode ?? "", "").trimLeft();
     return { code: code, number: tempNumber };
   };
-  const updateCode = (code?: PhoneCode): string => {
-    const { number } = parseNumber();
+  const updateCode = (currentNumber: PhoneNumber, code?: PhoneCode): string => {
     setPhoneCode(code);
-    return getNumber(code, number);
+    return getNumber(code, currentNumber.number);
   };
-  const updateNumber = (number?: string): string => {
-    const { code } = parseNumber();
-    return getNumber(code, number?.replace(" ", ""));
+  const updateNumber = (currentNumber: PhoneNumber, number?: string): string => {
+    return getNumber(currentNumber.code, number?.replace(" ", ""));
   };
   const getNumber = (code?: PhoneCode, number?: string) => {
     return join([code?.dialCode, number], " ");
@@ -79,44 +76,52 @@ const PhoneNumber = ({
   return (
     <Controller
       control={control}
-      render={({ field: { onChange, onBlur, value } }) => (
-        <>
-          <View style={!wrap && AppStyles.containerHorizontal}>
-            <DropDown
-              label={label}
-              value={parseNumber().code?.code}
-              setValue={(value) =>
-                onChange(updateCode(phoneCodes.find((c) => c.code == value)))
-              }
-              list={(rules?.required ? [] : [{ label: " ", value: undefined as unknown as string }]).concat(
-                phoneCodes?.map((code) => ({ label: `${code.country} ${code.dialCode}`, value: code.code }))
-              )}
-              visible={showDropDown}
-              showDropDown={() => setShowDropDown(!disabled)}
-              onDismiss={() => setShowDropDown(false)}
-              inputProps={{
-                onBlur: onBlur,
-                right: <TextInput.Icon name={"menu-down"} />,
-                error: Boolean(error),
-                disabled: disabled,
-              }}
-            />
-            {wrap ? <SpacerV height={5} /> : <SpacerH />}
-            <TextInput
-              onBlur={onBlur}
-              onChangeText={(value) => onChange(updateNumber(value))}
-              value={parseNumber().number ?? ""}
-              placeholder={placeholder}
-              disabled={disabled}
-              error={Boolean(error)}
-              onSubmitEditing={onSubmit}
-            />
-          </View>
-          <HelperText type="error" visible={Boolean(error)}>
-            {error && error.message}
-          </HelperText>
-        </>
-      )}
+      render={({ field: { onChange, onBlur, value } }) => {
+        const phoneNumber = parseNumber(value);
+        return (
+          <>
+            <View style={!wrap && AppStyles.containerHorizontal}>
+              <DropDown
+                label={label}
+                value={phoneNumber.code?.code}
+                setValue={(value) =>
+                  onChange(
+                    updateCode(
+                      phoneNumber,
+                      phoneCodes.find((c) => c.code == value)
+                    )
+                  )
+                }
+                list={(rules?.required ? [] : [{ label: " ", value: undefined as unknown as string }]).concat(
+                  phoneCodes?.map((code) => ({ label: `${code.country} ${code.dialCode}`, value: code.code }))
+                )}
+                visible={showDropDown}
+                showDropDown={() => setShowDropDown(!disabled)}
+                onDismiss={() => setShowDropDown(false)}
+                inputProps={{
+                  onBlur: onBlur,
+                  right: <TextInput.Icon name={"menu-down"} />,
+                  error: Boolean(error),
+                  disabled: disabled,
+                }}
+              />
+              {wrap ? <SpacerV height={5} /> : <SpacerH />}
+              <TextInput
+                onBlur={onBlur}
+                onChangeText={(value) => onChange(updateNumber(phoneNumber, value))}
+                value={phoneNumber.number ?? ""}
+                placeholder={placeholder}
+                disabled={disabled}
+                error={Boolean(error)}
+                onSubmitEditing={onSubmit}
+              />
+            </View>
+            <HelperText type="error" visible={Boolean(error)}>
+              {error && error.message}
+            </HelperText>
+          </>
+        );
+      }}
       name={name}
       rules={updateRules(rules)}
     />

@@ -28,7 +28,6 @@ const BuyRouteEdit = ({
     control,
     handleSubmit,
     formState: { errors },
-    reset,
   } = useForm<BuyRoute>();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -36,10 +35,6 @@ const BuyRouteEdit = ({
   const [error, setError] = useState(false);
   const [assets, setAssets] = useState<Asset[]>([]);
 
-  useEffect(() => {
-    reset({ asset: assets[0] });
-    setError(false);
-  }, []);
   useEffect(() => {
     getAssets()
       .then(setAssets)

@@ -1,6 +1,5 @@
 import React, { ReactElement, ReactNode, RefAttributes } from "react";
 import { Control, FieldError } from "react-hook-form";
-import { TextStyle } from "react-native";
 
 export interface ControlProps {
   control?: Control<any>;

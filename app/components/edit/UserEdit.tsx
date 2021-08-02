@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
@@ -33,18 +33,13 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
     control,
     handleSubmit,
     formState: { errors },
-    reset,
-  } = useForm<User>({ defaultValues: useMemo(() => user, [user]) });
+  } = useForm<User>({ defaultValues: user});
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(false);
   const [countries, setCountries] = useState<Country[]>([]);
 
-  useEffect(() => {
-    reset(user);
-    setError(false);
-  }, []);
   useEffect(() => {
     getCountries()
       .then(setCountries)

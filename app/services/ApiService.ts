@@ -33,17 +33,17 @@ export const signUp = (user: NewUser): Promise<string> => {
 // --- USER --- //
 export const getUser = (): Promise<User> => {
   return fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`)
-    .then((dto: UserDto) => fromUserDto(dto));
+    .then(fromUserDto);
 };
 
 export const putUser = (user: User): Promise<User> => {
   return fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, "PUT", toUserDto(user))
-    .then((dto: UserDto) => fromUserDto(dto));
+    .then(fromUserDto);
 };
 
 export const putUserLanguage = (language: Language): Promise<void> => {
   return AuthService.Session
-    .then((session) =>fetchFrom<void>(`${BaseUrl}/${UserUrl}`, "PUT", {address: session.address, language }));
+    .then((session) => fetchFrom<void>(`${BaseUrl}/${UserUrl}`, "PUT", {address: session.address, language }));
 };
 
 // --- PAYMENT ROUTES --- //
@@ -54,12 +54,12 @@ export const getBuyRoutes = (): Promise<BuyRoute[]> => {
 
 export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
   return fetchFrom<BuyRouteDto>(`${BaseUrl}/${BuyUrl}`, "POST", toBuyRouteDto(route))
-    .then((dto) => fromBuyRouteDto(dto));
+    .then(fromBuyRouteDto);
 };
 
 export const putBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
   return fetchFrom<BuyRouteDto>(`${BaseUrl}/${BuyUrl}`, "PUT", toBuyRouteDto(route))
-    .then((dto) => fromBuyRouteDto(dto));
+    .then(fromBuyRouteDto);
 };
 
 export const getSellRoutes = (): Promise<SellRoute[]> => {
@@ -69,12 +69,12 @@ export const getSellRoutes = (): Promise<SellRoute[]> => {
 
 export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
   return fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}`, "POST", toSellRouteDto(route))
-    .then((dto) => fromSellRouteDto(dto));
+    .then(fromSellRouteDto);
 };
 
 export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
   return fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}`, "PUT", toSellRouteDto(route))
-    .then((dto) => fromSellRouteDto(dto));
+    .then(fromSellRouteDto);
 };
 
 // --- MASTER DATA --- //

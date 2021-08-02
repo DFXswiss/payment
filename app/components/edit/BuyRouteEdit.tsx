@@ -56,7 +56,7 @@ const BuyRouteEdit = ({
     if (existingRoute) existingRoute.active = true;
 
     (existingRoute ? putBuyRoute(existingRoute) : postBuyRoute(route))
-      .then((newRoute) => onRouteCreated(newRoute))
+      .then(onRouteCreated)
       .catch(() => setError(true))
       .finally(() => setIsSaving(false));
   };

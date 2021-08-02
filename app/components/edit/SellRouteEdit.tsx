@@ -58,7 +58,7 @@ const SellRouteEdit = ({
     if (existingRoute) existingRoute.active = true;
 
     (existingRoute ? putSellRoute(existingRoute) : postSellRoute(route))
-      .then((newRoute) => onRouteCreated(newRoute))
+      .then(onRouteCreated)
       .catch(() => setError(true))
       .finally(() => setIsSaving(false));
   };

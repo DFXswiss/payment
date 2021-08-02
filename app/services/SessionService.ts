@@ -18,7 +18,7 @@ class SessionServiceClass {
           usedRef: ref,
         })
       )
-      .then((accessToken) => this.updateSession(accessToken))
+      .then(this.updateSession)
       .then(() =>
         Promise.all([
           StorageService.deleteValue(StorageService.Keys.Credentials),
@@ -35,8 +35,8 @@ class SessionServiceClass {
           throw error;
         });
       })
-      .then((accessToken) => this.updateSession(accessToken))
-      .then(() => getUser())
+      .then(this.updateSession)
+      .then(getUser)
       .then((user) => user.language ? SettingsService.updateSettings({language: user.language.symbol}) : undefined);
   }
 

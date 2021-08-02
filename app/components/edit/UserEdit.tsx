@@ -57,7 +57,7 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
     setError(false);
 
     putUser(updatedUser)
-      .then((user) => onUserChanged(user))
+      .then(onUserChanged)
       .catch(() => setError(true))
       .finally(() => setIsSaving(false));
   };

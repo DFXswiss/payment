@@ -18,14 +18,16 @@
       "back": "Zurück",
       "accept": "Akzeptieren",
       "ok": "OK",
-      "delete": "Löschen"
+      "delete": "Löschen",
+      "upload": "Hochladen"
     },
     "feedback": {
       "page_not_found": "Seite nicht gefunden!",
       "load_failed": "Fehler beim Laden der Daten!",
       "register_failed": "Fehler beim Registrieren!",
       "delete_failed": "Fehler beim Löschen!",
-      "save_failed": "Fehler beim Speichern!"
+      "save_failed": "Fehler beim Speichern!",
+      "file_error": "Fehler beim Lesen der Datei!"
     },
     "validation": {
       "required": "Pflichtfeld",
@@ -115,6 +117,11 @@
         "fiat": "Währung",
         "deposit_address": "Depositadresse",
         "copy_deposit_address": "Depositadresse kopieren"
+      },
+      "payment": {
+        "new": "Neue Zahlungen",
+        "register": "Zahlungen erfassen",
+        "amount": "Betrag"
       }
     }
   }

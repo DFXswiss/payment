@@ -36,7 +36,9 @@ const HeaderContent = ({ session, settings }: { session?: Session; settings?: Ap
     const language = resolve(update, getLanguage(selectedLanguage));
     if (language) {
       SettingsService.updateSettings({ language: language.symbol });
-      putUserLanguage(language);
+      if (session?.isLoggedIn) {
+        putUserLanguage(language);
+      }
     }
   };
 

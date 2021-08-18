@@ -35,14 +35,15 @@ export const parseSepaXml = (xmlFile: string): Payment[] => {
   const payments: any[] = xml.Document.BkToCstmrStmt.Stmt.Ntry;
 
   return payments
-    .map((payment: any) => payment.NtryDtls.TxDtls)
-    .map((details: any) => ({
+    .map((payment: any) => [payment, payment.NtryDtls.TxDtls])
+    .map(([payment, details]) => ({
         iban: details.RltdPties.DbtrAcct.Id.IBAN,
         amount: details.Amt["#text"],
-        fiat: details.Amt['@_Ccy'],
+        currency: details.Amt['@_Ccy'],
         userName: details.RltdPties.Dbtr.Nm,
         userAddress: details.RltdPties.Dbtr.PstlAdr.AdrLine,
         userCountry: details.RltdPties.Dbtr.PstlAdr.Ctry,
-        bankUsage: details.RmtInf.Ustrd
+        bankUsage: details.RmtInf.Ustrd,
+        received: payment.ValDt.Dt,
     }));
 };

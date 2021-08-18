@@ -5,6 +5,7 @@ import { BuyRoute, BuyRouteDto, fromBuyRouteDto, toBuyRouteDto } from "../models
 import { Country } from "../models/Country";
 import { Fiat } from "../models/Fiat";
 import { Language } from "../models/Language";
+import { Payment, toPaymentDto } from "../models/Payment";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import { fromUserDto, NewUser, toNewUserDto, toUserDto, User, UserDto } from "../models/User";
 import AuthService, { Credentials, Session } from "./AuthService";
@@ -18,6 +19,7 @@ const AssetUrl = "asset";
 const FiatUrl = "fiat";
 const CountryUrl = "country";
 const LanguageUrl = "language";
+const BuyPaymentUrl = "payment/buy";
 
 // --- AUTH --- //
 export const signIn = (credentials?: Credentials): Promise<string> => {
@@ -43,7 +45,7 @@ export const putUser = (user: User): Promise<User> => {
 
 export const putUserLanguage = (language: Language): Promise<void> => {
   return AuthService.Session
-    .then((session) => fetchFrom<void>(`${BaseUrl}/${UserUrl}`, "PUT", {address: session.address, language }));
+    .then((session) => fetchFrom<void>(`${BaseUrl}/${UserUrl}`, "PUT", { address: session.address, language }));
 };
 
 // --- PAYMENT ROUTES --- //
@@ -76,6 +78,11 @@ export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
   return fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}`, "PUT", toSellRouteDto(route))
     .then(fromSellRouteDto);
 };
+
+// --- PAYMENTS --- //
+export const postPayment = (payment: Payment): Promise<void> => {
+  return fetchFrom(`${BaseUrl}/${BuyPaymentUrl}`, "POST", toPaymentDto(payment));
+}
 
 // --- MASTER DATA --- //
 export const getAssets = (): Promise<Asset[]> => {

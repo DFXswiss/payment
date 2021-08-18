@@ -121,7 +121,8 @@
       "payment": {
         "new": "Neue Zahlungen",
         "register": "Zahlungen erfassen",
-        "amount": "Betrag"
+        "amount": "Betrag",
+        "value_date": "Valutadatum"
       }
     }
   }

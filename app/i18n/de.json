@@ -122,7 +122,8 @@
         "new": "Neue Zahlungen",
         "register": "Zahlungen erfassen",
         "amount": "Betrag",
-        "value_date": "Valutadatum"
+        "value_date": "Valutadatum",
+        "bank_transaction_id": "Transaktions-ID"
       }
     }
   }

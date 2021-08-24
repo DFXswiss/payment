@@ -55,6 +55,7 @@ const PaymentsUpload = () => {
     { label: "model.user.country", value: payment.userCountry },
     { label: "model.route.bank_usage", value: payment.bankUsage },
     { label: "model.payment.value_date", value: payment.received },
+    { label: "model.payment.bank_transaction_id", value: payment.bankTransactionId },
   ];
 
   const [paymentsVisible, setPaymentsVisible] = useState(false);
@@ -88,47 +89,53 @@ const PaymentsUpload = () => {
       .finally(() => setPaymentsSaving(false));
   };
 
-  return <>
-    <DeFiModal
-      isVisible={paymentsVisible}
-      setIsVisible={setPaymentsVisible}
-      title={t("model.payment.new")}
-      style={{ width: 500 }}
-    >
-      {payments.map((payment, i) => (
-        <View key={i}>
-          <DataTable>
-            {paymentData(payment).map((data) => (
-              <CompactRow key={data.label}>
-                <CompactCell style={{ flex: 1 }}>{t(data.label)}</CompactCell>
-                <CompactCell style={{ flex: 2 }}>{data.value}</CompactCell>
-              </CompactRow>
-            ))}
-          </DataTable>
-          <SpacerV height={30} />
-        </View>
-      ))}
-      {error && (
-        <>
-          <Alert label={t("feedback.save_failed")} />
-          <SpacerV />
-        </>
-      )}
-      <ButtonContainer>
-        <DeFiButton mode="contained" loading={paymentsSaving} onPress={savePayments}>
-          {t("action.save")}
-        </DeFiButton>
-      </ButtonContainer>
-    </DeFiModal>
+  return (
+    <>
+      <DeFiModal
+        isVisible={paymentsVisible}
+        setIsVisible={setPaymentsVisible}
+        title={t("model.payment.new")}
+        style={{ width: 500 }}
+      >
+        {payments.map((payment, i) => (
+          <View key={i}>
+            <DataTable>
+              {paymentData(payment).map((data) => (
+                <CompactRow key={data.label}>
+                  <CompactCell style={{ flex: 1 }}>{t(data.label)}</CompactCell>
+                  <CompactCell style={{ flex: 2 }}>{data.value}</CompactCell>
+                </CompactRow>
+              ))}
+            </DataTable>
+            <SpacerV height={30} />
+          </View>
+        ))}
+        {error && (
+          <>
+            <Alert label={t("feedback.save_failed")} />
+            <SpacerV />
+          </>
+        )}
+        <ButtonContainer>
+          <DeFiButton
+            mode="contained"
+            loading={paymentsSaving}
+            onPress={savePayments}
+          >
+            {t("action.save")}
+          </DeFiButton>
+        </ButtonContainer>
+      </DeFiModal>
 
-    <View style={device.SM && [AppStyles.containerHorizontal, styles.large]}>
-      <H3 text={t("model.payment.register")} />
-      <DeFiButton mode="contained" onPress={uploadXml}>
-        {t("action.upload")}
-      </DeFiButton>
-    </View>
-  </>
-}
+      <View style={device.SM && [AppStyles.containerHorizontal, styles.large]}>
+        <H3 text={t("model.payment.register")} />
+        <DeFiButton mode="contained" onPress={uploadXml}>
+          {t("action.upload")}
+        </DeFiButton>
+      </View>
+    </>
+  );
+};
 
 const styles = StyleSheet.create({
   large: {

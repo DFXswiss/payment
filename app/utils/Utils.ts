@@ -45,5 +45,6 @@ export const parseSepaXml = (xmlFile: string): Payment[] => {
         userCountry: details.RltdPties.Dbtr.PstlAdr.Ctry,
         bankUsage: details.RmtInf.Ustrd,
         received: payment.ValDt.Dt,
+        bankTransactionId: payment.AcctSvcrRef,
     }));
 };

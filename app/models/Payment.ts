@@ -7,6 +7,7 @@ export interface PaymentDto {
   fiatValue: number;
   bankUsage: string;
   received: string;
+  bankTransactionId: string;
 }
 
 export interface Payment {
@@ -18,6 +19,7 @@ export interface Payment {
   userCountry: string;
   bankUsage: string;
   received: string;
+  bankTransactionId: string;
 }
 
 export const toPaymentDto = (payment: Payment): PaymentDto => ({
@@ -29,4 +31,5 @@ export const toPaymentDto = (payment: Payment): PaymentDto => ({
   country: payment.userCountry,
   bankUsage: payment.bankUsage,
   received: payment.received,
+  bankTransactionId: payment.bankTransactionId,
 });

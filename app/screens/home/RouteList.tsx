@@ -275,11 +275,13 @@ const RouteList = ({
       <SpacerV height={50} />
       <H3 text={t("model.route.payment_info")} />
       <SpacerV />
-      <Text>DE 0212 0300 0000 0020 2088</Text>
-      <Text>Bank XY</Text>
-      <Text>Fiat 2 DeFi AG</Text>
-      <Text>Hodlerstrasse 21</Text>
+      <Text>DFX AG</Text>
+      <Text>Bahnhofstrasse 7</Text>
       <Text>6300 Zug</Text>
+      <Text>Schweiz</Text>
+      <SpacerV />
+      <Text>CH68 0857 3177 9752 0181 4</Text>
+      <Text>SWIFT: MAEBCHZZ</Text>
     </>
   );
 };

@@ -37,7 +37,7 @@
     },
     "session": {
       "sign_up": "Anmelden / Registrieren",
-      "signing_message": "Nachricht zum Signieren",
+      "signing_command": "Befehl zum Signieren",
       "login_failed": "Login fehlgeschlagen!"
     },
     "ref": {

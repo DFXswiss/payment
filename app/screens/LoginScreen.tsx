@@ -28,10 +28,12 @@ interface LoginData {
   password: string;
 }
 
-const signingMessage = (address: string) =>
-  `By signing this message, you confirm that you are the sole owner of the provided DeFiChain address and are in possession of its private key. Your ID: ${address}`
-    .split(" ")
-    .join("_");
+const signingCommand = (address: string) => {
+  const message = `By signing this message, you confirm that you are the sole owner of the provided DeFiChain address and are in possession of its private key. Your ID: ${address}`
+      .split(" ")
+      .join("_");
+  return `signmessage "${address}" "${message}"`;
+};
 const DefaultWalletId = 1;
 
 const LoginScreen = () => {
@@ -128,17 +130,18 @@ const LoginScreen = () => {
 
             <View style={addressEntered ? undefined : AppStyles.noDisplay}>
               <SpacerV />
-              <H3 text={t("session.signing_message")}></H3>
+              <H3 text={t("session.signing_command")}></H3>
 
               <View style={[AppStyles.containerHorizontal, styles.signingMessage]}>
                 <View style={styles.textContainer}>
-                  <Text>{signingMessage(address)}</Text>
+                  <Text>{signingCommand(address)}</Text>
                 </View>
                 <SpacerH />
+                {/* TODO: switch to check icon after click */}
                 <IconButton
                   icon="content-copy"
                   color={Colors.Grey}
-                  onPress={() => Clipboard.setString(signingMessage(address))}
+                  onPress={() => Clipboard.setString(signingCommand(address))}
                 />
               </View>
               <SpacerV />

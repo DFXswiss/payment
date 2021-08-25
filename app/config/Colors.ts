@@ -5,4 +5,5 @@ export default {
   Grey: "#C0CBD3",
   LightGrey: "#E6E6E6",
   Error: "#FC6D47",
+  Success: "#03DAC4",
 };

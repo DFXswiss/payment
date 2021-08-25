@@ -53,6 +53,7 @@ const LoginScreen = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string>();
   const [addressEntered, setAddressEntered] = useState(false);
+  const [signCommandCopied, setSignCommandCopied] = useState(false);
 
   const passwordRef = useRef<TextInput>(null);
 
@@ -144,11 +145,14 @@ const LoginScreen = () => {
                   <Text>{signingCommand(address)}</Text>
                 </View>
                 <SpacerH />
-                {/* TODO: switch to check icon after click */}
                 <IconButton
-                  icon="content-copy"
-                  color={Colors.Grey}
-                  onPress={() => Clipboard.setString(signingCommand(address))}
+                  icon={signCommandCopied ? "check" : "content-copy"}
+                  color={signCommandCopied ? Colors.Success : Colors.Grey}
+                  onPress={() => {
+                    Clipboard.setString(signingCommand(address));
+                    setTimeout(() => setSignCommandCopied(true), 200);
+                    setTimeout(() => setSignCommandCopied(false), 2200);
+                  }}
                 />
               </View>
               <SpacerV />

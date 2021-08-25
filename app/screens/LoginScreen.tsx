@@ -165,7 +165,7 @@ const LoginScreen = () => {
 
             {error && (
               <>
-                <Alert label={`${t("session.login_failed")}: ${t(error)}`} />
+                <Alert label={`${t("session.login_failed")} ${t(error)}`} />
                 <SpacerV />
               </>
             )}

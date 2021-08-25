@@ -38,10 +38,10 @@
     "session": {
       "sign_up": "Anmelden / Registrieren",
       "signing_command": "Befehl zum Signieren",
-      "login_failed": "Login fehlgeschlagen",
-      "pattern_invalid": "Format der Adresse/Signatur ist ungültig",
-      "signature_invalid": "Ungültige Signatur",
-      "credentials_invalid": "Ungültige Adresse/Signatur"
+      "login_failed": "Login fehlgeschlagen!",
+      "pattern_invalid": "Format der Adresse/Signatur ist ungültig!",
+      "signature_invalid": "Ungültige Signatur!",
+      "credentials_invalid": "Ungültige Adresse/Signatur!"
     },
     "ref": {
       "continue_without_ref": "Weiter ohne Ref-Code"
@@ -119,7 +119,8 @@
         "asset": "Asset",
         "fiat": "Währung",
         "deposit_address": "Depositadresse",
-        "copy_deposit_address": "Depositadresse kopieren"
+        "copy_deposit_address": "Depositadresse kopieren",
+        "conflict": "Die Route existiert bereits!"
       },
       "payment": {
         "new": "Neue Zahlungen",

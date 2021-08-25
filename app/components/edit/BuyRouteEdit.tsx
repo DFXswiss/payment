@@ -5,6 +5,7 @@ import { ActivityIndicator } from "react-native-paper";
 import { DeFiButton } from "../../elements/Buttons";
 import { SpacerV } from "../../elements/Spacers";
 import { Alert } from "../../elements/Texts";
+import { ApiError } from "../../models/ApiDto";
 import { Asset } from "../../models/Asset";
 import { BuyRoute } from "../../models/BuyRoute";
 import { getAssets, postBuyRoute, putBuyRoute } from "../../services/ApiService";
@@ -32,7 +33,7 @@ const BuyRouteEdit = ({
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string>();
   const [assets, setAssets] = useState<Asset[]>([]);
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const BuyRouteEdit = ({
 
   const onSubmit = (route: BuyRoute) => {
     setIsSaving(true);
-    setError(false);
+    setError(undefined);
 
     // re-activate the route, if it already existed
     const existingRoute = routes?.find((r) => !r.active && r.asset.id === route.asset.id && r.iban === route.iban);
@@ -52,11 +53,9 @@ const BuyRouteEdit = ({
 
     (existingRoute ? putBuyRoute(existingRoute) : postBuyRoute(route))
       .then(onRouteCreated)
-      .catch(() => setError(true))
+      .catch((error: ApiError) => setError(error.statusCode == 409 ? 'model.route.conflict' : ''))
       .finally(() => setIsSaving(false));
   };
-
-  // TODO: react on collisions (buy&sell)
 
   const rules: any = createRules({
     asset: Validations.Required,
@@ -79,9 +78,9 @@ const BuyRouteEdit = ({
       <Input name="iban" label={t("model.route.iban")} placeholder="DE89 3704 0044 0532 0130 00" />
       <SpacerV />
 
-      {error && (
+      {error != null && (
         <>
-          <Alert label={t("feedback.save_failed")} />
+          <Alert label={`${t("feedback.save_failed")} ${t(error)}`} />
           <SpacerV />
         </>
       )}

@@ -53,7 +53,7 @@ class AuthServiceClass {
   constructor() {
     this.Session
       .then((session) =>this.session$.next(session))
-      .catch((_) => this.session$.next(new Session()));
+      .catch(() => this.session$.next(new Session()));
   }
 
   public get Session$(): Observable<Session> {

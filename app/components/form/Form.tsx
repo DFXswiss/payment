@@ -28,7 +28,7 @@ const Form = ({ children, control, rules, errors, disabled = false, onSubmit }: 
   };
 
   const enrichElement = (element: ReactElement & RefAttributes<any>, index: number): ReactElement => {
-    if (!element.props) return element;
+    if (!element?.props) return element;
 
     let props = {
       ...element.props,

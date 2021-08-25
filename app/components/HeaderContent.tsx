@@ -43,8 +43,8 @@ const HeaderContent = ({ session, settings }: { session?: Session; settings?: Ap
   };
 
   const links = [
-    { key: "general.wiki", url: "https://defichain-wiki.com/" },
-    { key: "general.homepage", url: "https://fiat2defi.ch/" },
+    { key: "general.FAQ", url: "https://defichain-wiki.com/wiki/DFX_FAQ" },
+    { key: "general.homepage", url: "https://DFX.swiss/" },
     { key: "general.telegram", url: "https://t.me/DeFiChange" },
   ];
 

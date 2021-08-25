@@ -38,7 +38,10 @@
     "session": {
       "sign_up": "Anmelden / Registrieren",
       "signing_command": "Befehl zum Signieren",
-      "login_failed": "Login fehlgeschlagen!"
+      "login_failed": "Login fehlgeschlagen",
+      "pattern_invalid": "Format der Adresse/Signatur ist ungültig",
+      "signature_invalid": "Ungültige Signatur",
+      "credentials_invalid": "Ungültige Adresse/Signatur"
     },
     "ref": {
       "continue_without_ref": "Weiter ohne Ref-Code"

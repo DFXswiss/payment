@@ -11,6 +11,7 @@ import { SpacerV } from "../elements/Spacers";
 import { H1, H3 } from "../elements/Texts";
 import withSession from "../hocs/withSession";
 import useGuard from "../hooks/useGuard";
+import { ApiError } from "../models/ApiDto";
 import { Credentials, Session } from "../services/AuthService";
 import NotificationService from "../services/NotificationService";
 import SessionService from "../services/SessionService";
@@ -36,7 +37,13 @@ const GtcScreen = ({ session }: { session?: Session }) => {
     SessionService.register()
       .finally(() => setIsProcessing(false))
       .then(() => nav.navigate(Routes.Home))
-      .catch(() => NotificationService.show(t("feedback.register_failed")));
+      .catch((error: ApiError) => {
+        let message = t("feedback.register_failed");
+        if (error.statusCode == 400) {
+          message += ` ${t("session.credentials_invalid")}`;
+        }
+        NotificationService.show(message);
+      });
   };
 
   return (

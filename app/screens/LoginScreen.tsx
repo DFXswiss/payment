@@ -22,6 +22,7 @@ import SettingsService from "../services/SettingsService";
 import { DeFiButton } from "../elements/Buttons";
 import ButtonContainer from "../components/util/ButtonContainer";
 import { createRules } from "../utils/Utils";
+import { ApiError } from "../models/ApiDto";
 
 interface LoginData {
   userName: string;
@@ -50,7 +51,7 @@ const LoginScreen = () => {
   const address = useWatch({ control, name: "userName", defaultValue: "" });
 
   const [isProcessing, setIsProcessing] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string>();
   const [addressEntered, setAddressEntered] = useState(false);
 
   const passwordRef = useRef<TextInput>(null);
@@ -63,7 +64,7 @@ const LoginScreen = () => {
     }
 
     setIsProcessing(true);
-    setError(false);
+    setError(undefined);
 
     if (Environment.debug && data.userName === "admin") {
       data = {
@@ -77,13 +78,19 @@ const LoginScreen = () => {
     SessionService.login({ address: data.userName, signature: data.password, walletId: walletId })
       .finally(() => setIsProcessing(false))
       .then(() => nav.navigate(Routes.Home))
-      .catch(() => {
-        // new user
-        nav.navigate(Routes.Ref);
-        return;
-
-        // TODO: error messages (if invalid address/signature)
-        setError(true);
+      .catch((error: ApiError) => {
+        switch (error.statusCode) {
+          case 400:
+            setError("session.pattern_invalid");
+            break;
+          case 401:
+            setError("session.signature_invalid");
+            break;
+          case 404:
+            // new user
+            nav.navigate(Routes.Ref);
+            break;
+        }
       });
   };
 
@@ -158,7 +165,7 @@ const LoginScreen = () => {
 
             {error && (
               <>
-                <Alert label={t("session.login_failed")} />
+                <Alert label={`${t("session.login_failed")}: ${t(error)}`} />
                 <SpacerV />
               </>
             )}

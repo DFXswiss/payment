@@ -39,7 +39,7 @@ export default {
 
   Address: {
     pattern: {
-      value: /^\w{34}$/,
+      value: /^(\w{34}|\w{42})$/,
       message: i18n.t("validation.pattern_invalid"),
     },
   },

@@ -119,7 +119,7 @@ const LoginScreen = () => {
     <AppLayout>
       <View style={[AppStyles.container, AppStyles.alignCenter]}>
         <SpacerV height={20} />
-        <VideoPlayer src="https://www.youtube.com/embed/DubUrIPFajA" maxWidth={600} />
+        <VideoPlayer src="https://www.youtube.com/embed/0C50S1GhBu8" maxWidth={600} />
         <SpacerV height={30} />
         <H2 text={t("session.sign_up")} />
         <View style={AppStyles.singleColFormContainer}>

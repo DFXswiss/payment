@@ -94,7 +94,8 @@ export const getFiats = (): Promise<Fiat[]> => {
 };
 
 export const getCountries = (): Promise<Country[]> => {
-  return fetchFrom<Country[]>(`${BaseUrl}/${CountryUrl}`);
+  return fetchFrom<Country[]>(`${BaseUrl}/${CountryUrl}`)
+    .then((countries) => countries.sort((a, b) => a.name > b.name ? 1 : -1));
 };
 
 export const getLanguages = (): Promise<Language[]> => {

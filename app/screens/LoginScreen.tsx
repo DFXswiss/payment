@@ -91,6 +91,8 @@ const LoginScreen = () => {
             // new user
             nav.navigate(Routes.Ref);
             break;
+          default:
+            setError("");
         }
       });
   };
@@ -167,7 +169,7 @@ const LoginScreen = () => {
 
             <SpacerV />
 
-            {error && (
+            {error != null && (
               <>
                 <Alert label={`${t("session.login_failed")} ${t(error)}`} />
                 <SpacerV />

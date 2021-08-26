@@ -46,8 +46,6 @@ const PhoneNumber = ({
   onSubmit,
   wrap = false,
 }: Props) => {
-  const { t } = useTranslation();
-
   const [showDropDown, setShowDropDown] = useState(false);
   const [phoneCode, setPhoneCode] = useState<PhoneCode>();
 

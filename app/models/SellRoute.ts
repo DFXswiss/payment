@@ -24,7 +24,7 @@ export const fromSellRouteDto = (route: SellRouteDto): SellRoute => ({
   address: route.address,
   fiat: route.fiat,
   deposit: route.deposit,
-  iban: route.iban,
+  iban: route.iban.replace(/(.{4})/g,"$1 "),
   active: route.active,
 });
 

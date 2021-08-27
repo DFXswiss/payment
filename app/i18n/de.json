@@ -36,6 +36,7 @@
       "invalid_ref": "Ungültiger Ref-Code"
     },
     "session": {
+      "instructions": "Schriftliche Anleitung mit Bildern",
       "sign_up": "Anmelden / Registrieren",
       "signing_command": "Befehl zum Signieren",
       "login_failed": "Login fehlgeschlagen!",

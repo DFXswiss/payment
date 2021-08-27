@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useRef, useState, useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View, TextInput } from "react-native";
+import { StyleSheet, View, TextInput, Linking } from "react-native";
 import Form from "../components/form/Form";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
@@ -120,6 +120,14 @@ const LoginScreen = () => {
       <View style={[AppStyles.container, AppStyles.alignCenter]}>
         <SpacerV height={20} />
         <VideoPlayer src="https://www.youtube.com/embed/0C50S1GhBu8" maxWidth={600} />
+        <SpacerV />
+        <DeFiButton
+          onPress={() => Linking.openURL("https://defichain-wiki.com/wiki/DFX_manuelle_Registrierung")}
+          compact
+        >
+          {t("session.instructions")}
+        </DeFiButton>
+
         <SpacerV height={30} />
         <H2 text={t("session.sign_up")} />
         <View style={AppStyles.singleColFormContainer}>

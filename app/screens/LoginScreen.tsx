@@ -97,6 +97,8 @@ const LoginScreen = () => {
       });
   };
 
+  const openInstructions = () => Linking.openURL(t("session.instruction_link"));
+
   useEffect(() => {
     if (params?.lang) {
       SettingsService.updateSettings({ language: params.lang });
@@ -121,10 +123,7 @@ const LoginScreen = () => {
         <SpacerV height={20} />
         <VideoPlayer src="https://www.youtube.com/embed/0C50S1GhBu8" maxWidth={600} />
         <SpacerV />
-        <DeFiButton
-          onPress={() => Linking.openURL("https://defichain-wiki.com/wiki/DFX_manuelle_Registrierung")}
-          compact
-        >
+        <DeFiButton onPress={openInstructions} compact>
           {t("session.instructions")}
         </DeFiButton>
 

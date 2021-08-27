@@ -37,6 +37,7 @@
     },
     "session": {
       "instructions": "Schriftliche Anleitung mit Bildern",
+      "instruction_link": "https://defichain-wiki.com/wiki/DFX_manuelle_Registrierung",
       "sign_up": "Anmelden / Registrieren",
       "signing_command": "Befehl zum Signieren",
       "login_failed": "Login fehlgeschlagen!",

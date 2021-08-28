@@ -281,7 +281,7 @@ const RouteList = ({
       <Text>Schweiz</Text>
       <SpacerV />
       <Text>CH68 0857 3177 9752 0181 4</Text>
-      <Text>SWIFT: MAEBCHZZ</Text>
+      <Text>SWIFT/BIC: MAEBCHZZ</Text>
     </>
   );
 };

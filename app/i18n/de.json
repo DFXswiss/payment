@@ -36,7 +36,7 @@
       "invalid_ref": "Ungültiger Ref-Code"
     },
     "session": {
-      "instructions": "Schriftliche Anleitung mit Bildern",
+      "instructions": "--> Schriftliche Anleitung mit Bilder <--",
       "instruction_link": "https://defichain-wiki.com/wiki/DFX_manuelle_Registrierung",
       "sign_up": "Anmelden / Registrieren",
       "signing_command": "Befehl zum Signieren",

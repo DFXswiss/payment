@@ -101,7 +101,7 @@ const LoginScreen = () => {
 
   useEffect(() => {
     if (params?.lang) {
-      SettingsService.updateSettings({ language: params.lang });
+      SettingsService.updateSettings({ language: params.lang.toUpperCase() });
     }
 
     if (params?.address && params?.signature) {

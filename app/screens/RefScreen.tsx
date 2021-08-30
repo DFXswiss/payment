@@ -20,7 +20,7 @@ import AppStyles from "../styles/AppStyles";
 import { createRules } from "../utils/Utils";
 import Validations from "../utils/Validations";
 
-const allowedRefCodes = ["000-000", "000-001", "000-002", "000-003", "000-004"];
+//const allowedRefCodes = ["000-000", "000-001", "000-002", "000-003", "000-004"];
 
 const RefScreen = ({ session }: { session?: Session }) => {
   const nav = useNavigation();

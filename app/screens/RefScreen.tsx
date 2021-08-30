@@ -48,8 +48,9 @@ const RefScreen = ({ session }: { session?: Session }) => {
   const rules: any = createRules({
     usedRef: [
       Validations.Required,
-      Validations.Ref,
-      Validations.Custom((ref: string) => (allowedRefCodes.find((c) => c === ref) ? true : (t("validation.invalid_ref") as string)))
+      Validations.Ref
+//      ,
+//      Validations.Custom((ref: string) => (allowedRefCodes.find((c) => c === ref) ? true : (t("validation.invalid_ref") as string)))
     ]
   });
 

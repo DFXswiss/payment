@@ -45,7 +45,7 @@ const HeaderContent = ({ session, settings }: { session?: Session; settings?: Ap
   const links = [
     { key: "general.faq", url: "https://defichain-wiki.com/wiki/DFX_FAQ" },
     { key: "general.homepage", url: "https://DFX.swiss/" },
-    { key: "general.telegram", url: "https://t.me/DeFiChange" },
+    { key: "general.telegram", url: "https://t.me/DFXswiss" },
   ];
 
   return (

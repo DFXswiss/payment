@@ -59,7 +59,7 @@ const RefScreen = ({ session }: { session?: Session }) => {
       <Portal>
         <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)} style={styles.dialog}>
           <Dialog.Content>
-            <Paragraph>Dieses Feature wird momentan noch nicht unterstützt!</Paragraph>
+            <Paragraph>Aktuell sind nur Anmeldungen mit Ref Code möglich. Verbinde dich mit der Community wenn du noch keinen Ref Code besitzt.</Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={() => setDialogVisible(false)}>{t("action.ok")}</Button>

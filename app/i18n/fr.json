@@ -32,8 +32,7 @@
     "validation": {
       "required": "Champ obligatoire",
       "pattern_invalid": "Format non valide",
-      "code_and_number": "Veuillez indiquer l'indicatif régional et le numéro",
-      "invalid_ref": "Code de référence invalide"
+      "code_and_number": "Veuillez indiquer l'indicatif régional et le numéro"
     },
     "session": {
       "instructions": "--> Instructions écrites avec photos <--",

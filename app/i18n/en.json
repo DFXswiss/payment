@@ -32,8 +32,7 @@
     "validation": {
       "required": "Mandatory field",
       "pattern_invalid": "Invalid format",
-      "code_and_number": "Please fill in area code and number",
-      "invalid_ref": "Invalid ref code"
+      "code_and_number": "Please fill in area code and number"
     },
     "session": {
       "instructions": "--> Written instructions with pictures <--",

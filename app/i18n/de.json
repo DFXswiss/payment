@@ -32,8 +32,7 @@
     "validation": {
       "required": "Pflichtfeld",
       "pattern_invalid": "Ungültiges Format",
-      "code_and_number": "Bitte Vorwahl und Nummer ausfüllen",
-      "invalid_ref": "Ungültiger Ref-Code"
+      "code_and_number": "Bitte Vorwahl und Nummer ausfüllen"
     },
     "session": {
       "instructions": "--> Schriftliche Anleitung mit Bilder <--",

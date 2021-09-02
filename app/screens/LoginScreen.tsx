@@ -76,6 +76,9 @@ const LoginScreen = () => {
 
     const walletId = +(params?.walletId ?? DefaultWalletId);
 
+    // reset params
+    nav.navigate(Routes.Login, { lang: undefined, address: undefined, signature: undefined, walletId: undefined })
+
     SessionService.login({ address: data.userName, signature: data.password, walletId: walletId })
       .finally(() => setIsProcessing(false))
       .then(() => nav.navigate(Routes.Home))

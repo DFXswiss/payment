@@ -55,7 +55,7 @@ const RefScreen = ({ session }: { session?: Session }) => {
       <Portal>
         <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)} style={styles.dialog}>
           <Dialog.Content>
-            <Paragraph>Aktuell sind nur Anmeldungen mit Ref-Code möglich. Verbinde dich mit der Community wenn du noch keinen Ref-Code besitzt.</Paragraph>
+            <Paragraph>If you don't have a Ref Code yet, connect to the community first to have a place to go if you have questions! --- Wenn du noch keinen Ref Code hast, dann verbinde dich zuerst mit der Community um bei Fragen eine Anlaufstelle zu haben! --- https://t.me/DFXswiss</Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={() => setDialogVisible(false)}>{t("action.ok")}</Button>

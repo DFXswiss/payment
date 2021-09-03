@@ -56,11 +56,11 @@ const RefScreen = ({ session }: { session?: Session }) => {
         <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)} style={styles.dialog}>
           <Dialog.Content>
             <Paragraph>{t("ref.no_ref")}</Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions>
             <Button onPress={() => Linking.openURL(t("general.telegram_link"))}>
               {t("general.telegram")}
             </Button>
+          </Dialog.Content>
+          <Dialog.Actions>
             <Button onPress={() => setDialogVisible(false)}>{t("action.ok")}</Button>
           </Dialog.Actions>
         </Dialog>

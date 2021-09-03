@@ -20,8 +20,6 @@ import AppStyles from "../styles/AppStyles";
 import { createRules } from "../utils/Utils";
 import Validations from "../utils/Validations";
 
-//const allowedRefCodes = ["000-000", "000-001", "000-002", "000-003", "000-004"];
-
 const RefScreen = ({ session }: { session?: Session }) => {
   const nav = useNavigation();
   const { t } = useTranslation();
@@ -49,8 +47,6 @@ const RefScreen = ({ session }: { session?: Session }) => {
     usedRef: [
       Validations.Required,
       Validations.Ref
-//      ,
-//      Validations.Custom((ref: string) => (allowedRefCodes.find((c) => c === ref) ? true : (t("validation.invalid_ref") as string)))
     ]
   });
 
@@ -59,7 +55,7 @@ const RefScreen = ({ session }: { session?: Session }) => {
       <Portal>
         <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)} style={styles.dialog}>
           <Dialog.Content>
-            <Paragraph>Aktuell sind nur Anmeldungen mit Ref Code möglich. Verbinde dich mit der Community wenn du noch keinen Ref Code besitzt.</Paragraph>
+            <Paragraph>If you don't have a Ref Code yet, connect to the community first to have a place to go if you have questions! --- Wenn du noch keinen Ref Code hast, dann verbinde dich zuerst mit der Community um bei Fragen eine Anlaufstelle zu haben! --- https://t.me/DFXswiss</Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={() => setDialogVisible(false)}>{t("action.ok")}</Button>

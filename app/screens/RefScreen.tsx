@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React,{ useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View } from "react-native";
+import { Linking, StyleSheet, View } from "react-native";
 import { Dialog, Paragraph, Portal, Button } from "react-native-paper";
 import AppLayout from "../components/AppLayout";
 import Form from "../components/form/Form";
@@ -55,9 +55,12 @@ const RefScreen = ({ session }: { session?: Session }) => {
       <Portal>
         <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)} style={styles.dialog}>
           <Dialog.Content>
-            <Paragraph>If you don't have a Ref Code yet, connect to the community first to have a place to go if you have questions! --- Wenn du noch keinen Ref Code hast, dann verbinde dich zuerst mit der Community um bei Fragen eine Anlaufstelle zu haben! --- https://t.me/DFXswiss</Paragraph>
+            <Paragraph>{t("ref.no_ref")}</Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
+            <Button onPress={() => Linking.openURL(t("general.telegram_link"))}>
+              {t("general.telegram")}
+            </Button>
             <Button onPress={() => setDialogVisible(false)}>{t("action.ok")}</Button>
           </Dialog.Actions>
         </Dialog>

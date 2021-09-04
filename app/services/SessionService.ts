@@ -29,7 +29,8 @@ class SessionServiceClass {
   }
 
   public login(credentials: Credentials): Promise<void> {
-    return signIn(credentials)
+    return AuthService.deleteSession()
+      .then(() => signIn(credentials))
       .catch((error: ApiError) => {
         // TODO: hand over with route params?
         return StorageService.storeValue(StorageService.Keys.Credentials, credentials).then(() => {

@@ -58,6 +58,9 @@ const routeData = (route: SellRoute | BuyRoute) => [
     : { label: "model.route.deposit_address", value: route.deposit?.address },
 ];
 
+const iban = "CH68 0857 3177 9752 0181 4";
+const swift = "MAEBCHZZ";
+
 const RouteList = ({
   buyRoutes,
   setBuyRoutes,
@@ -197,8 +200,8 @@ const RouteList = ({
               <DataTable>
                 <CompactHeader>
                   <CompactTitle style={{ flex: 1 }}>{t("model.route.asset")}</CompactTitle>
-                  <CompactTitle style={{ flex: 2 }}>{t("model.route.iban")}</CompactTitle>
-                  {device.SM && <CompactTitle style={{ flex: 2 }}>{t("model.route.bank_usage")}</CompactTitle>}
+                  <CompactTitle style={{ flex: 2 }}>{t("model.route.bank_usage")}</CompactTitle>
+                  {device.SM && <CompactTitle style={{ flex: 2 }}>{t("model.route.iban")}</CompactTitle>}
                   <CompactTitle style={{ flex: undefined }}>
                     <Placeholders device={device} />
                   </CompactTitle>
@@ -207,8 +210,8 @@ const RouteList = ({
                 {activeBuyRoutes.map((route) => (
                   <CompactRow key={route.id}>
                     <CompactCell style={{ flex: 1 }}>{route.asset?.name}</CompactCell>
-                    <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>
-                    {device.SM && <CompactCell style={{ flex: 2 }}>{route.bankUsage}</CompactCell>}
+                    <CompactCell style={{ flex: 2 }}>{route.bankUsage}</CompactCell>
+                    {device.SM && <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>}
                     <CompactCell style={{ flex: undefined }}>
                       {device.SM ? (
                         <>
@@ -220,7 +223,7 @@ const RouteList = ({
                           />
                         </>
                       ) : (
-                        <IconButton icon="magnify" onPress={() => setDetailRoute(route)} />
+                        <IconButton icon="arrow-right" onPress={() => setDetailRoute(route)} />
                       )}
                     </CompactCell>
                   </CompactRow>
@@ -236,8 +239,8 @@ const RouteList = ({
               <DataTable>
                 <CompactHeader>
                   <CompactTitle style={{ flex: 1 }}>{t("model.route.fiat")}</CompactTitle>
-                  <CompactTitle style={{ flex: 2 }}>{t("model.route.iban")}</CompactTitle>
-                  {device.SM && <CompactTitle style={{ flex: 2 }}>{t("model.route.deposit_address")}</CompactTitle>}
+                  <CompactTitle style={{ flex: 2 }}>{t("model.route.deposit_address")}</CompactTitle>
+                  {device.SM && <CompactTitle style={{ flex: 2 }}>{t("model.route.iban")}</CompactTitle>}
                   <CompactTitle style={{ flex: undefined }}>
                     <Placeholders device={device} />
                   </CompactTitle>
@@ -246,8 +249,8 @@ const RouteList = ({
                 {activeSellRoutes.map((route) => (
                   <CompactRow key={route.id}>
                     <CompactCell style={{ flex: 1 }}>{route.fiat?.name}</CompactCell>
-                    <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>
-                    {device.SM && <CompactCell style={{ flex: 2 }}>{route.deposit?.address}</CompactCell>}
+                    <CompactCell style={{ flex: 2 }}>{route.deposit?.address}</CompactCell>
+                    {device.SM && <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>}
                     <CompactCell style={{ flex: undefined }}>
                       {device.SM ? (
                         <>
@@ -259,7 +262,7 @@ const RouteList = ({
                           />
                         </>
                       ) : (
-                        <IconButton icon="magnify" onPress={() => setDetailRoute(route)} />
+                        <IconButton icon="arrow-right" onPress={() => setDetailRoute(route)} />
                       )}
                     </CompactCell>
                   </CompactRow>
@@ -280,8 +283,15 @@ const RouteList = ({
       <Text>6300 Zug</Text>
       <Text>Schweiz</Text>
       <SpacerV />
-      <Text>CH68 0857 3177 9752 0181 4</Text>
-      <Text>SWIFT/BIC: MAEBCHZZ</Text>
+      <View style={AppStyles.containerHorizontal}>
+        <Text>{`${t("model.route.iban")}: ${iban}`}</Text>
+        <IconButton icon="content-copy" onPress={() => Clipboard.setString(iban)} style={device.SM ? undefined : AppStyles.mla} size={20} />
+      </View>
+      <View style={AppStyles.containerHorizontal}>
+        <Text>{`SWIFT/BIC: ${swift}`}</Text>
+        <IconButton icon="content-copy" onPress={() => Clipboard.setString(swift)} style={device.SM ? undefined : AppStyles.mla} size={20} />
+      </View>
+      {!device.SM && <SpacerV height={60} />}
     </>
   );
 };

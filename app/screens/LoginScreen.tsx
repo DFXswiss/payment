@@ -2,7 +2,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useRef, useState, useEffect } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View, TextInput, Linking } from "react-native";
+import { StyleSheet, View, TextInput } from "react-native";
 import Form from "../components/form/Form";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
@@ -21,7 +21,7 @@ import { Text } from "react-native-paper";
 import SettingsService from "../services/SettingsService";
 import { DeFiButton } from "../elements/Buttons";
 import ButtonContainer from "../components/util/ButtonContainer";
-import { createRules } from "../utils/Utils";
+import { createRules, openUrl } from "../utils/Utils";
 import { ApiError } from "../models/ApiDto";
 
 interface LoginData {
@@ -100,7 +100,7 @@ const LoginScreen = () => {
       });
   };
 
-  const openInstructions = () => Linking.openURL(t("session.instruction_link"));
+  const openInstructions = () => openUrl(t("session.instruction_link"));
 
   useEffect(() => {
     if (params?.lang) {

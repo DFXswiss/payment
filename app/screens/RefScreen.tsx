@@ -17,7 +17,7 @@ import useGuard from "../hooks/useGuard";
 import { Credentials, Session } from "../services/AuthService";
 import StorageService from "../services/StorageService";
 import AppStyles from "../styles/AppStyles";
-import { createRules } from "../utils/Utils";
+import { createRules, openUrl } from "../utils/Utils";
 import Validations from "../utils/Validations";
 
 const RefScreen = ({ session }: { session?: Session }) => {
@@ -55,7 +55,10 @@ const RefScreen = ({ session }: { session?: Session }) => {
       <Portal>
         <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)} style={styles.dialog}>
           <Dialog.Content>
-            <Paragraph>If you don't have a Ref Code yet, connect to the community first to have a place to go if you have questions! --- Wenn du noch keinen Ref Code hast, dann verbinde dich zuerst mit der Community um bei Fragen eine Anlaufstelle zu haben! --- https://t.me/DFXswiss</Paragraph>
+            <Paragraph>{t("ref.no_ref")}</Paragraph>
+            <Button onPress={() => openUrl(t("general.telegram_link"))}>
+              {t("general.telegram")}
+            </Button>
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={() => setDialogVisible(false)}>{t("action.ok")}</Button>

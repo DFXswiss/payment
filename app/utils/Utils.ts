@@ -1,6 +1,7 @@
 import { SetStateAction } from "react";
 import * as XmlParser from "fast-xml-parser";
 import { Payment } from "../models/Payment";
+import { Linking, Platform } from "react-native";
 
 export const updateObject = (obj?: any, update?: any) => (obj ? { ...obj, ...update } : undefined);
 export const join = (array: any[], separator: string = ", ") => array.reduce((prev, curr) => (curr ? (prev ? prev + separator + curr : curr) : prev), "");
@@ -48,3 +49,11 @@ export const parseSepaXml = (xmlFile: string): Payment[] => {
         bankTransactionId: payment.AcctSvcrRef,
     }));
 };
+
+export const openUrl = (url: string) => {
+  if(Platform.OS == 'web'){
+    window.open(url, '_blank');
+  } else {
+    Linking.openURL(url);
+  }
+}

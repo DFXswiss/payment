@@ -1,6 +1,6 @@
 import React, { SetStateAction, useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View, Linking } from "react-native";
+import { StyleSheet, View } from "react-native";
 import Routes from "../config/Routes";
 import { DeFiButton } from "../elements/Buttons";
 import { Environment } from "../env/Environment";
@@ -15,7 +15,7 @@ import SessionService from "../services/SessionService";
 import SettingsService, { AppSettings } from "../services/SettingsService";
 import AppStyles from "../styles/AppStyles";
 import { navigate } from "../utils/NavigationHelper";
-import { resolve } from "../utils/Utils";
+import { resolve, openUrl } from "../utils/Utils";
 import DeFiDropdown from "./form/DeFiDropdown";
 
 const HeaderContent = ({ session, settings }: { session?: Session; settings?: AppSettings }) => {
@@ -63,7 +63,7 @@ const HeaderContent = ({ session, settings }: { session?: Session; settings?: Ap
       )}
 
       {links.map((link) => (
-        <DeFiButton key={link.key} onPress={() => Linking.openURL(link.url)} style={styles.button} compact>
+        <DeFiButton key={link.key} onPress={() => openUrl(link.url)} style={styles.button} compact>
           {t(link.key)}
         </DeFiButton>
       ))}

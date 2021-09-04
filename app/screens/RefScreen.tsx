@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React,{ useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { Linking, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { Dialog, Paragraph, Portal, Button } from "react-native-paper";
 import AppLayout from "../components/AppLayout";
 import Form from "../components/form/Form";
@@ -17,7 +17,7 @@ import useGuard from "../hooks/useGuard";
 import { Credentials, Session } from "../services/AuthService";
 import StorageService from "../services/StorageService";
 import AppStyles from "../styles/AppStyles";
-import { createRules } from "../utils/Utils";
+import { createRules, openUrl } from "../utils/Utils";
 import Validations from "../utils/Validations";
 
 const RefScreen = ({ session }: { session?: Session }) => {
@@ -56,7 +56,7 @@ const RefScreen = ({ session }: { session?: Session }) => {
         <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)} style={styles.dialog}>
           <Dialog.Content>
             <Paragraph>{t("ref.no_ref")}</Paragraph>
-            <Button onPress={() => Linking.openURL(t("general.telegram_link"))}>
+            <Button onPress={() => openUrl(t("general.telegram_link"))}>
               {t("general.telegram")}
             </Button>
           </Dialog.Content>

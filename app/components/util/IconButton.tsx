@@ -9,6 +9,7 @@ const IconButton = ({
   icon,
   onPress,
   style,
+  size,
   color = Colors.Primary,
   isLoading = false,
   disabled = false,
@@ -16,6 +17,7 @@ const IconButton = ({
   icon: string;
   onPress?: () => void;
   style?: TextStyle;
+  size?: number;
   color?: string;
   isLoading?: boolean;
   disabled?: boolean;
@@ -32,6 +34,7 @@ const IconButton = ({
       onPress={onPress}
       disabled={disabled || isLoading}
       style={isLoading && AppStyles.hidden}
+      size={size}
     ></PaperIconButton>
   </View>
 );

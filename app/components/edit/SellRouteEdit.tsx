@@ -75,7 +75,7 @@ const SellRouteEdit = ({
       />
       <SpacerV />
 
-      <Input name="iban" label={t("model.route.iban")} placeholder="DE89 3704 0044 0532 0130 00" />
+      <Input name="iban" label={t("model.route.your_iban")} placeholder="DE89 3704 0044 0532 0130 00" />
       <SpacerV />
 
       {error && (

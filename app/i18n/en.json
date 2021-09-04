@@ -112,6 +112,7 @@
         "payment_info": "Payment information",
         "details": "Route details",
         "iban": "IBAN",
+        "your_iban": "Your IBAN",
         "bank_usage": "Purpose of payment",
         "copy_bank_usage": "Copy purpose of payment",
         "asset": "Asset",

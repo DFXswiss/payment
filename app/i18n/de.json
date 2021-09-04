@@ -112,8 +112,8 @@
         "new_sell": "Neue Route: Crypto > Fiat",
         "payment_info": "Zahlungsinformationen",
         "details": "Routendetails",
-
         "iban": "IBAN",
+        "your_iban": "Deine IBAN",
         "bank_usage": "Zahlungszweck",
         "copy_bank_usage": "Zahlungszweck kopieren",
         "asset": "Asset",

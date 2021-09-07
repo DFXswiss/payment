@@ -48,7 +48,7 @@ const BuyRouteEdit = ({
     setError(undefined);
 
     // re-activate the route, if it already existed
-    const existingRoute = routes?.find((r) => !r.active && r.asset.id === route.asset.id && r.iban === route.iban);
+    const existingRoute = routes?.find((r) => !r.active && r.asset.id === route.asset.id && r.iban.split(' ').join('') === route.iban.split(' ').join(''));
     if (existingRoute) existingRoute.active = true;
 
     (existingRoute ? putBuyRoute(existingRoute) : postBuyRoute(route))

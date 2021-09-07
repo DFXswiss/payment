@@ -82,6 +82,8 @@ const PaymentsUpload = () => {
     setError(false);
     setPaymentsSaving(true);
 
+    // TODO: verify
+    // TODO: error handling (409)
     payments
       .reduce((prev, curr) => prev.then(() => postPayment(curr)), Promise.resolve())
       .then(() => setPaymentsVisible(false))

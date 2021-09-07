@@ -38,6 +38,8 @@ export const getUser = (): Promise<User> => {
     .then(fromUserDto);
 };
 
+// TODO: get complete user?
+
 export const putUser = (user: User): Promise<User> => {
   return fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, "PUT", toUserDto(user))
     .then(fromUserDto);

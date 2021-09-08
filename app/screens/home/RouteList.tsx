@@ -116,10 +116,10 @@ const RouteList = ({
 
   return (
     <>
-      <DeFiModal isVisible={isBuyRouteEdit} setIsVisible={setIsBuyRouteEdit} title={t("model.route.new_buy")}>
+      <DeFiModal isVisible={isBuyRouteEdit} setIsVisible={setIsBuyRouteEdit} title={t("model.route.new_buy")} style={{ width: 400 }}>
         <BuyRouteEdit routes={buyRoutes} onRouteCreated={onBuyRouteCreated} />
       </DeFiModal>
-      <DeFiModal isVisible={isSellRouteEdit} setIsVisible={setIsSellRouteEdit} title={t("model.route.new_sell")}>
+      <DeFiModal isVisible={isSellRouteEdit} setIsVisible={setIsSellRouteEdit} title={t("model.route.new_sell")} style={{ width: 400 }}>
         <SellRouteEdit routes={sellRoutes} onRouteCreated={onSellRouteCreated} />
       </DeFiModal>
       <DeFiModal

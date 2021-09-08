@@ -7,7 +7,7 @@ import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
 import { H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
-import { User } from "../../models/User";
+import { User, UserStatus } from "../../models/User";
 import { getBuyRoutes, getSellRoutes, getUser } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
@@ -59,21 +59,24 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const sellRouteEdit = (update: SetStateAction<boolean>) => {
     const userDataComplete = user?.firstName && user?.lastName && user?.street && user?.houseNumber && user?.zip && user?.location && user?.country && user?.mobileNumber && user?.mail;
     if (!userDataComplete && resolve(update, isSellRouteEdit)) {
-      setIsUserEdit(true)
+      setIsUserEdit(true);
     }
 
     setIsSellRouteEdit(update);
-  }
+  };
   const userEdit = (edit: boolean) => {
     setIsUserEdit(edit);
     if (!edit) {
       setIsSellRouteEdit(false);
     }
-  }
+  };
   const onUserChanged = (newUser: User) => {
     setUser(newUser);
     setIsUserEdit(false);
   };
+  const onKyc = () => {
+    // TODO
+  }
 
   const reset = (): void => {
     setLoading(true);
@@ -121,6 +124,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
           icon={fabOpen ? "close" : "pencil"}
           actions={[
             { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true) },
+            { icon: "account-check", label: t("model.user.kyc"), onPress: onKyc },
             { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true) },
             // { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true) }, // TODO: reactivate
           ]}
@@ -144,7 +148,14 @@ const HomeScreen = ({ session }: { session?: Session }) => {
               <View style={AppStyles.containerHorizontal}>
                 <H2 text={t("model.user.your_data")} />
                 {device.SM && (
-                  <View style={AppStyles.mla}>
+                  <View style={[AppStyles.mla, AppStyles.containerHorizontal]}>
+                    {(user?.status === UserStatus.ACTIVE || user?.status === UserStatus.VERIFY) && (
+                      <View style={AppStyles.mr10}>
+                        <DeFiButton mode="contained" onPress={onKyc}>
+                          {t("model.user.kyc")}
+                        </DeFiButton>
+                      </View>
+                    )}
                     <DeFiButton mode="contained" onPress={() => setIsUserEdit(true)}>
                       {t("action.edit")}
                     </DeFiButton>

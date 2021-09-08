@@ -83,6 +83,7 @@
     "model": {
       "user": {
         "edit": "Benutzerdaten bearbeiten",
+        "kyc": "KYC",
         "data_missing": "Füllen Sie bitte zuerst Ihre Benutzerdaten komplett aus!",
         "your_data": "Deine Benutzerdaten",
         "data": "Benutzerdaten",

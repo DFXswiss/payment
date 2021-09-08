@@ -89,7 +89,7 @@ export const fromUserDto = (user: UserDto): User => ({
   mobileNumber: user.phone,
   refData: user.refData,
   walletId: user.walletId,
-  status: user.status,
+  status: UserStatus.VERIFY,
   language: user.language,
   ip: user.ip,
 });

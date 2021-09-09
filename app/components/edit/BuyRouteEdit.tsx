@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator } from "react-native-paper";
 import { DeFiButton } from "../../elements/Buttons";
@@ -30,6 +30,7 @@ const BuyRouteEdit = ({
     handleSubmit,
     formState: { errors },
   } = useForm<BuyRoute>();
+  const asset = useWatch({ control, name: "asset" });
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -57,6 +58,11 @@ const BuyRouteEdit = ({
       .finally(() => setIsSaving(false));
   };
 
+  const showAssetWarning = (): boolean => {
+    // dUSDC, dUSDT
+    return [3, 13].includes(asset?.chainId);
+  }
+
   const rules: any = createRules({
     asset: Validations.Required,
     iban: [Validations.Required, Validations.Iban]
@@ -73,6 +79,13 @@ const BuyRouteEdit = ({
         idProp="id"
         labelProp="name"
       />
+      {showAssetWarning() && (
+        <>
+          <Alert label={t("model.route.exchange_rate_warning")} />
+          <SpacerV />
+        </>
+      )}
+
       <SpacerV />
 
       <Input name="iban" label={t("model.route.your_iban")} placeholder="DE89 3704 0044 0532 0130 00" />

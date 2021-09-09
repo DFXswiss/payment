@@ -5,6 +5,7 @@ export enum AssetType {
 
 export interface Asset {
   id: number;
+  chainId: number;
   type: AssetType;
   name: string;
   buyable: boolean;

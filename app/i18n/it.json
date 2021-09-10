@@ -101,7 +101,9 @@
         "mobile_number": "Numero di cellulare",
         "ref": "Codice di riferimento",
         "used_ref": "Codice di riferimento usato",
-        "own_ref": "Codice di riferimento per la distribuzione"
+        "ref_count": "Numero delle vostre Ref-Users",
+        "ref_count_active": "Numero di Ref-Users attive",
+        "ref_volume": "Ref-Volume pagato (€)"
       },
       "route": {
         "routes": "Routen di pagamento",

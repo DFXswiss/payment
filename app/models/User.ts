@@ -1,5 +1,6 @@
 import { Country } from "./Country";
 import { Language } from "./Language";
+import { RefData } from "./RefData";
 
 // TODO: birthday, staatsangehörigkeit, language, email-settings, KYC status, gebühr
 
@@ -12,9 +13,9 @@ export enum UserRole {
 }
 
 export enum UserStatus {
-  NA = 'NA',
-  ACTIVE = 'Active',
-  KYC = 'KYC',
+  NA = "NA",
+  ACTIVE = "Active",
+  KYC = "KYC",
 }
 
 export interface NewUserDto {
@@ -49,8 +50,7 @@ export interface UserDto extends NewUserDto {
   mail: string;
   phone: string;
 
-  ref: string;
-  usedRef: string;
+  refData: RefData;
 
   status: UserStatus;
   language: Language;
@@ -68,8 +68,7 @@ export interface User extends NewUser {
   mail: string;
   mobileNumber: string;
 
-  ref: string;
-  usedRef: string;
+  refData: RefData;
 
   status: UserStatus;
   language: Language;
@@ -88,8 +87,7 @@ export const fromUserDto = (user: UserDto): User => ({
   country: user.country,
   mail: user.mail,
   mobileNumber: user.phone,
-  ref: user.ref,
-  usedRef: user.usedRef,
+  refData: user.refData,
   walletId: user.walletId,
   status: user.status,
   language: user.language,
@@ -108,8 +106,7 @@ export const toUserDto = (user: User): UserDto => ({
   country: user.country,
   mail: user.mail,
   phone: user.mobileNumber,
-  ref: user.ref,
-  usedRef: user.usedRef,
+  refData: user.refData,
   walletId: user.walletId,
   status: user.status,
   language: user.language,

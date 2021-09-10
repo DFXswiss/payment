@@ -100,7 +100,7 @@
         "ref": "Referral code",
         "used_ref": "Ref-Code used",
         "ref_count": "Number of Ref-Users",
-        "ref_count_active": "Number of active Ref-User",
+        "ref_count_active": "Number of active Ref-Users",
         "ref_volume": "Ref-Volume paid in (€)"
       },
       "route": {

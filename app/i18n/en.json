@@ -98,8 +98,10 @@
         "mail": "E-mail address",
         "mobile_number": "Mobile number",
         "ref": "Referral code",
-        "used_ref": "Ref code used",
-        "own_ref": "Ref code to distribute"
+        "used_ref": "Ref-Code used",
+        "ref_count": "Number of Ref-Users",
+        "ref_count_active": "Number of active Ref-User",
+        "ref_volume": "Ref-Volume paid in (€)"
       },
       "route": {
         "routes": "Payment Routes",

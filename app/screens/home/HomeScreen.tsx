@@ -57,6 +57,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const [isBuyRouteEdit, setIsBuyRouteEdit] = useState(false);
   const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
   const [isKycRequest, setIsKycRequest] = useState(false);
+  const [isKycLoading, setIsKycLoading] = useState(false);
 
   const sellRouteEdit = (update: SetStateAction<boolean>) => {
     if (!userDataComplete() && resolve(update, isSellRouteEdit)) {
@@ -84,10 +85,14 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   };
 
   const requestKyc = (): void => {
+    setIsKycLoading(true);
     postKyc()
       .then(() => NotificationService.show(t('feedback.request_submitted')))
       .catch(() => NotificationService.show(t('feedback.request_failed')))
-      .finally(() => setIsKycRequest(false));
+      .finally(() => {
+        setIsKycRequest(false);
+        setIsKycLoading(false);
+      });
   };
 
   const userDataComplete = () => user?.firstName && user?.lastName && user?.street && user?.houseNumber && user?.zip && user?.location && user?.country && user?.mobileNumber && user?.mail;
@@ -152,7 +157,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={() => setIsKycRequest(false)} color={Colors.Grey}>{t("action.abort")}</Button>
-            <Button onPress={requestKyc}>{t("action.send")}</Button>
+            <DeFiButton onPress={requestKyc} loading={isKycLoading}>{t("action.send")}</DeFiButton>
           </Dialog.Actions>
         </Dialog>
       </Portal>

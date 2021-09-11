@@ -15,7 +15,7 @@ export enum UserRole {
 export enum UserStatus {
   NA = "NA",
   ACTIVE = "Active",
-  KYC = "KYC",
+  VERIFY = "Verified",
 }
 
 export interface NewUserDto {
@@ -89,7 +89,7 @@ export const fromUserDto = (user: UserDto): User => ({
   mobileNumber: user.phone,
   refData: user.refData,
   walletId: user.walletId,
-  status: UserStatus.VERIFY,
+  status: user.status,
   language: user.language,
   ip: user.ip,
 });

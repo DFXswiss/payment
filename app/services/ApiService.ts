@@ -23,92 +23,96 @@ const BuyPaymentUrl = "payment/buy";
 
 // --- AUTH --- //
 export const signIn = (credentials?: Credentials): Promise<string> => {
-  return fetchFrom<AuthResponse>(`${BaseUrl}/${AuthUrl}/signIn`, "POST", credentials)
+  return fetchFrom<AuthResponse>(`${AuthUrl}/signIn`, "POST", credentials)
     .then((resp) => resp.accessToken);
 };
 
 export const signUp = (user: NewUser): Promise<string> => {
-  return fetchFrom<AuthResponse>(`${BaseUrl}/${AuthUrl}/signUp`, "POST", toNewUserDto(user))
+  return fetchFrom<AuthResponse>(`${AuthUrl}/signUp`, "POST", toNewUserDto(user))
     .then((resp) => resp.accessToken);
 }
 
 // --- USER --- //
 export const getUser = (): Promise<User> => {
-  return fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`)
+  return fetchFrom<UserDto>(UserUrl)
     .then(fromUserDto);
 };
 
-// TODO: get complete user?
+// TODO: get complete user
+
+export const postKyc = (): Promise<void> => {
+  return fetchFrom(`${UserUrl}/kyc`, 'POST');
+}
 
 export const putUser = (user: User): Promise<User> => {
-  return fetchFrom<UserDto>(`${BaseUrl}/${UserUrl}`, "PUT", toUserDto(user))
+  return fetchFrom<UserDto>(UserUrl, "PUT", toUserDto(user))
     .then(fromUserDto);
 };
 
 export const putUserLanguage = (language: Language): Promise<void> => {
   return AuthService.Session
-    .then((session) => fetchFrom<void>(`${BaseUrl}/${UserUrl}`, "PUT", { address: session.address, language }));
+    .then((session) => fetchFrom<void>(UserUrl, "PUT", { address: session.address, language }));
 };
 
 // --- PAYMENT ROUTES --- //
 export const getBuyRoutes = (): Promise<BuyRoute[]> => {
-  return fetchFrom<BuyRouteDto[]>(`${BaseUrl}/${BuyUrl}`)
+  return fetchFrom<BuyRouteDto[]>(BuyUrl)
     .then((dtoList) => dtoList.map(dto => fromBuyRouteDto(dto)));
 }
 
 export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
-  return fetchFrom<BuyRouteDto>(`${BaseUrl}/${BuyUrl}`, "POST", toBuyRouteDto(route))
+  return fetchFrom<BuyRouteDto>(BuyUrl, "POST", toBuyRouteDto(route))
     .then(fromBuyRouteDto);
 };
 
 export const putBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
-  return fetchFrom<BuyRouteDto>(`${BaseUrl}/${BuyUrl}`, "PUT", toBuyRouteDto(route))
+  return fetchFrom<BuyRouteDto>(BuyUrl, "PUT", toBuyRouteDto(route))
     .then(fromBuyRouteDto);
 };
 
 export const getSellRoutes = (): Promise<SellRoute[]> => {
-  return fetchFrom<SellRouteDto[]>(`${BaseUrl}/${SellUrl}`)
+  return fetchFrom<SellRouteDto[]>(SellUrl)
     .then((dtoList) => dtoList.map(dto => fromSellRouteDto(dto)));
 }
 
 export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
-  return fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}`, "POST", toSellRouteDto(route))
+  return fetchFrom<SellRouteDto>(SellUrl, "POST", toSellRouteDto(route))
     .then(fromSellRouteDto);
 };
 
 export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
-  return fetchFrom<SellRouteDto>(`${BaseUrl}/${SellUrl}`, "PUT", toSellRouteDto(route))
+  return fetchFrom<SellRouteDto>(SellUrl, "PUT", toSellRouteDto(route))
     .then(fromSellRouteDto);
 };
 
 // --- PAYMENTS --- //
 export const postPayment = (payment: Payment): Promise<void> => {
-  return fetchFrom(`${BaseUrl}/${BuyPaymentUrl}`, "POST", toPaymentDto(payment));
+  return fetchFrom(BuyPaymentUrl, "POST", toPaymentDto(payment));
 }
 
 // --- MASTER DATA --- //
 export const getAssets = (): Promise<Asset[]> => {
-  return fetchFrom<Asset[]>(`${BaseUrl}/${AssetUrl}`);
+  return fetchFrom<Asset[]>(AssetUrl);
 };
 
 export const getFiats = (): Promise<Fiat[]> => {
-  return fetchFrom<Fiat[]>(`${BaseUrl}/${FiatUrl}`);
+  return fetchFrom<Fiat[]>(FiatUrl);
 };
 
 export const getCountries = (): Promise<Country[]> => {
-  return fetchFrom<Country[]>(`${BaseUrl}/${CountryUrl}`)
+  return fetchFrom<Country[]>(CountryUrl)
     .then((countries) => countries.sort((a, b) => a.name > b.name ? 1 : -1));
 };
 
 export const getLanguages = (): Promise<Language[]> => {
-  return fetchFrom<Language[]>(`${BaseUrl}/${LanguageUrl}`);
+  return fetchFrom<Language[]>(LanguageUrl);
 };
 
 // --- HELPERS --- //
 const fetchFrom = <T>(url: string, method: "GET" | "PUT" | "POST" = "GET", data?: any): Promise<T> => {
   return AuthService.Session
     .then((session) => buildInit(method, session, data))
-    .then((init) => fetch(url, init))
+    .then((init) => fetch(`${BaseUrl}/${url}`, init))
     .then((response) => {
       if (response.ok) {
         return response.json();

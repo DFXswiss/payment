@@ -19,7 +19,8 @@
       "accept": "Accettare",
       "ok": "OK",
       "delete": "Cancellare",
-      "upload": "Carica"
+      "upload": "Carica",
+      "send": "Inviare"
     },
     "feedback": {
       "page_not_found": "Pagina non trovata!",
@@ -27,7 +28,9 @@
       "register_failed": "Errore durante la registrazione!",
       "delete_failed": "Errore durante la cancellazione!",
       "save_failed": "Errore durante il salvataggio!",
-      "file_error": "Errore nella lettura del file!"
+      "file_error": "Errore nella lettura del file!",
+      "request_submitted": "Richiesta inviata!",
+      "request_failed": "Errore con la richiesta!"
     },
     "validation": {
       "required": "Campo obbligatorio",
@@ -81,6 +84,8 @@
     "model": {
       "user": {
         "edit": "Modificare i dati dell'utente",
+        "kyc": "KYC",
+        "kyc_request": "Vuole inviare la richiesta KYC?",
         "data_missing": "Si prega di compilare completamente i dati dell'utente prima!",
 
         "your_data": "I tuoi dati utente",
@@ -101,7 +106,9 @@
         "mobile_number": "Numero di cellulare",
         "ref": "Codice di riferimento",
         "used_ref": "Codice di riferimento usato",
-        "own_ref": "Codice di riferimento per la distribuzione"
+        "ref_count": "Numero delle vostre Ref-Users",
+        "ref_count_active": "Numero di Ref-Users attive",
+        "ref_volume": "Ref-Volume pagato (€)"
       },
       "route": {
         "routes": "Routen di pagamento",
@@ -121,7 +128,8 @@
         "fiat": "Valuta",
         "deposit_address": "Depositato da",
         "copy_deposit_address": "Copiare l'indirizzo del depositoCopiare l'indirizzo del deposito",
-        "conflict": "Il percorso esiste già!"
+        "conflict": "Il percorso esiste già!",
+        "exchange_rate_warning": "Attenzione, compriamo questo bene su DEX e non possiamo garantire un tasso di cambio! I prezzi su DEX possono essere significativamente inferiori o superiori a quelli di altre borse, il che può anche avere un impatto negativo sul tasso di cambio. DFX sta già lavorando su un processo migliorato."
       },
       "payment": {
         "new": "Nuovi pagamenti",

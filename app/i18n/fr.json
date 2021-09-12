@@ -19,7 +19,8 @@
       "accept": "Accepter",
       "ok": "OK",
       "delete": "Supprimer",
-      "upload": "Télécharger"
+      "upload": "Télécharger",
+      "send": "Envoyer"
     },
     "feedback": {
       "page_not_found": "Page non trouvée !",
@@ -27,7 +28,9 @@
       "register_failed": "Erreur lors de l'enregistrement !",
       "delete_failed": "Erreur lors de la suppression !",
       "save_failed": "Erreur lors de la sauvegarde !",
-      "file_error": "Erreur de lecture du fichier !"
+      "file_error": "Erreur de lecture du fichier !",
+      "request_submitted": "Demande soumise !",
+      "request_failed": "Erreur avec la demande !"
     },
     "validation": {
       "required": "Champ obligatoire",
@@ -81,6 +84,8 @@
     "model": {
       "user": {
         "edit": "Modifier les données de l'utilisateur",
+        "kyc": "KYC",
+        "kyc_request": "Voulez-vous envoyer la demande de KYC ?",
         "data_missing": "Veuillez d'abord remplir complètement vos données d'utilisateur !",
 
         "your_data": "Vos données d'utilisateur",
@@ -101,7 +106,9 @@
         "mobile_number": "Numéro de téléphone mobile",
         "ref": "Code de référence",
         "used_ref": "Code de référence utilisé",
-        "own_ref": "Code de référence pour la distribution"
+        "ref_count": "Nombre de vos Ref-Users",
+        "ref_count_active": "Nombre de Ref-Users actives",
+        "ref_volume": "Ref-Volume versé (€)"
       },
       "route": {
         "routes": "Routes de paiement",
@@ -121,7 +128,8 @@
         "fiat": "Monnaie",
         "deposit_address": "Déposés par",
         "copy_deposit_address": "Copie de l'adresse de dépôt",
-        "conflict": "La route existe déjà !"
+        "conflict": "La route existe déjà !",
+        "exchange_rate_warning": "Attention, nous achetons cet actif sur DEX et ne pouvons pas garantir un taux de change ! Les prix sur DEX peuvent être sensiblement plus bas ou plus élevés que sur d'autres bourses, ce qui peut également avoir un impact négatif sur le taux de change. DFX travaille déjà sur un processus amélioré."
       },
       "payment": {
         "new": "Nouveaux paiements",

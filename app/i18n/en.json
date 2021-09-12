@@ -19,7 +19,8 @@
       "accept": "Accept",
       "ok": "OK",
       "delete": "Delete",
-      "upload": "Upload"
+      "upload": "Upload",
+      "send": "Send"
     },
     "feedback": {
       "page_not_found": "Page not found!",
@@ -27,7 +28,9 @@
       "register_failed": "Error while registering!",
       "delete_failed": "Error while deleting!",
       "save_failed": "Error while saving!",
-      "file_error": "Error reading the file!"
+      "file_error": "Error reading the file!",
+      "request_submitted": "Request submitted!",
+      "request_failed": "Request error!"
     },
     "validation": {
       "required": "Mandatory field",
@@ -79,6 +82,8 @@
     "model": {
       "user": {
         "edit": "Edit user data",
+        "kyc": "KYC",
+        "kyc_request": "Do you want to submit the KYC request?",
         "data_missing": "Please fill out your user data completely first!",
 
         "your_data": "Your user data",
@@ -98,8 +103,10 @@
         "mail": "E-mail address",
         "mobile_number": "Mobile number",
         "ref": "Referral code",
-        "used_ref": "Ref code used",
-        "own_ref": "Ref code to distribute"
+        "used_ref": "Ref-Code used",
+        "ref_count": "Number of Ref-Users",
+        "ref_count_active": "Number of active Ref-Users",
+        "ref_volume": "Ref-Volume paid in (€)"
       },
       "route": {
         "routes": "Payment Routes",
@@ -119,7 +126,8 @@
         "fiat": "Currency",
         "deposit_address": "Deposit address",
         "copy_deposit_address": "Copy deposit address",
-        "conflict": "The route already exists!"
+        "conflict": "The route already exists!",
+        "exchange_rate_warning": "Attention, we buy this asset on DEX and cannot guarantee an exchange rate! Prices on DEX can be significantly lower or higher than on other exchanges, which can also have a negative impact on the exchange rate. DFX is already working on an improved procedure."
       },
       "payment": {
         "new": "New payments",

@@ -115,7 +115,7 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
         wrap={!device.SM}
       />
       <SpacerV />
-      <Input name="usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />
+      <Input name="refData.usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />
       <SpacerV />
 
       {error && (

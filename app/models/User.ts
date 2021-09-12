@@ -18,6 +18,12 @@ export enum UserStatus {
   VERIFY = "Verified",
 }
 
+export enum KycStatus {
+  NA = 'NA',
+  PROCESSING = 'Processing',
+  COMPLETED = 'Completed',
+}
+
 export interface NewUserDto {
   address: string;
   signature: string;
@@ -53,6 +59,7 @@ export interface UserDto extends NewUserDto {
   refData: RefData;
 
   status: UserStatus;
+  kycStatus: KycStatus;
   language: Language;
   ip: string;
 }
@@ -71,6 +78,7 @@ export interface User extends NewUser {
   refData: RefData;
 
   status: UserStatus;
+  kycStatus: KycStatus;
   language: Language;
   ip: string;
 }
@@ -90,6 +98,7 @@ export const fromUserDto = (user: UserDto): User => ({
   refData: user.refData,
   walletId: user.walletId,
   status: user.status,
+  kycStatus: user.kycStatus,
   language: user.language,
   ip: user.ip,
 });
@@ -109,6 +118,7 @@ export const toUserDto = (user: User): UserDto => ({
   refData: user.refData,
   walletId: user.walletId,
   status: user.status,
+  kycStatus: user.kycStatus,
   language: user.language,
   ip: user.ip,
 });

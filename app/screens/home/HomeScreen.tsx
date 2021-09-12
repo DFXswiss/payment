@@ -7,7 +7,7 @@ import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
 import { H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
-import { User, UserStatus } from "../../models/User";
+import { KycStatus, User, UserStatus } from "../../models/User";
 import { getBuyRoutes, getSellRoutes, getUser, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
@@ -44,9 +44,6 @@ const userData = (user: User) => [
 const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const device = useDevice();
-
-  // TODO: full KYC Access
-  // Button Limit erhöhen bei aktuellem KYC status display => Benutzerdaten => KYC Process starten
 
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User>();
@@ -87,7 +84,12 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const requestKyc = (): void => {
     setIsKycLoading(true);
     postKyc()
-      .then(() => NotificationService.show(t('feedback.request_submitted')))
+      .then(() => {
+        if (user){
+          user.kycStatus = KycStatus.PROCESSING;
+        }
+        NotificationService.show(t('feedback.request_submitted'));
+      })
       .catch(() => NotificationService.show(t('feedback.request_failed')))
       .finally(() => {
         setIsKycRequest(false);
@@ -132,6 +134,12 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   );
 
   const showButtons = (user && !isLoading && !device.SM) ?? false;
+  const fabButtons = [
+    { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true), visible: true },
+    { icon: "account-check", label: t("model.user.kyc"), onPress: onKyc, visible: user?.status != UserStatus.NA && user?.kycStatus == KycStatus.NA },
+    { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true), visible: true },
+    { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: false }, // TODO: reactivate
+  ];
 
   useAuthGuard(session);
 
@@ -141,12 +149,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
         <FAB.Group
           open={fabOpen}
           icon={fabOpen ? "close" : "pencil"}
-          actions={[
-            { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true) },
-            { icon: "account-check", label: t("model.user.kyc"), onPress: onKyc },
-            { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true) },
-            // { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true) }, // TODO: reactivate
-          ]}
+          actions={fabButtons.filter(b => b.visible)}
           onStateChange={({ open }: { open: boolean }) => setFabOpen(open)}
           visible={showButtons}
         />
@@ -178,7 +181,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                 <H2 text={t("model.user.your_data")} />
                 {device.SM && (
                   <View style={[AppStyles.mla, AppStyles.containerHorizontal]}>
-                    {(user?.status != UserStatus.NA) && (
+                    {(user?.status != UserStatus.NA && user?.kycStatus == KycStatus.NA) && (
                       <View style={AppStyles.mr10}>
                         <DeFiButton mode="contained" onPress={onKyc}>
                           {t("model.user.kyc")}

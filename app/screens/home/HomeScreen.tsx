@@ -33,7 +33,7 @@ const userData = (user: User) => [
   { condition: Boolean(user.country), label: "model.user.country", value: user.country?.name },
   { condition: Boolean(user.mail), label: "model.user.mail", value: user.mail },
   { condition: Boolean(user.mobileNumber), label: "model.user.mobile_number", value: user.mobileNumber },
-  { condition: Boolean(user.refData.usedRef), label: "model.user.used_ref", value: user.refData.usedRef },
+  { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef },
   { condition: Boolean(user.refData.ref), label: "model.user.own_ref", value: user.refData.ref },
   { condition: Boolean(user.refData.refCount), label: "model.user.ref_count", value: user.refData.refCount },
   { condition: Boolean(user.refData.refCountActive), label: "model.user.ref_count_active", value: user.refData.refCountActive },

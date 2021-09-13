@@ -1,20 +1,20 @@
 import React, { useState, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import DeFiModal from "../../components/util/DeFiModal";
 import Loading from "../../components/util/Loading";
 import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
 import { H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
-import { User } from "../../models/User";
-import { getBuyRoutes, getSellRoutes, getUser } from "../../services/ApiService";
+import { KycStatus, User, UserStatus } from "../../models/User";
+import { getBuyRoutes, getSellRoutes, getUser, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
 import AppLayout from "../../components/AppLayout";
 import NotificationService from "../../services/NotificationService";
-import { DataTable, FAB, Portal } from "react-native-paper";
+import { Button, DataTable, Dialog, FAB, Paragraph, Portal } from "react-native-paper";
 import { CompactCell, CompactRow } from "../../elements/Tables";
 import { useDevice } from "../../hooks/useDevice";
 import { DeFiButton } from "../../elements/Buttons";
@@ -23,6 +23,7 @@ import { BuyRoute } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
 import { join, resolve } from "../../utils/Utils";
 import useAuthGuard from "../../hooks/useAuthGuard";
+import Colors from "../../config/Colors";
 
 const userData = (user: User) => [
   { condition: Boolean(user.address), label: "model.user.address", value: user.address },
@@ -44,9 +45,6 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const device = useDevice();
 
-  // TODO: full KYC Access
-  // Button Limit erhöhen bei aktuellem KYC status display => Benutzerdaten => KYC Process starten
-
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User>();
   const [buyRoutes, setBuyRoutes] = useState<BuyRoute[]>();
@@ -55,25 +53,51 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const [isUserEdit, setIsUserEdit] = useState(false);
   const [isBuyRouteEdit, setIsBuyRouteEdit] = useState(false);
   const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
+  const [isKycRequest, setIsKycRequest] = useState(false);
+  const [isKycLoading, setIsKycLoading] = useState(false);
 
   const sellRouteEdit = (update: SetStateAction<boolean>) => {
-    const userDataComplete = user?.firstName && user?.lastName && user?.street && user?.houseNumber && user?.zip && user?.location && user?.country && user?.mobileNumber && user?.mail;
-    if (!userDataComplete && resolve(update, isSellRouteEdit)) {
-      setIsUserEdit(true)
+    if (!userDataComplete() && resolve(update, isSellRouteEdit)) {
+      setIsUserEdit(true);
     }
 
     setIsSellRouteEdit(update);
-  }
+  };
   const userEdit = (edit: boolean) => {
     setIsUserEdit(edit);
     if (!edit) {
       setIsSellRouteEdit(false);
+      setIsKycRequest(false);
     }
-  }
+  };
   const onUserChanged = (newUser: User) => {
     setUser(newUser);
     setIsUserEdit(false);
   };
+  const onKyc = () => {
+    if (!userDataComplete()) {
+      setIsUserEdit(true);
+    }
+    setIsKycRequest(true);
+  };
+
+  const requestKyc = (): void => {
+    setIsKycLoading(true);
+    postKyc()
+      .then(() => {
+        if (user){
+          user.kycStatus = KycStatus.PROCESSING;
+        }
+        NotificationService.show(t('feedback.request_submitted'));
+      })
+      .catch(() => NotificationService.show(t('feedback.request_failed')))
+      .finally(() => {
+        setIsKycRequest(false);
+        setIsKycLoading(false);
+      });
+  };
+
+  const userDataComplete = () => user?.firstName && user?.lastName && user?.street && user?.houseNumber && user?.zip && user?.location && user?.country && user?.mobileNumber && user?.mail;
 
   const reset = (): void => {
     setLoading(true);
@@ -110,6 +134,12 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   );
 
   const showButtons = (user && !isLoading && !device.SM) ?? false;
+  const fabButtons = [
+    { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true), visible: true },
+    { icon: "account-check", label: t("model.user.kyc"), onPress: onKyc, visible: user?.status != UserStatus.NA && user?.kycStatus == KycStatus.NA },
+    { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true), visible: true },
+    { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: false }, // TODO: reactivate
+  ];
 
   useAuthGuard(session);
 
@@ -119,18 +149,24 @@ const HomeScreen = ({ session }: { session?: Session }) => {
         <FAB.Group
           open={fabOpen}
           icon={fabOpen ? "close" : "pencil"}
-          actions={[
-            { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true) },
-            { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true) },
-            // { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true) }, // TODO: reactivate
-          ]}
+          actions={fabButtons.filter(b => b.visible)}
           onStateChange={({ open }: { open: boolean }) => setFabOpen(open)}
           visible={showButtons}
         />
+
+        <Dialog visible={isKycRequest && !isUserEdit} onDismiss={() => setIsKycRequest(false)} style={styles.dialog}>
+          <Dialog.Content>
+            <Paragraph>{t("model.user.kyc_request")}</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={() => setIsKycRequest(false)} color={Colors.Grey}>{t("action.abort")}</Button>
+            <DeFiButton onPress={requestKyc} loading={isKycLoading}>{t("action.send")}</DeFiButton>
+          </Dialog.Actions>
+        </Dialog>
       </Portal>
 
       <DeFiModal isVisible={isUserEdit} setIsVisible={userEdit} title={t("model.user.edit")}>
-        <UserEdit user={user} onUserChanged={onUserChanged} allDataRequired={isSellRouteEdit} />
+        <UserEdit user={user} onUserChanged={onUserChanged} allDataRequired={isSellRouteEdit || isKycRequest} />
       </DeFiModal>
 
       <SpacerV height={50} />
@@ -144,7 +180,14 @@ const HomeScreen = ({ session }: { session?: Session }) => {
               <View style={AppStyles.containerHorizontal}>
                 <H2 text={t("model.user.your_data")} />
                 {device.SM && (
-                  <View style={AppStyles.mla}>
+                  <View style={[AppStyles.mla, AppStyles.containerHorizontal]}>
+                    {(user?.status != UserStatus.NA && user?.kycStatus == KycStatus.NA) && (
+                      <View style={AppStyles.mr10}>
+                        <DeFiButton mode="contained" onPress={onKyc}>
+                          {t("model.user.kyc")}
+                        </DeFiButton>
+                      </View>
+                    )}
                     <DeFiButton mode="contained" onPress={() => setIsUserEdit(true)}>
                       {t("action.edit")}
                     </DeFiButton>
@@ -186,5 +229,12 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     </AppLayout>
   );
 };
+
+const styles = StyleSheet.create({
+  dialog: {
+    maxWidth: 300,
+    marginHorizontal: 'auto',
+  },
+});
 
 export default withSession(HomeScreen);

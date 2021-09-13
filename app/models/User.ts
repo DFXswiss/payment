@@ -28,14 +28,14 @@ export interface NewUserDto {
   address: string;
   signature: string;
   walletId: number;
-  usedRef?: string;
+  usedRef: string;
 }
 
 export interface NewUser {
   address: string;
   signature: string;
   walletId: number;
-  usedRef?: string;
+  usedRef: string;
 }
 
 export const toNewUserDto = (user: NewUser): NewUserDto => ({
@@ -56,6 +56,7 @@ export interface UserDto extends NewUserDto {
   mail: string;
   phone: string;
 
+  usedRef: string;
   refData: RefData;
 
   status: UserStatus;
@@ -75,6 +76,7 @@ export interface User extends NewUser {
   mail: string;
   mobileNumber: string;
 
+  usedRef: string;
   refData: RefData;
 
   status: UserStatus;
@@ -95,6 +97,7 @@ export const fromUserDto = (user: UserDto): User => ({
   country: user.country,
   mail: user.mail,
   mobileNumber: user.phone,
+  usedRef: user.usedRef,
   refData: user.refData,
   walletId: user.walletId,
   status: user.status,
@@ -115,6 +118,7 @@ export const toUserDto = (user: User): UserDto => ({
   country: user.country,
   mail: user.mail,
   phone: user.mobileNumber,
+  usedRef: user.usedRef,
   refData: user.refData,
   walletId: user.walletId,
   status: user.status,

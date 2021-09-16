@@ -39,7 +39,18 @@ const userData = (user: User) => [
   { condition: Boolean(user.refData.refCount), label: "model.user.ref_count", value: user.refData.refCount },
   { condition: Boolean(user.refData.refCountActive), label: "model.user.ref_count_active", value: user.refData.refCountActive },
   { condition: Boolean(user.refData.refVolume), label: "model.user.ref_volume", value: user.refData.refVolume },
+  { condition: user.userVolume.buyVolume > 0, label: "model.user.user_buy_volume", value: user.userVolume.buyVolume },
+  { condition: user.userVolume.sellVolume > 0, label: "model.user.user_sell_volume", value: user.userVolume.sellVolume },
+  { condition: user.kycStatus != KycStatus.NA, label: "model.user.kyc_status", value: user.kycStatus },
+  { condition: true,label: "model.user.buy_limit", value: Limit(user)},
 ];
+
+const Limit = function(user: User) {
+  if(user.kycStatus===KycStatus.NA || user.kycStatus===KycStatus.WAIT_CHAT_BOT) {
+    return "900€ pro Tag";
+  }else{
+    return "50000€ pro Tag";}
+}
 
 const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
@@ -86,7 +97,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     postKyc()
       .then(() => {
         if (user){
-          user.kycStatus = KycStatus.PROCESSING;
+          user.kycStatus = KycStatus.WAIT_CHAT_BOT;
         }
         NotificationService.show(t('feedback.request_submitted'));
       })

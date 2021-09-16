@@ -86,8 +86,8 @@
         "edit": "Modificare i dati dell'utente",
         "kyc": "KYC",
         "kyc_request": "Vuole inviare la richiesta KYC?",
+        "kyc_status": "KYC stato",
         "data_missing": "Si prega di compilare completamente i dati dell'utente prima!",
-
         "your_data": "I tuoi dati utente",
         "data": "Dati utente",
         "legacy_address": "Indirizzo dell'eredità",
@@ -108,7 +108,10 @@
         "used_ref": "Codice di riferimento usato",
         "ref_count": "Numero delle vostre Ref-Users",
         "ref_count_active": "Numero di Ref-Users attive",
-        "ref_volume": "Ref-Volume pagato (€)"
+        "ref_volume": "Ref-Volume pagato (€)",
+        "user_buy_volume": "Il tuo investimento (€)",
+        "user_sell_volume": "Volume erogato (€)",
+        "buy_limit": "Il tuo limite di deposito"
       },
       "route": {
         "routes": "Routen di pagamento",

@@ -106,10 +106,11 @@
         "used_ref": "Ref-Code used",
         "ref_count": "Number of Ref-Users",
         "ref_count_active": "Number of active Ref-Users",
-        "ref_volume": "Ref-Volume paid in (€)",
-        "user_buy_volume": "Your investment (€)",
-        "user_sell_volume": "Volume paid out (€)",
-        "buy_limit": "Your deposit limit"
+        "ref_volume": "Ref-Volume paid in",
+        "user_buy_volume": "Your investment",
+        "user_sell_volume": "Volume paid out",
+        "buy_limit": "Your deposit limit",
+        "per_day": "per day"
       },
       "route": {
         "routes": "Payment Routes",

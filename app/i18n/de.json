@@ -110,11 +110,12 @@
         "used_ref": "Verwendeter Ref-Code",
         "own_ref": "Ref-Code zum Verteilen",
         "ref_count": "Anzahl Ref-Users",
-        "ref_count_active": "Anzahl aktiver Ref-Users",
-        "ref_volume": "Ref-Volumen (€)",
-        "user_buy_volume": "Deine Investition (€)",
-        "user_sell_volume": "Ausgezahltes Volumen (€)",
-        "buy_limit": "Dein Einzahlungslimit"
+        "ref_count_active": "Anzahl aktive Ref-Users",
+        "ref_volume": "Ref-Volumen",
+        "user_buy_volume": "Deine Investition",
+        "user_sell_volume": "Ausgezahltes Volumen",
+        "buy_limit": "Dein Einzahlungslimit",
+        "per_day": "pro Tag"
       },
       "route": {
         "routes": "Payment Routen",

@@ -108,10 +108,11 @@
         "used_ref": "Code de référence utilisé",
         "ref_count": "Nombre de vos Ref-Users",
         "ref_count_active": "Nombre de Ref-Users actives",
-        "ref_volume": "Ref-Volume versé (€)",
-        "user_buy_volume": "Votre investissement (€)",
-        "user_sell_volume": "Volume déboursé (€)",
-        "buy_limit": "Votre limite de dépôt"
+        "ref_volume": "Ref-Volume versé",
+        "user_buy_volume": "Votre investissement",
+        "user_sell_volume": "Volume déboursé",
+        "buy_limit": "Votre limite de dépôt",
+        "per_day": "par jour"
       },
       "route": {
         "routes": "Routes de paiement",

@@ -38,7 +38,7 @@
       "code_and_number": "Si prega di compilare il prefisso e il numero"
     },
     "session": {
-      "instructions": "--> Istruzioni scritte con immagini <--",
+      "instructions": "Manuale di registrazione",
       "instruction_link": "https://defichain-wiki.com/wiki/DFX_manuelle_Registrierung",
       "sign_up": "Accedi / Registrati",
       "signing_command": "Comando del segno",

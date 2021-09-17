@@ -6,6 +6,7 @@ import { Country } from "../models/Country";
 import { Fiat } from "../models/Fiat";
 import { Language } from "../models/Language";
 import { Payment, toPaymentDto } from "../models/Payment";
+import { Ref } from "../models/Ref";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import { fromUserDto, NewUser, toNewUserDto, toUserDto, User, UserDto } from "../models/User";
 import AuthService, { Credentials, Session } from "./AuthService";
@@ -13,6 +14,7 @@ import AuthService, { Credentials, Session } from "./AuthService";
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
 const UserUrl = "user";
+const RefUrl = "ref";
 const BuyUrl = "buy";
 const SellUrl = "sell";
 const AssetUrl = "asset";
@@ -53,6 +55,11 @@ export const putUserLanguage = (language: Language): Promise<void> => {
   return AuthService.Session
     .then((session) => fetchFrom<void>(UserUrl, "PUT", { address: session.address, language }));
 };
+
+export const getRefCode = (): Promise<string> => {
+  return fetchFrom<Ref>(RefUrl)
+    .then((res) => res.ref);
+}
 
 // --- PAYMENT ROUTES --- //
 export const getBuyRoutes = (): Promise<BuyRoute[]> => {

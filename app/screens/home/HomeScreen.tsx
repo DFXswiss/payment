@@ -130,7 +130,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
 
   const limit = (user: User): string => {
-    const limit = user.kycStatus === KycStatus.NA || user.kycStatus === KycStatus.WAIT_CHAT_BOT ? 900 : 50000;
+    const limit = user.kycStatus === KycStatus.NA || user.kycStatus === KycStatus.WAIT_CHAT_BOT ? 900 : 100000;
     return `${limit} € ${t("model.user.per_day")}`;
   };
 

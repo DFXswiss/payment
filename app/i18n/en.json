@@ -110,7 +110,8 @@
         "user_buy_volume": "Your investment",
         "user_sell_volume": "Volume paid out",
         "buy_limit": "Your deposit limit",
-        "per_day": "per day"
+        "per_day": "per day",
+        "edit_disallowed": "Changes to the user data are no longer possible due to your KYC status. Please contact our support at contact@dfx.swiss."
       },
       "route": {
         "routes": "Payment Routes",

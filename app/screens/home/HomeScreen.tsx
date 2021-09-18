@@ -178,7 +178,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
         </Dialog>
       </Portal>
 
-      <DeFiModal isVisible={isUserEdit} setIsVisible={userEdit} title={t("model.user.edit")}>
+      <DeFiModal isVisible={isUserEdit} setIsVisible={userEdit} title={t("model.user.edit")} style={{ width: 500 }}>
         <UserEdit user={user} onUserChanged={onUserChanged} allDataRequired={isSellRouteEdit || isKycRequest} />
       </DeFiModal>
 

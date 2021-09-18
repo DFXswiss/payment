@@ -84,8 +84,8 @@
         "edit": "Edit user data",
         "kyc": "KYC",
         "kyc_request": "Do you want to submit the KYC request?",
+        "kyc_status": "KYC status",
         "data_missing": "Please fill out your user data completely first!",
-
         "your_data": "Your user data",
         "data": "User data",
         "legacy_address": "Legacy address",
@@ -103,10 +103,14 @@
         "mail": "E-mail address",
         "mobile_number": "Mobile number",
         "ref": "Referral code",
-        "used_ref": "Ref code used",
-        "ref_count": "Ref users",
-        "ref_count_active": "Active ref users",
-        "ref_volume": "Ref volume paid in (€)"
+        "used_ref": "Ref-Code used",
+        "ref_count": "Number of Ref-Users",
+        "ref_count_active": "Number of active Ref-Users",
+        "ref_volume": "Ref-Volume paid in",
+        "user_buy_volume": "Your investment",
+        "user_sell_volume": "Volume paid out",
+        "buy_limit": "Your deposit limit",
+        "per_day": "per day"
       },
       "route": {
         "routes": "Payment Routes",

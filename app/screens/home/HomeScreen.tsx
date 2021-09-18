@@ -25,22 +25,6 @@ import { join, resolve } from "../../utils/Utils";
 import useAuthGuard from "../../hooks/useAuthGuard";
 import Colors from "../../config/Colors";
 
-const userData = (user: User) => [
-  { condition: Boolean(user.address), label: "model.user.address", value: user.address },
-  { condition: Boolean(user.firstName || user.lastName), label: "model.user.name", value: join([user.firstName, user.lastName], " ") },
-  { condition: Boolean(user.street || user.houseNumber), label: "model.user.home", value: join([user.street, user.houseNumber], " ") },
-  { condition: Boolean(user.zip), label: "model.user.zip", value: user.zip },
-  { condition: Boolean(user.location), label: "model.user.location", value: user.location },
-  { condition: Boolean(user.country), label: "model.user.country", value: user.country?.name },
-  { condition: Boolean(user.mail), label: "model.user.mail", value: user.mail },
-  { condition: Boolean(user.mobileNumber), label: "model.user.mobile_number", value: user.mobileNumber },
-  { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef },
-  { condition: Boolean(user.refData.ref), label: "model.user.own_ref", value: user.refData.ref },
-  { condition: Boolean(user.refData.refCount), label: "model.user.ref_count", value: user.refData.refCount },
-  { condition: Boolean(user.refData.refCountActive), label: "model.user.ref_count_active", value: user.refData.refCountActive },
-  { condition: Boolean(user.refData.refVolume), label: "model.user.ref_volume", value: user.refData.refVolume },
-];
-
 const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const device = useDevice();
@@ -86,7 +70,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     postKyc()
       .then(() => {
         if (user){
-          user.kycStatus = KycStatus.PROCESSING;
+          user.kycStatus = KycStatus.WAIT_CHAT_BOT;
         }
         NotificationService.show(t('feedback.request_submitted'));
       })
@@ -142,6 +126,35 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   ];
 
   useAuthGuard(session);
+
+
+
+  const limit = (user: User): string => {
+    const limit = (user.language.symbol,user.kycStatus != KycStatus.COMPLETED ? 900 : 100000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+    return `${limit} € ${t("model.user.per_day")}`;
+  };
+
+
+
+  const userData = (user: User) => [
+    { condition: Boolean(user.address), label: "model.user.address", value: user.address },
+    { condition: Boolean(user.firstName || user.lastName), label: "model.user.name", value: join([user.firstName, user.lastName], " ") },
+    { condition: Boolean(user.street || user.houseNumber), label: "model.user.home", value: join([user.street, user.houseNumber], " ") },
+    { condition: Boolean(user.zip), label: "model.user.zip", value: user.zip },
+    { condition: Boolean(user.location), label: "model.user.location", value: user.location },
+    { condition: Boolean(user.country), label: "model.user.country", value: user.country?.name },
+    { condition: Boolean(user.mail), label: "model.user.mail", value: user.mail },
+    { condition: Boolean(user.mobileNumber), label: "model.user.mobile_number", value: user.mobileNumber },
+    { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef },
+    { condition: Boolean(user.refData.ref), label: "model.user.own_ref", value: user.refData.ref },
+    { condition: Boolean(user.refData.refCount), label: "model.user.ref_count", value: user.refData.refCount },
+    { condition: Boolean(user.refData.refCountActive), label: "model.user.ref_count_active", value: user.refData.refCountActive },
+    { condition: Boolean(user.refData.refVolume), label: "model.user.ref_volume", value: `${(user.language.symbol,user.refData.refVolume).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} €` },
+    { condition: Boolean(user.userVolume.buyVolume), label: "model.user.user_buy_volume", value: `${(user.language.symbol,user.userVolume.buyVolume).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} €` },
+    { condition: Boolean(user.userVolume.sellVolume), label: "model.user.user_sell_volume", value: `${(user.language.symbol,user.userVolume.sellVolume).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} €` },
+    { condition: user.kycStatus != KycStatus.NA, label: "model.user.kyc_status", value: user.kycStatus },
+    { condition: true,label: "model.user.buy_limit", value: limit(user)},
+  ];
 
   return (
     <AppLayout>

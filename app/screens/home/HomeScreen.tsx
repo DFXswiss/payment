@@ -130,8 +130,9 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
 
   const limit = (user: User): string => {
-    const limit = user.kycStatus === KycStatus.NA || user.kycStatus === KycStatus.WAIT_CHAT_BOT ? 900 : 100000;
-    return `${limit} € ${t("model.user.per_day")}`;
+    const limit = user.kycStatus != KycStatus.COMPLETED ? 900 : 100000;
+    const separator = user.language.symbol === 'DE' ? '.' : ','
+    return `${limit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, seperator)} € ${t("model.user.per_day")}`;
   };
 
   const userData = (user: User) => [

@@ -132,7 +132,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const limit = (user: User): string => {
     const limit = user.kycStatus != KycStatus.COMPLETED ? 900 : 100000;
     const separator = user.language.symbol === 'DE' ? '.' : ','
-    return `${limit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, seperator)} € ${t("model.user.per_day")}`;
+    return `${limit.toString().replace(/\B(?=(\d{3})+(?!\d))/g, separator)} € ${t("model.user.per_day")}`;
   };
 
   const userData = (user: User) => [

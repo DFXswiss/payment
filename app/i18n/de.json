@@ -108,8 +108,8 @@
         "ref": "Referral-Code",
         "used_ref": "Verwendeter Ref-Code",
         "own_ref": "Ref-Code zum Verteilen",
-        "ref_count": "Anzahl Ref-Users",
-        "ref_count_active": "Anzahl aktiver Ref-Users",
+        "ref_count": "Ref-User",
+        "ref_count_active": "Aktive Ref-User",
         "ref_volume": "Ref-Volumen (€)"
 
       },

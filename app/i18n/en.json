@@ -38,7 +38,7 @@
       "code_and_number": "Please fill in area code and number"
     },
     "session": {
-      "instructions": "--> Written instructions with pictures <--",
+      "instructions": "Registration manual",
       "instruction_link": "https://defichain-wiki.com/wiki/DFX_manual_registration",
       "sign_up": "Log in / Register",
       "signing_command": "Sign command",

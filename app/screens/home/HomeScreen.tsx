@@ -25,6 +25,8 @@ import { join, resolve } from "../../utils/Utils";
 import useAuthGuard from "../../hooks/useAuthGuard";
 import Colors from "../../config/Colors";
 
+const formatAmount = (amount: number): string => amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+
 const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const device = useDevice();
@@ -69,12 +71,12 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     setIsKycLoading(true);
     postKyc()
       .then(() => {
-        if (user){
+        if (user) {
           user.kycStatus = KycStatus.WAIT_CHAT_BOT;
         }
-        NotificationService.show(t('feedback.request_submitted'));
+        NotificationService.show(t("feedback.request_submitted"));
       })
-      .catch(() => NotificationService.show(t('feedback.request_failed')))
+      .catch(() => NotificationService.show(t("feedback.request_failed")))
       .finally(() => {
         setIsKycRequest(false);
         setIsKycLoading(false);
@@ -127,14 +129,10 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
   useAuthGuard(session);
 
-
-
   const limit = (user: User): string => {
-    const limit = (user.kycStatus != KycStatus.COMPLETED ? 900 : 100000).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
-    return `${limit} € ${t("model.user.per_day")}`;
+    const limit = user.kycStatus != KycStatus.COMPLETED ? 900 : 100000;
+    return `${formatAmount(limit)} € ${t("model.user.per_day")}`;
   };
-
-
 
   const userData = (user: User) => [
     { condition: Boolean(user.address), label: "model.user.address", value: user.address },
@@ -149,11 +147,11 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { condition: Boolean(user.refData.ref), label: "model.user.own_ref", value: user.refData.ref },
     { condition: Boolean(user.refData.refCount), label: "model.user.ref_count", value: user.refData.refCount },
     { condition: Boolean(user.refData.refCountActive), label: "model.user.ref_count_active", value: user.refData.refCountActive },
-    { condition: Boolean(user.refData.refVolume), label: "model.user.ref_volume", value: `${user.refData.refVolume.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} €` },
-    { condition: Boolean(user.userVolume.buyVolume), label: "model.user.user_buy_volume", value: `${user.userVolume.buyVolume.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} €` },
-    { condition: Boolean(user.userVolume.sellVolume), label: "model.user.user_sell_volume", value: `${user.userVolume.sellVolume.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} €` },
+    { condition: Boolean(user.refData.refVolume), label: "model.user.ref_volume", value: `${formatAmount(user.refData.refVolume)} €` },
+    { condition: Boolean(user.userVolume.buyVolume), label: "model.user.user_buy_volume", value: `${formatAmount(user.userVolume.buyVolume)} €` },
+    { condition: Boolean(user.userVolume.sellVolume), label: "model.user.user_sell_volume", value: `${formatAmount(user.userVolume.sellVolume)} €` },
     { condition: user.kycStatus != KycStatus.NA, label: "model.user.kyc_status", value: user.kycStatus },
-    { condition: true,label: "model.user.buy_limit", value: limit(user)},
+    { condition: true, label: "model.user.buy_limit", value: limit(user) },
   ];
 
   return (
@@ -162,7 +160,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
         <FAB.Group
           open={fabOpen}
           icon={fabOpen ? "close" : "pencil"}
-          actions={fabButtons.filter(b => b.visible)}
+          actions={fabButtons.filter((b) => b.visible)}
           onStateChange={({ open }: { open: boolean }) => setFabOpen(open)}
           visible={showButtons}
         />
@@ -194,7 +192,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                 <H2 text={t("model.user.your_data")} />
                 {device.SM && (
                   <View style={[AppStyles.mla, AppStyles.containerHorizontal]}>
-                    {(user?.status != UserStatus.NA && user?.kycStatus == KycStatus.NA) && (
+                    {user?.status != UserStatus.NA && user?.kycStatus == KycStatus.NA && (
                       <View style={AppStyles.mr10}>
                         <DeFiButton mode="contained" onPress={onKyc}>
                           {t("model.user.kyc")}
@@ -246,7 +244,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 const styles = StyleSheet.create({
   dialog: {
     maxWidth: 300,
-    marginHorizontal: 'auto',
+    marginHorizontal: "auto",
   },
 });
 

@@ -105,6 +105,7 @@
         "mail": "Adresse électronique",
         "mobile_number": "Numéro de téléphone mobile",
         "ref": "Code de référence",
+        "copy_ref": "Copie Ref-Link",
         "used_ref": "Code de référence utilisé",
         "ref_count": "Ref-users",
         "ref_count_active": "Ref-users actives",

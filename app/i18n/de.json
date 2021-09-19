@@ -107,6 +107,7 @@
         "mail": "E-Mail Adresse",
         "mobile_number": "Handynummer",
         "ref": "Referral-Code",
+        "copy_ref": "Ref-Link kopieren",
         "used_ref": "Verwendeter Ref-Code",
         "own_ref": "Ref-Code zum Verteilen",
         "ref_count": "Ref-User",

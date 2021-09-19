@@ -24,11 +24,13 @@ import { SellRoute } from "../../models/SellRoute";
 import { join, resolve } from "../../utils/Utils";
 import useAuthGuard from "../../hooks/useAuthGuard";
 import Colors from "../../config/Colors";
+import { Environment } from "../../env/Environment";
+import Clipboard from "expo-clipboard";
 
 const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const device = useDevice();
-
+  const BaseUrl = Environment.api.baseUrl;
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User>();
   const [buyRoutes, setBuyRoutes] = useState<BuyRoute[]>();
@@ -194,6 +196,13 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                 <H2 text={t("model.user.your_data")} />
                 {device.SM && (
                   <View style={[AppStyles.mla, AppStyles.containerHorizontal]}>
+                    {(user?.refData?.ref) && (
+                      <View style={AppStyles.mr10}>
+                        <DeFiButton mode="contained" onPress={() => Clipboard.setString(`${BaseUrl}/ref?code=${user.refData.ref}`)}>
+                          {t("model.user.copy_ref")}
+                        </DeFiButton>
+                      </View>
+                    )}
                     {(user?.status != UserStatus.NA && user?.kycStatus == KycStatus.NA) && (
                       <View style={AppStyles.mr10}>
                         <DeFiButton mode="contained" onPress={onKyc}>

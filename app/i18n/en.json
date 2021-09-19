@@ -103,6 +103,7 @@
         "mail": "E-mail address",
         "mobile_number": "Mobile number",
         "ref": "Referral code",
+        "copy_ref": "Copy Ref-Link",
         "used_ref": "Ref-Code used",
         "ref_count": "Number of Ref-Users",
         "ref_count_active": "Number of active Ref-Users",

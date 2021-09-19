@@ -38,7 +38,7 @@
       "code_and_number": "Please fill in area code and number"
     },
     "session": {
-      "instructions": "--> Written instructions with pictures <--",
+      "instructions": "Registration manual",
       "instruction_link": "https://defichain-wiki.com/wiki/DFX_manual_registration",
       "sign_up": "Log in / Register",
       "signing_command": "Sign command",
@@ -84,8 +84,8 @@
         "edit": "Edit user data",
         "kyc": "KYC",
         "kyc_request": "Do you want to submit the KYC request?",
+        "kyc_status": "KYC status",
         "data_missing": "Please fill out your user data completely first!",
-
         "your_data": "Your user data",
         "data": "User data",
         "legacy_address": "Legacy address",
@@ -103,10 +103,16 @@
         "mail": "E-mail address",
         "mobile_number": "Mobile number",
         "ref": "Referral code",
-        "used_ref": "Ref-Code used",
-        "ref_count": "Number of Ref-Users",
-        "ref_count_active": "Number of active Ref-Users",
-        "ref_volume": "Ref-Volume paid in (€)"
+        "copy_ref": "Copy Ref-Link",
+        "used_ref": "Ref code used",
+        "ref_count": "Ref users",
+        "ref_count_active": "Active ref users",
+        "ref_volume": "Ref volume paid",
+        "user_buy_volume": "Your investment",
+        "user_sell_volume": "Volume paid out",
+        "buy_limit": "Your deposit limit",
+        "per_day": "per day",
+        "edit_disallowed": "Changes to the user data are no longer possible due to your KYC status. Please contact our support at support@dfx.swiss."
       },
       "route": {
         "routes": "Payment Routes",

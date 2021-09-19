@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { Country } from "../../models/Country";
-import { User } from "../../models/User";
+import { KycStatus, User } from "../../models/User";
 import { getCountries, putUser } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import DeFiPicker from "../form/DeFiPicker";
@@ -70,6 +70,8 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
     usedRef: Validations.Ref,
   });
 
+  const hasKyc = user?.kycStatus != KycStatus.NA;
+
   return isLoading ? (
     <ActivityIndicator size="large" />
   ) : (
@@ -80,22 +82,28 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
           <SpacerV />
         </>
       )}
+      {hasKyc && (
+        <>
+          <Alert label={t("model.user.edit_disallowed")} />
+          <SpacerV />
+        </>
+      )}
       <View style={AppStyles.containerHorizontalWrap}>
-        <Input name="firstName" label={t("model.user.first_name")} />
+        <Input name="firstName" label={t("model.user.first_name")} disabled={hasKyc} />
         <SpacerH />
-        <Input name="lastName" label={t("model.user.last_name")} />
+        <Input name="lastName" label={t("model.user.last_name")} disabled={hasKyc} />
       </View>
       <SpacerV />
       <View style={AppStyles.containerHorizontalWrap}>
-        <Input name="street" label={t("model.user.street")} />
+        <Input name="street" label={t("model.user.street")} disabled={hasKyc} />
         <SpacerH />
-        <Input name="houseNumber" label={t("model.user.house_number")} />
+        <Input name="houseNumber" label={t("model.user.house_number")} disabled={hasKyc} />
       </View>
       <SpacerV />
       <View style={AppStyles.containerHorizontalWrap}>
-        <Input name="zip" label={t("model.user.zip")} />
+        <Input name="zip" label={t("model.user.zip")} disabled={hasKyc} />
         <SpacerH />
-        <Input name="location" label={t("model.user.location")} />
+        <Input name="location" label={t("model.user.location")} disabled={hasKyc} />
       </View>
       <SpacerV />
       <DeFiPicker
@@ -104,15 +112,17 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
         items={countries.filter((c) => c.enable)}
         idProp="id"
         labelProp="name"
+        disabled={hasKyc}
       />
       <SpacerV />
-      <Input name="mail" label={t("model.user.mail")} />
+      <Input name="mail" label={t("model.user.mail")} disabled={hasKyc} />
       <SpacerV />
       <PhoneNumber
         name="mobileNumber"
         label={t("model.user.mobile_number")}
         placeholder="6912345678"
         wrap={!device.SM}
+        disabled={hasKyc}
       />
       <SpacerV />
       <Input name="usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />

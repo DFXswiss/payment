@@ -39,7 +39,7 @@
       "code_and_number": "Bitte Vorwahl und Nummer ausfüllen"
     },
     "session": {
-      "instructions": "--> Schriftliche Anleitung mit Bilder <--",
+      "instructions": "Anleitung zur Registrierung",
       "instruction_link": "https://defichain-wiki.com/wiki/DFX_manuelle_Registrierung",
       "sign_up": "Anmelden / Registrieren",
       "signing_command": "Befehl zum Signieren",
@@ -88,6 +88,7 @@
         "edit": "Benutzerdaten bearbeiten",
         "kyc": "KYC",
         "kyc_request": "Möchten Sie die KYC-Anfrage absenden?",
+        "kyc_status": "KYC Status",
         "data_missing": "Füllen Sie bitte zuerst Ihre Benutzerdaten komplett aus!",
         "your_data": "Deine Benutzerdaten",
         "data": "Benutzerdaten",
@@ -106,12 +107,17 @@
         "mail": "E-Mail Adresse",
         "mobile_number": "Handynummer",
         "ref": "Referral-Code",
+        "copy_ref": "Ref-Link kopieren",
         "used_ref": "Verwendeter Ref-Code",
         "own_ref": "Ref-Code zum Verteilen",
-        "ref_count": "Anzahl Ref-Users",
-        "ref_count_active": "Anzahl aktiver Ref-Users",
-        "ref_volume": "Ref-Volumen (€)"
-
+        "ref_count": "Ref-User",
+        "ref_count_active": "Aktive Ref-User",
+        "ref_volume": "Ref-Volumen",
+        "user_buy_volume": "Deine Investition",
+        "user_sell_volume": "Ausgezahltes Volumen",
+        "buy_limit": "Dein Einzahlungslimit",
+        "per_day": "pro Tag",
+        "edit_disallowed": "Änderungen an den Benutzerdaten sind aufgrund deines KYC-Status nicht mehr möglich. Bitte wende dich dafür an unseren Support unter support@dfx.swiss."
       },
       "route": {
         "routes": "Payment Routen",

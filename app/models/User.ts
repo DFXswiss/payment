@@ -1,7 +1,5 @@
 import { Country } from "./Country";
 import { Language } from "./Language";
-import { RefData } from "./RefData";
-
 // TODO: birthday, staatsangehörigkeit, language, email-settings, KYC status, gebühr
 
 export enum UserRole {
@@ -19,9 +17,12 @@ export enum UserStatus {
 }
 
 export enum KycStatus {
-  NA = 'NA',
-  PROCESSING = 'Processing',
-  COMPLETED = 'Completed',
+  NA = "NA",
+  WAIT_CHAT_BOT = "Chatbot",
+  WAIT_VERIFY_ADDRESS = "Address",
+  WAIT_VERIFY_ID = "Address",
+  WAIT_VERIFY_MANUAL = "Manual",
+  COMPLETED = "Completed",
 }
 
 export interface NewUserDto {
@@ -36,6 +37,18 @@ export interface NewUser {
   signature: string;
   walletId: number;
   usedRef: string;
+}
+
+export interface RefData {
+  ref: string;
+  refCount: number;
+  refCountActive: number;
+  refVolume: number;
+}
+
+export interface UserVolume {
+  buyVolume: number;
+  sellVolume: number;
 }
 
 export const toNewUserDto = (user: NewUser): NewUserDto => ({
@@ -58,7 +71,7 @@ export interface UserDto extends NewUserDto {
 
   usedRef: string;
   refData: RefData;
-
+  userVolume: UserVolume;
   status: UserStatus;
   kycStatus: KycStatus;
   language: Language;
@@ -78,7 +91,7 @@ export interface User extends NewUser {
 
   usedRef: string;
   refData: RefData;
-
+  userVolume: UserVolume;
   status: UserStatus;
   kycStatus: KycStatus;
   language: Language;
@@ -99,6 +112,7 @@ export const fromUserDto = (user: UserDto): User => ({
   mobileNumber: user.phone,
   usedRef: user.usedRef,
   refData: user.refData,
+  userVolume: user.userVolume,
   walletId: user.walletId,
   status: user.status,
   kycStatus: user.kycStatus,
@@ -120,6 +134,7 @@ export const toUserDto = (user: User): UserDto => ({
   phone: user.mobileNumber,
   usedRef: user.usedRef,
   refData: user.refData,
+  userVolume: user.userVolume,
   walletId: user.walletId,
   status: user.status,
   kycStatus: user.kycStatus,

@@ -7,10 +7,9 @@ import Form from "../components/form/Form";
 import Colors from "../config/Colors";
 import Routes from "../config/Routes";
 import { SpacerH, SpacerV } from "../elements/Spacers";
-import { Alert, H2, H3 } from "../elements/Texts";
+import { Alert, H1, H3 } from "../elements/Texts";
 import SessionService from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
-import VideoPlayer from "../components/util/VideoPlayer";
 import { Environment } from "../env/Environment";
 import Input from "../components/form/Input";
 import AppLayout from "../components/AppLayout";
@@ -124,14 +123,13 @@ const LoginScreen = () => {
     <AppLayout>
       <View style={[AppStyles.container, AppStyles.alignCenter]}>
         <SpacerV height={20} />
-        <VideoPlayer src="https://www.youtube.com/embed/0C50S1GhBu8" maxWidth={600} />
-        <SpacerV />
+        <H1 text={t("session.sign_up")} />
         <DeFiButton onPress={openInstructions} compact>
           {t("session.instructions")}
         </DeFiButton>
 
-        <SpacerV height={30} />
-        <H2 text={t("session.sign_up")} />
+        <SpacerV />
+
         <View style={AppStyles.singleColFormContainer}>
           <Form
             control={control}

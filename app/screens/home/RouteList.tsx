@@ -178,7 +178,6 @@ const RouteList = ({
               </DeFiButton>
             </View>
             <View style={AppStyles.ml10}>
-              {/* TODO: SonarLink */}
               {/* TODO: reactivate */}
               <DeFiButton mode="contained" onPress={() => setIsSellRouteEdit(true)} disabled={true}>
                 {t("model.route.sell")}

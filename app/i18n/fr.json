@@ -38,7 +38,7 @@
       "code_and_number": "Veuillez indiquer l'indicatif régional et le numéro"
     },
     "session": {
-      "instructions": "--> Instructions écrites avec photos <--",
+      "instructions": "Guide d'enregistrement",
       "instruction_link": "https://defichain-wiki.com/wiki/DFX_manuelle_Registrierung",
       "sign_up": "Se connecter / S'enregistrer",
       "signing_command": "Commande de signes",
@@ -86,8 +86,8 @@
         "edit": "Modifier les données de l'utilisateur",
         "kyc": "KYC",
         "kyc_request": "Voulez-vous envoyer la demande de KYC ?",
+        "kyc_status": "KYC statut",
         "data_missing": "Veuillez d'abord remplir complètement vos données d'utilisateur !",
-
         "your_data": "Vos données d'utilisateur",
         "data": "Données de l'utilisateur",
         "legacy_address": "Legacy Adresse",
@@ -105,10 +105,16 @@
         "mail": "Adresse électronique",
         "mobile_number": "Numéro de téléphone mobile",
         "ref": "Code de référence",
+        "copy_ref": "Copie Ref-Link",
         "used_ref": "Code de référence utilisé",
-        "ref_count": "Nombre de vos Ref-Users",
-        "ref_count_active": "Nombre de Ref-Users actives",
-        "ref_volume": "Ref-Volume versé (€)"
+        "ref_count": "Ref-users",
+        "ref_count_active": "Ref-users actives",
+        "ref_volume": "Ref-volume versé",
+        "user_buy_volume": "Votre investissement",
+        "user_sell_volume": "Volume déboursé",
+        "buy_limit": "Votre limite de dépôt",
+        "per_day": "par jour",
+        "edit_disallowed": "Les modifications des données de l'utilisateur ne sont plus possibles en raison de votre statut KYC. Veuillez contacter notre équipe d'assistance à l'adresse support@dfx.swiss."
       },
       "route": {
         "routes": "Routes de paiement",

@@ -104,15 +104,15 @@
         "mobile_number": "Mobile number",
         "ref": "Referral code",
         "copy_ref": "Copy Ref-Link",
-        "used_ref": "Ref-Code used",
-        "ref_count": "Number of Ref-Users",
-        "ref_count_active": "Number of active Ref-Users",
-        "ref_volume": "Ref-Volume paid in",
+        "used_ref": "Ref code used",
+        "ref_count": "Ref users",
+        "ref_count_active": "Active ref users",
+        "ref_volume": "Ref volume paid",
         "user_buy_volume": "Your investment",
         "user_sell_volume": "Volume paid out",
         "buy_limit": "Your deposit limit",
         "per_day": "per day",
-        "edit_disallowed": "Changes to the user data are no longer possible due to your KYC status. Please contact our support at contact@dfx.swiss."
+        "edit_disallowed": "Changes to the user data are no longer possible due to your KYC status. Please contact our support at support@dfx.swiss."
       },
       "route": {
         "routes": "Payment Routes",

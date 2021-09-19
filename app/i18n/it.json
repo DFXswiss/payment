@@ -107,14 +107,14 @@
         "ref": "Codice di riferimento",
         "copy_ref": "Copiare Ref-Link",
         "used_ref": "Codice di riferimento usato",
-        "ref_count": "Numero delle vostre Ref-Users",
-        "ref_count_active": "Numero di Ref-Users attive",
-        "ref_volume": "Ref-Volume pagato",
+        "ref_count": "Ref-users",
+        "ref_count_active": "Ref-users attive",
+        "ref_volume": "Ref-volume pagato",
         "user_buy_volume": "Il tuo investimento",
         "user_sell_volume": "Volume erogato",
         "buy_limit": "Il tuo limite di deposito",
         "per_day": "al giorno",
-        "edit_disallowed": "Non è più possibile modificare i dati dell'utente a causa del suo stato KYC. Si prega di contattare il nostro team di supporto a contact@dfx.swiss."
+        "edit_disallowed": "Non è più possibile modificare i dati dell'utente a causa del suo stato KYC. Si prega di contattare il nostro team di supporto a support@dfx.swiss."
       },
       "route": {
         "routes": "Routen di pagamento",

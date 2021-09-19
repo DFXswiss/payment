@@ -112,6 +112,7 @@ const PhoneNumber = ({
                 disabled={disabled}
                 error={Boolean(error)}
                 onSubmitEditing={onSubmit}
+                style={AppStyles.cell}
               />
             </View>
             <HelperText type="error" visible={Boolean(error)}>

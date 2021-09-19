@@ -113,7 +113,8 @@
         "user_buy_volume": "Votre investissement",
         "user_sell_volume": "Volume déboursé",
         "buy_limit": "Votre limite de dépôt",
-        "per_day": "par jour"
+        "per_day": "par jour",
+        "edit_disallowed": "Les modifications des données de l'utilisateur ne sont plus possibles en raison de votre statut KYC. Veuillez contacter notre équipe d'assistance à l'adresse contact@dfx.swiss."
       },
       "route": {
         "routes": "Routes de paiement",

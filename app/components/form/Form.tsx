@@ -43,7 +43,7 @@ const Form = ({ children, control, rules, errors, disabled = false, onSubmit }: 
         control: control,
         rules: rules[element.props.name],
         error: errors[element.props.name],
-        disabled: disabled,
+        disabled: element.props.disabled || disabled,
         onSubmit: onSubmit,
       };
     }

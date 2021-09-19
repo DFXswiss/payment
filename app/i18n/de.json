@@ -116,7 +116,8 @@
         "user_buy_volume": "Deine Investition",
         "user_sell_volume": "Ausgezahltes Volumen",
         "buy_limit": "Dein Einzahlungslimit",
-        "per_day": "pro Tag"
+        "per_day": "pro Tag",
+        "edit_disallowed": "Änderungen an den Benutzerdaten sind aufgrund deines KYC-Status nicht mehr möglich. Bitte wende dich dafür an unseren Support unter contact@dfx.swiss."
       },
       "route": {
         "routes": "Payment Routen",

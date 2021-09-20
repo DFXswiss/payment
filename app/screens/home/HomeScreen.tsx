@@ -150,10 +150,10 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { condition: Boolean(user.refData.refCount), label: "model.user.ref_count", value: user.refData.refCount },
     { condition: Boolean(user.refData.refCountActive), label: "model.user.ref_count_active", value: user.refData.refCountActive },
     { condition: Boolean(user.refData.refVolume), label: "model.user.ref_volume", value: `${formatAmount(user.refData.refVolume)} €` },
-    { condition: Boolean(user.userVolume.buyVolume), label: "model.user.user_buy_volume", value: `${formatAmount(user.userVolume.buyVolume)} €` },
-    { condition: Boolean(user.userVolume.sellVolume), label: "model.user.user_sell_volume", value: `${formatAmount(user.userVolume.sellVolume)} €` },
-    { condition: user.kycStatus != KycStatus.NA, label: "model.user.kyc_status", value: user.kycStatus },
-    { condition: true, label: "model.user.buy_limit", value: limit(user) },
+    //{ condition: Boolean(user.userVolume.buyVolume), label: "model.user.user_buy_volume", value: `${formatAmount(user.userVolume.buyVolume)} €` },
+    //{ condition: Boolean(user.userVolume.sellVolume), label: "model.user.user_sell_volume", value: `${formatAmount(user.userVolume.sellVolume)} €` },
+    //{ condition: user.kycStatus != KycStatus.NA, label: "model.user.kyc_status", value: user.kycStatus },
+    //{ condition: true, label: "model.user.buy_limit", value: limit(user) },
   ];
 
   return (

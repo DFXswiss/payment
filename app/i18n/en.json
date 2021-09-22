@@ -74,7 +74,22 @@
         { "title": "Partial nullity and choice of law", "text": "Cancellation of Sell OrderSell Orders may be cancelled as long as the Cryptocurrency has not yet been received by DFX.If any of the General Terms and Conditions is void, annulled or otherwise invalid, the validity of the remaining General Terms and Conditions shall not be affected or impaired thereby." },
         { "title": "Applicable law and place of jurisdiction", "text": "The Terms and Conditions shall be governed by and construed in accordance with the laws of Switzerland, excluding the conflict of law provisions of Switzerland or your actual country or state of residence. Any dispute, controversy or claim arising out of or relating to the Terms and Conditions, your relationship with DFX, including non-contractual obligations, shall be subject to the exclusive jurisdiction of the courts of Zug, Switzerland." },
         { "title": "", "text": "" }
-  ]
+      ]
+    },
+    "cfp": {
+      "link": "CFP",
+      "title": "Current DeFiChain CFPs",
+      "all": "All CFPs",
+      "dfx_only": "DFX CFPs only",
+      "yes": "Yes",
+      "neutral": "Neutral",
+      "no": "No",
+      "votes": "Votes",
+      "voting": "Voting",
+      "vote_turnout": "Vote turnout",
+      "current_result": "Current result",
+      "approved": "Approved",
+      "not approved": "Not approved"
     },
     "admin": {
       "title": "Admin"

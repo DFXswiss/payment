@@ -19,6 +19,7 @@ import { useDevice } from "./hooks/useDevice";
 import NotificationService from "./services/NotificationService";
 import AppStyles from "./styles/AppStyles";
 import AdminScreen from "./screens/AdminScreen";
+import CfpScreen from "./screens/CfpScreen";
 
 const DrawerContent = () => {
   const device = useDevice();
@@ -44,6 +45,7 @@ const Main = () => {
         [Routes.Login]: "login",
         [Routes.Ref]: "ref",
         [Routes.Gtc]: "legal",
+        [Routes.Cfp]: "cfp",
         [Routes.Admin]: "admin",
         [Routes.NotFound]: "*",
       },
@@ -54,6 +56,7 @@ const Main = () => {
     { route: Routes.Login, screen: LoginScreen },
     { route: Routes.Ref, screen: RefScreen },
     { route: Routes.Gtc, screen: GtcScreen },
+    { route: Routes.Cfp, screen: CfpScreen },
     { route: Routes.Admin, screen: AdminScreen },
     { route: Routes.NotFound, screen: NotFoundScreen },
   ];

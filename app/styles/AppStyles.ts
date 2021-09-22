@@ -89,6 +89,9 @@ export default StyleSheet.create({
   mt10: {
     marginTop: 10,
   },
+  mt20: {
+    marginTop: 20,
+  },
   singleColFormContainer: {
     width: "100%",
     maxWidth: 400,

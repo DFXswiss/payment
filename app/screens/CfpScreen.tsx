@@ -37,7 +37,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
   const getData = (result: CfpResult): StackedBarChartData => {
     return {
       labels: [""],
-      legend: ["Yes", "Neutral", "No"],
+      legend: [t("cfp.yes"), t("cfp.neutral"), t("cfp.no")],
       data: [[result.yes, result.neutral, result.no]],
       barColors: [Colors.Success, Colors.LightGrey, Colors.Error],
     };
@@ -74,7 +74,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
                   <View pointerEvents="none">
                     <RadioButton value="dfx" status={cfpFilter === "dfx" ? "checked" : "unchecked"} />
                   </View>
-                  <Paragraph>DFX CFPs only</Paragraph>
+                  <Paragraph>{t("cfp.dfx_only")}</Paragraph>
                 </View>
               </TouchableRipple>
               <TouchableRipple onPress={() => setCfpFilter("all")}>
@@ -82,7 +82,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
                   <View pointerEvents="none">
                     <RadioButton value="all" status={cfpFilter === "all" ? "checked" : "unchecked"} />
                   </View>
-                  <Paragraph>All CFPs</Paragraph>
+                  <Paragraph>{t("cfp.all")}</Paragraph>
                 </View>
               </TouchableRipple>
             </View>
@@ -94,28 +94,28 @@ const CfpScreen = ({ session }: { session?: Session }) => {
                   <H3 text={result.title} style={{ textAlign: "center" }} />
                   <View style={styles.cfpContainer}>
                     <View>
-                      <DataTable style={{ width: 250 }}>
+                      <DataTable style={{ width: 300 }}>
                         <CompactRow>
-                          <CompactCell>Number</CompactCell>
+                          <CompactCell>ID</CompactCell>
                           <CompactCell>#{result.number}</CompactCell>
                         </CompactRow>
                         <CompactRow>
-                          <CompactCell>Voting</CompactCell>
+                          <CompactCell>{t("cfp.voting")}</CompactCell>
                           <CompactCell>
                             {result.yes} / {result.neutral} / {result.no}
                           </CompactCell>
                         </CompactRow>
                         <CompactRow>
-                          <CompactCell>#Votes</CompactCell>
+                          <CompactCell>#{t("cfp.votes")}</CompactCell>
                           <CompactCell>{result.votes}</CompactCell>
                         </CompactRow>
                         <CompactRow>
-                          <CompactCell>Vote turnout</CompactCell>
-                          <CompactCell>{result.voteTurnout}</CompactCell>
+                          <CompactCell>{t("cfp.vote_turnout")}</CompactCell>
+                          <CompactCell>{result.voteTurnout}%</CompactCell>
                         </CompactRow>
                         <CompactRow>
-                          <CompactCell>Current result</CompactCell>
-                          <CompactCell>{result.currentResult}</CompactCell>
+                          <CompactCell>{t("cfp.current_result")}</CompactCell>
+                          <CompactCell>{t(`cfp.${result.currentResult.toLowerCase()}`)}</CompactCell>
                         </CompactRow>
                       </DataTable>
                     </View>

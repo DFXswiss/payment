@@ -78,6 +78,21 @@
         { "title": "Anwendbares Recht und Gerichtsstand", "text": "Die Allgemeinen Geschäftsbedingungen unterliegen dem schweizerischen Recht und werden in Übereinstimmung mit diesem ausgelegt, unter Ausschluss der kollisionsrechtlichen Bestimmungen der Schweiz oder Ihres tatsächlichen Wohnsitzlandes oder -bundesstaats. Jegliche Streitigkeiten, Kontroversen oder Ansprüche, die sich aus oder in Bezug auf die Allgemeinen Geschäftsbedingungen, Ihre Beziehung zu Fiat2defi , einschließlich außervertraglicher Verpflichtungen, ergeben, unterliegen ausschließlich der Zuständigkeit von Zug, Schweiz." }
       ]
     },
+    "cfp" : {
+      "link" : "CFP",
+      "titel" : "CFP attuali di DeFiChain",
+      "all" : "Tutti i CFP",
+      "dfx_only" : "Solo DFX CFP",
+      "yes" : "Sì",
+      "neutral": "Neutro",
+      "no": "No",
+      "votes": "Voti",
+      "voting": "Voto",
+      "vote_turnout": "Partecipazione",
+      "current_result": "Risultato attuale",
+      "approved": "Accettato",
+      "not approved": "Non accettato"
+    },
     "admin": {
       "title": "Admin"
     },

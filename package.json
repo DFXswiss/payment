@@ -15,6 +15,7 @@
     "country-code-lookup": "^0.0.19",
     "expo": "~41.0.1",
     "expo-clipboard": "~1.0.2",
+    "expo-document-picker": "~9.1.2",
     "expo-status-bar": "~1.0.4",
     "fast-xml-parser": "^3.19.0",
     "i18next": "^20.3.1",
@@ -25,15 +26,16 @@
     "react-hook-form": "^7.8.4",
     "react-i18next": "^11.10.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+    "react-native-chart-kit": "^6.11.0",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-paper": "^4.9.2",
     "react-native-paper-dropdown": "^1.0.3",
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
+    "react-native-svg": "^12.1.1",
     "react-native-web": "~0.13.12",
-    "rxjs": "^7.1.0",
-    "expo-document-picker": "~9.1.2"
+    "rxjs": "^7.1.0"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

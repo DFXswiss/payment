@@ -2,6 +2,7 @@ import { Environment } from "../env/Environment";
 import { ApiError, AuthResponse } from "../models/ApiDto";
 import { Asset } from "../models/Asset";
 import { BuyRoute, BuyRouteDto, fromBuyRouteDto, toBuyRouteDto } from "../models/BuyRoute";
+import { CfpResult } from "../models/CfpResult";
 import { Country } from "../models/Country";
 import { Fiat } from "../models/Fiat";
 import { Language } from "../models/Language";
@@ -22,6 +23,7 @@ const FiatUrl = "fiat";
 const CountryUrl = "country";
 const LanguageUrl = "language";
 const BuyPaymentUrl = "payment/buy";
+const StatisticUrl = "statistic";
 
 // --- AUTH --- //
 export const signIn = (credentials?: Credentials): Promise<string> => {
@@ -95,6 +97,15 @@ export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
 // --- PAYMENTS --- //
 export const postPayment = (payment: Payment): Promise<void> => {
   return fetchFrom(BuyPaymentUrl, "POST", toPaymentDto(payment));
+}
+
+// --- STATISTIC --- //
+export const getDfxCfpResults = (): Promise<CfpResult[]> => {
+  return fetchFrom(`${StatisticUrl}/cfp`);
+}
+
+export const getAllCfpResults = (): Promise<CfpResult[]> => {
+  return fetchFrom(`${StatisticUrl}/cfp/all`);
 }
 
 // --- MASTER DATA --- //

@@ -80,6 +80,10 @@
         { "title": "", "text": "" }
       ]
     },
+    "cfp": {
+      "link": "CFPs",
+      "title": "Aktuelle DeFiChain CFPs"
+    },
     "admin": {
       "title": "Admin"
     },

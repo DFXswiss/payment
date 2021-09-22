@@ -36,9 +36,13 @@ const CfpScreen = ({ session }: { session?: Session }) => {
 
   const getData = (result: CfpResult): StackedBarChartData => {
     return {
-      labels: [""],
-      legend: [t("cfp.yes"), t("cfp.neutral"), t("cfp.no")],
-      data: [[result.yes, result.neutral, result.no]],
+      labels: [],
+      legend: [
+        `${t("cfp.yes")} (${Math.round((result.yes / result.votes) * 100)}%)`,
+        `${t("cfp.neutral")} (${Math.round((result.neutral / result.votes) * 100)}%)`,
+        `${t("cfp.no")} (${Math.round((result.no / result.votes) * 100)}%)`,
+      ],
+      data: [[], [result.yes, result.neutral, result.no]],
       barColors: [Colors.Success, Colors.LightGrey, Colors.Error],
     };
   };
@@ -51,10 +55,6 @@ const CfpScreen = ({ session }: { session?: Session }) => {
     labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
     propsForBackgroundLines: {
       stroke: Colors.White,
-    },
-    propsForHorizontalLabels: {
-      stroke: Colors.White,
-      fill: Colors.White,
     },
   };
 
@@ -86,7 +86,9 @@ const CfpScreen = ({ session }: { session?: Session }) => {
                 </View>
               </TouchableRipple>
             </View>
-            <SpacerV height={30} />
+
+            <SpacerV height={50} />
+
             {cfpResults
               ?.sort((a, b) => a.number - b.number)
               .map((result) => (
@@ -119,18 +121,19 @@ const CfpScreen = ({ session }: { session?: Session }) => {
                         </CompactRow>
                       </DataTable>
                     </View>
-                    <View>
+                    <View style={styles.chartContainer}>
                       <StackedBarChart
                         data={getData(result)}
-                        width={250}
+                        width={350}
                         height={200}
                         chartConfig={config}
                         hideLegend={false}
-                        style={AppStyles.mt20}
+                        withHorizontalLabels={false}
+                        style={{ marginTop: 5 }}
                       />
                     </View>
                   </View>
-                  <SpacerV height={40} />
+                  <SpacerV height={50} />
                 </View>
               ))}
           </>
@@ -146,6 +149,12 @@ const styles = StyleSheet.create({
     flexWrap: "wrap-reverse",
     justifyContent: "center",
     alignItems: "center",
+  },
+  chartContainer: {
+    width: 250,
+    height: 180,
+    alignItems: "flex-end",
+    overflow: "hidden",
   },
   radioRow: {
     flexDirection: "row",

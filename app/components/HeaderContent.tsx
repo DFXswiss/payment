@@ -55,11 +55,16 @@ const HeaderContent = ({ session, settings }: { session?: Session; settings?: Ap
           <DeFiButton onPress={logout} style={styles.button} compact>
             {t("action.logout")}
           </DeFiButton>
+          <DeFiButton onPress={() => navigate(Routes.Home)} style={styles.button} compact>
+          {t("general.overview")}
+        </DeFiButton>
           <DeFiButton onPress={() => navigate(Routes.Cfp)} style={styles.button} compact>
             {t("cfp.link")}
           </DeFiButton>
         </>
       )}
+
+      
 
       {session?.role == UserRole.Admin && (
         <DeFiButton onPress={() => navigate(Routes.Admin)} style={styles.button} compact>

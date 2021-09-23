@@ -44,6 +44,10 @@ class SettingsServiceClass {
       .then((settings) => ({ ...DefaultSettings, ...settings }));
   }
 
+  public get Language(): Promise<Language | undefined> {
+    return this.Settings.then((settings) => this.Languages.find((l) => l.symbol === settings.language));
+  }
+
   public updateSettings(update: Partial<AppSettings>): Promise<void> {
     // wait for init
     return lastValueFrom(this.settings$.pipe(first())).then(() => {

@@ -81,6 +81,21 @@
         { "title": "", "text": "" }
       ]
     },
+    "cfp": {
+      "link": "CFP",
+      "title": "Aktuelle DeFiChain CFPs",
+      "all": "Alle CFPs",
+      "dfx_only": "Nur DFX CFPs",
+      "yes": "Ja",
+      "neutral": "Neutral",
+      "no": "Nein",
+      "votes": "Stimmen",
+      "voting": "Abstimmung",
+      "vote_turnout": "Stimmbeteiligung",
+      "current_result": "Aktuelles Resultat",
+      "approved": "Angenommen",
+      "not approved": "Nicht angenommen"
+    },
     "admin": {
       "title": "Admin"
     },

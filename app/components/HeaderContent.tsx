@@ -51,9 +51,14 @@ const HeaderContent = ({ session, settings }: { session?: Session; settings?: Ap
   return (
     <View style={device.SM && AppStyles.containerHorizontal}>
       {session?.isLoggedIn && (
-        <DeFiButton onPress={logout} style={styles.button} compact>
-          {t("action.logout")}
-        </DeFiButton>
+        <>
+          <DeFiButton onPress={logout} style={styles.button} compact>
+            {t("action.logout")}
+          </DeFiButton>
+          <DeFiButton onPress={() => navigate(Routes.Cfp)} style={styles.button} compact>
+            {t("cfp.link")}
+          </DeFiButton>
+        </>
       )}
 
       {session?.role == UserRole.Admin && (

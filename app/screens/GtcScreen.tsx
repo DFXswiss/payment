@@ -42,7 +42,7 @@ const GtcScreen = ({ session }: { session?: Session }) => {
         if (error.statusCode == 400) {
           message += ` ${t("session.credentials_invalid")}`;
         }
-        NotificationService.show(message);
+        NotificationService.error(message);
       });
   };
 

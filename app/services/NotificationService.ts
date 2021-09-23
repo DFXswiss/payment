@@ -1,15 +1,29 @@
 import { Observable, Subject } from "rxjs";
 
+export enum Level {
+  SUCCESS = "Success",
+  ERROR = "Error",
+}
+
+export interface Notification {
+  text: string;
+  level: Level;
+}
+
 class NotificationServiceClass {
-    private notifications$ = new Subject<string>();
+  private notifications$ = new Subject<Notification>();
 
-    public get Notifications$(): Observable<string> {
-        return this.notifications$;
-    }
+  public get Notifications$(): Observable<Notification> {
+    return this.notifications$;
+  }
 
-    public show(text: string): void {
-        this.notifications$.next(text);
-    }
+  public success(text: string): void {
+    this.notifications$.next({ text, level: Level.SUCCESS });
+  }
+
+  public error(text: string): void {
+    this.notifications$.next({ text, level: Level.ERROR });
+  }
 }
 
 const NotificationService = new NotificationServiceClass();

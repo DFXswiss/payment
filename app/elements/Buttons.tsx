@@ -1,6 +1,7 @@
 import React from "react";
 import { TextStyle, TouchableOpacity } from "react-native";
 import { Button, Text } from "react-native-paper";
+import Colors from "../config/Colors";
 import AppStyles, { DefaultCursor } from "../styles/AppStyles";
 
 export const ActionLink = ({ onPress, label, style }: { onPress: () => void; label: string; style?: TextStyle }) => (
@@ -10,14 +11,22 @@ export const ActionLink = ({ onPress, label, style }: { onPress: () => void; lab
 );
 
 // TODO: use the paper button props?
-export const DeFiButton = ({ link, loading, disabled, ...props }: any) => (
-  <Button
-    loading={loading}
-    disabled={loading || disabled}
-    contentStyle={[props.contentStyle, (loading || disabled) && DefaultCursor]}
-    labelStyle={[props.labelStyle, link && AppStyles.buttonLink]}
-    {...props}
-  >
-    {props.children}
-  </Button>
-);
+export const DeFiButton = ({ link, loading, disabled, style, ...props }: any) => {
+  const isDisabled = loading || disabled;
+  return (
+    <Button
+      loading={loading}
+      disabled={isDisabled}
+      contentStyle={[props.contentStyle, isDisabled && DefaultCursor]}
+      labelStyle={[
+        props.labelStyle,
+        link && AppStyles.buttonLink,
+        props.mode === "contained" && { color: isDisabled ? Colors.Grey : Colors.White },
+      ]}
+      style={[style, { borderColor: Colors.Grey }]}
+      {...props}
+    >
+      {props.children}
+    </Button>
+  );
+};

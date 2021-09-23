@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     padding: 8,
     borderColor: Colors.Grey,
     borderRadius: 5,
-    backgroundColor: Colors.LightGrey,
+    backgroundColor: Colors.LightBlue,
   },
   textContainer: {
     flex: 1,

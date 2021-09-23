@@ -30,7 +30,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
     setIsLoading(true);
     (cfpFilter === "dfx" ? getDfxCfpResults() : getAllCfpResults())
       .then(setCfpResults)
-      .catch(() => NotificationService.show(t("feedback.load_failed")))
+      .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));
   }, [cfpFilter]);
 
@@ -47,15 +47,15 @@ const CfpScreen = ({ session }: { session?: Session }) => {
     };
   };
   const config: AbstractChartConfig = {
-    backgroundColor: Colors.White,
-    backgroundGradientFrom: Colors.White,
-    backgroundGradientTo: Colors.White,
+    backgroundColor: Colors.Blue,
+    backgroundGradientFrom: Colors.Blue,
+    backgroundGradientTo: Colors.Blue,
     decimalPlaces: 0,
-    color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-    labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+    color: (opacity = 1) => `rgba(255,  255,  255,  ${opacity})`,
+    labelColor: (opacity = 1) => `rgba(255,  255,  255,  ${opacity})`,
     propsForBackgroundLines: {
-      stroke: Colors.White,
-    },
+      stroke: Colors.Blue,
+    }
   };
 
   return (
@@ -93,7 +93,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
               ?.sort((a, b) => a.number - b.number)
               .map((result) => (
                 <View key={result.number} style={{ width: "100%" }}>
-                  <H3 text={result.title} style={{ textAlign: "center" }} />
+                  <H3 text={result.title} style={ AppStyles.center } />
                   <View style={styles.cfpContainer}>
                     <View>
                       <DataTable style={{ width: 300 }}>

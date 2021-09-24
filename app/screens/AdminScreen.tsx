@@ -76,7 +76,7 @@ const PaymentsUpload = () => {
       .then(setPayments)
       .then(() => setError(false))
       .then(() => setPaymentsVisible(true))
-      .catch(() => NotificationService.show(t("feedback.file_error")));
+      .catch(() => NotificationService.error(t("feedback.file_error")));
   };
   const savePayments = () => {
     setError(false);

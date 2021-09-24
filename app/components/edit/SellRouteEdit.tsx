@@ -38,7 +38,7 @@ const SellRouteEdit = ({
   useEffect(() => {
     getFiats()
       .then(setFiats)
-      .catch(() => NotificationService.show(t("feedback.load_failed")))
+      .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));
   }, []);
 

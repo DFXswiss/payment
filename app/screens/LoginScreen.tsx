@@ -66,13 +66,6 @@ const LoginScreen = () => {
     setIsProcessing(true);
     setError(undefined);
 
-    if (Environment.debug && data.userName === "admin") {
-      data = {
-        userName: "8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG",
-        password: "Hwj3sJjBxMOnkPxZkGtqinGdASIOM6ffGDCcQsWA7kRIIjMP5/HMyuZwlLnBKuD6weD5c/8HIzMrmi6GpCmFU04=",
-      };
-    }
-
     const walletId = +(params?.walletId ?? DefaultWalletId);
 
     // reset params
@@ -201,7 +194,7 @@ const styles = StyleSheet.create({
     padding: 8,
     borderColor: Colors.Grey,
     borderRadius: 5,
-    backgroundColor: Colors.LightGrey,
+    backgroundColor: Colors.LightBlue,
   },
   textContainer: {
     flex: 1,

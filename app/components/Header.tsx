@@ -21,7 +21,7 @@ const Header = ({ session }: { session?: Session }) => {
       {!device.SM && <IconButton icon="menu" onPress={() => nav.toggleDrawer()} style={AppStyles.mra} />}
 
       <TouchableOpacity activeOpacity={1} style={styles.logoTouch} onPress={goHome}>
-        <Image style={styles.logo} source={require("../assets/logo_defichange.png")} />
+        <Image style={styles.logo} source={require("../assets/logo.jpg")} />
       </TouchableOpacity>
 
       <View style={[AppStyles.mla, !device.SM && AppStyles.noDisplay]}>

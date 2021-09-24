@@ -1,8 +1,8 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
-import { StyleProp, ViewStyle } from "react-native";
-import { StyleSheet, ScrollView, View } from "react-native";
+import { StyleSheet, ScrollView, View, StyleProp, ViewStyle } from "react-native";
 import { Portal, Dialog, RadioButton, Paragraph, TouchableRipple } from "react-native-paper";
 import { DeFiButton } from "../../elements/Buttons";
+import AppStyles from "../../styles/AppStyles";
 
 interface Props<T> {
   value?: T;
@@ -25,7 +25,7 @@ const DeFiDropdown = <T extends { [key: string]: any }>({ value, setValue, items
   return (
     <>
       <Portal>
-        <Dialog visible={visible} onDismiss={() => setVisible(false)} style={styles.dialog}>
+        <Dialog visible={visible} onDismiss={() => setVisible(false)} style={AppStyles.dialog}>
           {title && <Dialog.Title style={{margin: 10}}>{title}</Dialog.Title>}
           <Dialog.ScrollArea style={styles.scrollArea}>
             <ScrollView style={styles.scrollView}>
@@ -62,11 +62,6 @@ const DeFiDropdown = <T extends { [key: string]: any }>({ value, setValue, items
 }
 
 const styles = StyleSheet.create({
-  dialog: {
-    marginHorizontal: "auto",
-    maxWidth: 300,
-    maxHeight: "90vh",
-  },
   scrollArea: {
     paddingHorizontal: 0,
   },

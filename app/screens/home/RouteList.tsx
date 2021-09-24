@@ -20,6 +20,7 @@ import { updateObject } from "../../utils/Utils";
 import Clipboard from "expo-clipboard";
 import ButtonContainer from "../../components/util/ButtonContainer";
 import { DeviceClass } from "../../utils/Device";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 interface Props {
   buyRoutes?: BuyRoute[];
@@ -103,14 +104,14 @@ const RouteList = ({
     setIsBuyLoading((obj) => updateObject(obj, { [route.id]: true }));
     return putBuyRoute(updateObject(route, { active: false }))
       .then(() => (route.active = false))
-      .catch(() => NotificationService.show(t("feedback.delete_failed")))
+      .catch(() => NotificationService.error(t("feedback.delete_failed")))
       .finally(() => setIsBuyLoading((obj) => updateObject(obj, { [route.id]: false })));
   };
   const deleteSellRoute = (route: SellRoute) => {
     setIsSellLoading((obj) => updateObject(obj, { [route.id]: true }));
     return putSellRoute(updateObject(route, { active: false }))
       .then(() => (route.active = false))
-      .catch(() => NotificationService.show(t("feedback.delete_failed")))
+      .catch(() => NotificationService.error(t("feedback.delete_failed")))
       .finally(() => setIsSellLoading((obj) => updateObject(obj, { [route.id]: false })));
   };
 
@@ -207,25 +208,27 @@ const RouteList = ({
                 </CompactHeader>
 
                 {activeBuyRoutes.map((route) => (
-                  <CompactRow key={route.id}>
-                    <CompactCell style={{ flex: 1 }}>{route.asset?.name}</CompactCell>
-                    <CompactCell style={{ flex: 2 }}>{route.bankUsage}</CompactCell>
-                    {device.SM && <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>}
-                    <CompactCell style={{ flex: undefined }}>
-                      {device.SM ? (
-                        <>
-                          <IconButton icon="content-copy" onPress={() => Clipboard.setString(route.bankUsage)} />
-                          <IconButton
-                            icon="delete"
-                            onPress={() => deleteBuyRoute(route)}
-                            isLoading={isBuyLoading[route.id]}
-                          />
-                        </>
-                      ) : (
-                        <IconButton icon="arrow-right" onPress={() => setDetailRoute(route)} />
-                      )}
-                    </CompactCell>
-                  </CompactRow>
+                  <TouchableOpacity key={route.id} onPress={() => setDetailRoute(route)} disabled={device.SM}>
+                    <CompactRow>
+                      <CompactCell style={{ flex: 1 }}>{route.asset?.name}</CompactCell>
+                      <CompactCell style={{ flex: 2 }}>{route.bankUsage}</CompactCell>
+                      {device.SM && <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>}
+                      <CompactCell style={{ flex: undefined }}>
+                        {device.SM ? (
+                          <>
+                            <IconButton icon="content-copy" onPress={() => Clipboard.setString(route.bankUsage)} />
+                            <IconButton
+                              icon="delete"
+                              onPress={() => deleteBuyRoute(route)}
+                              isLoading={isBuyLoading[route.id]}
+                            />
+                          </>
+                        ) : (
+                          <IconButton icon="chevron-right" />
+                        )}
+                      </CompactCell>
+                    </CompactRow>
+                  </TouchableOpacity>
                 ))}
               </DataTable>
             </>
@@ -246,25 +249,27 @@ const RouteList = ({
                 </CompactHeader>
 
                 {activeSellRoutes.map((route) => (
-                  <CompactRow key={route.id}>
-                    <CompactCell style={{ flex: 1 }}>{route.fiat?.name}</CompactCell>
-                    <CompactCell style={{ flex: 2 }}>{route.deposit?.address}</CompactCell>
-                    {device.SM && <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>}
-                    <CompactCell style={{ flex: undefined }}>
-                      {device.SM ? (
-                        <>
-                          <IconButton icon="content-copy" onPress={() => Clipboard.setString(route.deposit?.address)} />
-                          <IconButton
-                            icon="delete"
-                            onPress={() => deleteSellRoute(route)}
-                            isLoading={isSellLoading[route.id]}
-                          />
-                        </>
-                      ) : (
-                        <IconButton icon="arrow-right" onPress={() => setDetailRoute(route)} />
-                      )}
-                    </CompactCell>
-                  </CompactRow>
+                  <TouchableOpacity key={route.id} onPress={() => setDetailRoute(route)} disabled={device.SM}>
+                    <CompactRow>
+                      <CompactCell style={{ flex: 1 }}>{route.fiat?.name}</CompactCell>
+                      <CompactCell style={{ flex: 2 }}>{route.deposit?.address}</CompactCell>
+                      {device.SM && <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>}
+                      <CompactCell style={{ flex: undefined }}>
+                        {device.SM ? (
+                          <>
+                            <IconButton icon="content-copy" onPress={() => Clipboard.setString(route.deposit?.address)} />
+                            <IconButton
+                              icon="delete"
+                              onPress={() => deleteSellRoute(route)}
+                              isLoading={isSellLoading[route.id]}
+                            />
+                          </>
+                        ) : (
+                          <IconButton icon="chevron-right" />
+                        )}
+                      </CompactCell>
+                    </CompactRow>
+                  </TouchableOpacity>
                 ))}
               </DataTable>
             </>

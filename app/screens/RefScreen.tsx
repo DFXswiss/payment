@@ -2,7 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { Dialog, Paragraph, Portal, Button } from "react-native-paper";
 import AppLayout from "../components/AppLayout";
 import Form from "../components/form/Form";
@@ -52,16 +52,13 @@ const RefScreen = ({ session }: { session?: Session }) => {
   };
 
   const rules: any = createRules({
-    usedRef: [
-      Validations.Required,
-      Validations.Ref
-    ]
+    usedRef: [Validations.Required, Validations.Ref],
   });
 
   return (
     <AppLayout>
       <Portal>
-        <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)} style={styles.dialog}>
+        <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)} style={AppStyles.dialog}>
           <Dialog.Content>
             <Paragraph>{t("ref.no_ref")}</Paragraph>
             <Button onPress={() => openUrl(t("general.telegram_link"))}>{t("general.telegram")}</Button>
@@ -105,12 +102,5 @@ const RefScreen = ({ session }: { session?: Session }) => {
     </AppLayout>
   );
 };
-
-const styles = StyleSheet.create({
-  dialog: {
-    marginHorizontal: "auto",
-    maxWidth: 300,
-  },
-});
 
 export default withSession(RefScreen);

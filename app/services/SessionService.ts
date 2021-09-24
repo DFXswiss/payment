@@ -1,5 +1,5 @@
 import { ApiError } from "../models/ApiDto";
-import { getUser, signIn, signUp } from "./ApiService";
+import { getUser, putUserLanguage, signIn, signUp } from "./ApiService";
 import AuthService, { Credentials } from "./AuthService";
 import SettingsService from "./SettingsService";
 import StorageService from "./StorageService";
@@ -15,7 +15,7 @@ class SessionServiceClass {
           address: credentials?.address ?? "",
           signature: credentials?.signature ?? "",
           walletId: credentials?.walletId ?? 0,
-          usedRef: ref,
+          usedRef: ref ?? "",
         })
       )
       .then(this.updateSession)
@@ -25,6 +25,8 @@ class SessionServiceClass {
           StorageService.deleteValue(StorageService.Keys.Ref),
         ])
       )
+      .then(() => SettingsService.Language)
+      .then((lang) => lang ? putUserLanguage(lang) : Promise.resolve())
       .then();
   }
 

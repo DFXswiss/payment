@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react";
 import { StyleSheet, StyleProp, TextStyle } from "react-native";
 import { DataTable } from "react-native-paper";
+import Colors from "../config/Colors";
 import { DefaultCursor } from "../styles/AppStyles";
 
 interface Props {
@@ -34,14 +35,16 @@ export const CompactCell = ({ children, style, ...props }: Props) => (
 
 const styles = StyleSheet.create({
   header: {
-    height: "unset"
+    height: "unset",
   },
   title: {
     paddingVertical: 0,
   },
   row: {
     minHeight: 30,
-    ...DefaultCursor
+    backgroundColor: Colors.LightBlue,
+    borderBottomColor: Colors.Blue,
+    ...DefaultCursor,
   },
-  cell: DefaultCursor
+  cell: DefaultCursor,
 });

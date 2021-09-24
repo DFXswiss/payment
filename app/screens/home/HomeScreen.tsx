@@ -1,6 +1,6 @@
 import React, { useState, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import DeFiModal from "../../components/util/DeFiModal";
 import Loading from "../../components/util/Loading";
 import UserEdit from "../../components/edit/UserEdit";
@@ -76,9 +76,9 @@ const HomeScreen = ({ session }: { session?: Session }) => {
         if (user) {
           user.kycStatus = KycStatus.WAIT_CHAT_BOT;
         }
-        NotificationService.show(t("feedback.request_submitted"));
+        NotificationService.success(t("feedback.request_submitted"));
       })
-      .catch(() => NotificationService.show(t("feedback.request_failed")))
+      .catch(() => NotificationService.error(t("feedback.request_failed")))
       .finally(() => {
         setIsKycRequest(false);
         setIsKycLoading(false);
@@ -107,7 +107,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                 setSellRoutes(sellRoutes);
               }
             })
-            .catch(() => NotificationService.show(t("feedback.load_failed")))
+            .catch(() => NotificationService.error(t("feedback.load_failed")))
             .finally(() => {
               if (!cancelled()) {
                 setLoading(false);
@@ -168,7 +168,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
           visible={showButtons}
         />
 
-        <Dialog visible={isKycRequest && !isUserEdit} onDismiss={() => setIsKycRequest(false)} style={styles.dialog}>
+        <Dialog visible={isKycRequest && !isUserEdit} onDismiss={() => setIsKycRequest(false)} style={AppStyles.dialog}>
           <Dialog.Content>
             <Paragraph>{t("model.user.kyc_request")}</Paragraph>
           </Dialog.Content>
@@ -250,12 +250,5 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     </AppLayout>
   );
 };
-
-const styles = StyleSheet.create({
-  dialog: {
-    maxWidth: 300,
-    marginHorizontal: "auto",
-  },
-});
 
 export default withSession(HomeScreen);

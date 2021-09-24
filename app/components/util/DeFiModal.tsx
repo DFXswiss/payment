@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
     margin: "auto",
     maxHeight: "90vh",
     maxWidth: "90vw",
-    backgroundColor: Colors.White,
+    backgroundColor: Colors.Blue,
   },
   scrollContainer: {
     padding: 15,

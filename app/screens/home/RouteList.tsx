@@ -279,22 +279,26 @@ const RouteList = ({
         <Text style={AppStyles.i}>{t("model.route.none")}</Text>
       )}
 
-      <SpacerV height={50} />
-      <H3 text={t("model.route.payment_info")} />
-      <SpacerV />
-      <Text>DFX AG</Text>
-      <Text>Bahnhofstrasse 7</Text>
-      <Text>6300 Zug</Text>
-      <Text>Schweiz</Text>
-      <SpacerV />
-      <View style={AppStyles.containerHorizontal}>
-        <Text>{`${t("model.route.iban")}: ${iban}`}</Text>
-        <IconButton icon="content-copy" onPress={() => Clipboard.setString(iban)} style={device.SM ? undefined : AppStyles.mla} size={20} />
-      </View>
-      <View style={AppStyles.containerHorizontal}>
-        <Text>{`SWIFT/BIC: ${swift}`}</Text>
-        <IconButton icon="content-copy" onPress={() => Clipboard.setString(swift)} style={device.SM ? undefined : AppStyles.mla} size={20} />
-      </View>
+      {activeBuyRoutes && activeBuyRoutes.length > 0 && (
+        <>
+          <SpacerV height={50} />
+          <H3 text={t("model.route.payment_info")} />
+          <SpacerV />
+          <Text>DFX AG</Text>
+          <Text>Bahnhofstrasse 7</Text>
+          <Text>6300 Zug</Text>
+          <Text>Schweiz</Text>
+          <SpacerV />
+          <View style={AppStyles.containerHorizontal}>
+            <Text>{`${t("model.route.iban")}: ${iban}`}</Text>
+            <IconButton icon="content-copy" onPress={() => Clipboard.setString(iban)} style={device.SM ? undefined : AppStyles.mla} size={20} />
+          </View>
+          <View style={AppStyles.containerHorizontal}>
+            <Text>{`SWIFT/BIC: ${swift}`}</Text>
+            <IconButton icon="content-copy" onPress={() => Clipboard.setString(swift)} style={device.SM ? undefined : AppStyles.mla} size={20} />
+          </View>
+        </>
+      )}
       {!device.SM && <SpacerV height={60} />}
     </>
   );

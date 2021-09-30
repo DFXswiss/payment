@@ -34,7 +34,18 @@ const GtcScreen = ({ session }: { session?: Session }) => {
 
   const register = () => {
     setIsProcessing(true);
-    SessionService.register()
+    
+    Promise.all([
+      StorageService.getValue<Credentials>(StorageService.Keys.Credentials),
+      StorageService.getPrimitive<string>(StorageService.Keys.Ref),
+    ])
+      .then(([credentials, ref]) => SessionService.register(credentials, ref))
+      .then(() =>
+        Promise.all([
+          StorageService.deleteValue(StorageService.Keys.Credentials),
+          StorageService.deleteValue(StorageService.Keys.Ref),
+        ])
+      )
       .finally(() => setIsProcessing(false))
       .then(() => nav.navigate(Routes.Home))
       .catch((error: ApiError) => {

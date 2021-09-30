@@ -1,30 +1,16 @@
-import { ApiError } from "../models/ApiDto";
 import { getUser, putUserLanguage, signIn, signUp } from "./ApiService";
 import AuthService, { Credentials } from "./AuthService";
 import SettingsService from "./SettingsService";
-import StorageService from "./StorageService";
 
 class SessionServiceClass {
-  public register(): Promise<void> {
-    return Promise.all([
-      StorageService.getValue<Credentials>(StorageService.Keys.Credentials),
-      StorageService.getPrimitive<string>(StorageService.Keys.Ref),
-    ])
-      .then(([credentials, ref]) =>
-        signUp({
-          address: credentials?.address ?? "",
-          signature: credentials?.signature ?? "",
-          walletId: credentials?.walletId ?? 0,
-          usedRef: ref ?? "",
-        })
-      )
+  public register(credentials: Credentials, ref: string | undefined): Promise<void> {
+      return signUp({
+        address: credentials?.address ?? "",
+        signature: credentials?.signature ?? "",
+        walletId: credentials?.walletId ?? 0,
+        usedRef: ref ?? "",
+      })
       .then(this.updateSession)
-      .then(() =>
-        Promise.all([
-          StorageService.deleteValue(StorageService.Keys.Credentials),
-          StorageService.deleteValue(StorageService.Keys.Ref),
-        ])
-      )
       .then(() => SettingsService.Language)
       .then((lang) => lang ? putUserLanguage(lang) : Promise.resolve())
       .then();

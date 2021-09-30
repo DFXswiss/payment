@@ -33,12 +33,6 @@ class SessionServiceClass {
   public login(credentials: Credentials): Promise<void> {
     return AuthService.deleteSession()
       .then(() => signIn(credentials))
-      .catch((error: ApiError) => {
-        // TODO: hand over with route params?
-        return StorageService.storeValue(StorageService.Keys.Credentials, credentials).then(() => {
-          throw error;
-        });
-      })
       .then(this.updateSession)
       .then(getUser)
       .then((user) => user.language ? SettingsService.updateSettings({language: user.language.symbol}) : undefined);

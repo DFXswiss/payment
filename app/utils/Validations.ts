@@ -50,7 +50,7 @@ class ValidationsClass {
   public get Address() {
     return {
       pattern: {
-        value: /^(\w{34}|\w{42})$/,
+        value: /^(8\w{33}|d\w{33}|d\w{41})$/,
         message: i18n.t("validation.pattern_invalid"),
       },
     };

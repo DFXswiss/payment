@@ -9,7 +9,7 @@ import { Language } from "../models/Language";
 import { Payment, toPaymentDto } from "../models/Payment";
 import { Ref } from "../models/Ref";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
-import { fromUserDto, NewUser, toNewUserDto, toUserDto, User, UserDto } from "../models/User";
+import { fromUserDetailDto, fromUserDto, NewUser, toNewUserDto, toUserDto, User, UserDetail, UserDetailDto, UserDto } from "../models/User";
 import AuthService, { Credentials, Session } from "./AuthService";
 
 const BaseUrl = Environment.api.baseUrl;
@@ -42,7 +42,10 @@ export const getUser = (): Promise<User> => {
     .then(fromUserDto);
 };
 
-// TODO: get complete user
+export const getUserDetail = (): Promise<UserDetail> => {
+  return fetchFrom<UserDetailDto>(`${UserUrl}/detail`)
+    .then(fromUserDetailDto);
+};
 
 export const postKyc = (): Promise<void> => {
   return fetchFrom(`${UserUrl}/kyc`, 'POST');

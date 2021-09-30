@@ -8,7 +8,7 @@ import { SpacerV } from "../../elements/Spacers";
 import { H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
 import { KycStatus, User, UserStatus } from "../../models/User";
-import { getBuyRoutes, getSellRoutes, getUser, postKyc } from "../../services/ApiService";
+import { getUserDetail, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
@@ -99,12 +99,12 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     (cancelled) => {
       if (session) {
         if (session.isLoggedIn) {
-          Promise.all([getUser(), getBuyRoutes(), getSellRoutes()])
-            .then(([user, buyRoutes, sellRoutes]) => {
+          getUserDetail()
+            .then((user) => {
               if (!cancelled()) {
                 setUser(user);
-                setBuyRoutes(buyRoutes);
-                setSellRoutes(sellRoutes);
+                setBuyRoutes(user.buys);
+                setSellRoutes(user.sells);
               }
             })
             .catch(() => NotificationService.error(t("feedback.load_failed")))

@@ -1,5 +1,7 @@
+import { BuyRoute, BuyRouteDto, fromBuyRouteDto } from "./BuyRoute";
 import { Country } from "./Country";
 import { Language } from "./Language";
+import { fromSellRouteDto, SellRoute, SellRouteDto } from "./SellRoute";
 // TODO: birthday, staatsangehörigkeit, language, email-settings, KYC status, gebühr
 
 export enum UserRole {
@@ -98,6 +100,16 @@ export interface User extends NewUser {
   ip: string;
 }
 
+export interface UserDetailDto extends UserDto {
+  buys: BuyRouteDto[];
+  sells: SellRouteDto[];
+}
+
+export interface UserDetail extends User {
+  buys: BuyRoute[];
+  sells: SellRoute[];
+}
+
 export const fromUserDto = (user: UserDto): User => ({
   address: user.address,
   signature: user.signature,
@@ -140,4 +152,10 @@ export const toUserDto = (user: User): UserDto => ({
   kycStatus: user.kycStatus,
   language: user.language,
   ip: user.ip,
+});
+
+export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
+  ...fromUserDto(dto),
+  buys: dto.buys.map((buy) => fromBuyRouteDto(buy)),
+  sells: dto.sells.map((sell) => fromSellRouteDto(sell)),
 });

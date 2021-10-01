@@ -103,12 +103,8 @@ export const postPayment = (payment: Payment): Promise<void> => {
 }
 
 // --- STATISTIC --- //
-export const getDfxCfpResults = (): Promise<CfpResult[]> => {
-  return fetchFrom(`${StatisticUrl}/cfp`);
-}
-
-export const getAllCfpResults = (): Promise<CfpResult[]> => {
-  return fetchFrom(`${StatisticUrl}/cfp/all`);
+export const getCfpResults = (): Promise<CfpResult[]> => {
+  return fetchFrom(`${StatisticUrl}/cfp/2109`);
 }
 
 // --- MASTER DATA --- //

@@ -125,7 +125,7 @@ export const fromUserDto = (user: UserDto): User => ({
   usedRef: user.usedRef,
   refData: user.refData,
   userVolume: user.userVolume,
-  walletId: user.walletId,
+  walletId: user.wallet,
   status: user.status,
   kycStatus: user.kycStatus,
   language: user.language,

@@ -13,26 +13,27 @@ import { H1, H3 } from "../elements/Texts";
 import withSession from "../hocs/withSession";
 import useAuthGuard from "../hooks/useAuthGuard";
 import { CfpResult } from "../models/CfpResult";
-import { getAllCfpResults, getDfxCfpResults } from "../services/ApiService";
+import { getCfpResults } from "../services/ApiService";
 import { Session } from "../services/AuthService";
 import NotificationService from "../services/NotificationService";
 import AppStyles from "../styles/AppStyles";
 
+const DfxCfpNumbers = [66, 70];
+
 const CfpScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
-  const [cfpFilter, setCfpFilter] = React.useState("dfx");
+  const [cfpFilter, setCfpFilter] = useState<"all" | "dfx">("dfx");
   const [cfpResults, setCfpResults] = useState<CfpResult[]>();
 
   useAuthGuard(session);
 
   useEffect(() => {
-    setIsLoading(true);
-    (cfpFilter === "dfx" ? getDfxCfpResults() : getAllCfpResults())
+    getCfpResults()
       .then(setCfpResults)
       .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));
-  }, [cfpFilter]);
+  }, []);
 
   const getData = (result: CfpResult): StackedBarChartData => {
     return {
@@ -55,7 +56,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
     labelColor: (opacity = 1) => `rgba(255,  255,  255,  ${opacity})`,
     propsForBackgroundLines: {
       stroke: Colors.Blue,
-    }
+    },
   };
 
   return (
@@ -90,10 +91,11 @@ const CfpScreen = ({ session }: { session?: Session }) => {
             <SpacerV height={50} />
 
             {cfpResults
+              ?.filter((r) => cfpFilter === "all" || DfxCfpNumbers.includes(r.number))
               ?.sort((a, b) => a.number - b.number)
               .map((result) => (
                 <View key={result.number} style={{ width: "100%" }}>
-                  <H3 text={result.title} style={ AppStyles.center } />
+                  <H3 text={result.title} style={AppStyles.center} />
                   <View style={styles.cfpContainer}>
                     <View>
                       <DataTable style={{ width: 300 }}>

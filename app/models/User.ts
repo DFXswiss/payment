@@ -30,7 +30,7 @@ export enum KycStatus {
 export interface NewUserDto {
   address: string;
   signature: string;
-  walletId: number;
+  wallet: number;
   usedRef: string;
 }
 
@@ -56,7 +56,7 @@ export interface UserVolume {
 export const toNewUserDto = (user: NewUser): NewUserDto => ({
   address: user.address,
   signature: user.signature,
-  walletId: user.walletId,
+  wallet: user.walletId,
   usedRef: user.usedRef,
 });
 
@@ -147,7 +147,7 @@ export const toUserDto = (user: User): UserDto => ({
   usedRef: user.usedRef,
   refData: user.refData,
   userVolume: user.userVolume,
-  walletId: user.walletId,
+  wallet: user.walletId,
   status: user.status,
   kycStatus: user.kycStatus,
   language: user.language,

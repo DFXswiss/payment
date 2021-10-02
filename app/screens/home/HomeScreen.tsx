@@ -27,7 +27,7 @@ import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
 import Clipboard from "expo-clipboard";
 
-const formatAmount = (amount: number): string => amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
 const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();

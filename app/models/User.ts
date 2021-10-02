@@ -27,6 +27,13 @@ export enum KycStatus {
   COMPLETED = "Completed",
 }
 
+export enum UiKycStatus {
+  KYC_NO_KYC = "no",
+  KYC_PENDING = "pending",
+  KYC_PROV = "prov",
+  KYC_COMPLETED = "completed",
+}
+
 export interface NewUserDto {
   address: string;
   signature: string;
@@ -76,6 +83,7 @@ export interface UserDto extends NewUserDto {
   userVolume: UserVolume;
   status: UserStatus;
   kycStatus: KycStatus;
+  uiKycStatus: UiKycStatus;
   language: Language;
   ip: string;
 }
@@ -96,6 +104,7 @@ export interface User extends NewUser {
   userVolume: UserVolume;
   status: UserStatus;
   kycStatus: KycStatus;
+  uiKycStatus: UiKycStatus;
   language: Language;
   ip: string;
 }
@@ -128,6 +137,7 @@ export const fromUserDto = (user: UserDto): User => ({
   walletId: user.wallet,
   status: user.status,
   kycStatus: user.kycStatus,
+  uiKycStatus: user.uiKycStatus,
   language: user.language,
   ip: user.ip,
 });
@@ -150,6 +160,7 @@ export const toUserDto = (user: User): UserDto => ({
   wallet: user.walletId,
   status: user.status,
   kycStatus: user.kycStatus,
+  uiKycStatus: user.uiKycStatus,
   language: user.language,
   ip: user.ip,
 });

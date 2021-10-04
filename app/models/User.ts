@@ -1,5 +1,7 @@
+import { BuyRoute, BuyRouteDto, fromBuyRouteDto } from "./BuyRoute";
 import { Country } from "./Country";
 import { Language } from "./Language";
+import { fromSellRouteDto, SellRoute, SellRouteDto } from "./SellRoute";
 // TODO: birthday, staatsangehörigkeit, language, email-settings, KYC status, gebühr
 
 export enum UserRole {
@@ -25,10 +27,17 @@ export enum KycStatus {
   COMPLETED = "Completed",
 }
 
+export enum UiKycStatus {
+  KYC_NO_KYC = "no",
+  KYC_PENDING = "pending",
+  KYC_PROV = "prov",
+  KYC_COMPLETED = "completed",
+}
+
 export interface NewUserDto {
   address: string;
   signature: string;
-  walletId: number;
+  wallet: number;
   usedRef: string;
 }
 
@@ -54,7 +63,7 @@ export interface UserVolume {
 export const toNewUserDto = (user: NewUser): NewUserDto => ({
   address: user.address,
   signature: user.signature,
-  walletId: user.walletId,
+  wallet: user.walletId,
   usedRef: user.usedRef,
 });
 
@@ -74,6 +83,7 @@ export interface UserDto extends NewUserDto {
   userVolume: UserVolume;
   status: UserStatus;
   kycStatus: KycStatus;
+  uiKycStatus: UiKycStatus;
   language: Language;
   ip: string;
 }
@@ -94,8 +104,19 @@ export interface User extends NewUser {
   userVolume: UserVolume;
   status: UserStatus;
   kycStatus: KycStatus;
+  uiKycStatus: UiKycStatus;
   language: Language;
   ip: string;
+}
+
+export interface UserDetailDto extends UserDto {
+  buys: BuyRouteDto[];
+  sells: SellRouteDto[];
+}
+
+export interface UserDetail extends User {
+  buys: BuyRoute[];
+  sells: SellRoute[];
 }
 
 export const fromUserDto = (user: UserDto): User => ({
@@ -113,9 +134,10 @@ export const fromUserDto = (user: UserDto): User => ({
   usedRef: user.usedRef,
   refData: user.refData,
   userVolume: user.userVolume,
-  walletId: user.walletId,
+  walletId: user.wallet,
   status: user.status,
   kycStatus: user.kycStatus,
+  uiKycStatus: user.uiKycStatus,
   language: user.language,
   ip: user.ip,
 });
@@ -135,9 +157,16 @@ export const toUserDto = (user: User): UserDto => ({
   usedRef: user.usedRef,
   refData: user.refData,
   userVolume: user.userVolume,
-  walletId: user.walletId,
+  wallet: user.walletId,
   status: user.status,
   kycStatus: user.kycStatus,
+  uiKycStatus: user.uiKycStatus,
   language: user.language,
   ip: user.ip,
+});
+
+export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
+  ...fromUserDto(dto),
+  buys: dto.buys.map((buy) => fromBuyRouteDto(buy)),
+  sells: dto.sells.map((sell) => fromSellRouteDto(sell)),
 });

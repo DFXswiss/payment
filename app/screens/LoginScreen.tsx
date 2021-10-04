@@ -22,6 +22,7 @@ import { DeFiButton } from "../elements/Buttons";
 import ButtonContainer from "../components/util/ButtonContainer";
 import { createRules, openUrl } from "../utils/Utils";
 import { ApiError } from "../models/ApiDto";
+import StorageService from "../services/StorageService";
 
 interface LoginData {
   userName: string;
@@ -34,7 +35,7 @@ const signingCommand = (address: string) => {
       .join("_");
   return `signmessage "${address}" "${message}"`;
 };
-const DefaultWalletId = 1;
+const DefaultWalletId = 2;
 
 const LoginScreen = () => {
   const nav = useNavigation();
@@ -66,29 +67,35 @@ const LoginScreen = () => {
     setIsProcessing(true);
     setError(undefined);
 
-    const walletId = +(params?.walletId ?? DefaultWalletId);
+    // TODO: remove 0 -> 1 conversion (fix for DFX Wallet v0.10.5)
+    const walletId = params?.walletId == 0 ? 1 : +(params?.walletId ?? DefaultWalletId);
 
     // reset params
-    nav.navigate(Routes.Login, { lang: undefined, address: undefined, signature: undefined, walletId: undefined })
+    nav.navigate(Routes.Login, { lang: undefined, address: undefined, signature: undefined, walletId: undefined });
 
-    SessionService.login({ address: data.userName, signature: data.password, walletId: walletId })
+    const credentials = { address: data.userName, signature: data.password, walletId: walletId };
+
+    SessionService.login(credentials)
       .finally(() => setIsProcessing(false))
       .then(() => nav.navigate(Routes.Home))
       .catch((error: ApiError) => {
-        switch (error.statusCode) {
-          case 400:
-            setError("session.pattern_invalid");
-            break;
-          case 401:
-            setError("session.signature_invalid");
-            break;
-          case 404:
-            // new user
-            nav.navigate(Routes.Ref);
-            break;
-          default:
-            setError("");
-        }
+        // store the credentials for sign up
+        return StorageService.storeValue(StorageService.Keys.Credentials, credentials).then(() => {
+          switch (error.statusCode) {
+            case 400:
+              setError("session.pattern_invalid");
+              break;
+            case 401:
+              setError("session.signature_invalid");
+              break;
+            case 404:
+              // new user
+              nav.navigate(Routes.Ref);
+              break;
+            default:
+              setError("");
+          }
+        });
       });
   };
 

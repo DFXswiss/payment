@@ -8,7 +8,7 @@ import { SpacerV } from "../../elements/Spacers";
 import { H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
 import { KycStatus, User, UserStatus } from "../../models/User";
-import { getBuyRoutes, getSellRoutes, getUser, postKyc } from "../../services/ApiService";
+import { getUserDetail, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
@@ -27,7 +27,7 @@ import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
 import Clipboard from "expo-clipboard";
 
-const formatAmount = (amount: number): string => amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
 const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
@@ -99,12 +99,12 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     (cancelled) => {
       if (session) {
         if (session.isLoggedIn) {
-          Promise.all([getUser(), getBuyRoutes(), getSellRoutes()])
-            .then(([user, buyRoutes, sellRoutes]) => {
+          getUserDetail()
+            .then((user) => {
               if (!cancelled()) {
                 setUser(user);
-                setBuyRoutes(buyRoutes);
-                setSellRoutes(sellRoutes);
+                setBuyRoutes(user.buys);
+                setSellRoutes(user.sells);
               }
             })
             .catch(() => NotificationService.error(t("feedback.load_failed")))
@@ -153,8 +153,8 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { condition: Boolean(user.refData.refVolume), label: "model.user.ref_volume", value: `${formatAmount(user.refData.refVolume)} €` },
     { condition: Boolean(user.userVolume.buyVolume), label: "model.user.user_buy_volume", value: `${formatAmount(user.userVolume.buyVolume)} €` },
     { condition: Boolean(user.userVolume.sellVolume), label: "model.user.user_sell_volume", value: `${formatAmount(user.userVolume.sellVolume)} €` },
-    //{ condition: user.kycStatus != KycStatus.NA, label: "model.user.kyc_status", value: user.kycStatus },
-    //{ condition: true, label: "model.user.buy_limit", value: limit(user) },
+    { condition: user.kycStatus != KycStatus.NA, label: "model.user.kyc_status", value:  t(`model.user.${user.uiKycStatus}_kyc`) },
+    { condition: true, label: "model.user.buy_limit", value: limit(user) },
   ];
 
   return (

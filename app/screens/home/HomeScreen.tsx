@@ -133,7 +133,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   useAuthGuard(session);
 
   const limit = (user: User): string => {
-    const limit = user.kycStatus != KycStatus.COMPLETED ? 900 : 100000;
+    const limit = (user.kycStatus === KycStatus.COMPLETED) || (user.kycStatus === KycStatus.WAIT_VERIFY_MANUAL) ? 100000: 900;
     return `${formatAmount(limit)} € ${t("model.user.per_day")}`;
   };
 

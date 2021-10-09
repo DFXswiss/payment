@@ -10,7 +10,6 @@ import { SpacerH, SpacerV } from "../elements/Spacers";
 import { Alert, H1, H3 } from "../elements/Texts";
 import SessionService from "../services/SessionService";
 import AppStyles from "../styles/AppStyles";
-import { Environment } from "../env/Environment";
 import Input from "../components/form/Input";
 import AppLayout from "../components/AppLayout";
 import IconButton from "../components/util/IconButton";
@@ -179,7 +178,7 @@ const LoginScreen = () => {
 
             {error != null && (
               <>
-                <Alert label={`${t("session.login_failed")} ${t(error)}`} />
+                <Alert label={`${t("session.login_failed")} ${error ? t(error) : ''}`} />
                 <SpacerV />
               </>
             )}

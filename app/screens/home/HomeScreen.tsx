@@ -26,6 +26,7 @@ import useAuthGuard from "../../hooks/useAuthGuard";
 import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
 import Clipboard from "expo-clipboard";
+import { ApiError } from "../../models/ApiDto";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
@@ -107,7 +108,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                 setSellRoutes(user.sells);
               }
             })
-            .catch(() => NotificationService.error(t("feedback.load_failed")))
+            .catch((e: ApiError) => e.statusCode != 401 ? NotificationService.error(t("feedback.load_failed")) : undefined) // auto logout
             .finally(() => {
               if (!cancelled()) {
                 setLoading(false);

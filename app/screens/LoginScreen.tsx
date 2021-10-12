@@ -22,6 +22,7 @@ import ButtonContainer from "../components/util/ButtonContainer";
 import { createRules, openUrl } from "../utils/Utils";
 import { ApiError } from "../models/ApiDto";
 import StorageService from "../services/StorageService";
+import Loading from "../components/util/Loading";
 
 interface LoginData {
   userName: string;
@@ -53,6 +54,7 @@ const LoginScreen = () => {
   const [error, setError] = useState<string>();
   const [addressEntered, setAddressEntered] = useState(false);
   const [signCommandCopied, setSignCommandCopied] = useState(false);
+  const [isAutoLogin, setIsAutoLogin] = useState(false);
 
   const passwordRef = useRef<TextInput>(null);
 
@@ -63,13 +65,17 @@ const LoginScreen = () => {
       return;
     }
 
+    setAddressEntered(true);
     setIsProcessing(true);
     setError(undefined);
 
     const credentials = { address: data.userName, signature: data.password };
 
     SessionService.login(credentials)
-      .finally(() => setIsProcessing(false))
+      .finally(() => {
+        setIsProcessing(false);
+        setIsAutoLogin(false);
+      })
       .then(() => nav.navigate(Routes.Home))
       .catch((error: ApiError) => {
         // store the credentials for sign up
@@ -103,11 +109,12 @@ const LoginScreen = () => {
     }
 
     // TODO: remove 0 -> 1 conversion (fix for DFX Wallet v0.10.5)
-    setValue("walletId", params?.walletId == 0 ? 1 : +(params?.walletId));
+    setValue("walletId", params?.walletId == 0 ? 1 : +params?.walletId);
 
     if (params?.address && params?.signature) {
       setValue("userName", params.address);
       setValue("password", params.signature);
+      setIsAutoLogin(true);
       handleSubmit(onSubmit(true))();
     }
 
@@ -124,75 +131,77 @@ const LoginScreen = () => {
   return (
     <AppLayout>
       <View style={[AppStyles.container, AppStyles.alignCenter]}>
-        <SpacerV height={20} />
-        <H1 text={t("session.sign_up")} />
-        <DeFiButton onPress={openInstructions} compact>
-          {t("session.instructions")}
-        </DeFiButton>
-
-        <SpacerV />
-
-        <View style={AppStyles.singleColFormContainer}>
-          <Form
-            control={control}
-            rules={rules}
-            errors={errors}
-            disabled={isProcessing}
-            onSubmit={handleSubmit(onSubmit(false))}
-          >
-            <Input
-              name="userName"
-              label={t("model.user.legacy_address")}
-              returnKeyType="next"
-              blurOnSubmit={false}
-              placeholder="8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG"
-            />
-
-            <View style={addressEntered ? undefined : AppStyles.noDisplay}>
-              <SpacerV />
-              <H3 text={t("session.signing_command")}></H3>
-
-              <View style={[AppStyles.containerHorizontal, styles.signingMessage]}>
-                <View style={styles.textContainer}>
-                  <Text>{signingCommand(address)}</Text>
-                </View>
-                <SpacerH />
-                <IconButton
-                  icon={signCommandCopied ? "check" : "content-copy"}
-                  color={signCommandCopied ? Colors.Success : Colors.Grey}
-                  onPress={() => {
-                    Clipboard.setString(signingCommand(address));
-                    setTimeout(() => setSignCommandCopied(true), 200);
-                    setTimeout(() => setSignCommandCopied(false), 2200);
-                  }}
-                />
-              </View>
-              <SpacerV />
-              <Input
-                name="password"
-                label={t("model.user.signature")}
-                returnKeyType="send"
-                ref={passwordRef}
-                secureTextEntry
-              />
-            </View>
-
+        {isProcessing && isAutoLogin ? (
+          <>
+            <SpacerV height={50} />
+            <Loading size="large" />
+          </>
+        ) : (
+          <>
+            <SpacerV height={20} />
+            <H1 text={t("session.sign_up")} />
+            <DeFiButton onPress={openInstructions} compact>
+              {t("session.instructions")}
+            </DeFiButton>
             <SpacerV />
-
-            {error != null && (
-              <>
-                <Alert label={`${t("session.login_failed")} ${error ? t(error) : ""}`} />
+            <View style={AppStyles.singleColFormContainer}>
+              <Form
+                control={control}
+                rules={rules}
+                errors={errors}
+                disabled={isProcessing}
+                onSubmit={handleSubmit(onSubmit(false))}
+              >
+                <Input
+                  name="userName"
+                  label={t("model.user.legacy_address")}
+                  returnKeyType="next"
+                  blurOnSubmit={false}
+                  placeholder="8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG"
+                />
+                <View style={addressEntered ? undefined : AppStyles.noDisplay}>
+                  <SpacerV />
+                  <H3 text={t("session.signing_command")}></H3>
+                  <View style={[AppStyles.containerHorizontal, styles.signingMessage]}>
+                    <View style={styles.textContainer}>
+                      <Text>{signingCommand(address)}</Text>
+                    </View>
+                    <SpacerH />
+                    <IconButton
+                      icon={signCommandCopied ? "check" : "content-copy"}
+                      color={signCommandCopied ? Colors.Success : Colors.Grey}
+                      onPress={() => {
+                        Clipboard.setString(signingCommand(address));
+                        setTimeout(() => setSignCommandCopied(true), 200);
+                        setTimeout(() => setSignCommandCopied(false), 2200);
+                      }}
+                    />
+                  </View>
+                  <SpacerV />
+                  <Input
+                    name="password"
+                    label={t("model.user.signature")}
+                    returnKeyType="send"
+                    ref={passwordRef}
+                    secureTextEntry
+                  />
+                </View>
                 <SpacerV />
-              </>
-            )}
-
-            <ButtonContainer>
-              <DeFiButton mode="contained" loading={isProcessing} onPress={handleSubmit(onSubmit(false))}>
-                {t(addressEntered ? "action.login" : "action.next")}
-              </DeFiButton>
-            </ButtonContainer>
-          </Form>
-        </View>
+                {error != null && (
+                  <>
+                    <Alert label={`${t("session.login_failed")} ${error ? t(error) : ""}`} />
+                    <SpacerV />
+                  </>
+                )}
+                <ButtonContainer>
+                  <DeFiButton mode="contained" loading={isProcessing} onPress={handleSubmit(onSubmit(false))}>
+                    {t(addressEntered ? "action.login" : "action.next")}
+                  </DeFiButton>
+                </ButtonContainer>
+              </Form>
+            </View>
+          </>
+        )}
       </View>
     </AppLayout>
   );

@@ -26,6 +26,7 @@ import StorageService from "../services/StorageService";
 interface LoginData {
   userName: string;
   password: string;
+  walletId: number;
 }
 
 const signingCommand = (address: string) => {
@@ -34,7 +35,6 @@ const signingCommand = (address: string) => {
       .join("_");
   return `signmessage "${address}" "${message}"`;
 };
-const DefaultWalletId = 2;
 
 const LoginScreen = () => {
   const nav = useNavigation();
@@ -66,20 +66,17 @@ const LoginScreen = () => {
     setIsProcessing(true);
     setError(undefined);
 
-    // TODO: remove 0 -> 1 conversion (fix for DFX Wallet v0.10.5)
-    const walletId = params?.walletId == 0 ? 1 : +(params?.walletId ?? DefaultWalletId);
-
-    // reset params
-    nav.navigate(Routes.Login, { lang: undefined, address: undefined, signature: undefined, walletId: undefined });
-
-    const credentials = { address: data.userName, signature: data.password, walletId: walletId };
+    const credentials = { address: data.userName, signature: data.password };
 
     SessionService.login(credentials)
       .finally(() => setIsProcessing(false))
       .then(() => nav.navigate(Routes.Home))
       .catch((error: ApiError) => {
         // store the credentials for sign up
-        return StorageService.storeValue(StorageService.Keys.Credentials, credentials).then(() => {
+        Promise.all([
+          StorageService.storeValue(StorageService.Keys.Credentials, credentials),
+          StorageService.storeValue(StorageService.Keys.WalletId, data.walletId),
+        ]).then(() => {
           switch (error.statusCode) {
             case 400:
               setError("session.pattern_invalid");
@@ -105,11 +102,17 @@ const LoginScreen = () => {
       SettingsService.updateSettings({ language: params.lang.toUpperCase() });
     }
 
+    // TODO: remove 0 -> 1 conversion (fix for DFX Wallet v0.10.5)
+    setValue("walletId", params?.walletId == 0 ? 1 : +(params?.walletId));
+
     if (params?.address && params?.signature) {
       setValue("userName", params.address);
       setValue("password", params.signature);
       handleSubmit(onSubmit(true))();
     }
+
+    // reset params
+    nav.navigate(Routes.Login, { lang: undefined, address: undefined, signature: undefined, walletId: undefined });
   }, []);
 
   const params = route.params as any;
@@ -178,7 +181,7 @@ const LoginScreen = () => {
 
             {error != null && (
               <>
-                <Alert label={`${t("session.login_failed")} ${error ? t(error) : ''}`} />
+                <Alert label={`${t("session.login_failed")} ${error ? t(error) : ""}`} />
                 <SpacerV />
               </>
             )}

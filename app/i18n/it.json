@@ -19,6 +19,7 @@
       "back": "Indietro",
       "accept": "Accettare",
       "ok": "OK",
+      "yes": "Si",
       "delete": "Cancellare",
       "upload": "Carica",
       "send": "Inviare"
@@ -100,11 +101,13 @@
     "model": {
       "user": {
         "edit": "Modificare i dati dell'utente",
-        "kyc": "KYC",
-        "kyc_request": "Vuole inviare la richiesta KYC?",
+        "kyc": "Aumentare il limite di deposito",
+        "kyc_request": "Vuoi aumentare il tuo limite di deposito?",
         "kyc_status": "KYC stato",
         "no_kyc": "No KYC",
-        "pending_kyc": "In corso",
+        "pending_chatbot": "In corso (Onboarding del chatbot)",
+        "pending_address": "In corso (Caricamento della fattura)",
+        "pending_online_id": "In corso (Identificazione online)",
         "prov_kyc": "KYC provvisorio",
         "completed_kyc": "KYC completo",
         "data_missing": "Si prega di compilare completamente i dati dell'utente prima!",

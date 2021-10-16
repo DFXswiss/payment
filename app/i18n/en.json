@@ -19,6 +19,7 @@
       "back": "Back",
       "accept": "Accept",
       "ok": "OK",
+      "yes": "Yes",
       "delete": "Delete",
       "upload": "Upload",
       "send": "Send"
@@ -98,11 +99,13 @@
     "model": {
       "user": {
         "edit": "Edit user data",
-        "kyc": "KYC",
-        "kyc_request": "Do you want to submit the KYC request?",
+        "kyc": "Increase deposit limit",
+        "kyc_request": "Do you want to increase your deposit limit?",
         "kyc_status": "KYC status",
         "no_kyc": "No KYC",
-        "pending_kyc": "In progress",
+        "pending_chatbot": "In progress (Chatbot onboarding)",
+        "pending_address": "In progress (Invoice upload)",
+        "pending_online_id": "In progress (Online identification)",
         "prov_kyc": "Provisional KYC",
         "completed_kyc": "Full KYC",
         "data_missing": "Please fill out your user data completely first!",

@@ -48,7 +48,7 @@ export const getUserDetail = (): Promise<UserDetail> => {
 };
 
 export const postKyc = (): Promise<void> => {
-  return fetchFrom(`${UserUrl}/kyc`, 'POST');
+  return fetchFrom(`${UserUrl}/kyc?depositLimit=${150000}`, 'POST');
 }
 
 export const putUser = (user: User): Promise<User> => {

@@ -138,7 +138,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     if(user.kycStatus != KycStatus.COMPLETED && user.kycStatus != KycStatus.WAIT_VERIFY_MANUAL){
       return `${formatAmount(900)} € ${t("model.user.per_day")}`
     }else{
-      return `${formatAmount(user.depositLimit)} €`;
+      return `${formatAmount(user.depositLimit)} € ${t("model.user.per_year")}`;
     }
   };
 

@@ -1,6 +1,6 @@
 import React, { useState, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { TextInput, View } from "react-native";
 import DeFiModal from "../../components/util/DeFiModal";
 import Loading from "../../components/util/Loading";
 import UserEdit from "../../components/edit/UserEdit";
@@ -126,7 +126,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const fabButtons = [
     { icon: "content-copy", label: t("model.user.copy_ref"), onPress: () => Clipboard.setString(`${BaseUrl}/ref?code=${user?.refData.ref}`), visible: user?.refData?.ref },
     { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true), visible: true },
-    { icon: "account-check", label: t("model.user.kyc"), onPress: onKyc, visible: user?.status != UserStatus.NA && user?.kycStatus == KycStatus.NA },
+    { icon: "account-check", label: t("model.user.kyc"), onPress: onKyc, visible: user?.status != UserStatus.NA},
     { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true), visible: true },
     { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: false }, // TODO: reactivate
   ];
@@ -134,8 +134,38 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   useAuthGuard(session);
 
   const limit = (user: User): string => {
-    const limit = (user.kycStatus === KycStatus.COMPLETED) || (user.kycStatus === KycStatus.WAIT_VERIFY_MANUAL) ? 100000: 900;
-    return `${formatAmount(limit)} € ${t("model.user.per_day")}`;
+
+    if(user.kycStatus != KycStatus.COMPLETED && user.kycStatus != KycStatus.WAIT_VERIFY_MANUAL){
+      return `${formatAmount(900)} € ${t("model.user.per_day")}`
+    }else{
+      return `${formatAmount(user.depositLimit)} € ${t("model.user.per_year")}`;
+    }
+  };
+
+  const status = (status: KycStatus): string => {
+    switch(status) { 
+      case KycStatus.NA: { 
+         return 'no_kyc';
+      } 
+      case KycStatus.WAIT_CHAT_BOT: { 
+        return 'pending_chatbot';
+      } 
+      case KycStatus.WAIT_VERIFY_ADDRESS: { 
+        return 'pending_address';
+      } 
+      case KycStatus.WAIT_VERIFY_ID: { 
+        return 'pending_online_id';
+      } 
+      case KycStatus.WAIT_VERIFY_MANUAL: { 
+        return 'prov_kyc';
+      } 
+      case KycStatus.WAIT_VERIFY_MANUAL: { 
+        return 'completed_kyc';
+      } 
+      default: { 
+        return 'no_kyc';
+      } 
+   } 
   };
 
   const userData = (user: User) => [
@@ -154,7 +184,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { condition: Boolean(user.refData.refVolume), label: "model.user.ref_volume", value: `${formatAmount(user.refData.refVolume)} €` },
     { condition: Boolean(user.userVolume.buyVolume), label: "model.user.user_buy_volume", value: `${formatAmount(user.userVolume.buyVolume)} €` },
     { condition: Boolean(user.userVolume.sellVolume), label: "model.user.user_sell_volume", value: `${formatAmount(user.userVolume.sellVolume)} €` },
-    { condition: user.kycStatus != KycStatus.NA, label: "model.user.kyc_status", value:  t(`model.user.${user.uiKycStatus}_kyc`) },
+    { condition: user.kycStatus != KycStatus.NA, label: "model.user.kyc_status", value:  t(`model.user.${status(user.kycStatus)}`) },
     { condition: true, label: "model.user.buy_limit", value: limit(user) },
   ];
 
@@ -174,8 +204,8 @@ const HomeScreen = ({ session }: { session?: Session }) => {
             <Paragraph>{t("model.user.kyc_request")}</Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={() => setIsKycRequest(false)} color={Colors.Grey}>{t("action.abort")}</Button>
-            <DeFiButton onPress={requestKyc} loading={isKycLoading}>{t("action.send")}</DeFiButton>
+            <Button onPress={() => setIsKycRequest(false)} color={Colors.Grey}>{t("action.abort")}</Button>  
+            <DeFiButton onPress={requestKyc} loading={isKycLoading}>{t("action.yes")}</DeFiButton>
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -203,7 +233,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                         </DeFiButton>
                       </View>
                     )}
-                    {user?.status != UserStatus.NA && user?.kycStatus == KycStatus.NA && (
+                    {user?.status != UserStatus.NA && (
                       <View style={AppStyles.mr10}>
                         <DeFiButton mode="contained" onPress={onKyc}>
                           {t("model.user.kyc")}

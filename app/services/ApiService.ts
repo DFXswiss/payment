@@ -48,9 +48,9 @@ export const getUserDetail = (): Promise<UserDetail> => {
 };
 
 export const postKyc = (): Promise<void> => {
-  return fetchFrom(`${UserUrl}/kyc`, 'POST');
+  return fetchFrom(`${UserUrl}/kyc?depositLimit=${45000}`, 'POST');
+  //TODO: Replace 45000 with variable from KYC dialog
 }
-
 export const putUser = (user: User): Promise<User> => {
   return fetchFrom<UserDto>(UserUrl, "PUT", toUserDto(user))
     .then(fromUserDto);

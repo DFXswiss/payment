@@ -19,9 +19,11 @@
       "back": "Arrière",
       "accept": "Accepter",
       "ok": "OK",
+      "yes": "Oui",
       "delete": "Supprimer",
       "upload": "Télécharger",
       "send": "Envoyer"
+
     },
     "feedback": {
       "page_not_found": "Page non trouvée !",
@@ -100,11 +102,13 @@
     "model": {
       "user": {
         "edit": "Modifier les données de l'utilisateur",
-        "kyc": "KYC",
-        "kyc_request": "Voulez-vous envoyer la demande de KYC ?",
+        "kyc": "Augmenter la limite de dépôt",
+        "kyc_request": "Voulez-vous envoyer la limite de dépôt?",
         "kyc_status": "KYC status",
         "no_kyc": "Pas de kyc",
-        "pending_kyc": "En cours",
+        "pending_chatbot": "En cours (Chatbot onboarding)",
+        "pending_address": "En cours (Téléchargement de factures)",
+        "pending_online_id": "En cours (Identification en ligne)",
         "prov_kyc": "KYC privé",
         "completed_kyc": "KYC complet",
         "data_missing": "Veuillez d'abord remplir complètement vos données d'utilisateur !",
@@ -134,6 +138,7 @@
         "user_sell_volume": "Volume déboursé",
         "buy_limit": "Votre limite de dépôt",
         "per_day": "par jour",
+        "per_year": "par an",
         "edit_disallowed": "Les modifications des données de l'utilisateur ne sont plus possibles en raison de votre statut KYC. Veuillez contacter notre équipe d'assistance à l'adresse support@dfx.swiss."
       },
       "route": {

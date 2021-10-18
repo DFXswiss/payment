@@ -52,6 +52,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const {
     control,
     handleSubmit,
+    reset: resetForm,
     formState: { errors },
   } = useForm<{ limit: string }>();
 
@@ -81,6 +82,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     if (user?.kycStatus === KycStatus.NA && !userDataComplete()) {
       setIsUserEdit(true);
     }
+    resetForm();
     setIsKycRequest(true);
   };
 
@@ -90,7 +92,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     const limitNumber = limit ? +limit : undefined;
     postKyc(limitNumber)
       .then(() => {
-        if (user) {
+        if (user?.kycStatus == KycStatus.NA) {
           user.kycStatus = KycStatus.WAIT_CHAT_BOT;
         }
         NotificationService.success(t("feedback.request_submitted"));
@@ -142,7 +144,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const fabButtons = [
     { icon: "content-copy", label: t("model.user.copy_ref"), onPress: () => Clipboard.setString(`${BaseUrl}/ref?code=${user?.refData.ref}`), visible: user?.refData?.ref },
     { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true), visible: true },
-    { icon: "account-check", label: t("model.kyc.kyc"), onPress: onKyc, visible: user?.status != UserStatus.NA && (user?.kycStatus === KycStatus.NA||user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL  ||user?.kycStatus === KycStatus.COMPLETED )},
+    { icon: "account-check", label: t("model.kyc.kyc"), onPress: onKyc, visible: user?.status != UserStatus.NA && (user?.kycStatus === KycStatus.NA || user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL || user?.kycStatus === KycStatus.COMPLETED )},
     { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true), visible: true },
     { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: false }, // TODO: reactivate
   ];
@@ -150,10 +152,9 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   useAuthGuard(session);
 
   const limit = (user: User): string => {
-
-    if(user.kycStatus != KycStatus.COMPLETED && user.kycStatus != KycStatus.WAIT_VERIFY_MANUAL){
+    if(user.kycStatus != KycStatus.COMPLETED && user.kycStatus != KycStatus.WAIT_VERIFY_MANUAL) {
       return `${formatAmount(900)} € ${t("model.user.per_day")}`
-    }else{
+    } else {
       return `${formatAmount(user.depositLimit)} € ${t("model.user.per_year")}`;
     }
   };
@@ -191,7 +192,9 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
         <Dialog visible={isKycRequest && !isUserEdit} onDismiss={() => setIsKycRequest(false)} style={AppStyles.dialog}>
           <Dialog.Content>
-            {user?.kycStatus === KycStatus.COMPLETED ? (
+            {user?.kycStatus === KycStatus.NA ? (
+              <Paragraph>{t("model.kyc.request")}</Paragraph>
+            ) : (
               <>
                 <Paragraph>{t("model.kyc.invest_volume")}</Paragraph>
                 <SpacerV />
@@ -210,8 +213,6 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                   />
                 </Form>
               </>
-            ) : (
-              <Paragraph>{t("model.kyc.request")}</Paragraph>
             )}
           </Dialog.Content>
           <Dialog.Actions>
@@ -219,10 +220,10 @@ const HomeScreen = ({ session }: { session?: Session }) => {
               {t("action.abort")}
             </Button>
             <DeFiButton
-              onPress={user?.kycStatus === KycStatus.COMPLETED ? handleSubmit(requestKyc) : requestKyc}
+              onPress={user?.kycStatus === KycStatus.NA ? requestKyc : handleSubmit(requestKyc)}
               loading={isKycLoading}
             >
-              {t(user?.kycStatus === KycStatus.COMPLETED ? "action.send" : "action.yes")}
+              {t(user?.kycStatus === KycStatus.NA ? "action.yes" : "action.send")}
             </DeFiButton>
           </Dialog.Actions>
         </Dialog>

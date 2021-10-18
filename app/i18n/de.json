@@ -103,15 +103,6 @@
     "model": {
       "user": {
         "edit": "Benutzerdaten bearbeiten",
-        "kyc": "Einzahlungslimit erhöhen",
-        "kyc_request": "Möchtest du dein Einzahlungslimit erhöhen?",
-        "kyc_status": "KYC Status",
-        "kyc_na": "Kein KYC",
-        "kyc_chatbot": "In Bearbeitung (Chatbot onboarding)",
-        "kyc_address": "In Bearbeitung (Invoice upload)",
-        "kyc_onlineid": "In Bearbeitung (Online Identifikation)",
-        "kyc_manual": "Provisorisches KYC",
-        "kyc_completed": "Vollständiges KYC",
         "data_missing": "Fülle bitte zuerst deine Benutzerdaten komplett aus!",
         "your_data": "Deine Benutzerdaten",
         "data": "Benutzerdaten",
@@ -142,6 +133,17 @@
         "per_day": "pro Tag",
         "per_year": "pro Jahr",
         "edit_disallowed": "Änderungen an den Benutzerdaten sind aufgrund deines KYC-Status nicht mehr möglich. Bitte wende dich dafür an unseren Support unter support@dfx.swiss."
+      },
+      "kyc":{
+        "increase": "Einzahlungslimit erhöhen",
+        "request": "Möchtest du dein Einzahlungslimit erhöhen?",
+        "status": "KYC Status",
+        "na": "Kein KYC",
+        "chatbot": "In Bearbeitung (Chatbot onboarding)",
+        "address": "In Bearbeitung (Invoice upload)",
+        "onlineid": "In Bearbeitung (Online Identifikation)",
+        "manual": "Provisorisches KYC",
+        "completed": "Vollständiges KYC"
       },
       "route": {
         "routes": "Payment Routen",

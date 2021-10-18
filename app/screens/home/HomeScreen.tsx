@@ -126,7 +126,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const fabButtons = [
     { icon: "content-copy", label: t("model.user.copy_ref"), onPress: () => Clipboard.setString(`${BaseUrl}/ref?code=${user?.refData.ref}`), visible: user?.refData?.ref },
     { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true), visible: true },
-    { icon: "account-check", label: t("model.user.kyc"), onPress: onKyc, visible: user?.status != UserStatus.NA && (user?.kycStatus === KycStatus.NA||user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL  ||user?.kycStatus === KycStatus.COMPLETED )},
+    { icon: "account-check", label: t("model.kyc.kyc"), onPress: onKyc, visible: user?.status != UserStatus.NA && (user?.kycStatus === KycStatus.NA||user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL  ||user?.kycStatus === KycStatus.COMPLETED )},
     { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true), visible: true },
     { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: false }, // TODO: reactivate
   ];
@@ -158,7 +158,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { condition: Boolean(user.refData.refVolume), label: "model.user.ref_volume", value: `${formatAmount(user.refData.refVolume)} €` },
     { condition: Boolean(user.userVolume.buyVolume), label: "model.user.user_buy_volume", value: `${formatAmount(user.userVolume.buyVolume)} €` },
     { condition: Boolean(user.userVolume.sellVolume), label: "model.user.user_sell_volume", value: `${formatAmount(user.userVolume.sellVolume)} €` },
-    { condition: user.kycStatus != KycStatus.NA, label: "model.user.kyc_status", value:  t(`model.user.kyc_${user.kycStatus.toLowerCase()}`) },
+    { condition: user.kycStatus != KycStatus.NA, label: "model.kyc.status", value:  t(`model.kyc.${user.kycStatus.toLowerCase()}`) },
     { condition: true, label: "model.user.buy_limit", value: limit(user) },
   ];
 
@@ -175,7 +175,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
         <Dialog visible={isKycRequest && !isUserEdit} onDismiss={() => setIsKycRequest(false)} style={AppStyles.dialog}>
           <Dialog.Content>
-            <Paragraph>{t("model.user.kyc_request")}</Paragraph>
+            <Paragraph>{t("model.kyc.request")}</Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
             <Button onPress={() => setIsKycRequest(false)} color={Colors.Grey}>{t("action.abort")}</Button>  
@@ -231,7 +231,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                       {user?.status != UserStatus.NA && (user?.kycStatus === KycStatus.NA||user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL  ||user?.kycStatus === KycStatus.COMPLETED ) && (
                         <View style={AppStyles.mr10}>
                           <DeFiButton mode="contained" onPress={onKyc}>
-                            {t("model.user.kyc")}
+                            {t("model.kyc.increase")}
                           </DeFiButton>
                         </View>
                       )}

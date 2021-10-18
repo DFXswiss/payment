@@ -101,15 +101,6 @@
     "model": {
       "user": {
         "edit": "Modificare i dati dell'utente",
-        "kyc": "Aumentare il limite di deposito",
-        "kyc_request": "Vuoi aumentare il tuo limite di deposito?",
-        "kyc_status": "KYC stato",
-        "kyc_na": "No KYC",
-        "kyc_chatbot": "In corso (Onboarding del chatbot)",
-        "kyc_address": "In corso (Caricamento della fattura)",
-        "kyc_onlineid": "In corso (Identificazione online)",
-        "kyc_manual": "KYC provvisorio",
-        "kyc_completed": "KYC completo",
         "data_missing": "Si prega di compilare completamente i dati dell'utente prima!",
         "your_data": "I tuoi dati utente",
         "data": "Dati utente",
@@ -139,6 +130,17 @@
         "per_day": "al giorno",
         "per_year": "al anno",
         "edit_disallowed": "Non è più possibile modificare i dati dell'utente a causa del suo stato KYC. Si prega di contattare il nostro team di supporto a support@dfx.swiss."
+      },
+      "kyc":{
+        "increase": "Aumentare il limite di deposito",
+        "request": "Vuoi aumentare il tuo limite di deposito?",
+        "status": "KYC stato",
+        "na": "No KYC",
+        "chatbot": "In corso (Onboarding del chatbot)",
+        "address": "In corso (Caricamento della fattura)",
+        "onlineid": "In corso (Identificazione online)",
+        "manual": "KYC provvisorio",
+        "completed": "KYC completo"
       },
       "route": {
         "routes": "Routen di pagamento",

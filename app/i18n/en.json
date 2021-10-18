@@ -131,7 +131,9 @@
       },
       "kyc":{
         "increase": "Increase deposit limit",
-        "request": "Do you want to increase your deposit limit?",
+        "request": "Do you want to increase your deposit limit now?",
+        "invest_volume": "How much do you approximately want to invest in total?",
+        "volume": "Investment volume",
         "status": "KYC status",
         "chatbot": "In progress (Chatbot onboarding)",
         "address": "In progress (Invoice upload)",

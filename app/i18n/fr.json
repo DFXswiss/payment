@@ -134,7 +134,9 @@
       },
       "kyc":{
         "increase": "Augmenter la limite de dépôt",
-        "request": "Voulez-vous envoyer la limite de dépôt?",
+        "request": "Voulez-vous augmenter la limite de dépôt maintenant?",
+        "invest_volume": "Combien voulez-vous investir au total?",
+        "volume": "Volume d'investissement",
         "status": "KYC status",
         "na": "Pas de kyc",
         "chatbot": "En cours (Chatbot onboarding)",

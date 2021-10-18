@@ -47,10 +47,12 @@ export const getUserDetail = (): Promise<UserDetail> => {
     .then(fromUserDetailDto);
 };
 
-export const postKyc = (): Promise<void> => {
-  return fetchFrom(`${UserUrl}/kyc?depositLimit=${45000}`, 'POST');
-  //TODO: Replace 45000 with variable from KYC dialog
-}
+export const postKyc = (limit?: number): Promise<void> => {
+  let url = `${UserUrl}/kyc`;
+  if (limit) url += `?depositLimit=${limit}`;
+  
+  return fetchFrom(url, "POST");
+};
 export const putUser = (user: User): Promise<User> => {
   return fetchFrom<UserDto>(UserUrl, "PUT", toUserDto(user))
     .then(fromUserDto);
@@ -100,12 +102,12 @@ export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
 // --- PAYMENTS --- //
 export const postPayment = (payment: Payment): Promise<void> => {
   return fetchFrom(BuyPaymentUrl, "POST", toPaymentDto(payment));
-}
+};
 
 // --- STATISTIC --- //
 export const getCfpResults = (): Promise<CfpResult[]> => {
   return fetchFrom(`${StatisticUrl}/cfp/2109`);
-}
+};
 
 // --- MASTER DATA --- //
 export const getAssets = (): Promise<Asset[]> => {

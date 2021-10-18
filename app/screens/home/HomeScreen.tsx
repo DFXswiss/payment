@@ -126,7 +126,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const fabButtons = [
     { icon: "content-copy", label: t("model.user.copy_ref"), onPress: () => Clipboard.setString(`${BaseUrl}/ref?code=${user?.refData.ref}`), visible: user?.refData?.ref },
     { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true), visible: true },
-    { icon: "account-check", label: t("model.user.kyc"), onPress: onKyc, visible: user?.status != UserStatus.NA},
+    { icon: "account-check", label: t("model.user.kyc"), onPress: onKyc, visible: user?.status != UserStatus.NA && (user?.kycStatus === KycStatus.NA||user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL  ||user?.kycStatus === KycStatus.COMPLETED )},
     { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true), visible: true },
     { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: false }, // TODO: reactivate
   ];
@@ -140,32 +140,6 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     }else{
       return `${formatAmount(user.depositLimit)} € ${t("model.user.per_year")}`;
     }
-  };
-
-  const status = (status: KycStatus): string => {
-    switch(status) { 
-      case KycStatus.NA: { 
-         return 'no_kyc';
-      } 
-      case KycStatus.WAIT_CHAT_BOT: { 
-        return 'pending_chatbot';
-      } 
-      case KycStatus.WAIT_VERIFY_ADDRESS: { 
-        return 'pending_address';
-      } 
-      case KycStatus.WAIT_VERIFY_ID: { 
-        return 'pending_online_id';
-      } 
-      case KycStatus.WAIT_VERIFY_MANUAL: { 
-        return 'prov_kyc';
-      } 
-      case KycStatus.WAIT_VERIFY_MANUAL: { 
-        return 'completed_kyc';
-      } 
-      default: { 
-        return 'no_kyc';
-      } 
-   } 
   };
 
   const userData = (user: User) => [
@@ -184,7 +158,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { condition: Boolean(user.refData.refVolume), label: "model.user.ref_volume", value: `${formatAmount(user.refData.refVolume)} €` },
     { condition: Boolean(user.userVolume.buyVolume), label: "model.user.user_buy_volume", value: `${formatAmount(user.userVolume.buyVolume)} €` },
     { condition: Boolean(user.userVolume.sellVolume), label: "model.user.user_sell_volume", value: `${formatAmount(user.userVolume.sellVolume)} €` },
-    { condition: user.kycStatus != KycStatus.NA, label: "model.user.kyc_status", value:  t(`model.user.${status(user.kycStatus)}`) },
+    { condition: user.kycStatus != KycStatus.NA, label: "model.user.kyc_status", value:  t(`model.user.kyc_${user.kycStatus.toLowerCase()}`) },
     { condition: true, label: "model.user.buy_limit", value: limit(user) },
   ];
 
@@ -222,32 +196,16 @@ const HomeScreen = ({ session }: { session?: Session }) => {
         <>
           {user && (
             <View>
-              <View style={AppStyles.containerHorizontal}>
+              <View style={[AppStyles.containerHorizontal]}>
                 <H2 text={t("model.user.your_data")} />
-                {device.SM && (
-                  <View style={[AppStyles.mla, AppStyles.containerHorizontal]}>
-                    {(user?.refData?.ref) && (
-                      <View style={AppStyles.mr10}>
-                        <DeFiButton mode="contained" onPress={() => Clipboard.setString(`${BaseUrl}/ref?code=${user.refData.ref}`)}>
-                          {t("model.user.copy_ref")}
-                        </DeFiButton>
-                      </View>
-                    )}
-                    {user?.status != UserStatus.NA && (
-                      <View style={AppStyles.mr10}>
-                        <DeFiButton mode="contained" onPress={onKyc}>
-                          {t("model.user.kyc")}
-                        </DeFiButton>
-                      </View>
-                    )}
-                    <DeFiButton mode="contained" onPress={() => setIsUserEdit(true)}>
-                      {t("action.edit")}
+                <View style={{ marginLeft: "auto" }}>
+                 
+                    <DeFiButton  mode="contained" onPress={() => setIsUserEdit(true)}>
+                            {t("action.edit")}
                     </DeFiButton>
-                  </View>
-                )}
+                </View>
               </View>
               <SpacerV />
-
               <DataTable>
                 {userData(user).map(
                   (d) =>
@@ -259,6 +217,27 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                     )
                 )}
               </DataTable>
+              <SpacerV />
+              <View style={AppStyles.mr10}>
+                {device.SM && (
+                    <View style={[AppStyles.mra, AppStyles.containerHorizontal]}>
+                      {(user?.refData?.ref) && (
+                        <View style={AppStyles.mr10}>
+                          <DeFiButton mode="contained" onPress={() => Clipboard.setString(`${BaseUrl}/ref?code=${user.refData.ref}`)}>
+                            {t("model.user.copy_ref")}
+                          </DeFiButton>
+                        </View>
+                      )}
+                      {user?.status != UserStatus.NA && (user?.kycStatus === KycStatus.NA||user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL  ||user?.kycStatus === KycStatus.COMPLETED ) && (
+                        <View style={AppStyles.mr10}>
+                          <DeFiButton mode="contained" onPress={onKyc}>
+                            {t("model.user.kyc")}
+                          </DeFiButton>
+                        </View>
+                      )}
+                    </View>
+                  )}
+                </View>
             </View>
           )}
 

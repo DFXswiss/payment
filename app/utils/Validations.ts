@@ -57,7 +57,7 @@ class ValidationsClass {
   }
 
   public Custom = (validator: (value: any) => true | string) => ({
-    validate: validator,
+    validate: (val: any) => typeof validator(val) == "boolean" ? validator(val) : i18n.t(validator(val) as string),
   });
 }
 

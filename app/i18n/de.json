@@ -20,6 +20,7 @@
       "back": "Zurück",
       "accept": "Akzeptieren",
       "ok": "OK",
+      "yes": "Ja",
       "delete": "Löschen",
       "upload": "Hochladen",
       "send": "Absenden"
@@ -102,14 +103,7 @@
     "model": {
       "user": {
         "edit": "Benutzerdaten bearbeiten",
-        "kyc": "KYC",
-        "kyc_request": "Möchten Sie die KYC-Anfrage absenden?",
-        "kyc_status": "KYC Status",
-        "no_kyc": "Kein KYC",
-        "pending_kyc": "In Bearbeitung",
-        "prov_kyc": "Provisorisches KYC",
-        "completed_kyc": "Vollständiges KYC",
-        "data_missing": "Füllen Sie bitte zuerst Ihre Benutzerdaten komplett aus!",
+        "data_missing": "Fülle bitte zuerst deine Benutzerdaten komplett aus!",
         "your_data": "Deine Benutzerdaten",
         "data": "Benutzerdaten",
         "legacy_address": "Legacy Adresse",
@@ -137,7 +131,21 @@
         "user_sell_volume": "Ausgezahltes Volumen",
         "buy_limit": "Dein Einzahlungslimit",
         "per_day": "pro Tag",
+        "per_year": "pro Jahr",
         "edit_disallowed": "Änderungen an den Benutzerdaten sind aufgrund deines KYC-Status nicht mehr möglich. Bitte wende dich dafür an unseren Support unter support@dfx.swiss."
+      },
+      "kyc":{
+        "increase": "Einzahlungslimit erhöhen",
+        "request": "Möchtest du dein Einzahlungslimit jetzt erhöhen?",
+        "invest_volume": "Wie viel möchtest du total ungefähr investieren?",
+        "volume": "Investitionsvolumen",
+        "status": "KYC Status",
+        "na": "Kein KYC",
+        "chatbot": "In Bearbeitung (Chatbot onboarding)",
+        "address": "In Bearbeitung (Invoice upload)",
+        "onlineid": "In Bearbeitung (Online Identifikation)",
+        "manual": "Provisorisches KYC",
+        "completed": "Vollständiges KYC"
       },
       "route": {
         "routes": "Payment Routen",

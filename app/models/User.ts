@@ -22,16 +22,17 @@ export enum KycStatus {
   NA = "NA",
   WAIT_CHAT_BOT = "Chatbot",
   WAIT_VERIFY_ADDRESS = "Address",
-  WAIT_VERIFY_ID = "Address",
+  WAIT_VERIFY_ID = "OnlineId",
   WAIT_VERIFY_MANUAL = "Manual",
   COMPLETED = "Completed",
 }
 
-export enum UiKycStatus {
-  KYC_NO_KYC = "no",
-  KYC_PENDING = "pending",
-  KYC_PROV = "prov",
-  KYC_COMPLETED = "completed",
+export enum KycState {
+  NA = "NA",
+  PENDING = "Pending",
+  COMPLETED = "Completed",
+  FAILED = "Failed",
+  REMINDED = "Reminded",
 }
 
 export interface NewUserDto {
@@ -83,7 +84,8 @@ export interface UserDto extends NewUserDto {
   userVolume: UserVolume;
   status: UserStatus;
   kycStatus: KycStatus;
-  uiKycStatus: UiKycStatus;
+  kycState: KycState;
+  depositLimit: number;
   language: Language;
   ip: string;
 }
@@ -104,7 +106,8 @@ export interface User extends NewUser {
   userVolume: UserVolume;
   status: UserStatus;
   kycStatus: KycStatus;
-  uiKycStatus: UiKycStatus;
+  kycState: KycState;
+  depositLimit: number;
   language: Language;
   ip: string;
 }
@@ -137,7 +140,8 @@ export const fromUserDto = (user: UserDto): User => ({
   walletId: user.wallet,
   status: user.status,
   kycStatus: user.kycStatus,
-  uiKycStatus: user.uiKycStatus,
+  kycState: user.kycState,
+  depositLimit: user.depositLimit,
   language: user.language,
   ip: user.ip,
 });
@@ -160,7 +164,8 @@ export const toUserDto = (user: User): UserDto => ({
   wallet: user.walletId,
   status: user.status,
   kycStatus: user.kycStatus,
-  uiKycStatus: user.uiKycStatus,
+  kycState: user.kycState,
+  depositLimit: user.depositLimit,
   language: user.language,
   ip: user.ip,
 });

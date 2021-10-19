@@ -8,7 +8,6 @@ const SessionKey = "session";
 export interface Credentials {
   address?: string;
   signature?: string;
-  walletId?: number;
 }
 
 export interface ISession {

@@ -14,18 +14,23 @@ import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
 import AppLayout from "../../components/AppLayout";
 import NotificationService from "../../services/NotificationService";
-import { Button, DataTable, Dialog, FAB, Paragraph, Portal } from "react-native-paper";
+import { Button, DataTable, Dialog, FAB, Paragraph, Portal, TextInput } from "react-native-paper";
 import { CompactCell, CompactRow } from "../../elements/Tables";
 import { useDevice } from "../../hooks/useDevice";
 import { DeFiButton } from "../../elements/Buttons";
 import useLoader from "../../hooks/useLoader";
 import { BuyRoute } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import { join, resolve } from "../../utils/Utils";
+import { createRules, join, resolve } from "../../utils/Utils";
 import useAuthGuard from "../../hooks/useAuthGuard";
 import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
 import Clipboard from "expo-clipboard";
+import { ApiError } from "../../models/ApiDto";
+import { useForm } from "react-hook-form";
+import Validations from "../../utils/Validations";
+import Input from "../../components/form/Input";
+import Form from "../../components/form/Form";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
@@ -43,6 +48,17 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
   const [isKycRequest, setIsKycRequest] = useState(false);
   const [isKycLoading, setIsKycLoading] = useState(false);
+
+  const {
+    control,
+    handleSubmit,
+    reset: resetForm,
+    formState: { errors },
+  } = useForm<{ limit: string }>();
+
+  const rules: any = createRules({
+    limit: [Validations.Required, Validations.Custom((val: string) => (+val ? true : "validation.pattern_invalid"))],
+  });
 
   const sellRouteEdit = (update: SetStateAction<boolean>) => {
     if (!userDataComplete() && resolve(update, isSellRouteEdit)) {
@@ -63,17 +79,20 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     setIsUserEdit(false);
   };
   const onKyc = () => {
-    if (!userDataComplete()) {
+    if (user?.kycStatus === KycStatus.NA && !userDataComplete()) {
       setIsUserEdit(true);
     }
+    resetForm();
     setIsKycRequest(true);
   };
 
-  const requestKyc = (): void => {
+  const requestKyc = ({ limit }: { limit?: string }): void => {
     setIsKycLoading(true);
-    postKyc()
+
+    const limitNumber = limit ? +limit : undefined;
+    postKyc(limitNumber)
       .then(() => {
-        if (user) {
+        if (user?.kycStatus == KycStatus.NA) {
           user.kycStatus = KycStatus.WAIT_CHAT_BOT;
         }
         NotificationService.success(t("feedback.request_submitted"));
@@ -107,7 +126,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                 setSellRoutes(user.sells);
               }
             })
-            .catch(() => NotificationService.error(t("feedback.load_failed")))
+            .catch((e: ApiError) => e.statusCode != 401 ? NotificationService.error(t("feedback.load_failed")) : undefined) // auto logout
             .finally(() => {
               if (!cancelled()) {
                 setLoading(false);
@@ -125,7 +144,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const fabButtons = [
     { icon: "content-copy", label: t("model.user.copy_ref"), onPress: () => Clipboard.setString(`${BaseUrl}/ref?code=${user?.refData.ref}`), visible: user?.refData?.ref },
     { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true), visible: true },
-    { icon: "account-check", label: t("model.user.kyc"), onPress: onKyc, visible: user?.status != UserStatus.NA && user?.kycStatus == KycStatus.NA },
+    { icon: "account-check", label: t("model.kyc.kyc"), onPress: onKyc, visible: user?.status != UserStatus.NA && (user?.kycStatus === KycStatus.NA || user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL || user?.kycStatus === KycStatus.COMPLETED )},
     { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true), visible: true },
     { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: false }, // TODO: reactivate
   ];
@@ -133,8 +152,11 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   useAuthGuard(session);
 
   const limit = (user: User): string => {
-    const limit = (user.kycStatus === KycStatus.COMPLETED) || (user.kycStatus === KycStatus.WAIT_VERIFY_MANUAL) ? 100000: 900;
-    return `${formatAmount(limit)} € ${t("model.user.per_day")}`;
+    if(user.kycStatus != KycStatus.COMPLETED && user.kycStatus != KycStatus.WAIT_VERIFY_MANUAL) {
+      return `${formatAmount(900)} € ${t("model.user.per_day")}`
+    } else {
+      return `${formatAmount(user.depositLimit)} € ${t("model.user.per_year")}`;
+    }
   };
 
   const userData = (user: User) => [
@@ -153,7 +175,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { condition: Boolean(user.refData.refVolume), label: "model.user.ref_volume", value: `${formatAmount(user.refData.refVolume)} €` },
     { condition: Boolean(user.userVolume.buyVolume), label: "model.user.user_buy_volume", value: `${formatAmount(user.userVolume.buyVolume)} €` },
     { condition: Boolean(user.userVolume.sellVolume), label: "model.user.user_sell_volume", value: `${formatAmount(user.userVolume.sellVolume)} €` },
-    { condition: user.kycStatus != KycStatus.NA, label: "model.user.kyc_status", value:  t(`model.user.${user.uiKycStatus}_kyc`) },
+    { condition: user.kycStatus != KycStatus.NA, label: "model.kyc.status", value:  t(`model.kyc.${user.kycStatus.toLowerCase()}`) },
     { condition: true, label: "model.user.buy_limit", value: limit(user) },
   ];
 
@@ -170,11 +192,39 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
         <Dialog visible={isKycRequest && !isUserEdit} onDismiss={() => setIsKycRequest(false)} style={AppStyles.dialog}>
           <Dialog.Content>
-            <Paragraph>{t("model.user.kyc_request")}</Paragraph>
+            {user?.kycStatus === KycStatus.NA ? (
+              <Paragraph>{t("model.kyc.request")}</Paragraph>
+            ) : (
+              <>
+                <Paragraph>{t("model.kyc.invest_volume")}</Paragraph>
+                <SpacerV />
+                <Form
+                  control={control}
+                  rules={rules}
+                  errors={errors}
+                  disabled={isKycLoading}
+                  onSubmit={handleSubmit(requestKyc)}
+                >
+                  <Input
+                    name="limit"
+                    label={t("model.kyc.volume")}
+                    type="number"
+                    right={<TextInput.Affix text="€" />}
+                  />
+                </Form>
+              </>
+            )}
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={() => setIsKycRequest(false)} color={Colors.Grey}>{t("action.abort")}</Button>
-            <DeFiButton onPress={requestKyc} loading={isKycLoading}>{t("action.send")}</DeFiButton>
+            <Button onPress={() => setIsKycRequest(false)} color={Colors.Grey}>
+              {t("action.abort")}
+            </Button>
+            <DeFiButton
+              onPress={user?.kycStatus === KycStatus.NA ? requestKyc : handleSubmit(requestKyc)}
+              loading={isKycLoading}
+            >
+              {t(user?.kycStatus === KycStatus.NA ? "action.yes" : "action.send")}
+            </DeFiButton>
           </Dialog.Actions>
         </Dialog>
       </Portal>
@@ -191,32 +241,15 @@ const HomeScreen = ({ session }: { session?: Session }) => {
         <>
           {user && (
             <View>
-              <View style={AppStyles.containerHorizontal}>
+              <View style={[AppStyles.containerHorizontal]}>
                 <H2 text={t("model.user.your_data")} />
-                {device.SM && (
-                  <View style={[AppStyles.mla, AppStyles.containerHorizontal]}>
-                    {(user?.refData?.ref) && (
-                      <View style={AppStyles.mr10}>
-                        <DeFiButton mode="contained" onPress={() => Clipboard.setString(`${BaseUrl}/ref?code=${user.refData.ref}`)}>
-                          {t("model.user.copy_ref")}
-                        </DeFiButton>
-                      </View>
-                    )}
-                    {user?.status != UserStatus.NA && user?.kycStatus == KycStatus.NA && (
-                      <View style={AppStyles.mr10}>
-                        <DeFiButton mode="contained" onPress={onKyc}>
-                          {t("model.user.kyc")}
-                        </DeFiButton>
-                      </View>
-                    )}
-                    <DeFiButton mode="contained" onPress={() => setIsUserEdit(true)}>
-                      {t("action.edit")}
-                    </DeFiButton>
-                  </View>
-                )}
+                <View style={{ marginLeft: "auto" }}>
+                  <DeFiButton mode="contained" onPress={() => setIsUserEdit(true)}>
+                    {t("action.edit")}
+                  </DeFiButton>
+                </View>
               </View>
               <SpacerV />
-
               <DataTable>
                 {userData(user).map(
                   (d) =>
@@ -228,6 +261,33 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                     )
                 )}
               </DataTable>
+              <SpacerV />
+              <View style={AppStyles.mr10}>
+                {device.SM && (
+                  <View style={[AppStyles.mra, AppStyles.containerHorizontal]}>
+                    {user?.refData?.ref && (
+                      <View style={AppStyles.mr10}>
+                        <DeFiButton
+                          mode="contained"
+                          onPress={() => Clipboard.setString(`${BaseUrl}/ref?code=${user.refData.ref}`)}
+                        >
+                          {t("model.user.copy_ref")}
+                        </DeFiButton>
+                      </View>
+                    )}
+                    {user?.status != UserStatus.NA &&
+                      (user?.kycStatus === KycStatus.NA ||
+                        user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL ||
+                        user?.kycStatus === KycStatus.COMPLETED) && (
+                        <View style={AppStyles.mr10}>
+                          <DeFiButton mode="contained" onPress={onKyc}>
+                            {t("model.kyc.increase")}
+                          </DeFiButton>
+                        </View>
+                      )}
+                  </View>
+                )}
+              </View>
             </View>
           )}
 

@@ -3,6 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 class StorageServiceClass {
   public Keys = {
     Ref: "ref",
+    WalletId: "wallet_id",
     Credentials: "credentials"
   }
   

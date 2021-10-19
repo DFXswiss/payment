@@ -38,12 +38,14 @@ const GtcScreen = ({ session }: { session?: Session }) => {
     Promise.all([
       StorageService.getValue<Credentials>(StorageService.Keys.Credentials),
       StorageService.getPrimitive<string>(StorageService.Keys.Ref),
+      StorageService.getPrimitive<number>(StorageService.Keys.WalletId),
     ])
-      .then(([credentials, ref]) => SessionService.register(credentials, ref))
+      .then(([credentials, ref, walletId]) => SessionService.register(credentials, ref, walletId))
       .then(() =>
         Promise.all([
           StorageService.deleteValue(StorageService.Keys.Credentials),
           StorageService.deleteValue(StorageService.Keys.Ref),
+          StorageService.deleteValue(StorageService.Keys.WalletId),
         ])
       )
       .finally(() => setIsProcessing(false))

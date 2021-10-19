@@ -6,7 +6,6 @@ import { SpacerH, SpacerV } from "../../elements/Spacers";
 import AppStyles from "../../styles/AppStyles";
 import { ControlProps } from "./Form";
 import { byIso } from "country-code-lookup";
-import { useTranslation } from "react-i18next";
 import Validations from "../../utils/Validations";
 import { HelperText, TextInput } from "react-native-paper";
 import DropDown from "react-native-paper-dropdown";

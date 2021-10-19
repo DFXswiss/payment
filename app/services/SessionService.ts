@@ -2,12 +2,14 @@ import { getUser, putUserLanguage, signIn, signUp } from "./ApiService";
 import AuthService, { Credentials } from "./AuthService";
 import SettingsService from "./SettingsService";
 
+const DefaultWalletId = 2;
+
 class SessionServiceClass {
-  public register(credentials: Credentials, ref: string | undefined): Promise<void> {
+  public register(credentials: Credentials, ref: string | undefined, walletId: number | undefined): Promise<void> {
       return signUp({
         address: credentials?.address ?? "",
         signature: credentials?.signature ?? "",
-        walletId: credentials?.walletId ?? 0,
+        walletId: walletId ?? DefaultWalletId,
         usedRef: ref ?? "",
       })
       .then(this.updateSession)

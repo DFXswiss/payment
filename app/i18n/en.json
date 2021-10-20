@@ -138,6 +138,7 @@
         "chatbot": "In progress (Chatbot onboarding)",
         "address": "In progress (Invoice upload)",
         "onlineid": "In progress (Online identification)",
+        "videoid": "In progress (Video identification)",
         "manual": "Provisional KYC",
         "completed": "Full KYC"
       },

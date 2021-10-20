@@ -144,6 +144,7 @@
         "chatbot": "In Bearbeitung (Chatbot onboarding)",
         "address": "In Bearbeitung (Invoice upload)",
         "onlineid": "In Bearbeitung (Online Identifikation)",
+        "videoid": "In Bearbeitung (Video Identifikation)",
         "manual": "Provisorisches KYC",
         "completed": "Vollständiges KYC"
       },

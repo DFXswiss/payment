@@ -141,6 +141,7 @@
         "chatbot": "In corso (Onboarding del chatbot)",
         "address": "In corso (Caricamento della fattura)",
         "onlineid": "In corso (Identificazione online)",
+        "videoid": "In corso (Identificazione video)",
         "manual": "KYC provvisorio",
         "completed": "KYC completo"
       },

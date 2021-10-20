@@ -142,6 +142,7 @@
         "chatbot": "En cours (Chatbot onboarding)",
         "address": "En cours (Téléchargement de factures)",
         "onlineid": "En cours (Identification en ligne)",
+        "videoid": "En cours (Identification en vidéo)",
         "manual": "KYC privé",
         "completed": "KYC complet"
       },

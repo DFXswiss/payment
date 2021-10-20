@@ -22,7 +22,8 @@ export enum KycStatus {
   NA = "NA",
   WAIT_CHAT_BOT = "Chatbot",
   WAIT_VERIFY_ADDRESS = "Address",
-  WAIT_VERIFY_ID = "OnlineId",
+  WAIT_VERIFY_ONLINE = "OnlineId",
+  WAIT_VERIFY_VIDEO = "VideoId",
   WAIT_VERIFY_MANUAL = "Manual",
   COMPLETED = "Completed",
 }

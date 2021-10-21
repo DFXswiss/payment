@@ -7,7 +7,7 @@ import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
 import { H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
-import { KycStatus, User, UserStatus } from "../../models/User";
+import { KycStatus, User, UserRole, UserStatus } from "../../models/User";
 import { getUserDetail, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
@@ -38,6 +38,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const device = useDevice();
   const BaseUrl = Environment.api.baseUrl;
+  const RefUrl = Environment.api.refUrl;
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User>();
   const [buyRoutes, setBuyRoutes] = useState<BuyRoute[]>();
@@ -142,11 +143,11 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
   const showButtons = (user && !isLoading && !device.SM) ?? false;
   const fabButtons = [
-    { icon: "content-copy", label: t("model.user.copy_ref"), onPress: () => Clipboard.setString(`${BaseUrl}/ref?code=${user?.refData.ref}`), visible: user?.refData?.ref },
+    { icon: "content-copy", label: t("model.user.copy_ref"), onPress: () => Clipboard.setString(`${RefUrl}${user?.refData.ref}`), visible: user?.refData?.ref },
     { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true), visible: true },
     { icon: "account-check", label: t("model.kyc.increase"), onPress: onKyc, visible: user?.status != UserStatus.NA && (user?.kycStatus === KycStatus.NA || user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL || user?.kycStatus === KycStatus.COMPLETED )},
     { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true), visible: true },
-    { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: false }, // TODO: reactivate
+    { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: session?.role === UserRole.BETA || session?.role === UserRole.Admin }, // TODO: for all users
   ];
 
   useAuthGuard(session);
@@ -269,7 +270,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                       <View style={AppStyles.mr10}>
                         <DeFiButton
                           mode="contained"
-                          onPress={() => Clipboard.setString(`${BaseUrl}/ref?code=${user.refData.ref}`)}
+                          onPress={() => Clipboard.setString(`${RefUrl}${user.refData.ref}`)}
                         >
                           {t("model.user.copy_ref")}
                         </DeFiButton>

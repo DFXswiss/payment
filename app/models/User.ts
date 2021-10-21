@@ -2,7 +2,6 @@ import { BuyRoute, BuyRouteDto, fromBuyRouteDto } from "./BuyRoute";
 import { Country } from "./Country";
 import { Language } from "./Language";
 import { fromSellRouteDto, SellRoute, SellRouteDto } from "./SellRoute";
-// TODO: birthday, staatsangehörigkeit, language, email-settings, KYC status, gebühr
 
 export enum UserRole {
   Unknown = "Unknown",
@@ -10,6 +9,7 @@ export enum UserRole {
   Admin = "Admin",
   EMPLOYEE = "Employee",
   VIP = "VIP",
+  BETA = "Beta",
 }
 
 export enum UserStatus {

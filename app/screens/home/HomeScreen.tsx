@@ -7,7 +7,7 @@ import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
 import { H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
-import { KycStatus, User, UserStatus } from "../../models/User";
+import { KycStatus, User, UserRole, UserStatus } from "../../models/User";
 import { getUserDetail, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
@@ -146,7 +146,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true), visible: true },
     { icon: "account-check", label: t("model.kyc.kyc"), onPress: onKyc, visible: user?.status != UserStatus.NA && (user?.kycStatus === KycStatus.NA || user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL || user?.kycStatus === KycStatus.COMPLETED )},
     { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true), visible: true },
-    { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: false }, // TODO: reactivate
+    { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: session?.role === UserRole.BETA || session?.role === UserRole.Admin }, // TODO: for all users
   ];
 
   useAuthGuard(session);

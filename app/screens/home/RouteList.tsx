@@ -21,8 +21,12 @@ import Clipboard from "expo-clipboard";
 import ButtonContainer from "../../components/util/ButtonContainer";
 import { DeviceClass } from "../../utils/Device";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Session } from "../../services/AuthService";
+import withSession from "../../hocs/withSession";
+import { UserRole } from "../../models/User";
 
 interface Props {
+  session?: Session;
   buyRoutes?: BuyRoute[];
   setBuyRoutes: Dispatch<SetStateAction<BuyRoute[] | undefined>>;
   sellRoutes?: SellRoute[];
@@ -63,6 +67,7 @@ const iban = "CH68 0857 3177 9752 0181 4";
 const swift = "MAEBCHZZ";
 
 const RouteList = ({
+  session,
   buyRoutes,
   setBuyRoutes,
   sellRoutes,
@@ -179,8 +184,8 @@ const RouteList = ({
               </DeFiButton>
             </View>
             <View style={AppStyles.ml10}>
-              {/* TODO: reactivate */}
-              <DeFiButton mode="contained" onPress={() => setIsSellRouteEdit(true)} disabled={true}>
+              {/* TODO: for all users */}
+              <DeFiButton mode="contained" onPress={() => setIsSellRouteEdit(true)} disabled={session?.role !== UserRole.BETA && session?.role !== UserRole.Admin}>
                 {t("model.route.sell")}
               </DeFiButton>
             </View>
@@ -304,4 +309,4 @@ const RouteList = ({
   );
 };
 
-export default RouteList;
+export default withSession(RouteList);

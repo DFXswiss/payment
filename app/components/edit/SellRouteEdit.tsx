@@ -15,6 +15,7 @@ import { DeFiButton } from "../../elements/Buttons";
 import ButtonContainer from "../util/ButtonContainer";
 import { createRules } from "../../utils/Utils";
 import { ActivityIndicator } from "react-native-paper";
+import { ApiError } from "../../models/ApiDto";
 
 const SellRouteEdit = ({
   routes,
@@ -32,7 +33,7 @@ const SellRouteEdit = ({
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string>();
   const [fiats, setFiats] = useState<Fiat[]>([]);
 
   useEffect(() => {
@@ -44,16 +45,15 @@ const SellRouteEdit = ({
 
   const onSubmit = (route: SellRoute) => {
     setIsSaving(true);
-    setError(false);
-
+    setError(undefined);
 
     // re-activate the route, if it already existed
-    const existingRoute = routes?.find((r) => !r.active && r.fiat.id === route.fiat.id && r.iban === route.iban);
+    const existingRoute = routes?.find((r) => !r.active && r.fiat.id === route.fiat.id &&  r.iban.split(' ').join('') === route.iban.split(' ').join(''));
     if (existingRoute) existingRoute.active = true;
 
     (existingRoute ? putSellRoute(existingRoute) : postSellRoute(route))
       .then(onRouteCreated)
-      .catch(() => setError(true))
+      .catch((error: ApiError) => setError(error.statusCode == 409 ? "model.route.conflict" : ""))
       .finally(() => setIsSaving(false));
   };
 
@@ -78,9 +78,9 @@ const SellRouteEdit = ({
       <Input name="iban" label={t("model.route.your_iban")} placeholder="DE89 3704 0044 0532 0130 00" />
       <SpacerV />
 
-      {error && (
+      {error != null && (
         <>
-          <Alert label={t("feedback.save_failed")} />
+          <Alert label={`${t("feedback.save_failed")} ${t(error)}`} />
           <SpacerV />
         </>
       )}

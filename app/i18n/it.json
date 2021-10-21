@@ -47,7 +47,8 @@
       "login_failed": "Accesso fallito!",
       "pattern_invalid": "Il formato dell'indirizzo/firma non è valido!",
       "signature_invalid": "Firma non valida!",
-      "credentials_invalid": "Indirizzo/firma non valida!"
+      "credentials_invalid": "Indirizzo/firma non valida!",
+      "old_signature": "Sembra che tu stia usando una versione obsoleta di DFX Wallet. Si prega di aggiornare l'applicazione."
     },
     "ref": {
       "continue_without_ref": "Continuare senza codice di riferimento"

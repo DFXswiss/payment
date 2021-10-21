@@ -55,6 +55,7 @@ const LoginScreen = () => {
   const [addressEntered, setAddressEntered] = useState(false);
   const [signCommandCopied, setSignCommandCopied] = useState(false);
   const [isAutoLogin, setIsAutoLogin] = useState(false);
+  const [isOldSignature, setIsOldSignature] = useState(false);
 
   const passwordRef = useRef<TextInput>(null);
 
@@ -104,6 +105,9 @@ const LoginScreen = () => {
   const openInstructions = () => openUrl(t("session.instruction_link"));
 
   useEffect(() => {
+    // TODO: remove at some point ...
+    setIsOldSignature(false);
+
     if (params?.lang) {
       SettingsService.updateSettings({ language: params.lang.toUpperCase() });
     }
@@ -115,7 +119,14 @@ const LoginScreen = () => {
       setValue("userName", params.address);
       setValue("password", params.signature);
       setIsAutoLogin(true);
-      handleSubmit(onSubmit(true))();
+
+      // TODO: remove at some point ...
+      if (params?.signature?.length != 88) {
+        setIsOldSignature(true);
+        setAddressEntered(true);
+      } else {
+        handleSubmit(onSubmit(true))();
+      }
     }
 
     // reset params
@@ -125,7 +136,7 @@ const LoginScreen = () => {
   const params = route.params as any;
   const rules: any = createRules({
     userName: [Validations.Required, Validations.Address],
-    password: addressEntered && Validations.Required,
+    password: addressEntered && [Validations.Required, Validations.Signature],
   });
 
   return (
@@ -190,6 +201,12 @@ const LoginScreen = () => {
                 {error != null && (
                   <>
                     <Alert label={`${t("session.login_failed")} ${error ? t(error) : ""}`} />
+                    <SpacerV />
+                  </>
+                )}
+                {isOldSignature && (
+                  <>
+                    <Alert label={t("session.old_signature")} />
                     <SpacerV />
                   </>
                 )}

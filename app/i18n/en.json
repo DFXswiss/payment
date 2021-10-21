@@ -47,7 +47,8 @@
       "login_failed": "Login failed!",
       "pattern_invalid": "Format of the address/signature is invalid!",
       "signature_invalid": "Invalid signature!",
-      "credentials_invalid": "Invalid address/signature!"
+      "credentials_invalid": "Invalid address/signature!",
+      "old_signature": "You seem to be using an outdated version of the DFX Wallet. Please update the app."
     },
     "ref": {
       "continue_without_ref": "Continue without ref code",

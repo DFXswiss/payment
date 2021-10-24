@@ -30,8 +30,6 @@ export enum KycStatus {
 
 export enum KycState {
   NA = "NA",
-  PENDING = "Pending",
-  COMPLETED = "Completed",
   FAILED = "Failed",
   REMINDED = "Reminded",
 }

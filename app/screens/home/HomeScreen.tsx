@@ -34,7 +34,7 @@ import Form from "../../components/form/Form";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
-const HomeScreen = () => {
+const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const device = useDevice();
   const BaseUrl = Environment.api.baseUrl;

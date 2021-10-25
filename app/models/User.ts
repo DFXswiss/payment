@@ -30,8 +30,6 @@ export enum KycStatus {
 
 export enum KycState {
   NA = "NA",
-  PENDING = "Pending",
-  COMPLETED = "Completed",
   FAILED = "Failed",
   REMINDED = "Reminded",
 }
@@ -40,7 +38,7 @@ export interface NewUserDto {
   address: string;
   signature: string;
   wallet: number;
-  usedRef: string;
+  usedRef: string | null;
 }
 
 export interface NewUser {
@@ -66,7 +64,7 @@ export const toNewUserDto = (user: NewUser): NewUserDto => ({
   address: user.address,
   signature: user.signature,
   wallet: user.walletId,
-  usedRef: user.usedRef,
+  usedRef: user.usedRef === "" ? null : user.usedRef,
 });
 
 export interface UserDto extends NewUserDto {
@@ -80,7 +78,7 @@ export interface UserDto extends NewUserDto {
   mail: string;
   phone: string;
 
-  usedRef: string;
+  usedRef: string | null;
   refData: RefData;
   userVolume: UserVolume;
   status: UserStatus;
@@ -135,7 +133,7 @@ export const fromUserDto = (user: UserDto): User => ({
   country: user.country,
   mail: user.mail,
   mobileNumber: user.phone,
-  usedRef: user.usedRef,
+  usedRef: user.usedRef ?? "",
   refData: user.refData,
   userVolume: user.userVolume,
   walletId: user.wallet,
@@ -159,7 +157,7 @@ export const toUserDto = (user: User): UserDto => ({
   country: user.country,
   mail: user.mail,
   phone: user.mobileNumber,
-  usedRef: user.usedRef,
+  usedRef: user.usedRef === "" ? null : user.usedRef,
   refData: user.refData,
   userVolume: user.userVolume,
   wallet: user.walletId,

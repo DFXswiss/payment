@@ -56,6 +56,15 @@ class ValidationsClass {
     };
   }
 
+  public get Signature() {
+    return {
+      pattern: {
+        value: /^.{87}=$/,
+        message: i18n.t("validation.pattern_invalid"),
+      },
+    };
+  }
+
   public Custom = (validator: (value: any) => true | string) => ({
     validate: (val: any) => typeof validator(val) == "boolean" ? validator(val) : i18n.t(validator(val) as string),
   });

@@ -6,6 +6,7 @@ import AppTheme from "./styles/AppTheme";
 import { Paragraph, Portal, Provider, Snackbar } from "react-native-paper";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import GtcScreen from "./screens/GtcScreen";
+import BringAFriendScreen from "./screens/home/BringAFriendScreen";
 import HomeScreen from "./screens/home/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import NotFoundScreen from "./screens/NotFoundScreen";
@@ -42,9 +43,10 @@ const Main = () => {
   const linking: LinkingOptions = {
     prefixes: [],
     config: {
-      initialRouteName: Routes.Home,
+      initialRouteName: Routes.BringAFriend,
       screens: {
         [Routes.Home]: "/",
+        [Routes.BringAFriend]: "/bring-a-friend",
         [Routes.Login]: "login",
         [Routes.Ref]: "ref",
         [Routes.Gtc]: "legal",
@@ -56,6 +58,7 @@ const Main = () => {
   };
   const screens = [
     { route: Routes.Home, screen: HomeScreen },
+    { route: Routes.BringAFriend, screen: BringAFriendScreen },
     { route: Routes.Login, screen: LoginScreen },
     { route: Routes.Ref, screen: RefScreen },
     { route: Routes.Gtc, screen: GtcScreen },

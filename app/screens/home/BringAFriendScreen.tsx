@@ -242,7 +242,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
         <>
           {user && (
             <View>
-              <Image source={require("../assets/bring-a-friend.jpeg")} />
+              <Image source={require("../../assets/bring-a-friend.jpeg")} />
               <View style={[AppStyles.containerHorizontal]}>
                 <H2 text={t("model.user.your_data")} />
                 <View style={{ marginLeft: "auto" }}>

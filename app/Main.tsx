@@ -46,7 +46,7 @@ const Main = () => {
       initialRouteName: Routes.BringAFriend,
       screens: {
         [Routes.Home]: "/",
-        [Routes.BringAFriend]: "/bring-a-friend",
+        [Routes.BringAFriend]: "bring-a-friend",
         [Routes.Login]: "login",
         [Routes.Ref]: "ref",
         [Routes.Gtc]: "legal",

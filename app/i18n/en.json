@@ -30,6 +30,7 @@
       "register_failed": "Error while registering!",
       "delete_failed": "Error while deleting!",
       "save_failed": "Error while saving!",
+      "save_successful": "Save successful!",
       "file_error": "Error reading the file!",
       "request_submitted": "Request submitted!",
       "request_failed": "Request error!"

@@ -31,6 +31,7 @@
       "register_failed": "Erreur lors de l'enregistrement !",
       "delete_failed": "Erreur lors de la suppression !",
       "save_failed": "Erreur lors de la sauvegarde !",
+      "save_successful": "Sauvegarde réussie !",
       "file_error": "Erreur de lecture du fichier !",
       "request_submitted": "Demande soumise !",
       "request_failed": "Erreur avec la demande !"

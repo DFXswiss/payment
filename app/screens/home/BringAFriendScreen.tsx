@@ -1,6 +1,6 @@
 import React, { useState, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { View, Image } from "react-native";
 import DeFiModal from "../../components/util/DeFiModal";
 import Loading from "../../components/util/Loading";
 import UserEdit from "../../components/edit/UserEdit";
@@ -34,7 +34,7 @@ import Form from "../../components/form/Form";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
-const HomeScreen = ({ session }: { session?: Session }) => {
+const BringAFriendScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const device = useDevice();
   const BaseUrl = Environment.api.baseUrl;
@@ -298,4 +298,4 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   );
 };
 
-export default withSession(HomeScreen);
+export default withSession(BringAFriendScreen);

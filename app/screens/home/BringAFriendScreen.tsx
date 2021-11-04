@@ -1,6 +1,6 @@
 import React, { useState, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
-import { View, Image } from "react-native";
+import { View, Image, StyleSheet } from "react-native";
 import DeFiModal from "../../components/util/DeFiModal";
 import Loading from "../../components/util/Loading";
 import UserEdit from "../../components/edit/UserEdit";
@@ -31,6 +31,8 @@ import { useForm } from "react-hook-form";
 import Validations from "../../utils/Validations";
 import Input from "../../components/form/Input";
 import Form from "../../components/form/Form";
+import { tailwind } from '../../tailwind'
+import { OnboardingCarousel } from '../../components/OnboardingCarousel'
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
@@ -242,7 +244,17 @@ const BringAFriendScreen = ({ session }: { session?: Session }) => {
         <>
           {user && (
             <View>
-              <Image source={require("../../assets/bring-a-friend.jpeg")} />
+              <Image style={styles.bringafriend} source={require("../../assets/bring-a-friend.jpeg")} />
+              <SpacerV height={50} />
+              <View style={tailwind('h-4/6')}>
+                <OnboardingCarousel />
+              </View>
+              <SpacerV height={50} />
+              <Image style={styles.bringafriend} source={require("../../assets/bring-a-friend-2.jpeg")} />
+              <SpacerV height={50} />
+              <Image style={styles.bringafriend} source={require("../../assets/bring-a-friend-3.jpeg")} />
+              <SpacerV height={50} />
+
               <View style={[AppStyles.containerHorizontal]}>
                 <H2 text={t("model.user.your_data")} />
                 <View style={{ marginLeft: "auto" }}>
@@ -297,5 +309,13 @@ const BringAFriendScreen = ({ session }: { session?: Session }) => {
     </AppLayout>
   );
 };
+
+const styles = StyleSheet.create({
+  bringafriend: {
+    display: "block",
+    width: "100%",
+    height: "200px",
+  },
+});
 
 export default withSession(BringAFriendScreen);

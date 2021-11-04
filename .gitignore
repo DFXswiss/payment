@@ -14,3 +14,6 @@ web-build/
 
 # Emacs backup files
 *~
+
+# gthumb
+app/assets/.comments/

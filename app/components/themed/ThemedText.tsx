@@ -7,7 +7,10 @@ import { ThemedProps } from './index'
 type ThemedTextProps = TextProps & ThemedProps
 
 export function ThemedText (props: ThemedTextProps): JSX.Element {
-  const { isLight } = useThemeContext()
+  // TODO: TypeError: _useThemeContext is undefined
+  // const { isLight } = useThemeContext()
+  const { isLight } = true
+
   const {
     style,
     light = tailwind('text-black'),

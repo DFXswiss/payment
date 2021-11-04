@@ -49,7 +49,8 @@ export function InitialSlide (): JSX.Element {
     <View style={tailwind('flex-1 items-center justify-center p-8')}>
       <AppIcon width={150} height={100} />
       <ThemedText style={tailwind('text-2xl font-bold')}>
-        {translate('screens/OnboardingCarousel', 'Wallet')}
+        {/* TODO it used to be: translate('screens/OnboardingCarousel', 'Wallet') */}
+        {'Wallet'}
       </ThemedText>
 
       <ThemedText
@@ -57,7 +58,8 @@ export function InitialSlide (): JSX.Element {
         dark={tailwind('text-gray-400')}
         style={tailwind('text-center font-medium mt-10')}
       >
-        {translate('screens/OnboardingCarousel', 'A wallet dedicated to the native decentralized finance for bitcoin.')}
+        {/* TODO it used to be: translate('screens/OnboardingCarousel', 'A wallet dedicated to the native decentralized finance for bitcoin.') */}
+        {'A wallet dedicated to the native decentralized finance for bitcoin.'}
       </ThemedText>
     </View>
   )
@@ -68,11 +70,13 @@ export function ImageSlide ({ image, title, secondTitle, subtitle }: CarouselIma
     <View style={tailwind('flex-1 items-center justify-center py-8 px-5')}>
       <View style={tailwind('h-2/6 items-center justify-center')}>
         <ThemedText style={tailwind('text-2xl font-bold text-center')}>
-          {translate('screens/OnboardingCarousel', title)}
+          {/* TODO it used to be: translate('screens/OnboardingCarousel', title) */}
+          {title}
         </ThemedText>
 
         <ThemedText style={tailwind('text-2xl font-bold text-center')}>
-          {translate('screens/OnboardingCarousel', secondTitle)}
+          {/* TODO it used to be: translate('screens/OnboardingCarousel', secondTitle) */}
+          {secondTitle}
         </ThemedText>
 
         <ThemedText
@@ -80,7 +84,8 @@ export function ImageSlide ({ image, title, secondTitle, subtitle }: CarouselIma
           light={tailwind('text-gray-500')}
           style={tailwind('font-normal text-center mt-1 mb-8')}
         >
-          {translate('screens/OnboardingCarousel', subtitle)}
+          {/* TODO it used to be: translate('screens/OnboardingCarousel', subtitle) */}
+          {subtitle}
         </ThemedText>
       </View>
 
@@ -93,7 +98,10 @@ export function ImageSlide ({ image, title, secondTitle, subtitle }: CarouselIma
 }
 
 export function OnboardingCarousel (): JSX.Element {
-  const { isLight } = useThemeContext()
+  // TODO: TypeError: _useThemeContext is undefined
+  // const { isLight } = useThemeContext()
+  const { isLight } = true
+
   return (
     <SwiperFlatList
       autoplay

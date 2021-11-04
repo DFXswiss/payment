@@ -2,8 +2,10 @@ import * as React from 'react'
 import { Dimensions, Image, ImageSourcePropType, Platform } from 'react-native'
 import SwiperFlatList from 'react-native-swiper-flatlist'
 import ImageA from '../assets/bring-a-friend.jpeg'
-import ImageB from '../assets/bring-a-friend-2.jpeg'
-import ImageC from '../assets/bring-a-friend-3.jpeg'
+import ImageB from '../assets/fiat-gateway.jpeg'
+import ImageC from '../assets/dollar-cost-average.png'
+import ImageD from '../assets/bring-a-friend-2.jpeg'
+import ImageE from '../assets/bring-a-friend-3.jpeg'
 import { View } from './index'
 import { AppIcon } from './icons/AppIcon'
 import { ThemedText } from './themed'
@@ -36,6 +38,20 @@ const slides: JSX.Element[] = [<InitialSlide key={0} />,
   <ImageSlide
     image={ImageC}
     key={3}
+    secondTitle='potential of your finances'
+    subtitle='Transact, liquidity mine, swap and many more features as a fully-decentralized wallet'
+    title='Unlock the highest'
+  />,
+  <ImageSlide
+    image={ImageD}
+    key={4}
+    secondTitle='potential of your finances'
+    subtitle='Transact, liquidity mine, swap and many more features as a fully-decentralized wallet'
+    title='Unlock the highest'
+  />,
+  <ImageSlide
+    image={ImageE}
+    key={5}
     secondTitle='of up to 90% with DEX'
     subtitle='Supply liquidity to BTC, ETH, and many other pool pairs. You can also withdraw anytime!'
     title='Earn high yields'

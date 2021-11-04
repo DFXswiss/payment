@@ -12,11 +12,14 @@
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/native": "^5.9.4",
+    "classnames": "^2.3.1",
     "country-code-lookup": "^0.0.19",
     "expo": "~41.0.1",
     "expo-clipboard": "~1.0.2",
     "expo-document-picker": "~9.1.2",
+    "expo-localization": "~10.2.0",
     "expo-status-bar": "~1.0.4",
+    "expo-updates": "~0.8.2",
     "fast-xml-parser": "^3.19.0",
     "i18next": "^20.3.1",
     "jwt-decode": "^3.1.2",
@@ -34,8 +37,10 @@
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
     "react-native-svg": "12.1.0",
+    "react-native-swiper-flatlist": "^3.0.14",
     "react-native-web": "~0.13.12",
-    "rxjs": "^7.1.0"
+    "rxjs": "^7.1.0",
+    "tailwind-rn": "^3.0.1"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

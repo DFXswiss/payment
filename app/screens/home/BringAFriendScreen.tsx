@@ -244,17 +244,10 @@ const BringAFriendScreen = ({ session }: { session?: Session }) => {
         <>
           {user && (
             <View>
-              <Image style={styles.bringafriend} source={require("../../assets/bring-a-friend.jpeg")} />
-              <SpacerV height={50} />
               <View style={tailwind('h-4/6')}>
                 <OnboardingCarousel />
               </View>
               <SpacerV height={50} />
-              <Image style={styles.bringafriend} source={require("../../assets/bring-a-friend-2.jpeg")} />
-              <SpacerV height={50} />
-              <Image style={styles.bringafriend} source={require("../../assets/bring-a-friend-3.jpeg")} />
-              <SpacerV height={50} />
-
               <View style={[AppStyles.containerHorizontal]}>
                 <H2 text={t("model.user.your_data")} />
                 <View style={{ marginLeft: "auto" }}>

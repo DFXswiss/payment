@@ -24,41 +24,42 @@ const slides: JSX.Element[] = [<InitialSlide key={0} />,
   <ImageSlide
     image={ImageA}
     key={1}
-    secondTitle='of your digital assets'
+    secondTitle='1/bring-a-friend.jpeg: of your digital assets'
     subtitle='Nobody owns your keys and wallet except you.'
     title='Take full control'
   />,
   <ImageSlide
     image={ImageB}
     key={2}
-    secondTitle='potential of your finances'
+    secondTitle='2/fiat-gateway.jpeg: potential of your finances'
     subtitle='Transact, liquidity mine, swap and many more features as a fully-decentralized wallet'
     title='Unlock the highest'
   />,
   <ImageSlide
     image={ImageC}
     key={3}
-    secondTitle='potential of your finances'
+    secondTitle='3/dollar-cost-average.png: potential of your finances'
     subtitle='Transact, liquidity mine, swap and many more features as a fully-decentralized wallet'
     title='Unlock the highest'
   />,
   <ImageSlide
     image={ImageD}
     key={4}
-    secondTitle='potential of your finances'
+    secondTitle='4/bring-a-friend-2.jpeg: potential of your finances'
     subtitle='Transact, liquidity mine, swap and many more features as a fully-decentralized wallet'
     title='Unlock the highest'
   />,
   <ImageSlide
     image={ImageE}
     key={5}
-    secondTitle='of up to 90% with DEX'
+    secondTitle='5/bring-a-friend-3.jpeg: of up to 90% with DEX'
     subtitle='Supply liquidity to BTC, ETH, and many other pool pairs. You can also withdraw anytime!'
     title='Earn high yields'
   />]
 
 // Needs for it to work on web. Otherwise, it takes full window size
-const { width } = Platform.OS === 'web' ? { width: '375px' } : Dimensions.get('window')
+// TODO: what width to set here for the web? upon copying this from wallet this used to be 375px
+const { width } = Platform.OS === 'web' ? { width: '800px' } : Dimensions.get('window')
 
 export function InitialSlide (): JSX.Element {
   return (
@@ -66,7 +67,7 @@ export function InitialSlide (): JSX.Element {
       <AppIcon width={150} height={100} />
       <ThemedText style={tailwind('text-2xl font-bold')}>
         {/* TODO it used to be: translate('screens/OnboardingCarousel', 'Wallet') */}
-        {'Wallet'}
+        {'0/InitialSlide: Wallet'}
       </ThemedText>
 
       <ThemedText
@@ -107,7 +108,7 @@ export function ImageSlide ({ image, title, secondTitle, subtitle }: CarouselIma
 
       <Image
         source={image}
-        style={{ width, height: '55%' }}
+        style={{ width, height: '100%' }}
       />
     </View>
   )
@@ -121,7 +122,7 @@ export function OnboardingCarousel (): JSX.Element {
   return (
     <SwiperFlatList
       autoplay
-      autoplayDelay={30}
+      autoplayDelay={3}
       autoplayLoop
       autoplayLoopKeepAnimation
       data={slides}

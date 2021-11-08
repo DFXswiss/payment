@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
-import { Dialog, Paragraph, Portal, Button } from "react-native-paper";
 import AppLayout from "../components/AppLayout";
 import Form from "../components/form/Form";
 import Input from "../components/form/Input";
@@ -19,7 +18,7 @@ import { getRefCode } from "../services/ApiService";
 import { Credentials, Session } from "../services/AuthService";
 import StorageService from "../services/StorageService";
 import AppStyles from "../styles/AppStyles";
-import { createRules, openUrl } from "../utils/Utils";
+import { createRules } from "../utils/Utils";
 import Validations from "../utils/Validations";
 
 const RefScreen = ({ session }: { session?: Session }) => {
@@ -33,7 +32,6 @@ const RefScreen = ({ session }: { session?: Session }) => {
   } = useForm();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [dialogVisible, setDialogVisible] = useState(false);
 
   useGuard(() =>
     StorageService.getValue<Credentials>(StorageService.Keys.Credentials)
@@ -47,7 +45,7 @@ const RefScreen = ({ session }: { session?: Session }) => {
       .catch(() => setIsLoading(false));
   }, []);
 
-  const onSubmit = ({ usedRef }: { usedRef: string }) => {
+  const onSubmit = ({ usedRef }: { usedRef: string | null }) => {
     StorageService.storeValue(StorageService.Keys.Ref, usedRef).then(() => nav.navigate(Routes.Gtc));
   };
 
@@ -57,18 +55,6 @@ const RefScreen = ({ session }: { session?: Session }) => {
 
   return (
     <AppLayout>
-      <Portal>
-        <Dialog visible={dialogVisible} onDismiss={() => setDialogVisible(false)} style={AppStyles.dialog}>
-          <Dialog.Content>
-            <Paragraph>{t("ref.no_ref")}</Paragraph>
-            <Button onPress={() => openUrl(t("general.telegram_link"))}>{t("general.telegram")}</Button>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <Button onPress={() => setDialogVisible(false)}>{t("action.ok")}</Button>
-          </Dialog.Actions>
-        </Dialog>
-      </Portal>
-
       <SpacerV height={20} />
 
       {isLoading && <Loading size="large" />}
@@ -87,7 +73,7 @@ const RefScreen = ({ session }: { session?: Session }) => {
                 <SpacerV />
 
                 <ButtonContainer>
-                  <DeFiButton link onPress={() => setDialogVisible(true)}>
+                  <DeFiButton link onPress={() => onSubmit({ usedRef: null })}>
                     {t("ref.continue_without_ref")}
                   </DeFiButton>
                   <DeFiButton mode="contained" onPress={handleSubmit(onSubmit)}>

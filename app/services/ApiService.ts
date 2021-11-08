@@ -21,7 +21,7 @@ const AssetUrl = "asset";
 const FiatUrl = "fiat";
 const CountryUrl = "country";
 const LanguageUrl = "language";
-const FiatInputUrl = "fiatInput";
+const BankTxUrl = "bankTx";
 const StatisticUrl = "statistic";
 
 // --- AUTH --- //
@@ -104,7 +104,7 @@ export const postSepaFiles = (files: File[]): Promise<void> => {
   for (const key in files) {
     formData.append("files", files[key]);
   }
-  return fetchFrom(FiatInputUrl, "POST", formData, true);
+  return fetchFrom(BankTxUrl, "POST", formData, true);
 };
 
 // --- STATISTIC --- //

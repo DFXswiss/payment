@@ -17,7 +17,6 @@
     "expo-clipboard": "~1.0.2",
     "expo-document-picker": "~9.1.2",
     "expo-status-bar": "~1.0.4",
-    "fast-xml-parser": "^3.19.0",
     "i18next": "^20.3.1",
     "jwt-decode": "^3.1.2",
     "libphonenumber-js": "^1.9.20",

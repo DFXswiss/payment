@@ -31,6 +31,7 @@
       "register_failed": "Fehler beim Registrieren!",
       "delete_failed": "Fehler beim Löschen!",
       "save_failed": "Fehler beim Speichern!",
+      "save_successful": "Speichern erfolgreich!",
       "file_error": "Fehler beim Lesen der Datei!",
       "request_submitted": "Anfrage abgesetzt!",
       "request_failed": "Fehler bei der Anfrage!"
@@ -52,8 +53,7 @@
       "old_signature": "Du scheinst eine veraltete Version der DFX Wallet zu verwenden. Bitte aktualisiere die App."
     },
     "ref": {
-      "continue_without_ref": "Weiter ohne Ref-Code",
-      "no_ref": "Falls du noch keinen Ref-Code hast, dann verbinde dich zuerst mit der Community um bei Fragen eine Anlaufstelle zu haben!"
+      "continue_without_ref": "Weiter ohne Ref-Code"
     },
     "gtc": {
       "title": "Allgemeine Geschäftsbedingungen",

@@ -38,14 +38,14 @@ export interface NewUserDto {
   address: string;
   signature: string;
   wallet: number;
-  usedRef: string | null;
+  usedRef: string | undefined | null;
 }
 
 export interface NewUser {
   address: string;
   signature: string;
   walletId: number;
-  usedRef: string;
+  usedRef: string | undefined | null;
 }
 
 export interface RefData {

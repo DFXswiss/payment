@@ -39,12 +39,15 @@ class ValidationsClass {
   }
 
   public get Phone() {
-    return {
-      pattern: {
-        value: Regex.Phone,
-        message: i18n.t("validation.code_and_number"),
-      },
-    };
+    return this.Custom((number: string) => {
+      if (number && !number.match(/^\+\d+ .+$/)) {
+        return "validation.code_and_number";
+      } else if (number && !number.match(/^[+\d ]*$/)) {
+        return "validation.pattern_invalid";
+      }
+
+      return true;
+    });
   }
 
   public get Address() {
@@ -66,7 +69,7 @@ class ValidationsClass {
   }
 
   public Custom = (validator: (value: any) => true | string) => ({
-    validate: (val: any) => typeof validator(val) == "boolean" ? validator(val) : i18n.t(validator(val) as string),
+    validate: (val: any) => (typeof validator(val) == "boolean" ? validator(val) : i18n.t(validator(val) as string)),
   });
 }
 

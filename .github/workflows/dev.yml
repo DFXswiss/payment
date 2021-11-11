@@ -17,6 +17,7 @@ jobs:
         uses: azure/login@v1
         with:
           creds: ${{ secrets.DEV_CREDENTIALS }}
+          supscription-id: 782f98f1-29cd-4fc3-8bf4-ca305ad6e3fb
       
       - name: Node setup
         uses: actions/setup-node@v1

@@ -38,6 +38,7 @@
     "validation": {
       "required": "Mandatory field",
       "pattern_invalid": "Invalid format",
+      "iban_invalid": "Invalid IBAN",
       "code_and_number": "Please fill in area code and number"
     },
     "session": {

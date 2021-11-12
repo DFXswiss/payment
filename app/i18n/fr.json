@@ -39,6 +39,7 @@
     "validation": {
       "required": "Champ obligatoire",
       "pattern_invalid": "Format non valide",
+      "iban_invalid": "IBAN non valide",
       "code_and_number": "Veuillez indiquer l'indicatif régional et le numéro"
     },
     "session": {

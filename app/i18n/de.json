@@ -39,6 +39,7 @@
     "validation": {
       "required": "Pflichtfeld",
       "pattern_invalid": "Ungültiges Format",
+      "iban_invalid": "Ungültige IBAN",
       "code_and_number": "Bitte Vorwahl und Nummer ausfüllen"
     },
     "session": {

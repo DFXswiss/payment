@@ -23,7 +23,7 @@ export const fromBuyRouteDto = (route: BuyRouteDto): BuyRoute => ({
   address: route.address,
   asset: route.asset,
   bankUsage: route.bankUsage,
-  iban: route.iban.replace(/(.{4})/g,"$1 "),
+  iban: route.iban.replace(/(.{4})/g, "$1 "),
   active: route.active,
 });
 
@@ -32,6 +32,6 @@ export const toBuyRouteDto = (route: BuyRoute): BuyRouteDto => ({
   address: route.address,
   asset: route.asset,
   bankUsage: route.bankUsage,
-  iban: route.iban,
+  iban: route.iban.split(" ").join(""),
   active: route.active,
 });

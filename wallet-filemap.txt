@@ -3,7 +3,7 @@
 #
 # It is recommended that filepath patterns do not overlap.
 #
-# Use wallet-compare.sh to compare both lists.
+# Use wallet-diff.sh to compare both lists.
 
 app/api/**
 app/components/Text.tsx

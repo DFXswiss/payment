@@ -1,7 +1,15 @@
 # List of files copied from https://github.com/DFXswiss/wallet . The
 # corresponding originals are located in <wallet-path>/mobile-app/ .
 #
+# It is recommended that filepath patterns do not overlap.
+#
 # Use wallet-compare.sh to compare both lists.
 
 app/api/**
+app/components/Text.tsx
+app/components/index.tsx
+app/components/icons/**
 app/components/themed/**
+app/contexts/**
+app/tailwind.config.js
+app/tailwind.ts

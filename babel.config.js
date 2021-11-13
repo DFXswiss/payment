@@ -6,17 +6,7 @@ module.exports = function(api) {
       {
         alias: {
           '@api': './app/api',
-          '@assets': './shared/assets',
-          '@constants': './app/constants',
           '@contexts': './app/contexts',
-          '@components': './app/components',
-          '@environment': './shared/environment',
-          '@hooks': './app/hooks',
-          '@shared-api': './shared/api',
-          '@shared-types': './shared/types',
-          '@screens': './app/screens',
-          '@store': './shared/store',
-          '@translations': './shared/translations',
           '@tailwind': './app/tailwind'
         }
       }

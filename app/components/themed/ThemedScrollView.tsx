@@ -1,5 +1,5 @@
-import { useThemeContext } from '../../contexts/ThemeProvider'
-import { tailwind } from '../../tailwind'
+import { useThemeContext } from '@contexts/ThemeProvider'
+import { tailwind } from '@tailwind'
 import React from 'react'
 import { ScrollView } from 'react-native'
 import { ThemedProps } from './index'

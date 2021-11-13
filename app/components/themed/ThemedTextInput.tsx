@@ -1,8 +1,8 @@
 import * as Localization from 'expo-localization'
 import React, { forwardRef } from 'react'
 import { KeyboardTypeOptions, Platform, TextInput, TextInputProps } from 'react-native'
-import { useThemeContext } from '../../contexts/ThemeProvider'
-import { tailwind } from '../../tailwind'
+import { useThemeContext } from '@contexts/ThemeProvider'
+import { tailwind } from '@tailwind'
 
 export const ThemedTextInput = forwardRef(
   function (props: React.PropsWithChildren<TextInputProps>, ref: React.Ref<any>): JSX.Element {

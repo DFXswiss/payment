@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { ColorSchemeName } from 'react-native'
-import { Logging, ThemePersistence } from '../api/index'
+import { Logging, ThemePersistence } from '@api'
 
 interface ThemeLoader {
   theme: NonNullable<ColorSchemeName>

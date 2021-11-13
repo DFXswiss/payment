@@ -14,7 +14,7 @@
 
 ## Tracking changes in files migrated from [Wallet](https://github.com/DFXswiss/wallet)
 
-This repository contains files that have been copied over from [Wallet](https://github.com/DFXswiss/wallet) and must be kept in sync. If you import such a file, then specify its path in [`wallet-filemap.txt`](wallet-filemap.txt). Then run `wallet-diff.sh` to display the changes. Apply the necessary upstream patches as needed.
+This repository contains files that have been copied over from [Wallet](https://github.com/DFXswiss/wallet) and must be kept in sync. If you import such a file, then specify its path in [`wallet-filemap.txt`](wallet-filemap.txt). Then run [`wallet-diff.sh`](wallet-diff.sh) to display the changes. Apply the necessary upstream patches as needed.
 
 ### Example
 
@@ -142,5 +142,3 @@ Compared 33 file pairs.
 1 corresponding wallet files were missing.
 Skipped 11 backup files.
 ```
-
-This extension requires GNU Bash.

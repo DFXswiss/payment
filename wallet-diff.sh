@@ -1,5 +1,4 @@
-# Script to compare the list of files copied from wallet with the
-# originals.
+# Compares the list of files copied from wallet with the originals.
 #
 #!/bin/bash
 
@@ -23,6 +22,7 @@ for i in `cat ./wallet-filemap.txt | grep -E -v '^#'` ; do
     if [ -f $WALLET_PATH ] ; then
       # Both files exist and are regular files => print the diff.
       diff -NaurEb $WALLET_PATH $i ;
+      echo "Comparing: $i" >&2 ;
       CDIFF=$((CDIFF+1))
     else
       # The wallet file does not exist.

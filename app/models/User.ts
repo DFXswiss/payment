@@ -75,7 +75,7 @@ export interface UserDto extends NewUserDto {
   zip: string;
   location: string;
   country: Country;
-  mail: string;
+  mail: string | null;
   phone: string;
 
   usedRef: string | null;
@@ -131,7 +131,7 @@ export const fromUserDto = (user: UserDto): User => ({
   zip: user.zip,
   location: user.location,
   country: user.country,
-  mail: user.mail,
+  mail: user.mail ?? "",
   mobileNumber: user.phone,
   usedRef: user.usedRef ?? "",
   refData: user.refData,
@@ -155,9 +155,9 @@ export const toUserDto = (user: User): UserDto => ({
   zip: user.zip,
   location: user.location,
   country: user.country,
-  mail: user.mail,
+  mail: toStringDto(user.mail),
   phone: user.mobileNumber,
-  usedRef: user.usedRef === "" ? null : user.usedRef,
+  usedRef: toStringDto(user.usedRef),
   refData: user.refData,
   userVolume: user.userVolume,
   wallet: user.walletId,
@@ -174,3 +174,5 @@ export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
   buys: dto.buys.map((buy) => fromBuyRouteDto(buy)),
   sells: dto.sells.map((sell) => fromSellRouteDto(sell)),
 });
+
+const toStringDto = (string: string): string | null => string === "" ? null : string;

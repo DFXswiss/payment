@@ -108,8 +108,8 @@ export const postSepaFiles = (files: File[]): Promise<void> => {
 };
 
 // --- STATISTIC --- //
-export const getCfpResults = (): Promise<CfpResult[]> => {
-  return fetchFrom(`${StatisticUrl}/cfp/2109`);
+export const getCfpResults = (voting: string): Promise<CfpResult[]> => {
+  return fetchFrom(`${StatisticUrl}/cfp/${voting}`);
 };
 
 // --- MASTER DATA --- //

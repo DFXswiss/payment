@@ -12,6 +12,8 @@
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/native": "^5.9.4",
+    "@types/react-native": "^0.66.4",
+    "@types/react-native-snap-carousel": "^3.8.5",
     "classnames": "^2.3.1",
     "country-code-lookup": "^0.0.19",
     "expo": "~41.0.1",
@@ -36,8 +38,8 @@
     "react-native-reanimated": "~2.1.0",
     "react-native-safe-area-context": "3.2.0",
     "react-native-screens": "~3.0.0",
+    "react-native-snap-carousel": "^3.9.1",
     "react-native-svg": "12.1.0",
-    "react-native-swiper-flatlist": "^3.0.14",
     "react-native-web": "~0.13.12",
     "rxjs": "^7.1.0",
     "tailwind-rn": "^3.0.1"
@@ -45,7 +47,6 @@
   "devDependencies": {
     "@babel/core": "~7.9.0",
     "@types/react": "~16.9.35",
-    "@types/react-native": "~0.63.2",
     "typescript": "~4.0.0"
   },
   "private": true

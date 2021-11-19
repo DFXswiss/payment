@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { Dimensions, Image, ImageSourcePropType, Platform } from 'react-native'
-import SwiperFlatList from 'react-native-swiper-flatlist'
+import Carousel from 'react-native-snap-carousel'
 import ImageA from '../assets/bring-a-friend.jpeg'
 import ImageB from '../assets/fiat-gateway.jpeg'
 import ImageC from '../assets/dollar-cost-average.png'
@@ -120,16 +120,9 @@ export function OnboardingCarousel (): JSX.Element {
   const { isLight } = true
 
   return (
-    <SwiperFlatList
-      autoplay
-      autoplayDelay={3}
-      autoplayLoop
-      autoplayLoopKeepAnimation
+    <Carousel
       data={slides}
-      index={0}
-      paginationActiveColor={isLight ? 'rgba(0, 0, 0, 0.8)' : '#FFFFFF'}
-      paginationDefaultColor={isLight ? 'rgba(0, 0, 0, 0.1)' : theme.extend.colors.dgray[500]}
-      paginationStyleItem={tailwind('h-2.5 w-2.5 mx-1.5')}
+
       renderItem={({ item }) => (
         <View style={{ width }}>
           {
@@ -137,7 +130,14 @@ export function OnboardingCarousel (): JSX.Element {
           }
         </View>
       )}
-      showPagination
+
+      sliderWidth={ 800 }
+      itemWidth={ 800 }
+
+      loop
+      autoplay
+      autoplayDelay={ 1000 }
+      autoplayInterval={ 1800 }
     />
   )
 }

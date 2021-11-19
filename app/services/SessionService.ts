@@ -5,12 +5,12 @@ import SettingsService from "./SettingsService";
 const DefaultWalletId = 2;
 
 class SessionServiceClass {
-  public register(credentials: Credentials, ref: string | undefined, walletId: number | undefined): Promise<void> {
+  public register(credentials: Credentials, ref?: string, walletId?: number): Promise<void> {
       return signUp({
         address: credentials?.address ?? "",
         signature: credentials?.signature ?? "",
         walletId: walletId ?? DefaultWalletId,
-        usedRef: ref ?? "",
+        usedRef: ref,
       })
       .then(this.updateSession)
       .then(() => SettingsService.Language)

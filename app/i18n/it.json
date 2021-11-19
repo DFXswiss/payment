@@ -30,6 +30,7 @@
       "register_failed": "Errore durante la registrazione!",
       "delete_failed": "Errore durante la cancellazione!",
       "save_failed": "Errore durante il salvataggio!",
+      "save_successful": "Salvato con successo!",
       "file_error": "Errore nella lettura del file!",
       "request_submitted": "Richiesta inviata!",
       "request_failed": "Errore con la richiesta!"
@@ -37,6 +38,7 @@
     "validation": {
       "required": "Campo obbligatorio",
       "pattern_invalid": "Formato non valido",
+      "iban_invalid": "IBAN non valido",
       "code_and_number": "Si prega di compilare il prefisso e il numero"
     },
     "session": {

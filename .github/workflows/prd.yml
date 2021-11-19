@@ -44,14 +44,12 @@ jobs:
       - name: Deploy to Azure Storage (PRD)
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.0.72
           inlineScript: |
             az storage blob upload-batch --account-name stdfxpayprd -d '$web' -s ./web-build
 
       - name: Purge CDN endpoint (PRD)
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.0.72
           inlineScript: |
             az cdn endpoint purge --content-paths  "/*" --profile-name cdnp-dfx-pay-prd --name cdne-dfx-pay-prd --resource-group rg-dfx-pay-prd
       

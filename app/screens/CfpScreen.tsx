@@ -18,7 +18,7 @@ import { Session } from "../services/AuthService";
 import NotificationService from "../services/NotificationService";
 import AppStyles from "../styles/AppStyles";
 
-const DfxCfpNumbers = [66, 70];
+const DfxCfpNumbers = [84, 85];
 
 const CfpScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
@@ -29,7 +29,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
   useAuthGuard(session);
 
   useEffect(() => {
-    getCfpResults()
+    getCfpResults("2111")
       .then(setCfpResults)
       .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));
@@ -39,11 +39,11 @@ const CfpScreen = ({ session }: { session?: Session }) => {
     return {
       labels: [],
       legend: [
-        `${t("cfp.yes")} (${Math.round((result.yes / result.votes) * 100)}%)`,
-        `${t("cfp.neutral")} (${Math.round((result.neutral / result.votes) * 100)}%)`,
-        `${t("cfp.no")} (${Math.round((result.no / result.votes) * 100)}%)`,
+        `${t("cfp.yes")} (${Math.round((result.totalVotes.yes / result.totalVotes.total) * 100)}%)`,
+        `${t("cfp.neutral")} (${Math.round((result.totalVotes.neutral / result.totalVotes.total) * 100)}%)`,
+        `${t("cfp.no")} (${Math.round((result.totalVotes.no / result.totalVotes.total) * 100)}%)`,
       ],
-      data: [[], [result.yes, result.neutral, result.no]],
+      data: [[], [result.totalVotes.yes, result.totalVotes.neutral, result.totalVotes.no]],
       barColors: [Colors.Success, Colors.LightGrey, Colors.Error],
     };
   };
@@ -106,16 +106,16 @@ const CfpScreen = ({ session }: { session?: Session }) => {
                         <CompactRow>
                           <CompactCell>{t("cfp.voting")}</CompactCell>
                           <CompactCell>
-                            {result.yes} / {result.neutral} / {result.no}
+                            {result.totalVotes.yes} / {result.totalVotes.neutral} / {result.totalVotes.no}
                           </CompactCell>
                         </CompactRow>
                         <CompactRow>
                           <CompactCell>#{t("cfp.votes")}</CompactCell>
-                          <CompactCell>{result.votes}</CompactCell>
+                          <CompactCell>{result.totalVotes.total}</CompactCell>
                         </CompactRow>
                         <CompactRow>
                           <CompactCell>{t("cfp.vote_turnout")}</CompactCell>
-                          <CompactCell>{result.voteTurnout}%</CompactCell>
+                          <CompactCell>{result.totalVotes.turnout}%</CompactCell>
                         </CompactRow>
                         <CompactRow>
                           <CompactCell>{t("cfp.current_result")}</CompactCell>
@@ -123,17 +123,19 @@ const CfpScreen = ({ session }: { session?: Session }) => {
                         </CompactRow>
                       </DataTable>
                     </View>
-                    <View style={styles.chartContainer}>
-                      <StackedBarChart
-                        data={getData(result)}
-                        width={350}
-                        height={200}
-                        chartConfig={config}
-                        hideLegend={false}
-                        withHorizontalLabels={false}
-                        style={{ marginTop: 5 }}
-                      />
-                    </View>
+                    {result.totalVotes.total > 0 && (
+                      <View style={styles.chartContainer}>
+                        <StackedBarChart
+                          data={getData(result)}
+                          width={350}
+                          height={200}
+                          chartConfig={config}
+                          hideLegend={false}
+                          withHorizontalLabels={false}
+                          style={{ marginTop: 5 }}
+                        />
+                      </View>
+                    )}
                   </View>
                   <SpacerV height={50} />
                 </View>

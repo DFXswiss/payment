@@ -6,7 +6,6 @@ import { CfpResult } from "../models/CfpResult";
 import { Country } from "../models/Country";
 import { Fiat } from "../models/Fiat";
 import { Language } from "../models/Language";
-import { Payment, toPaymentDto } from "../models/Payment";
 import { Ref } from "../models/Ref";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import { fromUserDetailDto, fromUserDto, NewUser, toNewUserDto, toUserDto, User, UserDetail, UserDetailDto, UserDto } from "../models/User";
@@ -22,7 +21,7 @@ const AssetUrl = "asset";
 const FiatUrl = "fiat";
 const CountryUrl = "country";
 const LanguageUrl = "language";
-const BuyPaymentUrl = "payment/buy";
+const BankTxUrl = "bankTx";
 const StatisticUrl = "statistic";
 
 // --- AUTH --- //
@@ -99,14 +98,18 @@ export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
     .then(fromSellRouteDto);
 };
 
-// --- PAYMENTS --- //
-export const postPayment = (payment: Payment): Promise<void> => {
-  return fetchFrom(BuyPaymentUrl, "POST", toPaymentDto(payment));
+// --- PAYMENT --- //
+export const postSepaFiles = (files: File[]): Promise<void> => {
+  const formData = new FormData();
+  for (const key in files) {
+    formData.append("files", files[key]);
+  }
+  return fetchFrom(BankTxUrl, "POST", formData, true);
 };
 
 // --- STATISTIC --- //
-export const getCfpResults = (): Promise<CfpResult[]> => {
-  return fetchFrom(`${StatisticUrl}/cfp/2109`);
+export const getCfpResults = (voting: string): Promise<CfpResult[]> => {
+  return fetchFrom(`${StatisticUrl}/cfp/${voting}`);
 };
 
 // --- MASTER DATA --- //
@@ -128,33 +131,39 @@ export const getLanguages = (): Promise<Language[]> => {
 };
 
 // --- HELPERS --- //
-const fetchFrom = <T>(url: string, method: "GET" | "PUT" | "POST" = "GET", data?: any): Promise<T> => {
-  return AuthService.Session
-    .then((session) => buildInit(method, session, data))
-    .then((init) => fetch(`${BaseUrl}/${url}`, init))
-    .then((response) => {
-      if (response.ok) {
-        return response.json();
-      }
-      return response.json().then((body) => {
-        throw body;
-      });
-    })
-    // TODO: this throws state update error (on HomeScreen)
-    .catch((error: ApiError) => {
-      if (error.statusCode === 401) {
-        AuthService.deleteSession();
-      }
+const fetchFrom = <T>(
+  url: string,
+  method: "GET" | "PUT" | "POST" = "GET",
+  data?: any,
+  noJson?: boolean
+): Promise<T> => {
+  return (
+    AuthService.Session.then((session) => buildInit(method, session, data, noJson))
+      .then((init) => fetch(`${BaseUrl}/${url}`, init))
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        }
+        return response.json().then((body) => {
+          throw body;
+        });
+      })
+      // TODO: this throws state update error (on HomeScreen)
+      .catch((error: ApiError) => {
+        if (error.statusCode === 401) {
+          AuthService.deleteSession();
+        }
 
-      throw error;
-    });
+        throw error;
+      })
+  );
 };
 
-const buildInit = (method: "GET" | "PUT" | "POST", session: Session, data?: any): RequestInit => ({
+const buildInit = (method: "GET" | "PUT" | "POST", session: Session, data?: any, noJson?: boolean): RequestInit => ({
   method: method,
   headers: {
-    "Content-Type": "application/json",
+    ...(noJson ? undefined : { "Content-Type": "application/json" }),
     Authorization: session.accessToken ? "Bearer " + session.accessToken : "",
   },
-  body: JSON.stringify(data),
+  body: noJson ? data : JSON.stringify(data),
 });

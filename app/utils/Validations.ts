@@ -1,5 +1,6 @@
 import i18n from "../i18n/i18n";
 import Regex from "./Regex";
+import * as IbanTools from "ibantools";
 
 class ValidationsClass {
   public get Required() {
@@ -12,12 +13,9 @@ class ValidationsClass {
   }
 
   public get Iban() {
-    return {
-      pattern: {
-        value: Regex.Iban,
-        message: i18n.t("validation.pattern_invalid"),
-      },
-    };
+    return this.Custom((iban: string) =>
+      IbanTools.validateIBAN(iban.split(" ").join("")).valid ? true : "validation.iban_invalid"
+    );
   }
 
   public get Mail() {
@@ -39,12 +37,15 @@ class ValidationsClass {
   }
 
   public get Phone() {
-    return {
-      pattern: {
-        value: Regex.Phone,
-        message: i18n.t("validation.code_and_number"),
-      },
-    };
+    return this.Custom((number: string) => {
+      if (number && !number.match(/^\+\d+ .+$/)) {
+        return "validation.code_and_number";
+      } else if (number && !number.match(/^[+\d ]*$/)) {
+        return "validation.pattern_invalid";
+      }
+
+      return true;
+    });
   }
 
   public get Address() {
@@ -66,7 +67,7 @@ class ValidationsClass {
   }
 
   public Custom = (validator: (value: any) => true | string) => ({
-    validate: (val: any) => typeof validator(val) == "boolean" ? validator(val) : i18n.t(validator(val) as string),
+    validate: (val: any) => (typeof validator(val) == "boolean" ? validator(val) : i18n.t(validator(val) as string)),
   });
 }
 

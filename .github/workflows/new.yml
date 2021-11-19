@@ -44,14 +44,12 @@ jobs:
       - name: Deploy to Azure Storage (NEW)
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.0.72
           inlineScript: |
             az storage blob upload-batch --account-name stdfxpaynew -d '$web' -s ./web-build
 
       - name: Purge CDN endpoint (NEW)
         uses: azure/CLI@v1
         with:
-          azcliversion: 2.0.72
           inlineScript: |
             az cdn endpoint purge --content-paths  "/*" --profile-name cdnp-dfx-pay-new --name cdne-dfx-pay-new --resource-group rg-dfx-pay-new
       

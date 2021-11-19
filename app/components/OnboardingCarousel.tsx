@@ -63,31 +63,10 @@ const { width } = Platform.OS === 'web' ? { width: '800px' } : Dimensions.get('w
 
 export function ImageSlide ({ image, title, secondTitle, subtitle }: CarouselImage): JSX.Element {
   return (
-    <View style={tailwind('flex-1 items-center justify-center py-8 px-5')}>
-      <View style={tailwind('h-2/6 items-center justify-center')}>
-        <ThemedText style={tailwind('text-2xl font-bold text-center')}>
-          {/* TODO it used to be: translate('screens/OnboardingCarousel', title) */}
-          {title}
-        </ThemedText>
-
-        <ThemedText style={tailwind('text-2xl font-bold text-center')}>
-          {/* TODO it used to be: translate('screens/OnboardingCarousel', secondTitle) */}
-          {secondTitle}
-        </ThemedText>
-
-        <ThemedText
-          dark={tailwind('text-gray-400')}
-          light={tailwind('text-gray-500')}
-          style={tailwind('font-normal text-center mt-1 mb-8')}
-        >
-          {/* TODO it used to be: translate('screens/OnboardingCarousel', subtitle) */}
-          {subtitle}
-        </ThemedText>
-      </View>
-
+    <View style={tailwind('h-full items-center justify-center py-8 px-5')}>
       <Image
         source={image}
-        style={{ width, height: '100%' }}
+        style={{ width, height: '400px' }}
       />
     </View>
   )

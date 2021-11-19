@@ -20,7 +20,7 @@ interface CarouselImage {
   subtitle: string
 }
 
-const slides: JSX.Element[] = [<InitialSlide key={0} />,
+const slides: JSX.Element[] = [
   <ImageSlide
     image={ImageA}
     key={1}
@@ -60,27 +60,6 @@ const slides: JSX.Element[] = [<InitialSlide key={0} />,
 // Needs for it to work on web. Otherwise, it takes full window size
 // TODO: what width to set here for the web? upon copying this from wallet this used to be 375px
 const { width } = Platform.OS === 'web' ? { width: '800px' } : Dimensions.get('window')
-
-export function InitialSlide (): JSX.Element {
-  return (
-    <View style={tailwind('flex-1 items-center justify-center p-8')}>
-      <AppIcon width={150} height={100} />
-      <ThemedText style={tailwind('text-2xl font-bold')}>
-        {/* TODO it used to be: translate('screens/OnboardingCarousel', 'Wallet') */}
-        {'0/InitialSlide: Wallet'}
-      </ThemedText>
-
-      <ThemedText
-        light={tailwind('text-gray-500')}
-        dark={tailwind('text-gray-400')}
-        style={tailwind('text-center font-medium mt-10')}
-      >
-        {/* TODO it used to be: translate('screens/OnboardingCarousel', 'A wallet dedicated to the native decentralized finance for bitcoin.') */}
-        {'A wallet dedicated to the native decentralized finance for bitcoin.'}
-      </ThemedText>
-    </View>
-  )
-}
 
 export function ImageSlide ({ image, title, secondTitle, subtitle }: CarouselImage): JSX.Element {
   return (

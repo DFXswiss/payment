@@ -32,7 +32,8 @@ jobs:
         run: npm install
 
       - name: Apply patches
-        run: echo -e "\nexport const ViewPropTypes = { style: null };" >> ./node_modules/react-native-web/dist/index.js
+        run: |
+          echo -e "\nexport const ViewPropTypes = { style: null };" >> ./node_modules/react-native-web/dist/index.js
         shell: bash
 
       - name: Optimize assets

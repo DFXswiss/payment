@@ -17,3 +17,6 @@ web-build/
 
 # gthumb
 app/assets/.comments/
+
+# vim swap files
+*.swp

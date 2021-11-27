@@ -243,8 +243,8 @@ const BringAFriendScreen = ({ session }: { session?: Session }) => {
       {!isLoading && (
         <>
           {user && (
-            <View>
-              <View style={tailwind('h-full')}>
+            <View style={tailwind('w-full')}>
+              <View style={tailwind('w-full h-full')}>
                 <OnboardingCarousel />
               </View>
               <SpacerV height={50} />

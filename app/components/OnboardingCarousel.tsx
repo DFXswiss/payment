@@ -58,16 +58,12 @@ const slides: JSX.Element[] = [
     title='Earn high yields'
   />]
 
-// Needs for it to work on web. Otherwise, it takes full window size
-// TODO: what width to set here for the web? upon copying this from wallet this used to be 375px
-const { width } = Platform.OS === 'web' ? { width: '800px' } : Dimensions.get('window')
-
 function ImageSlide ({ image, title, secondTitle, subtitle }: CarouselImage): JSX.Element {
   return (
-    <View style={tailwind('h-full items-center justify-center py-8 px-5')}>
+    <View style={tailwind('w-full h-full items-center justify-center py-8 px-5')}>
       <Image
         source={image}
-        style={{ width, height: '400px' }}
+        style={tailwind('w-full h-full')}
       />
     </View>
   )
@@ -77,23 +73,25 @@ export function OnboardingCarousel (): JSX.Element {
   // TODO: TypeError: _useThemeContext is undefined
   // const { isLight } = useThemeContext()
   const { isLight } = true
+  const windowWidth = Dimensions.get('window').width;
+  const caroWidth = (windowWidth < 800) ? windowWidth : 800;
   const [count, setCount] = useState(0);
 
   return (
-    <View style={{ width }}>
+    <View style={tailwind('w-full h-full')}>
     <Carousel
       data={slides}
 
       renderItem={({ item }) => (
-        <View style={{ width }}>
+        <View style={tailwind('w-full h-full')}>
           {
             item
           }
         </View>
       )}
 
-      sliderWidth={ 800 }
-      itemWidth={ 800 }
+      sliderWidth={ caroWidth }
+      itemWidth={ caroWidth }
 
       loop
       autoplay

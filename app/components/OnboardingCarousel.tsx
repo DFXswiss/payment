@@ -1,6 +1,6 @@
-import * as React from 'react'
+import React, { useState } from 'react';
 import { Dimensions, Image, ImageSourcePropType, Platform } from 'react-native'
-import Carousel from 'react-native-snap-carousel'
+import Carousel, { Pagination } from 'react-native-snap-carousel'
 import ImageA from '../assets/bring-a-friend.jpeg'
 import ImageB from '../assets/fiat-gateway.jpeg'
 import ImageC from '../assets/dollar-cost-average.png'
@@ -12,6 +12,7 @@ import { ThemedText } from './themed'
 import { useThemeContext } from '../contexts/ThemeProvider'
 import { tailwind } from '../tailwind'
 import { theme } from '../tailwind.config'
+import Colors from '../config/Colors'
 
 interface CarouselImage {
   image: ImageSourcePropType
@@ -61,7 +62,7 @@ const slides: JSX.Element[] = [
 // TODO: what width to set here for the web? upon copying this from wallet this used to be 375px
 const { width } = Platform.OS === 'web' ? { width: '800px' } : Dimensions.get('window')
 
-export function ImageSlide ({ image, title, secondTitle, subtitle }: CarouselImage): JSX.Element {
+function ImageSlide ({ image, title, secondTitle, subtitle }: CarouselImage): JSX.Element {
   return (
     <View style={tailwind('h-full items-center justify-center py-8 px-5')}>
       <Image
@@ -76,8 +77,10 @@ export function OnboardingCarousel (): JSX.Element {
   // TODO: TypeError: _useThemeContext is undefined
   // const { isLight } = useThemeContext()
   const { isLight } = true
+  const [count, setCount] = useState(0);
 
   return (
+    <View style={{ width }}>
     <Carousel
       data={slides}
 
@@ -96,6 +99,14 @@ export function OnboardingCarousel (): JSX.Element {
       autoplay
       autoplayDelay={ 1000 }
       autoplayInterval={ 1800 }
+      onSnapToItem={(index) => setCount(index) }
     />
+    <Pagination
+      activeDotIndex={ count }
+      dotsLength={ slides.length }
+      dotColor={ Colors.White }
+      inactiveDotColor={ Colors.LightGrey }
+    />
+    </View>
   )
 }

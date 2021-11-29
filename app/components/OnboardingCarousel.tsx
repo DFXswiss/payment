@@ -73,8 +73,7 @@ export function OnboardingCarousel (): JSX.Element {
   // TODO: TypeError: _useThemeContext is undefined
   // const { isLight } = useThemeContext()
   const { isLight } = true
-  const windowWidth = Dimensions.get('window').width;
-  const caroWidth = (windowWidth < 800) ? windowWidth : 800;
+  const caroWidth = Math.min(800, 0.8 * Dimensions.get('window').width);
   const [count, setCount] = useState(0);
 
   return (
@@ -98,6 +97,7 @@ export function OnboardingCarousel (): JSX.Element {
       autoplayDelay={ 1000 }
       autoplayInterval={ 1800 }
       onSnapToItem={(index) => setCount(index) }
+      containerCustomStyle={{ marginLeft: 'auto', marginRight: 'auto' }}
     />
     <Pagination
       activeDotIndex={ count }

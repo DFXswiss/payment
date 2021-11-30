@@ -24,7 +24,7 @@ const Header = ({ session }: { session?: Session }) => {
         <Image style={styles.logo} source={require("../assets/logo.jpg")} />
       </TouchableOpacity>
 
-      <View style={[AppStyles.mla, !device.SM && AppStyles.noDisplay]}>
+      <View style={[AppStyles.container, !device.SM && AppStyles.noDisplay]}>
         <HeaderContent />
       </View>
     </View>
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   logoTouch: {
-    width: 150,
+    width: 80,
     height: 30,
   },
   logo: {

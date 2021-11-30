@@ -15,25 +15,25 @@
       "save": "Guardar",
       "abort": "Cancelar",
       "close": "Fechar",
-      "home": "Voltar para a página inicial",
-      "next": "próximo",
-      "back": "voltar",
-      "accept": "aceitar",
+      "home": "Página inicial",
+      "next": "Próximo",
+      "back": "Voltar",
+      "accept": "Aceitar",
       "ok": "OK",
-      "yes": "sim",
-      "delete": "eliminar",
-      "upload": "carregar",
-      "send": "enviar"
+      "yes": "Sim",
+      "delete": "Eliminar",
+      "upload": "Carregar",
+      "send": "Enviar"
     },
     "feedback": {
-      "page_not_found": "página não encontrada!",
+      "page_not_found": "Página não encontrada!",
       "load_failed": "Erro ao carregar os dados!",
       "register_failed": "Erro durante o registo!",
       "delete_failed": "Erro durante a eliminação!",
       "save_failed": "Erro ao guardar!",
       "save_successful": "Salvar com sucesso!",
       "file_error": "Erro na leitura do ficheiro!",
-      "request_submitted": "pedido apresentado!",
+      "request_submitted": "Pedido apresentado!",
       "request_failed": "Erro com o pedido!"
     },
     "validation": {
@@ -45,7 +45,7 @@
     "session": {
       "instructions": "Guia de registo",
       "instruction_link": "https://defichain-wiki.com/wiki/DFX_manuelle_Registrierung",
-      "sign_up": "inscreva-se / Registe-se",
+      "sign_up": "Inscreva-se / Registe-se",
       "signing_command": "Sinal de comando",
       "login_failed": "Login falhou!",
       "pattern_invalid": "O formato do endereço/assinatura é inválido Login falhou!",
@@ -54,7 +54,7 @@
       "old_signature": "Parece estar a utilizar uma versão desactualizada da DFX. Por favor, actualize a aplicação."
     },
     "ref": {
-      "continue_without_ref": "continuar sem código de referência"
+      "continue_without_ref": "Continuar sem código de referência"
     },
     "gtc": {
       "title": "Termos e condições gerais",
@@ -85,8 +85,8 @@
       ]
     },
     "cfp": {
-      "link": "CFP (Proposta de Fundo Comunitário)",
-      "title": "CFP actuais de DeFiChain",
+      "link": "CFP",
+      "title": "CFP (Proposta de Fundo Comunitário) actuais de DeFiChain",
       "all": "Todos CFPs",
       "dfx_only": "CFPs apenas de DFX",
       "yes": "Sim",

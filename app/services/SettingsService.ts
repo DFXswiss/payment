@@ -28,7 +28,7 @@ class SettingsServiceClass {
     });
 
     getLanguages()
-      .then((languages) => (this.Languages = languages))
+      .then((languages) => (this.Languages = languages.filter((l) => l.enable)))
       .then(() => this.Settings)
       .then((settings) => this.Languages.find((l) => l.symbol == settings.language)?.symbol ?? Environment.defaultLanguage)
       .then((currentLanguage) => this.updateSettings({ language: currentLanguage }))

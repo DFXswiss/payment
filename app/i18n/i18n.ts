@@ -8,6 +8,7 @@ i18n.use(initReactI18next).init({
       EN: require("./en.json"),
       FR: require("./fr.json"),
       IT: require("./it.json"),
+      PT: require("./pt.json"),
   },
   fallbackLng: Environment.defaultLanguage,
   debug: Environment.debug,

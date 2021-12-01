@@ -121,6 +121,7 @@
         "ref": "Referral code",
         "copy_ref": "Copy Ref-Link",
         "used_ref": "Ref code used",
+        "own_ref": "Ref code to distribute",
         "ref_count": "Ref users",
         "ref_count_active": "Active ref users",
         "ref_volume": "Ref volume paid",

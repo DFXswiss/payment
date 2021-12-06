@@ -164,10 +164,11 @@
         "copy_bank_usage": "Copiare lo scopo del pagamento",
         "asset": "Attività",
         "fiat": "Valuta",
-        "deposit_address": "Depositato da",
-        "copy_deposit_address": "Copiare l'indirizzo del depositoCopiare l'indirizzo del deposito",
+        "deposit_address": "Indirizzo del deposito",
+        "copy_deposit_address": "Copiare l'indirizzo del deposito",
         "conflict": "Il percorso esiste già!",
-        "exchange_rate_warning": "Attenzione, compriamo questo bene su DEX e non possiamo garantire un tasso di cambio! I prezzi su DEX possono essere significativamente inferiori o superiori a quelli di altre borse, il che può anche avere un impatto negativo sul tasso di cambio. DFX sta già lavorando su un processo migliorato."
+        "exchange_rate_warning": "Attenzione, compriamo questo bene su DEX e non possiamo garantire un tasso di cambio! I prezzi su DEX possono essere significativamente inferiori o superiori a quelli di altre borse, il che può anche avere un impatto negativo sul tasso di cambio. DFX sta già lavorando su un processo migliorato.",
+        "dfi_only": "Attenzione, inviate solo DFI UTXO ai vostri indirizzi di deposito. I gettoni (dBTC, dETC, ...) non sono attualmente elaborati e non vengono restituiti!"
       },
       "payment": {
         "new": "Nuovi pagamenti",

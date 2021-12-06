@@ -277,6 +277,9 @@ const RouteList = ({
                   </TouchableOpacity>
                 ))}
               </DataTable>
+              
+              <SpacerV />
+              <Text style={AppStyles.b}>{t("model.route.dfi_only")}</Text>
             </>
           )}
         </>

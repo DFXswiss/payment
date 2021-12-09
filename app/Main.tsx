@@ -11,7 +11,7 @@ import LoginScreen from "./screens/LoginScreen";
 import NotFoundScreen from "./screens/NotFoundScreen";
 import RefScreen from "./screens/RefScreen";
 import { navigationRef } from "./utils/NavigationHelper";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, useColorScheme, View } from "react-native";
 import HeaderContent from "./components/HeaderContent";
 import Sizes from "./config/Sizes";
 import { useDevice } from "./hooks/useDevice";
@@ -20,6 +20,8 @@ import AppStyles from "./styles/AppStyles";
 import AdminScreen from "./screens/AdminScreen";
 import CfpScreen from "./screens/CfpScreen";
 import Colors from "./config/Colors";
+import { ThemeProvider } from "@contexts/ThemeProvider";
+import { useCachedResources } from "@hooks/useCachedResources";
 
 const DrawerContent = () => {
   const device = useDevice();
@@ -38,6 +40,8 @@ const DrawerContent = () => {
 };
 
 const Main = () => {
+  useCachedResources()
+  const colorScheme = useColorScheme()
   const drawer = createDrawerNavigator();
   const linking: LinkingOptions = {
     prefixes: [],
@@ -77,37 +81,39 @@ const Main = () => {
   }, []);
 
   return (
-    <Provider theme={AppTheme}>
-      <Portal.Host>
-        <Portal>
-          <Snackbar
-            visible={snackVisible}
-            onDismiss={() => setSnackVisible(false)}
-            action={{ label: "", icon: "close", color: Colors.Grey }}
-            duration={Snackbar.DURATION_MEDIUM}
-            style={styles.snack}
-            wrapperStyle={styles.snackWrapper}
-          >
-            <Paragraph style={{ color: snackContent?.level === Level.SUCCESS ? Colors.Success : Colors.Error }}>
-              {snackContent?.text}
-            </Paragraph>
-          </Snackbar>
-        </Portal>
+    <ThemeProvider colorScheme={colorScheme}>
+      <Provider theme={AppTheme}>
+        <Portal.Host>
+          <Portal>
+            <Snackbar
+              visible={snackVisible}
+              onDismiss={() => setSnackVisible(false)}
+              action={{ label: "", icon: "close", color: Colors.Grey }}
+              duration={Snackbar.DURATION_MEDIUM}
+              style={styles.snack}
+              wrapperStyle={styles.snackWrapper}
+            >
+              <Paragraph style={{ color: snackContent?.level === Level.SUCCESS ? Colors.Success : Colors.Error }}>
+                {snackContent?.text}
+              </Paragraph>
+            </Snackbar>
+          </Portal>
 
-        <NavigationContainer linking={linking} ref={navigationRef}>
-          <drawer.Navigator screenOptions={{ headerShown: false }} drawerContent={() => <DrawerContent />}>
-            {screens.map((screen) => (
-              <drawer.Screen
-                key={screen.route}
-                name={screen.route}
-                component={screen.screen}
-                options={{ unmountOnBlur: true }}
-              />
-            ))}
-          </drawer.Navigator>
-        </NavigationContainer>
-      </Portal.Host>
-    </Provider>
+          <NavigationContainer linking={linking} ref={navigationRef}>
+            <drawer.Navigator screenOptions={{ headerShown: false }} drawerContent={() => <DrawerContent />}>
+              {screens.map((screen) => (
+                <drawer.Screen
+                  key={screen.route}
+                  name={screen.route}
+                  component={screen.screen}
+                  options={{ unmountOnBlur: true }}
+                />
+              ))}
+            </drawer.Navigator>
+          </NavigationContainer>
+        </Portal.Host>
+      </Provider>
+    </ThemeProvider>
   );
 };
 

@@ -1,0 +1,64 @@
+name: NEW CI/CD
+
+on:
+  push:
+    branches: [ feature/new-user-flow ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build and deploy to NEW
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.NEW_CREDENTIALS }}
+      
+      - name: Node setup
+        uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
+
+      - name: Expo setup
+        uses: expo/expo-github-action@v5
+        with:
+          expo-version: 4.x
+
+      - name: Install packages
+        run: npm install
+
+      - name: Apply patches
+        run: |
+          echo -e "\nexport const ViewPropTypes = { style: null };" >> ./node_modules/react-native-web/dist/index.js
+        shell: bash
+
+      - name: Optimize assets
+        run: npx expo-optimize
+
+        # fix --release-channel not available for web yet
+      - name: Select environment
+        run: cp -f app/env/Environment.dev.ts app/env/Environment.ts
+
+      - name: Build for web
+        run: expo build:web
+
+      - name: Deploy to Azure Storage (NEW)
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az storage blob upload-batch --account-name stdfxpaynew -d '$web' -s ./web-build
+
+      - name: Purge CDN endpoint (NEW)
+        uses: azure/CLI@v1
+        with:
+          inlineScript: |
+            az cdn endpoint purge --content-paths  "/*" --profile-name cdnp-dfx-pay-new --name cdne-dfx-pay-new --resource-group rg-dfx-pay-new
+      
+      - name: Logout
+        run: |
+              az logout
+        if: always()

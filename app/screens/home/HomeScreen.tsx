@@ -121,10 +121,10 @@ function ClickableRow({
       onPress={onPress}
       style={tailwind("py-4 pl-4 pr-2 flex-row justify-between items-center")}
     >
-      <View>
-        <ThemedText>{label}</ThemedText>
+      <View style={tailwind('flex-1')}>
+        <ThemedText ellipsizeMode='tail'>{label}</ThemedText>
       </View>
-      <View style={tailwind("flex-row items-center")}>
+      <View style={tailwind("flex-1 flex-row justify-end items-center")}>
         <ThemedText light={tailwind("text-dfxgray-500")} dark={tailwind("text-dfxgray-400")}>
           {value}
         </ThemedText>

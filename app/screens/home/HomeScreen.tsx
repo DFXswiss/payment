@@ -16,6 +16,7 @@ import { tailwind } from "@tailwind";
 import { View } from "react-native";
 import Loading from "@components/util/Loading";
 import { Button } from "@components/Button";
+import { OnboardingCarousel } from "@components/OnboardingCarousel";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
@@ -68,9 +69,10 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   return (
     <AppLayout>
       <ThemedScrollView>
-        <ThemedText>TODO: carousel</ThemedText>
+        <View style={tailwind('mb-4')}>
+          <OnboardingCarousel />
+        </View>
         {isLoading && <Loading size="large" />}
-
         {!isLoading && user && (
           <>
             <ClickableRow

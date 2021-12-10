@@ -170,7 +170,7 @@
         "copy_deposit_address": "Deposit-Adresse kopieren",
         "conflict": "Die Route existiert bereits!",
         "exchange_rate_warning": "Achtung, wir kaufen dieses Asset auf der DEX und können keinen Wechselkurs garantieren! Die Preise auf der DEX können deutlich tiefer oder höher als auf anderen Exchanges sein, was sich auch negativ auf den Wechselkurs auswirken kann. DFX arbeitet bereits an einem verbesserten Verfahren.",
-        "dfi_only": "Achtung, bitte sende nur DFI UTXO auf deine Deposit-Adressen. Token (dBTC, dETC, ...) werden momentan noch nicht verarbeitet und auch nicht retourniert!"
+        "dfi_only": "Achtung, bitte sende nur DFI UTXO auf deine Deposit-Adressen. Token (dBTC, dETH, ...) werden momentan noch nicht verarbeitet und auch nicht retourniert!"
       },
       "payment": {
         "new": "Neue Zahlungen",

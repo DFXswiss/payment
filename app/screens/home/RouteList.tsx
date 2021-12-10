@@ -184,8 +184,7 @@ const RouteList = ({
               </DeFiButton>
             </View>
             <View style={AppStyles.ml10}>
-              {/* TODO: for all users */}
-              <DeFiButton mode="contained" onPress={() => setIsSellRouteEdit(true)} disabled={session?.role !== UserRole.BETA && session?.role !== UserRole.Admin}>
+              <DeFiButton mode="contained" onPress={() => setIsSellRouteEdit(true)}>
                 {t("model.route.sell")}
               </DeFiButton>
             </View>

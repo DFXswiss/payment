@@ -70,8 +70,6 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
     usedRef: Validations.Ref,
   });
 
-  const hasKyc = user?.kycStatus != KycStatus.NA;
-
   return isLoading ? (
     <ActivityIndicator size="large" />
   ) : (
@@ -82,28 +80,22 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
           <SpacerV />
         </>
       )}
-      {hasKyc && (
-        <>
-          <Alert label={t("model.user.edit_disallowed")} />
-          <SpacerV />
-        </>
-      )}
       <View style={AppStyles.containerHorizontalWrap}>
-        <Input name="firstName" label={t("model.user.first_name")} disabled={hasKyc} />
+        <Input name="firstName" label={t("model.user.first_name")} />
         <SpacerH />
-        <Input name="lastName" label={t("model.user.last_name")} disabled={hasKyc} />
+        <Input name="lastName" label={t("model.user.last_name")} />
       </View>
       <SpacerV />
       <View style={AppStyles.containerHorizontalWrap}>
-        <Input name="street" label={t("model.user.street")} disabled={hasKyc} />
+        <Input name="street" label={t("model.user.street")} />
         <SpacerH />
-        <Input name="houseNumber" label={t("model.user.house_number")} disabled={hasKyc} />
+        <Input name="houseNumber" label={t("model.user.house_number")} />
       </View>
       <SpacerV />
       <View style={AppStyles.containerHorizontalWrap}>
-        <Input name="zip" label={t("model.user.zip")} disabled={hasKyc} />
+        <Input name="zip" label={t("model.user.zip")} />
         <SpacerH />
-        <Input name="location" label={t("model.user.location")} disabled={hasKyc} />
+        <Input name="location" label={t("model.user.location")} />
       </View>
       <SpacerV />
       <DeFiPicker
@@ -112,17 +104,15 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
         items={countries.filter((c) => c.enable)}
         idProp="id"
         labelProp="name"
-        disabled={hasKyc}
       />
       <SpacerV />
-      <Input name="mail" label={t("model.user.mail")} disabled={hasKyc} />
+      <Input name="mail" label={t("model.user.mail")} />
       <SpacerV />
       <PhoneNumber
         name="mobileNumber"
         label={t("model.user.mobile_number")}
         placeholder="6912345678"
         wrap={!device.SM}
-        disabled={hasKyc}
       />
       <SpacerV />
       <Input name="usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />

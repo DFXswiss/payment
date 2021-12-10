@@ -133,8 +133,7 @@
         "user_sell_volume": "Os seus pagamentos",
         "buy_limit": "O seu limite de depósito",
         "per_day": "por dia",
-        "per_year": "por ano",
-        "edit_disallowed": "As alterações aos dados do utilizador já não são possíveis devido ao seu estatuto KYC. Por favor contacte a nossa equipa de apoio em support@dfx.swiss."
+        "per_year": "por ano"
       },
       "kyc":{
         "increase": "Aumentar o limite de depósito",

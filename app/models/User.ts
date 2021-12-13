@@ -175,4 +175,5 @@ export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
   sells: dto.sells.map((sell) => fromSellRouteDto(sell)),
 });
 
-const toStringDto = (string: string): string | null => string === "" ? null : string;
+const toStringDto = (string: string): string | null =>
+  string === "" ? null : string;

@@ -129,13 +129,14 @@
         "ref_volume": "Ref-volume pagato",
         "user_buy_volume": "Il tuo investimento",
         "user_sell_volume": "Volume erogato",
-        "buy_limit": "Il tuo limite di deposito",
+        "limit": "Il tuo limite",
         "per_day": "al giorno",
         "per_year": "al anno"
       },
       "kyc":{
-        "increase": "Aumentare il limite di deposito",
-        "request": "Vuoi aumentare il tuo limite di deposito ora?",
+        "increase": "Aumentare il limite",
+        "continue": "Continua KYC",
+        "request": "Vuoi aumentare il tuo limite?",
         "invest_volume": "Quanto vuoi investire in totale?",
         "volume": "Volume degli investimenti",
         "status": "KYC stato",

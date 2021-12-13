@@ -7,8 +7,8 @@ import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
 import { H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
-import { KycStatus, User, UserRole, UserStatus } from "../../models/User";
-import { getUserDetail, postKyc } from "../../services/ApiService";
+import { KycState, KycStatus, User, UserRole, UserStatus } from "../../models/User";
+import { getUser, getUserDetail, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
@@ -79,6 +79,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     setUser(newUser);
     setIsUserEdit(false);
   };
+
   const onKyc = () => {
     if (user?.kycStatus === KycStatus.NA && !userDataComplete()) {
       setIsUserEdit(true);
@@ -87,9 +88,19 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     setIsKycRequest(true);
   };
 
+  const continueKyc = () => {
+    setLoading(true);
+    postKyc()
+      .then(() => NotificationService.success(t("feedback.request_submitted")))
+      .then(() => getUserDetail())
+      .then(setUser)
+      .catch(() => NotificationService.error(t("feedback.load_failed")))
+      .finally(() => setLoading(false));
+  };
+
+
   const requestKyc = ({ limit }: { limit?: string }): void => {
     setIsKycLoading(true);
-
     const limitNumber = limit ? +limit : undefined;
     postKyc(limitNumber)
       .then(() => {
@@ -146,6 +157,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { icon: "content-copy", label: t("model.user.copy_ref"), onPress: () => Clipboard.setString(`${RefUrl}${user?.refData.ref}`), visible: user?.refData?.ref },
     { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true), visible: true },
     { icon: "account-check", label: t("model.kyc.increase"), onPress: onKyc, visible: user?.status != UserStatus.NA && (user?.kycStatus === KycStatus.NA || user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL || user?.kycStatus === KycStatus.COMPLETED )},
+    { icon: "account-check", label: t("model.kyc.continue"), onPress: continueKyc, visible: user?.status != UserStatus.NA && (user?.kycState === KycState.FAILED)},
     { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true), visible: true },
     { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: true },
   ];
@@ -177,7 +189,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { condition: Boolean(user.userVolume.buyVolume), label: "model.user.user_buy_volume", value: `${formatAmount(user.userVolume.buyVolume)} €` },
     { condition: Boolean(user.userVolume.sellVolume), label: "model.user.user_sell_volume", value: `${formatAmount(user.userVolume.sellVolume)} €` },
     { condition: user.kycStatus != KycStatus.NA, label: "model.kyc.status", value:  t(`model.kyc.${user.kycStatus.toLowerCase()}`) },
-    { condition: true, label: "model.user.buy_limit", value: limit(user) },
+    { condition: true, label: "model.user.limit", value: limit(user) },
   ];
 
   return (
@@ -283,6 +295,14 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                         <View style={AppStyles.mr10}>
                           <DeFiButton mode="contained" onPress={onKyc}>
                             {t("model.kyc.increase")}
+                          </DeFiButton>
+                        </View>
+                      )}
+                    {user?.status != UserStatus.NA &&
+                      (user?.kycState === KycState.FAILED) && (
+                        <View style={AppStyles.mr10}>
+                          <DeFiButton mode="contained" onPress={continueKyc}>
+                            {t("model.kyc.continue")}
                           </DeFiButton>
                         </View>
                       )}

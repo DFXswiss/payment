@@ -131,13 +131,14 @@
         "ref_volume": "Ref-Volumen",
         "user_buy_volume": "Deine Investition",
         "user_sell_volume": "Ausgezahltes Volumen",
-        "buy_limit": "Dein Einzahlungslimit",
+        "limit": "Dein Limit",
         "per_day": "pro Tag",
         "per_year": "pro Jahr"
       },
       "kyc":{
-        "increase": "Einzahlungslimit erhöhen",
-        "request": "Möchtest du dein Einzahlungslimit jetzt erhöhen?",
+        "increase": "Limit erhöhen",
+        "continue": "KYC fortsetzen",
+        "request": "Möchtest du dein Limit jetzt erhöhen?",
         "invest_volume": "Wie viel möchtest du total ungefähr investieren?",
         "volume": "Investitionsvolumen",
         "status": "KYC Status",

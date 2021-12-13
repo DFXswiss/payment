@@ -60,16 +60,7 @@ class AuthServiceClass {
   }
 
   public get Session(): Promise<Session> {
-    return StorageService.getValue<ISession>(SessionKey)
-      .then((session) => new Session(session))
-      .then((session) => {
-        if (session.isExpired) {
-          this.deleteSession();
-          throw new Error("Access token expired!");
-        }
-
-        return session;
-      });
+    return StorageService.getValue<ISession>(SessionKey).then((session) => new Session(session));
   }
 
   public updateSession(session: ISession): Promise<void> {

@@ -89,18 +89,13 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   };
 
   const continueKyc = () => {
-    
     setLoading(true);
     postKyc()
-      .then(() => {
-        NotificationService.success(t("feedback.request_submitted"));
-        getUserDetail()
-        .then((user) => {
-          setUser(user);   
-        })
-        .catch(() => NotificationService.error(t("feedback.load_failed")))
-        .finally(() => setLoading(false));
-      })
+      .then(() => NotificationService.success(t("feedback.request_submitted")))
+      .then(() => getUserDetail())
+      .then(setUser)
+      .catch(() => NotificationService.error(t("feedback.load_failed")))
+      .finally(() => setLoading(false));
   };
 
 

@@ -130,7 +130,7 @@
         "ref_volume": "Ref-volume versé",
         "user_buy_volume": "Votre investissement",
         "user_sell_volume": "Volume déboursé",
-        "buy_limit": "Votre limite",
+        "limit": "Votre limite",
         "per_day": "par jour",
         "per_year": "par an"
       },

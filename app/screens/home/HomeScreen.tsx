@@ -194,7 +194,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { condition: Boolean(user.userVolume.buyVolume), label: "model.user.user_buy_volume", value: `${formatAmount(user.userVolume.buyVolume)} €` },
     { condition: Boolean(user.userVolume.sellVolume), label: "model.user.user_sell_volume", value: `${formatAmount(user.userVolume.sellVolume)} €` },
     { condition: user.kycStatus != KycStatus.NA, label: "model.kyc.status", value:  t(`model.kyc.${user.kycStatus.toLowerCase()}`) },
-    { condition: true, label: "model.user.buy_limit", value: limit(user) },
+    { condition: true, label: "model.user.limit", value: limit(user) },
   ];
 
   return (

@@ -131,7 +131,7 @@
         "ref_volume": "Volume de referência",
         "user_buy_volume": "Os seus depósitos",
         "user_sell_volume": "Os seus pagamentos",
-        "buy_limit": "O seu limite",
+        "limit": "O seu limite",
         "per_day": "por dia",
         "per_year": "por ano"
       },

@@ -127,13 +127,14 @@
         "ref_volume": "Ref volume paid",
         "user_buy_volume": "Your investment",
         "user_sell_volume": "Volume paid out",
-        "buy_limit": "Your deposit limit",
+        "buy_limit": "Your limit",
         "per_day": "per day",
         "per_year": "per year"
       },
       "kyc":{
-        "increase": "Increase deposit limit",
-        "request": "Do you want to increase your deposit limit now?",
+        "increase": "Increase limit",
+        "continue": "Continue KYC",
+        "request": "Do you want to increase your limit now?",
         "invest_volume": "How much do you approximately want to invest in total?",
         "volume": "Investment volume",
         "status": "KYC status",

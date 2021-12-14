@@ -139,8 +139,8 @@ const RouteList = ({
             <DataTable>
               {routeData(detailRoute).map((data) => (
                 <CompactRow key={data.label}>
-                  <CompactCell style={{ flex: 1 }}>{t(data.label)}</CompactCell>
-                  <CompactCell style={{ flex: 2 }}>{data.value}</CompactCell>
+                  <CompactCell multiLine style={{ flex: 1 }}>{t(data.label)}</CompactCell>
+                  <CompactCell multiLine style={{ flex: 2 }}>{data.value}</CompactCell>
                 </CompactRow>
               ))}
             </DataTable>

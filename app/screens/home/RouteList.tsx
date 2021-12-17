@@ -17,13 +17,12 @@ import { putBuyRoute, putSellRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import AppStyles from "../../styles/AppStyles";
 import { updateObject } from "../../utils/Utils";
-import Clipboard from "expo-clipboard";
+import ClipboardService from "../../services/ClipboardService";
 import ButtonContainer from "../../components/util/ButtonContainer";
 import { DeviceClass } from "../../utils/Device";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Session } from "../../services/AuthService";
 import withSession from "../../hocs/withSession";
-import { UserRole } from "../../models/User";
 
 interface Props {
   session?: Session;
@@ -152,8 +151,8 @@ const RouteList = ({
                 <DeFiButton
                   onPress={() =>
                     "asset" in detailRoute
-                      ? Clipboard.setString(detailRoute.bankUsage)
-                      : Clipboard.setString(detailRoute.deposit?.address)
+                      ? ClipboardService.copy(detailRoute.bankUsage)
+                      : ClipboardService.copy(detailRoute.deposit?.address)
                   }
                 >
                   {t("asset" in detailRoute ? "model.route.copy_bank_usage" : "model.route.copy_deposit_address")}
@@ -220,7 +219,7 @@ const RouteList = ({
                       <CompactCell style={{ flex: undefined }}>
                         {device.SM ? (
                           <>
-                            <IconButton icon="content-copy" onPress={() => Clipboard.setString(route.bankUsage)} />
+                            <IconButton icon="content-copy" onPress={() => ClipboardService.copy(route.bankUsage)} />
                             <IconButton
                               icon="delete"
                               onPress={() => deleteBuyRoute(route)}
@@ -261,7 +260,7 @@ const RouteList = ({
                       <CompactCell style={{ flex: undefined }}>
                         {device.SM ? (
                           <>
-                            <IconButton icon="content-copy" onPress={() => Clipboard.setString(route.deposit?.address)} />
+                            <IconButton icon="content-copy" onPress={() => ClipboardService.copy(route.deposit?.address)} />
                             <IconButton
                               icon="delete"
                               onPress={() => deleteSellRoute(route)}
@@ -298,11 +297,11 @@ const RouteList = ({
           <SpacerV />
           <View style={AppStyles.containerHorizontal}>
             <Text>{`${t("model.route.iban")}: ${iban}`}</Text>
-            <IconButton icon="content-copy" onPress={() => Clipboard.setString(iban)} style={device.SM ? undefined : AppStyles.mla} size={20} />
+            <IconButton icon="content-copy" onPress={() => ClipboardService.copy(iban)} style={device.SM ? undefined : AppStyles.mla} size={20} />
           </View>
           <View style={AppStyles.containerHorizontal}>
             <Text>{`SWIFT/BIC: ${swift}`}</Text>
-            <IconButton icon="content-copy" onPress={() => Clipboard.setString(swift)} style={device.SM ? undefined : AppStyles.mla} size={20} />
+            <IconButton icon="content-copy" onPress={() => ClipboardService.copy(swift)} style={device.SM ? undefined : AppStyles.mla} size={20} />
           </View>
         </>
       )}

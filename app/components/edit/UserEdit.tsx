@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { Country } from "../../models/Country";
-import { KycStatus, User } from "../../models/User";
+import { User } from "../../models/User";
 import { getCountries, putUser } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import DeFiPicker from "../form/DeFiPicker";

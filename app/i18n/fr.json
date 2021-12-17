@@ -124,6 +124,9 @@
         "mobile_number": "Numéro de téléphone mobile",
         "ref": "Code de référence",
         "used_ref": "Code de référence utilisé",
+        "ref_bonus": "bonus ref",
+        "buy_fee": "Frais d'achat",
+        "sell_fee": "Frais de vente",
         "user_buy_volume": "Votre investissement",
         "user_sell_volume": "Volume déboursé",
         "limit": "Votre limite",
@@ -137,7 +140,7 @@
         "ref_volume": "Volume ref",
         "ref_commission": "Commission de ref",
         "ref_commission_edit": "Modifier la commission de ref",
-        "ref_commission_info": "Gagnez jusqu'à 0,5 % de commission sur chaque achat de la personne que vous avez recommandée. Il vous suffit de partager votre lien ref avec vos amis, votre famille et sur les médias sociaux.\nVous avez également la possibilité de diminuer votre pourcentage de commission en faveur des clients parrainés. Veuillez noter que le pourcentage de commission ne peut être modifié qu'à la baisse, et non à la hausse.",
+        "ref_commission_info": "Gagnez jusqu'à 0,5% de commission sur chaque achat de la personne que vous avez recommandée. Il vous suffit de partager votre lien ref avec vos amis, votre famille et sur les médias sociaux.\nVous avez également la possibilité de diminuer votre pourcentage de commission en faveur des clients parrainés. Veuillez noter que le pourcentage de commission ne peut être modifié qu'à la baisse, et non à la hausse.",
         "ref_commission_hint": "Êtes-vous sûr de vouloir réduire votre commission à {{fee}}%? Cette étape ne peut pas être annulée."
       },
       "kyc":{

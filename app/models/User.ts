@@ -56,6 +56,12 @@ export interface RefData {
   refVolume: number;
 }
 
+export interface Fees {
+  buy: number;
+  refBonus: number;
+  sell: number;
+}
+
 export interface UserVolume {
   buyVolume: number;
   sellVolume: number;
@@ -80,6 +86,7 @@ export interface UserDto extends NewUserDto {
   phone: string;
 
   usedRef: string | null;
+  fees: Fees;
   refData: RefData;
   userVolume: UserVolume;
   status: UserStatus;
@@ -102,6 +109,7 @@ export interface User extends NewUser {
   mobileNumber: string;
 
   usedRef: string;
+  fees: Fees;
   refData: RefData;
   userVolume: UserVolume;
   status: UserStatus;
@@ -135,6 +143,7 @@ export const fromUserDto = (user: UserDto): User => ({
   mail: user.mail ?? "",
   mobileNumber: user.phone,
   usedRef: user.usedRef ?? "",
+  fees: user.fees,
   refData: user.refData,
   userVolume: user.userVolume,
   walletId: user.wallet,
@@ -159,6 +168,7 @@ export const toUserDto = (user: User): UserDto => ({
   mail: toStringDto(user.mail),
   phone: user.mobileNumber,
   usedRef: toStringDto(user.usedRef),
+  fees: user.fees,
   refData: user.refData,
   userVolume: user.userVolume,
   wallet: user.walletId,

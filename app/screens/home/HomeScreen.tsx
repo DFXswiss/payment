@@ -8,13 +8,13 @@ import { SpacerV } from "../../elements/Spacers";
 import { H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
 import { KycState, KycStatus, User, UserRole, UserStatus } from "../../models/User";
-import { getUser, getUserDetail, postKyc } from "../../services/ApiService";
+import { getUserDetail, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
 import AppLayout from "../../components/AppLayout";
 import NotificationService from "../../services/NotificationService";
-import { Button, DataTable, Dialog, FAB, Paragraph, Portal, TextInput } from "react-native-paper";
+import { DataTable, Dialog, FAB, Paragraph, Portal, TextInput } from "react-native-paper";
 import { CompactCell, CompactRow } from "../../elements/Tables";
 import { useDevice } from "../../hooks/useDevice";
 import { DeFiButton } from "../../elements/Buttons";
@@ -25,19 +25,21 @@ import { createRules, join, resolve } from "../../utils/Utils";
 import useAuthGuard from "../../hooks/useAuthGuard";
 import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
-import Clipboard from "expo-clipboard";
+import ClipboardService from "../../services/ClipboardService";
 import { ApiError } from "../../models/ApiDto";
 import { useForm } from "react-hook-form";
 import Validations from "../../utils/Validations";
 import Input from "../../components/form/Input";
 import Form from "../../components/form/Form";
+import IconButton from "../../components/util/IconButton";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import RefFeeEdit from "../../components/edit/RefFeeEdit";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
 const HomeScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const device = useDevice();
-  const BaseUrl = Environment.api.baseUrl;
   const RefUrl = Environment.api.refUrl;
   const [isLoading, setLoading] = useState(true);
   const [user, setUser] = useState<User>();
@@ -49,6 +51,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
   const [isKycRequest, setIsKycRequest] = useState(false);
   const [isKycLoading, setIsKycLoading] = useState(false);
+  const [isRefFeeEdit, setIsRefFeeEdit] = useState(false);
 
   const {
     control,
@@ -68,6 +71,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
     setIsSellRouteEdit(update);
   };
+
   const userEdit = (edit: boolean) => {
     setIsUserEdit(edit);
     if (!edit) {
@@ -75,6 +79,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
       setIsKycRequest(false);
     }
   };
+
   const onUserChanged = (newUser: User) => {
     setUser(newUser);
     setIsUserEdit(false);
@@ -98,7 +103,6 @@ const HomeScreen = ({ session }: { session?: Session }) => {
       .finally(() => setLoading(false));
   };
 
-
   const requestKyc = ({ limit }: { limit?: string }): void => {
     setIsKycLoading(true);
     const limitNumber = limit ? +limit : undefined;
@@ -116,7 +120,21 @@ const HomeScreen = ({ session }: { session?: Session }) => {
       });
   };
 
-  const userDataComplete = () => user?.firstName && user?.lastName && user?.street && user?.houseNumber && user?.zip && user?.location && user?.country && user?.mobileNumber && user?.mail;
+  const onRefFeeChanged = (fee: number): void => {
+    if (user) user.refData.refFee = fee;
+    setIsRefFeeEdit(false);
+  };
+
+  const userDataComplete = () =>
+    user?.firstName &&
+    user?.lastName &&
+    user?.street &&
+    user?.houseNumber &&
+    user?.zip &&
+    user?.location &&
+    user?.country &&
+    user?.mobileNumber &&
+    user?.mail;
 
   const reset = (): void => {
     setLoading(true);
@@ -138,7 +156,10 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                 setSellRoutes(user.sells);
               }
             })
-            .catch((e: ApiError) => e.statusCode != 401 ? NotificationService.error(t("feedback.load_failed")) : undefined) // auto logout
+            .catch((e: ApiError) =>
+              // auto logout
+              e.statusCode != 401 ? NotificationService.error(t("feedback.load_failed")) : undefined
+            )
             .finally(() => {
               if (!cancelled()) {
                 setLoading(false);
@@ -154,10 +175,23 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
   const showButtons = (user && !isLoading && !device.SM) ?? false;
   const fabButtons = [
-    { icon: "content-copy", label: t("model.user.copy_ref"), onPress: () => Clipboard.setString(`${RefUrl}${user?.refData.ref}`), visible: user?.refData?.ref },
     { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true), visible: true },
-    { icon: "account-check", label: t("model.kyc.increase"), onPress: onKyc, visible: user?.status != UserStatus.NA && (user?.kycStatus === KycStatus.NA || user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL || user?.kycStatus === KycStatus.COMPLETED )},
-    { icon: "account-check", label: t("model.kyc.continue"), onPress: continueKyc, visible: user?.status != UserStatus.NA && (user?.kycState === KycState.FAILED)},
+    {
+      icon: "account-check",
+      label: t("model.kyc.increase"),
+      onPress: onKyc,
+      visible:
+        user?.status != UserStatus.NA &&
+        (user?.kycStatus === KycStatus.NA ||
+          user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL ||
+          user?.kycStatus === KycStatus.COMPLETED),
+    },
+    {
+      icon: "account-check",
+      label: t("model.kyc.continue"),
+      onPress: continueKyc,
+      visible: user?.status != UserStatus.NA && user?.kycState === KycState.FAILED,
+    },
     { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true), visible: true },
     { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: true },
   ];
@@ -165,8 +199,8 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   useAuthGuard(session);
 
   const limit = (user: User): string => {
-    if(user.kycStatus != KycStatus.COMPLETED && user.kycStatus != KycStatus.WAIT_VERIFY_MANUAL) {
-      return `${formatAmount(900)} € ${t("model.user.per_day")}`
+    if (user.kycStatus != KycStatus.COMPLETED && user.kycStatus != KycStatus.WAIT_VERIFY_MANUAL) {
+      return `${formatAmount(900)} € ${t("model.user.per_day")}`;
     } else {
       return `${formatAmount(user.depositLimit)} € ${t("model.user.per_year")}`;
     }
@@ -174,22 +208,66 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
   const userData = (user: User) => [
     { condition: Boolean(user.address), label: "model.user.address", value: user.address },
-    { condition: Boolean(user.firstName || user.lastName), label: "model.user.name", value: join([user.firstName, user.lastName], " ") },
-    { condition: Boolean(user.street || user.houseNumber), label: "model.user.home", value: join([user.street, user.houseNumber], " ") },
+    {
+      condition: Boolean(user.firstName || user.lastName),
+      label: "model.user.name",
+      value: join([user.firstName, user.lastName], " "),
+    },
+    {
+      condition: Boolean(user.street || user.houseNumber),
+      label: "model.user.home",
+      value: join([user.street, user.houseNumber], " "),
+    },
     { condition: Boolean(user.zip), label: "model.user.zip", value: user.zip },
     { condition: Boolean(user.location), label: "model.user.location", value: user.location },
     { condition: Boolean(user.country), label: "model.user.country", value: user.country?.name },
     { condition: Boolean(user.mail), label: "model.user.mail", value: user.mail },
     { condition: Boolean(user.mobileNumber), label: "model.user.mobile_number", value: user.mobileNumber },
     { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef },
-    { condition: Boolean(user.refData.ref), label: "model.user.own_ref", value: user.refData.ref },
-    { condition: Boolean(user.refData.refCount), label: "model.user.ref_count", value: user.refData.refCount },
-    { condition: Boolean(user.refData.refCountActive), label: "model.user.ref_count_active", value: user.refData.refCountActive },
-    { condition: Boolean(user.refData.refVolume), label: "model.user.ref_volume", value: `${formatAmount(user.refData.refVolume)} €` },
-    { condition: Boolean(user.userVolume.buyVolume), label: "model.user.user_buy_volume", value: `${formatAmount(user.userVolume.buyVolume)} €` },
-    { condition: Boolean(user.userVolume.sellVolume), label: "model.user.user_sell_volume", value: `${formatAmount(user.userVolume.sellVolume)} €` },
-    { condition: user.kycStatus != KycStatus.NA, label: "model.kyc.status", value:  t(`model.kyc.${user.kycStatus.toLowerCase()}`) },
+    {
+      condition: Boolean(user.userVolume.buyVolume),
+      label: "model.user.user_buy_volume",
+      value: `${formatAmount(user.userVolume.buyVolume)} €`,
+    },
+    {
+      condition: Boolean(user.userVolume.sellVolume),
+      label: "model.user.user_sell_volume",
+      value: `${formatAmount(user.userVolume.sellVolume)} €`,
+    },
+    {
+      condition: user.kycStatus != KycStatus.NA,
+      label: "model.kyc.status",
+      value: t(`model.kyc.${user.kycStatus.toLowerCase()}`),
+    },
     { condition: true, label: "model.user.limit", value: limit(user) },
+  ];
+
+  const refData = (user: User) => [
+    {
+      condition: Boolean(user.refData.ref),
+      label: "model.user.own_ref",
+      value: user.refData.ref,
+      icon: "content-copy",
+      onPress: () => ClipboardService.copy(`${RefUrl}${user?.refData.ref}`),
+    },
+    {
+      condition: Boolean(user.refData.ref),
+      label: "model.user.ref_commission",
+      value: `${user.refData.refFee}%`,
+      icon: [UserRole.BETA, UserRole.Admin].includes(session?.role ?? UserRole.Unknown) ? "chevron-right" : undefined,
+      onPress: () => setIsRefFeeEdit(true),
+    },
+    { condition: Boolean(user.refData.refCount), label: "model.user.ref_count", value: user.refData.refCount },
+    {
+      condition: Boolean(user.refData.refCountActive),
+      label: "model.user.ref_count_active",
+      value: user.refData.refCountActive,
+    },
+    {
+      condition: Boolean(user.refData.refVolume),
+      label: "model.user.ref_volume",
+      value: `${formatAmount(user.refData.refVolume)} €`,
+    },
   ];
 
   return (
@@ -229,9 +307,9 @@ const HomeScreen = ({ session }: { session?: Session }) => {
             )}
           </Dialog.Content>
           <Dialog.Actions>
-            <Button onPress={() => setIsKycRequest(false)} color={Colors.Grey}>
+            <DeFiButton onPress={() => setIsKycRequest(false)} color={Colors.Grey}>
               {t("action.abort")}
-            </Button>
+            </DeFiButton>
             <DeFiButton
               onPress={user?.kycStatus === KycStatus.NA ? requestKyc : handleSubmit(requestKyc)}
               loading={isKycLoading}
@@ -244,6 +322,19 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
       <DeFiModal isVisible={isUserEdit} setIsVisible={userEdit} title={t("model.user.edit")} style={{ width: 500 }}>
         <UserEdit user={user} onUserChanged={onUserChanged} allDataRequired={isSellRouteEdit || isKycRequest} />
+      </DeFiModal>
+
+      <DeFiModal
+        isVisible={isRefFeeEdit}
+        setIsVisible={setIsRefFeeEdit}
+        title={t("model.user.ref_commission_edit")}
+        style={{ width: 400 }}
+      >
+        <RefFeeEdit
+          currentRefFee={user?.refData.refFee ?? 0}
+          onRefFeeChanged={onRefFeeChanged}
+          onCancel={() => setIsRefFeeEdit(false)}
+        />
       </DeFiModal>
 
       <SpacerV height={50} />
@@ -278,16 +369,6 @@ const HomeScreen = ({ session }: { session?: Session }) => {
               <View style={AppStyles.mr10}>
                 {device.SM && (
                   <View style={[AppStyles.mra, AppStyles.containerHorizontal]}>
-                    {user?.refData?.ref && (
-                      <View style={AppStyles.mr10}>
-                        <DeFiButton
-                          mode="contained"
-                          onPress={() => Clipboard.setString(`${RefUrl}${user.refData.ref}`)}
-                        >
-                          {t("model.user.copy_ref")}
-                        </DeFiButton>
-                      </View>
-                    )}
                     {user?.status != UserStatus.NA &&
                       (user?.kycStatus === KycStatus.NA ||
                         user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL ||
@@ -298,17 +379,46 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                           </DeFiButton>
                         </View>
                       )}
-                    {user?.status != UserStatus.NA &&
-                      (user?.kycState === KycState.FAILED) && (
-                        <View style={AppStyles.mr10}>
-                          <DeFiButton mode="contained" onPress={continueKyc}>
-                            {t("model.kyc.continue")}
-                          </DeFiButton>
-                        </View>
-                      )}
+                    {user?.status != UserStatus.NA && user?.kycState === KycState.FAILED && (
+                      <View style={AppStyles.mr10}>
+                        <DeFiButton mode="contained" onPress={continueKyc}>
+                          {t("model.kyc.continue")}
+                        </DeFiButton>
+                      </View>
+                    )}
                   </View>
                 )}
               </View>
+
+              {refData(user).some((d) => d.condition) && (
+                <>
+                  <SpacerV height={50} />
+                  <H2 text={t("model.user.your_ref_data")} />
+                  <SpacerV />
+                  <DataTable>
+                    {refData(user).map(
+                      (d) =>
+                        d.condition && (
+                          <TouchableOpacity onPress={d.onPress} key={d.label} disabled={!d.icon || device.SM}>
+                            <CompactRow>
+                              <CompactCell multiLine style={{ flex: 2 }}>
+                                {t(d.label)}
+                              </CompactCell>
+                              <CompactCell>{d.value}</CompactCell>
+                              <CompactCell style={{ flex: undefined }}>
+                                <IconButton
+                                  icon={d.icon ?? ""}
+                                  onPress={device.SM ? d.onPress : undefined}
+                                  disabled={!d.icon}
+                                />
+                              </CompactCell>
+                            </CompactRow>
+                          </TouchableOpacity>
+                        )
+                    )}
+                  </DataTable>
+                </>
+              )}
             </View>
           )}
 

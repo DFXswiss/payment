@@ -65,13 +65,17 @@ export const putUserLanguage = (language: Language): Promise<void> => {
 export const getRefCode = (): Promise<string> => {
   return fetchFrom<Ref>(RefUrl)
     .then((res) => res.ref);
-}
+};
+
+export const updateRefFee = (fee: number): Promise<void> => {
+  return fetchFrom(`${UserUrl}/ref`, "PUT", { fee });
+};
 
 // --- PAYMENT ROUTES --- //
 export const getBuyRoutes = (): Promise<BuyRoute[]> => {
   return fetchFrom<BuyRouteDto[]>(BuyUrl)
     .then((dtoList) => dtoList.map(dto => fromBuyRouteDto(dto)));
-}
+};
 
 export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
   return fetchFrom<BuyRouteDto>(BuyUrl, "POST", toBuyRouteDto(route))

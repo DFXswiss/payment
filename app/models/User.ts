@@ -50,6 +50,7 @@ export interface NewUser {
 
 export interface RefData {
   ref: string;
+  refFee: number;
   refCount: number;
   refCountActive: number;
   refVolume: number;

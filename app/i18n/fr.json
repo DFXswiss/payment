@@ -23,7 +23,6 @@
       "delete": "Supprimer",
       "upload": "Télécharger",
       "send": "Envoyer"
-
     },
     "feedback": {
       "page_not_found": "Page non trouvée !",
@@ -34,7 +33,8 @@
       "save_successful": "Sauvegarde réussie !",
       "file_error": "Erreur de lecture du fichier !",
       "request_submitted": "Demande soumise !",
-      "request_failed": "Erreur avec la demande !"
+      "request_failed": "Erreur avec la demande !",
+      "copied": "Copié !"
     },
     "validation": {
       "required": "Champ obligatoire",
@@ -123,16 +123,22 @@
         "mail": "Adresse électronique",
         "mobile_number": "Numéro de téléphone mobile",
         "ref": "Code de référence",
-        "copy_ref": "Copie Ref-Link",
         "used_ref": "Code de référence utilisé",
-        "ref_count": "Ref-users",
-        "ref_count_active": "Ref-users actives",
-        "ref_volume": "Ref-volume versé",
         "user_buy_volume": "Votre investissement",
         "user_sell_volume": "Volume déboursé",
         "limit": "Votre limite",
         "per_day": "par jour",
-        "per_year": "par an"
+        "per_year": "par an",
+        "your_ref_data": "Votre referral",
+        "own_ref": "Code ref à distribuer",
+        "copy_ref": "Copier le lien ref",
+        "ref_count": "Utilisateurs ref",
+        "ref_count_active": "Utilisateurs ref actifs",
+        "ref_volume": "Volume ref",
+        "ref_commission": "Commission de ref",
+        "ref_commission_edit": "Modifier la commission de ref",
+        "ref_commission_info": "Gagnez jusqu'à 0,5 % de commission sur chaque achat de la personne que vous avez recommandée. Il vous suffit de partager votre lien ref avec vos amis, votre famille et sur les médias sociaux.\nVous avez également la possibilité de diminuer votre pourcentage de commission en faveur des clients parrainés. Veuillez noter que le pourcentage de commission ne peut être modifié qu'à la baisse, et non à la hausse.",
+        "ref_commission_hint": "Êtes-vous sûr de vouloir réduire votre commission à {{fee}}%? Cette étape ne peut pas être annulée."
       },
       "kyc":{
         "increase": "Augmenter la limite",

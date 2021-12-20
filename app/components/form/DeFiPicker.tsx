@@ -6,12 +6,12 @@ import { ControlProps } from "./Form";
 
 interface Props extends ControlProps {
   items: any[];
-  idProp: string;
-  labelProp: string;
+  idFunc?: (item: any) => any;
+  labelFunc?: (item: any) => string;
 }
 
 // TODO: empty option moves label
-const DeFiPicker = ({ control, name, label, rules, error, disabled, items, idProp, labelProp }: Props) => {
+const DeFiPicker = ({ control, name, label, rules, error, disabled, items, idFunc = (i) => i, labelFunc = (i) => i }: Props) => {
   const [showDropDown, setShowDropDown] = useState(false);
 
   return (
@@ -21,10 +21,10 @@ const DeFiPicker = ({ control, name, label, rules, error, disabled, items, idPro
         <>
           <DropDown
             label={label}
-            value={value && value[idProp]}
-            setValue={(value) => onChange(value ? items.find((i) => i[idProp] == value) : null)}
+            value={value && idFunc(value)}
+            setValue={(value) => onChange(value ? items.find((i) => idFunc(i) == value) : null)}
             list={(rules?.required ? [] : [{ label: " ", value: null as unknown as string }]).concat(
-              items?.map((item) => ({ label: item[labelProp], value: item[idProp] }))
+              items?.map((i) => ({ label: labelFunc(i), value: idFunc(i) }))
             )}
             visible={showDropDown}
             showDropDown={() => setShowDropDown(!disabled)}

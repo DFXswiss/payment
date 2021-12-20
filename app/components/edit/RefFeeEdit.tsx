@@ -15,11 +15,6 @@ import Colors from "../../config/Colors";
 import { StyleSheet, View } from "react-native";
 import AppStyles from "../../styles/AppStyles";
 
-interface FeeItem {
-  label: string;
-  value: number;
-}
-
 const possibleFees = [0.5, 0.25, 0.1];
 
 const RefFeeEdit = ({
@@ -36,15 +31,15 @@ const RefFeeEdit = ({
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<{ fee: FeeItem }>({ defaultValues: { fee: { value: currentRefFee } } });
+  } = useForm<{ fee: number }>({ defaultValues: { fee: currentRefFee } });
   const newFee = useWatch({ control, name: "fee" });
 
   const [isConfirm, setIsConfirm] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState(false);
 
-  const onSubmit = ({ fee }: { fee: FeeItem }) => {
-    if (fee.value != currentRefFee) {
+  const onSubmit = ({ fee }: { fee: number }) => {
+    if (fee != currentRefFee) {
       setIsConfirm(true);
     } else {
       onCancel();
@@ -54,8 +49,8 @@ const RefFeeEdit = ({
   const onConfirm = () => {
     setIsSaving(true);
 
-    updateRefFee(newFee.value)
-      .then(() => onRefFeeChanged(newFee.value))
+    updateRefFee(newFee)
+      .then(() => onRefFeeChanged(newFee))
       .catch(() => setError(true))
       .finally(() => setIsSaving(false));
   };
@@ -66,7 +61,7 @@ const RefFeeEdit = ({
 
   return isConfirm ? (
     <>
-      <Paragraph>{t("model.user.ref_commission_hint", { fee: newFee.value })}</Paragraph>
+      <Paragraph>{t("model.user.ref_commission_hint", { fee: newFee })}</Paragraph>
       <SpacerV />
 
       {error && (
@@ -93,9 +88,8 @@ const RefFeeEdit = ({
       <DeFiPicker
         name="fee"
         label={t("model.user.ref_commission")}
-        items={possibleFees.filter((f) => f <= currentRefFee).map((f) => ({ label: `${f}%`, value: f }))}
-        idProp="value"
-        labelProp="label"
+        items={possibleFees.filter((f) => f <= currentRefFee)}
+        labelFunc={(i) => `${i}%`}
       />
       <SpacerV />
 

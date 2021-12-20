@@ -70,8 +70,8 @@ const SellRouteEdit = ({
         name="fiat"
         label={t("model.route.fiat")}
         items={fiats.filter((f) => f.enable)}
-        idProp="id"
-        labelProp="name"
+        idFunc={(i) => i.id}
+        labelFunc={(i) => i.name}
       />
       <SpacerV />
 

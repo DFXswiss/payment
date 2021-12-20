@@ -102,8 +102,8 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
         name="country"
         label={t("model.user.country")}
         items={countries.filter((c) => c.enable)}
-        idProp="id"
-        labelProp="name"
+        idFunc={(i) => i.id}
+        labelFunc={(i) => i.name}
       />
       <SpacerV />
       <Input name="mail" label={t("model.user.mail")} />

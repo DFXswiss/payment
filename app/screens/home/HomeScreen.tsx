@@ -31,6 +31,7 @@ import { useForm } from "react-hook-form";
 import Validations from "../../utils/Validations";
 import Input from "../../components/form/Input";
 import Form from "../../components/form/Form";
+import ChatBot from "../../components/util/Chatbot";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
@@ -161,8 +162,8 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const fabButtons = [
     { icon: "content-copy", label: t("model.user.copy_ref"), onPress: () => Clipboard.setString(`${RefUrl}${user?.refData.ref}`), visible: user?.refData?.ref },
     { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true), visible: true },
-    { icon: "account-check", label: t("model.kyc.increase"), onPress: onKyc, visible: user?.status != UserStatus.NA && (user?.kycStatus === KycStatus.NA || user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL || user?.kycStatus === KycStatus.COMPLETED )},
-    { icon: "account-check", label: t("model.kyc.continue"), onPress: continueKyc, visible: user?.status != UserStatus.NA && (user?.kycState === KycState.FAILED)},
+    { icon: "account-check", label: t("model.kyc.increase"), onPress: onKyc, visible:  (user?.kycStatus === KycStatus.NA || user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL || user?.kycStatus === KycStatus.COMPLETED )},
+    { icon: "account-check", label: t("model.kyc.continue"), onPress: continueKyc, visible:  (user?.kycState === KycState.FAILED)},
     { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true), visible: true },
     { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: true },
   ];
@@ -223,7 +224,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                   disabled={isKycLoading}
                   onSubmit={handleSubmit(requestKyc)}
                 >
-                  <Input
+                     <Input
                     name="limit"
                     label={t("model.kyc.volume")}
                     type="number"
@@ -293,8 +294,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                         </DeFiButton>
                       </View>
                     )}
-                    {user?.status != UserStatus.NA &&
-                      (user?.kycStatus === KycStatus.NA ||
+                    {(user?.kycStatus === KycStatus.NA ||
                         user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL ||
                         user?.kycStatus === KycStatus.COMPLETED) && (
                         <View style={AppStyles.mr10}>
@@ -303,8 +303,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                           </DeFiButton>
                         </View>
                       )}
-                    {user?.status != UserStatus.NA &&
-                      (user?.kycState === KycState.FAILED) && (
+                    {(user?.kycState === KycState.FAILED) && (
                         <View style={AppStyles.mr10}>
                           <DeFiButton mode="contained" onPress={continueKyc}>
                             {t("model.kyc.continue")}

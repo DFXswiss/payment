@@ -130,7 +130,7 @@
         "ref_count_active": "Aktive Ref-User",
         "ref_volume": "Ref-Volumen",
         "user_buy_volume": "Deine Investition",
-        "user_sell_volume": "Ausgezahltes Volumen",
+        "user_sell_volume": "Verkaufsvolumen",
         "limit": "Dein Limit",
         "per_day": "pro Tag",
         "per_year": "pro Jahr"
@@ -143,6 +143,7 @@
         "volume": "Investitionsvolumen",
         "status": "KYC Status",
         "na": "Kein KYC",
+        "chatbot_title": "Chatbot",
         "chatbot": "In Bearbeitung (Chatbot onboarding)",
         "address": "In Bearbeitung (Invoice upload)",
         "onlineid": "In Bearbeitung (Online Identifikation)",

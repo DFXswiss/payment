@@ -181,7 +181,6 @@ const HomeScreen = ({ session }: { session?: Session }) => {
       label: t("model.kyc.increase"),
       onPress: onKyc,
       visible:
-        user?.status != UserStatus.NA &&
         (user?.kycStatus === KycStatus.NA ||
           user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL ||
           user?.kycStatus === KycStatus.COMPLETED),
@@ -190,7 +189,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
       icon: "account-check",
       label: t("model.kyc.continue"),
       onPress: continueKyc,
-      visible: user?.status != UserStatus.NA && user?.kycState === KycState.FAILED,
+      visible: user?.kycState === KycState.FAILED,
     },
     { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true), visible: true },
     { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: true },
@@ -375,8 +374,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
               <View style={AppStyles.mr10}>
                 {device.SM && (
                   <View style={[AppStyles.mra, AppStyles.containerHorizontal]}>
-                    {user?.status != UserStatus.NA &&
-                      (user?.kycStatus === KycStatus.NA ||
+                    {(user?.kycStatus === KycStatus.NA ||
                         user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL ||
                         user?.kycStatus === KycStatus.COMPLETED) && (
                         <View style={AppStyles.mr10}>
@@ -385,7 +383,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                           </DeFiButton>
                         </View>
                       )}
-                    {user?.status != UserStatus.NA && user?.kycState === KycState.FAILED && (
+                    {user?.kycState === KycState.FAILED && (
                       <View style={AppStyles.mr10}>
                         <DeFiButton mode="contained" onPress={continueKyc}>
                           {t("model.kyc.continue")}

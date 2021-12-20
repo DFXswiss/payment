@@ -23,6 +23,7 @@ import { DeviceClass } from "../../utils/Device";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Session } from "../../services/AuthService";
 import withSession from "../../hocs/withSession";
+import Colors from "../../config/Colors";
 
 interface Props {
   session?: Session;
@@ -277,7 +278,7 @@ const RouteList = ({
               </DataTable>
               
               <SpacerV />
-              <Text style={AppStyles.b}>{t("model.route.dfi_only")}</Text>
+              <Text style={[AppStyles.b, { color: Colors.Yellow }]}>{t("model.route.dfi_only")}</Text>
             </>
           )}
         </>

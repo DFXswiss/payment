@@ -34,7 +34,8 @@
       "save_successful": "Salvar com sucesso!",
       "file_error": "Erro na leitura do ficheiro!",
       "request_submitted": "Pedido apresentado!",
-      "request_failed": "Erro com o pedido!"
+      "request_failed": "Erro com o pedido!",
+      "copied": "Copiado!"
     },
     "validation": {
       "required": "Campo Obrigatório",
@@ -123,17 +124,25 @@
         "mail": "Endereço de e-mail",
         "mobile_number": "Número de telemóvel",
         "ref": "Código de referência",
-        "copy_ref": "Cópia o código de referência",
         "used_ref": "Código de referência usada",
-        "own_ref": "Código de referência para distribuição",
-        "ref_count": "Utilizador de código de referência",
-        "ref_count_active": "Utilizador de código de referência activo",
-        "ref_volume": "Volume de referência",
+        "ref_bonus": "bónus de referência",
+        "buy_fee": "Taxa de compra",
+        "sell_fee": "Taxa de venda",
         "user_buy_volume": "Os seus depósitos",
         "user_sell_volume": "Os seus pagamentos",
         "limit": "O seu limite",
         "per_day": "por dia",
-        "per_year": "por ano"
+        "per_year": "por ano",
+        "your_ref_data": "A sua referência",
+        "own_ref": "Código de referência para distribuição",
+        "copy_ref": "Cópia o código de referência",
+        "ref_count": "Utilizador de código de referência",
+        "ref_count_active": "Utilizador de código de referência activo",
+        "ref_volume": "Volume de referência",
+        "ref_commission": "Comissão de referência",
+        "ref_commission_edit": "Editar a Comissão de Ref",
+        "ref_commission_info": "Ganhe até 0,5% de comissão em cada compra feita por alguém que indicar. Basta partilhar o seu link de referência com os seus amigos, família e meios de comunicação social.\nTem também a opção de baixar a sua percentagem de comissão a favor dos clientes referidos. É favor notar que a percentagem de comissão só pode ser ajustada para baixo, e não para cima.",
+        "ref_commission_hint": "Tem a certeza de que quer reduzir a sua comissão para {{fee}}%? Este passo não pode ser desfeito."
       },
       "kyc":{
         "increase": "Aumentar o limite",

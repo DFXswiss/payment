@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { Country } from "../../models/Country";
-import { User } from "../../models/User";
+import { AccountType, User } from "../../models/User";
 import { getCountries, putUser } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import DeFiPicker from "../form/DeFiPicker";
@@ -13,7 +13,7 @@ import Input from "../form/Input";
 import PhoneNumber from "../form/PhoneNumber";
 import Validations from "../../utils/Validations";
 import NotificationService from "../../services/NotificationService";
-import { Alert } from "../../elements/Texts";
+import { Alert, H3 } from "../../elements/Texts";
 import { useDevice } from "../../hooks/useDevice";
 import { DeFiButton } from "../../elements/Buttons";
 import ButtonContainer from "../util/ButtonContainer";
@@ -33,7 +33,8 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<User>({ defaultValues: user});
+  } = useForm<User>({ defaultValues: user });
+  const accountType = useWatch({ control, name: "accountType" });
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -58,6 +59,7 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
   };
 
   const rules: any = createRules({
+    accountType: Validations.Required,
     firstName: allDataRequired && Validations.Required,
     lastName: allDataRequired && Validations.Required,
     street: allDataRequired && Validations.Required,
@@ -68,6 +70,12 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
     mobileNumber: allDataRequired && Validations.Required,
     mail: [Validations.Mail, allDataRequired && Validations.Required],
     usedRef: Validations.Ref,
+    organizationName: allDataRequired && Validations.Required,
+    organizationStreet: allDataRequired && Validations.Required,
+    organizationHouseNumber: allDataRequired && Validations.Required,
+    organizationLocation: allDataRequired && Validations.Required,
+    organizationZip: allDataRequired && Validations.Required,
+    organizationCountry: allDataRequired && Validations.Required,
   });
 
   return isLoading ? (
@@ -80,6 +88,16 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
           <SpacerV />
         </>
       )}
+      <DeFiPicker
+        name="accountType"
+        label={t("model.user.account_type")}
+        items={Object.values(AccountType)}
+        labelFunc={(i) => t(`model.user.${i.toLowerCase()}`)}
+      />
+      <SpacerV />
+
+      {accountType === AccountType.BUSINESS && <H3 text={t("model.user.personal_info")} />}
+
       <View style={AppStyles.containerHorizontalWrap}>
         <Input name="firstName" label={t("model.user.first_name")} />
         <SpacerH />
@@ -117,6 +135,34 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
       <SpacerV />
       <Input name="usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />
       <SpacerV />
+
+      {accountType === AccountType.BUSINESS && (
+        <>
+          <H3 text={t("model.user.organization_info")} />
+          <Input name="organizationName" label={t("model.user.organization_name")} />
+          <SpacerV />
+          <View style={AppStyles.containerHorizontalWrap}>
+            <Input name="organizationStreet" label={t("model.user.street")} />
+            <SpacerH />
+            <Input name="organizationHouseNumber" label={t("model.user.house_number")} />
+          </View>
+          <SpacerV />
+          <View style={AppStyles.containerHorizontalWrap}>
+            <Input name="organizationZip" label={t("model.user.zip")} />
+            <SpacerH />
+            <Input name="organizationLocation" label={t("model.user.location")} />
+          </View>
+          <SpacerV />
+          <DeFiPicker
+            name="organizationCountry"
+            label={t("model.user.country")}
+            items={countries.filter((c) => c.enable)}
+            idFunc={(i) => i.id}
+            labelFunc={(i) => i.name}
+          />
+          <SpacerV />
+        </>
+      )}
 
       {error && (
         <>

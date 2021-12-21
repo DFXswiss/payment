@@ -34,6 +34,11 @@ export enum KycState {
   REMINDED = "Reminded",
 }
 
+export enum AccountType {
+  PERSONAL = "Personal",
+  BUSINESS = "Business",
+}
+
 export interface NewUserDto {
   address: string;
   signature: string;
@@ -75,6 +80,7 @@ export const toNewUserDto = (user: NewUser): NewUserDto => ({
 });
 
 export interface UserDto extends NewUserDto {
+  accountType: AccountType;
   firstname: string;
   surname: string;
   street: string;
@@ -95,9 +101,17 @@ export interface UserDto extends NewUserDto {
   depositLimit: number;
   language: Language;
   ip: string;
+
+  organizationName: string;
+  organizationStreet: string;
+  organizationHouseNumber: string;
+  organizationLocation: string;
+  organizationZip: string;
+  organizationCountry: Country;
 }
 
 export interface User extends NewUser {
+  accountType: AccountType;
   firstName: string;
   lastName: string;
   street: string;
@@ -118,6 +132,13 @@ export interface User extends NewUser {
   depositLimit: number;
   language: Language;
   ip: string;
+
+  organizationName: string;
+  organizationStreet: string;
+  organizationHouseNumber: string;
+  organizationLocation: string;
+  organizationZip: string;
+  organizationCountry: Country;
 }
 
 export interface UserDetailDto extends UserDto {
@@ -131,6 +152,7 @@ export interface UserDetail extends User {
 }
 
 export const fromUserDto = (user: UserDto): User => ({
+  accountType: user.accountType,
   address: user.address,
   signature: user.signature,
   firstName: user.firstname,
@@ -153,9 +175,16 @@ export const fromUserDto = (user: UserDto): User => ({
   depositLimit: user.depositLimit,
   language: user.language,
   ip: user.ip,
+  organizationName: user.organizationName,
+  organizationStreet: user.organizationStreet,
+  organizationHouseNumber: user.organizationHouseNumber,
+  organizationLocation: user.organizationLocation,
+  organizationZip: user.organizationZip,
+  organizationCountry: user.organizationCountry,
 });
 
 export const toUserDto = (user: User): UserDto => ({
+  accountType: user.accountType,
   address: user.address,
   signature: user.signature,
   firstname: user.firstName,
@@ -178,6 +207,12 @@ export const toUserDto = (user: User): UserDto => ({
   depositLimit: user.depositLimit,
   language: user.language,
   ip: user.ip,
+  organizationName: user.organizationName,
+  organizationStreet: user.organizationStreet,
+  organizationHouseNumber: user.organizationHouseNumber,
+  organizationLocation: user.organizationLocation,
+  organizationZip: user.organizationZip,
+  organizationCountry: user.organizationCountry,
 });
 
 export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
@@ -186,5 +221,4 @@ export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
   sells: dto.sells.map((sell) => fromSellRouteDto(sell)),
 });
 
-const toStringDto = (string: string): string | null =>
-  string === "" ? null : string;
+const toStringDto = (string: string): string | null => (string === "" ? null : string);

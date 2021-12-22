@@ -5,9 +5,9 @@ import DeFiModal from "../../components/util/DeFiModal";
 import Loading from "../../components/util/Loading";
 import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
-import { H2 } from "../../elements/Texts";
+import { H2, H3 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
-import { KycState, KycStatus, User, UserRole, UserStatus } from "../../models/User";
+import { AccountType, KycState, KycStatus, User, UserRole, UserStatus } from "../../models/User";
 import { getUserDetail, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
@@ -134,7 +134,14 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     user?.location &&
     user?.country &&
     user?.mobileNumber &&
-    user?.mail;
+    user?.mail &&
+    (user?.accountType === AccountType.PERSONAL ||
+      (user?.organizationName &&
+        user?.organizationStreet &&
+        user?.organizationHouseNumber &&
+        user?.organizationLocation &&
+        user?.organizationZip &&
+        user?.organizationCountry));
 
   const reset = (): void => {
     setLoading(true);
@@ -181,9 +188,9 @@ const HomeScreen = ({ session }: { session?: Session }) => {
       label: t("model.kyc.increase"),
       onPress: onKyc,
       visible:
-        (user?.kycStatus === KycStatus.NA ||
-          user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL ||
-          user?.kycStatus === KycStatus.COMPLETED),
+        user?.kycStatus === KycStatus.NA ||
+        user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL ||
+        user?.kycStatus === KycStatus.COMPLETED,
     },
     {
       icon: "account-check",
@@ -245,6 +252,22 @@ const HomeScreen = ({ session }: { session?: Session }) => {
       value: t(`model.kyc.${user.kycStatus.toLowerCase()}`),
     },
     { condition: true, label: "model.user.limit", value: limit(user) },
+  ];
+
+  const organizationData = (user: User) => [
+    { condition: Boolean(user.organizationName), label: "model.user.organization_name", value: user.organizationName },
+    {
+      condition: Boolean(user.organizationStreet || user.organizationHouseNumber),
+      label: "model.user.home",
+      value: join([user.organizationStreet, user.organizationHouseNumber], " "),
+    },
+    { condition: Boolean(user.organizationZip), label: "model.user.zip", value: user.organizationZip },
+    { condition: Boolean(user.organizationLocation), label: "model.user.location", value: user.organizationLocation },
+    {
+      condition: Boolean(user.organizationCountry),
+      label: "model.user.country",
+      value: user.organizationCountry?.name,
+    },
   ];
 
   const refData = (user: User) => [
@@ -352,11 +375,31 @@ const HomeScreen = ({ session }: { session?: Session }) => {
             <View>
               <View style={[AppStyles.containerHorizontal]}>
                 <H2 text={t("model.user.your_data")} />
-                <View style={{ marginLeft: "auto" }}>
-                  <DeFiButton mode="contained" onPress={() => setIsUserEdit(true)}>
-                    {t("action.edit")}
-                  </DeFiButton>
-                </View>
+                {device.SM && (
+                  <View style={[AppStyles.mla, AppStyles.containerHorizontal]}>
+                    {(user?.kycStatus === KycStatus.NA ||
+                      user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL ||
+                      user?.kycStatus === KycStatus.COMPLETED) && (
+                      <View style={AppStyles.mr10}>
+                        <DeFiButton mode="contained" onPress={onKyc}>
+                          {t("model.kyc.increase")}
+                        </DeFiButton>
+                      </View>
+                    )}
+                    {user?.kycState === KycState.FAILED && (
+                      <View style={AppStyles.mr10}>
+                        <DeFiButton mode="contained" onPress={continueKyc}>
+                          {t("model.kyc.continue")}
+                        </DeFiButton>
+                      </View>
+                    )}
+                    <View>
+                      <DeFiButton mode="contained" onPress={() => setIsUserEdit(true)}>
+                        {t("action.edit")}
+                      </DeFiButton>
+                    </View>
+                  </View>
+                )}
               </View>
               <SpacerV />
               <DataTable>
@@ -371,28 +414,24 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                 )}
               </DataTable>
               <SpacerV />
-              <View style={AppStyles.mr10}>
-                {device.SM && (
-                  <View style={[AppStyles.mra, AppStyles.containerHorizontal]}>
-                    {(user?.kycStatus === KycStatus.NA ||
-                        user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL ||
-                        user?.kycStatus === KycStatus.COMPLETED) && (
-                        <View style={AppStyles.mr10}>
-                          <DeFiButton mode="contained" onPress={onKyc}>
-                            {t("model.kyc.increase")}
-                          </DeFiButton>
-                        </View>
-                      )}
-                    {user?.kycState === KycState.FAILED && (
-                      <View style={AppStyles.mr10}>
-                        <DeFiButton mode="contained" onPress={continueKyc}>
-                          {t("model.kyc.continue")}
-                        </DeFiButton>
-                      </View>
+
+              {user.accountType === AccountType.BUSINESS && organizationData(user).some((d) => d.condition) && (
+                <>
+                  <H3 text={t("model.user.organization_info")} />
+                  <DataTable>
+                    {organizationData(user).map(
+                      (d) =>
+                        d.condition && (
+                          <CompactRow key={d.label}>
+                            <CompactCell>{t(d.label)}</CompactCell>
+                            <CompactCell style={{ flex: device.SM ? 2 : 1 }}>{d.value}</CompactCell>
+                          </CompactRow>
+                        )
                     )}
-                  </View>
-                )}
-              </View>
+                  </DataTable>
+                  <SpacerV />
+                </>
+              )}
 
               {refData(user).some((d) => d.condition) && (
                 <>

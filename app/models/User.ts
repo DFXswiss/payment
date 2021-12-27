@@ -34,6 +34,13 @@ export enum KycState {
   REMINDED = "Reminded",
 }
 
+export interface ChatBotResponse {
+  document: string;
+  reference: string;
+  sessionUrl: string;
+  version: string;
+}
+
 export interface NewUserDto {
   address: string;
   signature: string;
@@ -87,6 +94,7 @@ export interface UserDto extends NewUserDto {
   depositLimit: number;
   language: Language;
   ip: string;
+  chatBotResponse: ChatBotResponse;
 }
 
 export interface User extends NewUser {
@@ -109,6 +117,7 @@ export interface User extends NewUser {
   depositLimit: number;
   language: Language;
   ip: string;
+  chatBotResponse: ChatBotResponse;
 }
 
 export interface UserDetailDto extends UserDto {
@@ -143,6 +152,7 @@ export const fromUserDto = (user: UserDto): User => ({
   depositLimit: user.depositLimit,
   language: user.language,
   ip: user.ip,
+  chatBotResponse: user.chatBotResponse,
 });
 
 export const toUserDto = (user: User): UserDto => ({
@@ -167,6 +177,7 @@ export const toUserDto = (user: User): UserDto => ({
   depositLimit: user.depositLimit,
   language: user.language,
   ip: user.ip,
+  chatBotResponse: user.chatBotResponse,
 });
 
 export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({

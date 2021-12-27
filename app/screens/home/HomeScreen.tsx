@@ -32,6 +32,8 @@ import Validations from "../../utils/Validations";
 import Input from "../../components/form/Input";
 import Form from "../../components/form/Form";
 import ChatBot from "../../components/util/Chatbot";
+import { navigate } from "../../utils/NavigationHelper";
+import Routes from "../../config/Routes";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
@@ -90,28 +92,39 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   };
 
   const continueKyc = () => {
-    
     setLoading(true);
     postKyc()
-      .then(() => {
-        NotificationService.success(t("feedback.request_submitted"));
-        getUserDetail()
-        .then((user) => {
-          setUser(user);   
-        })
-        .catch(() => NotificationService.error(t("feedback.load_failed")))
-        .finally(() => setLoading(false));
+      .then((response) => {
+        if (user?.kycStatus == KycStatus.NA || user?.kycStatus == KycStatus.WAIT_CHAT_BOT) {
+          user.kycStatus = KycStatus.WAIT_CHAT_BOT;
+          if(!(typeof response == "boolean"))  
+          {
+            navigate(Routes.ChatBot,{url:response.sessionUrl});
+          }else{
+            NotificationService.error(t("feedback.load_failed"))
+          }
+        }
       })
+      .catch(() => NotificationService.error(t("feedback.request_failed")))
+      .finally(() => {
+        setIsKycRequest(false);
+        setIsKycLoading(false);
+      });
   };
-
 
   const requestKyc = ({ limit }: { limit?: string }): void => {
     setIsKycLoading(true);
     const limitNumber = limit ? +limit : undefined;
     postKyc(limitNumber)
-      .then(() => {
-        if (user?.kycStatus == KycStatus.NA) {
+      .then((response) => {
+        if (user?.kycStatus == KycStatus.NA || user?.kycStatus == KycStatus.WAIT_CHAT_BOT) {
           user.kycStatus = KycStatus.WAIT_CHAT_BOT;
+          if(!(typeof response == "boolean"))  
+          {
+            navigate(Routes.ChatBot,{url:response.sessionUrl});
+          }else{
+            NotificationService.error(t("feedback.load_failed"))
+          }
         }
         NotificationService.success(t("feedback.request_submitted"));
       })
@@ -163,7 +176,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { icon: "content-copy", label: t("model.user.copy_ref"), onPress: () => Clipboard.setString(`${RefUrl}${user?.refData.ref}`), visible: user?.refData?.ref },
     { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true), visible: true },
     { icon: "account-check", label: t("model.kyc.increase"), onPress: onKyc, visible:  (user?.kycStatus === KycStatus.NA || user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL || user?.kycStatus === KycStatus.COMPLETED )},
-    { icon: "account-check", label: t("model.kyc.continue"), onPress: continueKyc, visible:  (user?.kycState === KycState.FAILED)},
+    { icon: "account-check", label: t("model.kyc.continue"), onPress: continueKyc, visible:  (user?.kycStatus === KycStatus.WAIT_CHAT_BOT)},
     { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true), visible: true },
     { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: true },
   ];
@@ -303,7 +316,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                           </DeFiButton>
                         </View>
                       )}
-                    {(user?.kycState === KycState.FAILED) && (
+                    {(user?.kycStatus === KycStatus.WAIT_CHAT_BOT) && (
                         <View style={AppStyles.mr10}>
                           <DeFiButton mode="contained" onPress={continueKyc}>
                             {t("model.kyc.continue")}

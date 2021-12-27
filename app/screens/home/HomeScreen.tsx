@@ -7,7 +7,7 @@ import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
 import { H2, H3 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
-import { AccountType, KycState, KycStatus, User, UserRole, UserStatus } from "../../models/User";
+import { AccountType, KycStatus, User, UserRole } from "../../models/User";
 import { getUserDetail, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";

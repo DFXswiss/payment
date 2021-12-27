@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { ScaledSize, Dimensions } from "react-native";
-import Sizes from "../../config/Sizes";
 
 // use react-native-webview on native?
 const ChatBot = React.memo(({ src, maxWidth }: { src: string; maxWidth: number }) => {

@@ -18,6 +18,7 @@ import { useDevice } from "./hooks/useDevice";
 import NotificationService, { Level, Notification } from "./services/NotificationService";
 import AppStyles from "./styles/AppStyles";
 import AdminScreen from "./screens/AdminScreen";
+import ChatBotScreen from "./screens/ChatBotScreen";
 import CfpScreen from "./screens/CfpScreen";
 import Colors from "./config/Colors";
 
@@ -50,6 +51,7 @@ const Main = () => {
         [Routes.Gtc]: "legal",
         [Routes.Cfp]: "cfp",
         [Routes.Admin]: "admin",
+        [Routes.ChatBot]: "chatbot",
         [Routes.NotFound]: "*",
       },
     },
@@ -61,6 +63,7 @@ const Main = () => {
     { route: Routes.Gtc, screen: GtcScreen },
     { route: Routes.Cfp, screen: CfpScreen },
     { route: Routes.Admin, screen: AdminScreen },
+    {route: Routes.ChatBot, screen: ChatBotScreen},
     { route: Routes.NotFound, screen: NotFoundScreen },
   ];
 

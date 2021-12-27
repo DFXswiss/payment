@@ -7,7 +7,7 @@ import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
 import { H2, H3 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
-import { AccountType, KycState, KycStatus, User, UserRole, UserStatus } from "../../models/User";
+import { AccountType, KycStatus, User, UserRole } from "../../models/User";
 import { getUserDetail, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
@@ -31,6 +31,8 @@ import { useForm } from "react-hook-form";
 import Validations from "../../utils/Validations";
 import Input from "../../components/form/Input";
 import Form from "../../components/form/Form";
+import { navigate } from "../../utils/NavigationHelper";
+import Routes from "../../config/Routes";
 import IconButton from "../../components/util/IconButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import RefFeeEdit from "../../components/edit/RefFeeEdit";
@@ -96,20 +98,37 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const continueKyc = () => {
     setLoading(true);
     postKyc()
-      .then(() => NotificationService.success(t("feedback.request_submitted")))
-      .then(() => getUserDetail())
-      .then(setUser)
-      .catch(() => NotificationService.error(t("feedback.load_failed")))
-      .finally(() => setLoading(false));
+      .then((response) => {
+        if (user?.kycStatus == KycStatus.NA || user?.kycStatus == KycStatus.WAIT_CHAT_BOT) {
+          user.kycStatus = KycStatus.WAIT_CHAT_BOT;
+          if(!(typeof response == "boolean"))  
+          {
+            navigate(Routes.ChatBot,{url:response.sessionUrl});
+          }else{
+            NotificationService.error(t("feedback.load_failed"))
+          }
+        }
+      })
+      .catch(() => NotificationService.error(t("feedback.request_failed")))
+      .finally(() => {
+        setIsKycRequest(false);
+        setIsKycLoading(false);
+      });
   };
 
   const requestKyc = ({ limit }: { limit?: string }): void => {
     setIsKycLoading(true);
     const limitNumber = limit ? +limit : undefined;
     postKyc(limitNumber)
-      .then(() => {
-        if (user?.kycStatus == KycStatus.NA) {
+      .then((response) => {
+        if (user?.kycStatus == KycStatus.NA || user?.kycStatus == KycStatus.WAIT_CHAT_BOT) {
           user.kycStatus = KycStatus.WAIT_CHAT_BOT;
+          if(!(typeof response == "boolean"))  
+          {
+            navigate(Routes.ChatBot,{url:response.sessionUrl});
+          }else{
+            NotificationService.error(t("feedback.load_failed"))
+          }
         }
         NotificationService.success(t("feedback.request_submitted"));
       })
@@ -183,21 +202,8 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const showButtons = (user && !isLoading && !device.SM) ?? false;
   const fabButtons = [
     { icon: "account-edit", label: t("model.user.data"), onPress: () => setIsUserEdit(true), visible: true },
-    {
-      icon: "account-check",
-      label: t("model.kyc.increase"),
-      onPress: onKyc,
-      visible:
-        user?.kycStatus === KycStatus.NA ||
-        user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL ||
-        user?.kycStatus === KycStatus.COMPLETED,
-    },
-    {
-      icon: "account-check",
-      label: t("model.kyc.continue"),
-      onPress: continueKyc,
-      visible: user?.kycState === KycState.FAILED,
-    },
+    { icon: "account-check", label: t("model.kyc.increase"), onPress: onKyc, visible:  (user?.kycStatus === KycStatus.NA || user?.kycStatus === KycStatus.WAIT_VERIFY_MANUAL || user?.kycStatus === KycStatus.COMPLETED )},
+    { icon: "account-check", label: t("model.kyc.continue"), onPress: continueKyc, visible:  (user?.kycStatus === KycStatus.WAIT_CHAT_BOT || user?.kycStatus === KycStatus.WAIT_VERIFY_VIDEO)},
     { icon: "plus", label: t("model.route.buy"), onPress: () => setIsBuyRouteEdit(true), visible: true },
     { icon: "plus", label: t("model.route.sell"), onPress: () => sellRouteEdit(true), visible: true },
   ];
@@ -324,7 +330,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                   disabled={isKycLoading}
                   onSubmit={handleSubmit(requestKyc)}
                 >
-                  <Input
+                     <Input
                     name="limit"
                     label={t("model.kyc.volume")}
                     type="number"
@@ -386,7 +392,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                         </DeFiButton>
                       </View>
                     )}
-                    {user?.kycState === KycState.FAILED && (
+                    {(user?.kycStatus === KycStatus.WAIT_CHAT_BOT || user?.kycStatus === KycStatus.WAIT_VERIFY_VIDEO) && (
                       <View style={AppStyles.mr10}>
                         <DeFiButton mode="contained" onPress={continueKyc}>
                           {t("model.kyc.continue")}

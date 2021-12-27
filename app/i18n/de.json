@@ -158,6 +158,7 @@
         "volume": "Investitionsvolumen",
         "status": "KYC Status",
         "na": "Kein KYC",
+        "chatbot_title": "Chatbot",
         "chatbot": "In Bearbeitung (Chatbot onboarding)",
         "address": "In Bearbeitung (Invoice upload)",
         "onlineid": "In Bearbeitung (Online Identifikation)",

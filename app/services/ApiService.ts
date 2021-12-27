@@ -89,6 +89,10 @@ export const getRefCode = (): Promise<string> => {
   return fetchFrom<Ref>(RefUrl).then((res) => res.ref);
 };
 
+export const updateRefFee = (fee: number): Promise<void> => {
+  return fetchFrom(`${UserUrl}/ref`, "PUT", { fee });
+};
+
 // --- PAYMENT ROUTES --- //
 export const getBuyRoutes = (): Promise<BuyRoute[]> => {
   return fetchFrom<BuyRouteDto[]>(BuyUrl).then((dtoList) =>

@@ -76,8 +76,8 @@ const BuyRouteEdit = ({
         name="asset"
         label={t("model.route.asset")}
         items={assets.filter((a) => a.buyable)}
-        idProp="id"
-        labelProp="name"
+        idFunc={(i) => i.id}
+        labelFunc={(i) => i.name}
       />
       {showAssetWarning() && (
         <>

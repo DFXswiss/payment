@@ -41,6 +41,11 @@ export interface ChatBotResponse {
   version: string;
 }
 
+export enum AccountType {
+  PERSONAL = "Personal",
+  BUSINESS = "Business",
+}
+
 export interface NewUserDto {
   address: string;
   signature: string;
@@ -57,9 +62,16 @@ export interface NewUser {
 
 export interface RefData {
   ref: string;
+  refFee: number;
   refCount: number;
   refCountActive: number;
   refVolume: number;
+}
+
+export interface Fees {
+  buy: number;
+  refBonus: number;
+  sell: number;
 }
 
 export interface UserVolume {
@@ -75,6 +87,7 @@ export const toNewUserDto = (user: NewUser): NewUserDto => ({
 });
 
 export interface UserDto extends NewUserDto {
+  accountType: AccountType;
   firstname: string;
   surname: string;
   street: string;
@@ -86,6 +99,7 @@ export interface UserDto extends NewUserDto {
   phone: string;
 
   usedRef: string | null;
+  fees: Fees;
   refData: RefData;
   userVolume: UserVolume;
   status: UserStatus;
@@ -95,9 +109,16 @@ export interface UserDto extends NewUserDto {
   language: Language;
   ip: string;
   chatBotResponse: ChatBotResponse;
+  organizationName: string;
+  organizationStreet: string;
+  organizationHouseNumber: string;
+  organizationLocation: string;
+  organizationZip: string;
+  organizationCountry: Country;
 }
 
 export interface User extends NewUser {
+  accountType: AccountType;
   firstName: string;
   lastName: string;
   street: string;
@@ -107,8 +128,8 @@ export interface User extends NewUser {
   country: Country;
   mail: string;
   mobileNumber: string;
-
   usedRef: string;
+  fees: Fees;
   refData: RefData;
   userVolume: UserVolume;
   status: UserStatus;
@@ -118,6 +139,12 @@ export interface User extends NewUser {
   language: Language;
   ip: string;
   chatBotResponse: ChatBotResponse;
+  organizationName: string;
+  organizationStreet: string;
+  organizationHouseNumber: string;
+  organizationLocation: string;
+  organizationZip: string;
+  organizationCountry: Country;
 }
 
 export interface UserDetailDto extends UserDto {
@@ -131,6 +158,7 @@ export interface UserDetail extends User {
 }
 
 export const fromUserDto = (user: UserDto): User => ({
+  accountType: user.accountType,
   address: user.address,
   signature: user.signature,
   firstName: user.firstname,
@@ -143,6 +171,7 @@ export const fromUserDto = (user: UserDto): User => ({
   mail: user.mail ?? "",
   mobileNumber: user.phone,
   usedRef: user.usedRef ?? "",
+  fees: user.fees,
   refData: user.refData,
   userVolume: user.userVolume,
   walletId: user.wallet,
@@ -153,9 +182,16 @@ export const fromUserDto = (user: UserDto): User => ({
   language: user.language,
   ip: user.ip,
   chatBotResponse: user.chatBotResponse,
+  organizationName: user.organizationName,
+  organizationStreet: user.organizationStreet,
+  organizationHouseNumber: user.organizationHouseNumber,
+  organizationLocation: user.organizationLocation,
+  organizationZip: user.organizationZip,
+  organizationCountry: user.organizationCountry,
 });
 
 export const toUserDto = (user: User): UserDto => ({
+  accountType: user.accountType,
   address: user.address,
   signature: user.signature,
   firstname: user.firstName,
@@ -168,6 +204,7 @@ export const toUserDto = (user: User): UserDto => ({
   mail: toStringDto(user.mail),
   phone: user.mobileNumber,
   usedRef: toStringDto(user.usedRef),
+  fees: user.fees,
   refData: user.refData,
   userVolume: user.userVolume,
   wallet: user.walletId,
@@ -178,6 +215,12 @@ export const toUserDto = (user: User): UserDto => ({
   language: user.language,
   ip: user.ip,
   chatBotResponse: user.chatBotResponse,
+  organizationName: user.organizationName,
+  organizationStreet: user.organizationStreet,
+  organizationHouseNumber: user.organizationHouseNumber,
+  organizationLocation: user.organizationLocation,
+  organizationZip: user.organizationZip,
+  organizationCountry: user.organizationCountry,
 });
 
 export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
@@ -186,5 +229,4 @@ export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
   sells: dto.sells.map((sell) => fromSellRouteDto(sell)),
 });
 
-const toStringDto = (string: string): string | null =>
-  string === "" ? null : string;
+const toStringDto = (string: string): string | null => (string === "" ? null : string);

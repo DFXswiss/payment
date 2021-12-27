@@ -13,7 +13,7 @@ export interface ControlProps {
 interface Props {
   children: ReactNode;
   control: Control<any>;
-  rules: any;
+  rules?: any;
   errors: any;
   disabled?: boolean;
   onSubmit?: () => void;
@@ -41,7 +41,7 @@ const Form = ({ children, control, rules, errors, disabled = false, onSubmit }: 
         ...props,
         ref: element.ref,
         control: control,
-        rules: rules[element.props.name],
+        rules: rules ? rules[element.props.name] : undefined,
         error: errors[element.props.name],
         disabled: element.props.disabled || disabled,
         onSubmit: onSubmit,

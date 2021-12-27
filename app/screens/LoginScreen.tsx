@@ -13,7 +13,7 @@ import AppStyles from "../styles/AppStyles";
 import Input from "../components/form/Input";
 import AppLayout from "../components/AppLayout";
 import IconButton from "../components/util/IconButton";
-import Clipboard from "expo-clipboard";
+import ClipboardService from "../services/ClipboardService";
 import Validations from "../utils/Validations";
 import { Text } from "react-native-paper";
 import SettingsService from "../services/SettingsService";
@@ -182,7 +182,7 @@ const LoginScreen = () => {
                       icon={signCommandCopied ? "check" : "content-copy"}
                       color={signCommandCopied ? Colors.Success : Colors.Grey}
                       onPress={() => {
-                        Clipboard.setString(signingCommand(address));
+                        ClipboardService.copy(signingCommand(address));
                         setTimeout(() => setSignCommandCopied(true), 200);
                         setTimeout(() => setSignCommandCopied(false), 2200);
                       }}

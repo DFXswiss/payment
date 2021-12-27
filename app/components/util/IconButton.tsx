@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, TextStyle, View } from "react-native";
 import { IconButton as PaperIconButton } from "react-native-paper";
 import Colors from "../../config/Colors";
-import AppStyles from "../../styles/AppStyles";
+import AppStyles, { DefaultCursor } from "../../styles/AppStyles";
 import Loading from "./Loading";
 
 const IconButton = ({
@@ -33,7 +33,7 @@ const IconButton = ({
       color={color}
       onPress={onPress}
       disabled={disabled || isLoading}
-      style={isLoading && AppStyles.hidden}
+      style={[disabled && styles.disabled, isLoading && AppStyles.hidden]}
       size={size}
     ></PaperIconButton>
   </View>
@@ -50,6 +50,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  disabled: {
+    ...DefaultCursor
+  }
 });
 
 export default IconButton;

@@ -1,10 +1,11 @@
 import React, { ReactNode } from "react";
-import { StyleSheet, StyleProp, TextStyle } from "react-native";
-import { DataTable } from "react-native-paper";
+import { StyleSheet, StyleProp, TextStyle, View } from "react-native";
+import { DataTable, Text } from "react-native-paper";
 import Colors from "../config/Colors";
 import { DefaultCursor } from "../styles/AppStyles";
 
 interface Props {
+  multiLine?: boolean;
   children: ReactNode;
   style?: StyleProp<TextStyle>;
 }
@@ -27,11 +28,16 @@ export const CompactRow = ({ children, style, ...props }: Props) => (
   </DataTable.Row>
 );
 
-export const CompactCell = ({ children, style, ...props }: Props) => (
-  <DataTable.Cell style={[styles.cell, style]} {...props}>
-    {children}
-  </DataTable.Cell>
-);
+export const CompactCell = ({ multiLine = false, children, style, ...props }: Props) =>
+  multiLine ? (
+    <View style={[styles.multiLineCell, style]}>
+      <Text>{children}</Text>
+    </View>
+  ) : (
+    <DataTable.Cell style={[styles.cell, style]} {...props}>
+      {children}
+    </DataTable.Cell>
+  );
 
 const styles = StyleSheet.create({
   header: {
@@ -47,4 +53,8 @@ const styles = StyleSheet.create({
     ...DefaultCursor,
   },
   cell: DefaultCursor,
+  multiLineCell: {
+    justifyContent: "center",
+    marginVertical: 3,
+  },
 });

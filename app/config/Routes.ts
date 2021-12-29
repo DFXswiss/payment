@@ -1,4 +1,4 @@
-const PageTitle = "DeFi Exchange";
+const PageTitle = "DFX";
 
 export default {
   Home: `${PageTitle}: Home`,
@@ -7,6 +7,6 @@ export default {
   Gtc: `${PageTitle}: Legal`,
   Cfp: `${PageTitle}: CFPs`,
   Admin: `${PageTitle}: Admin`,
-  ChatBot: `${PageTitle}: Chatbot`,
+  ChatBot: `${PageTitle}: ChatBot`,
   NotFound: `${PageTitle}: NotFound`,
 };

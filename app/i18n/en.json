@@ -149,6 +149,7 @@
       "kyc":{
         "increase": "Increase limit",
         "continue": "Continue KYC",
+        "leave": "Leave",
         "request": "Do you want to increase your limit now?",
         "invest_volume": "How much do you approximately want to invest in total?",
         "volume": "Investment volume",

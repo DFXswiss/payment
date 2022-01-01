@@ -7,7 +7,7 @@ import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
 import { H2, H3 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
-import { AccountType, KycState, KycStatus, User, UserRole, UserStatus } from "../../models/User";
+import { AccountType, KycState, KycStatus, User } from "../../models/User";
 import { getUserDetail, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
@@ -282,7 +282,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
       condition: Boolean(user.refData.ref),
       label: "model.user.ref_commission",
       value: `${user.refData.refFee}%`,
-      icon: [UserRole.BETA, UserRole.Admin].includes(session?.role ?? UserRole.Unknown) ? "chevron-right" : undefined,
+      icon: "chevron-right",
       onPress: () => setIsRefFeeEdit(true),
     },
     { condition: Boolean(user.refData.refCount), label: "model.user.ref_count", value: user.refData.refCount },

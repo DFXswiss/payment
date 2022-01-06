@@ -11,6 +11,7 @@ import Routes from "../config/Routes";
 import ButtonContainer from "../components/util/ButtonContainer";
 import { DeFiButton } from "../elements/Buttons";
 import { useTranslation } from "react-i18next";
+import { StyleSheet, View } from "react-native";
 
 const ChatBotScreen = ({ session }: { session?: Session }) => {
   const nav = useNavigation();
@@ -31,15 +32,25 @@ const ChatBotScreen = ({ session }: { session?: Session }) => {
   return (
     <AppLayout>
       <SpacerV height={20} />
-      <Iframe src={url} />
-      <SpacerV height={20} />
-      <ButtonContainer>
-        <DeFiButton mode="contained" onPress={() => nav.navigate(Routes.Home)}>
-          {t("model.kyc.leave")}
-        </DeFiButton>
-      </ButtonContainer>
+      <View style={styles.container}>
+        <Iframe src={url} />
+        <SpacerV height={20} />
+        <ButtonContainer>
+          <DeFiButton mode="contained" onPress={() => nav.navigate(Routes.Home)}>
+            {t("model.kyc.leave")}
+          </DeFiButton>
+        </ButtonContainer>
+      </View>
     </AppLayout>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "column",
+    justifyContent: "space-between",
+    flex: 1,
+  },
+});
 
 export default withSession(ChatBotScreen);

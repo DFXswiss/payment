@@ -29,7 +29,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
   useAuthGuard(session);
 
   useEffect(() => {
-    getCfpResults("2111")
+    getCfpResults("2201")
       .then(setCfpResults)
       .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));

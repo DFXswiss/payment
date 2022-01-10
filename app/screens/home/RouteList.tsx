@@ -13,10 +13,10 @@ import { H2, H3 } from "../../elements/Texts";
 import { useDevice } from "../../hooks/useDevice";
 import { BuyRoute } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import { putBuyRoute, putSellRoute } from "../../services/ApiService";
+import { createHistoryCsv, putBuyRoute, putSellRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import AppStyles from "../../styles/AppStyles";
-import { updateObject } from "../../utils/Utils";
+import { openUrl, updateObject } from "../../utils/Utils";
 import ClipboardService from "../../services/ClipboardService";
 import ButtonContainer from "../../components/util/ButtonContainer";
 import { DeviceClass } from "../../utils/Device";
@@ -24,6 +24,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Session } from "../../services/AuthService";
 import withSession from "../../hocs/withSession";
 import Colors from "../../config/Colors";
+import { Environment } from "../../env/Environment";
+import { ApiError } from "../../models/ApiDto";
+import { UserRole } from "../../models/User";
 
 interface Props {
   session?: Session;
@@ -82,6 +85,7 @@ const RouteList = ({
 
   const [isBuyLoading, setIsBuyLoading] = useState<{ [id: string]: boolean }>({});
   const [isSellLoading, setIsSellLoading] = useState<{ [id: string]: boolean }>({});
+  const [isHistoryLoading, setIsHistoryLoading] = useState(false);
   const [detailRoute, setDetailRoute] = useState<SellRoute | BuyRoute | undefined>(undefined);
 
   const activeBuyRoutes = buyRoutes?.filter((r) => r.active);
@@ -118,6 +122,16 @@ const RouteList = ({
       .then(() => (route.active = false))
       .catch(() => NotificationService.error(t("feedback.delete_failed")))
       .finally(() => setIsSellLoading((obj) => updateObject(obj, { [route.id]: false })));
+  };
+
+  const onExportHistory = () => {
+    setIsHistoryLoading(true);
+    createHistoryCsv()
+      .then((fileKey) => openUrl(`${Environment.api.baseUrl}/transaction/csv?key=${fileKey}`))
+      .catch((error: ApiError) =>
+        NotificationService.error(t(error.statusCode === 404 ? "model.route.no_tx" : "feedback.load_failed"))
+      )
+      .finally(() => setIsHistoryLoading(false));
   };
 
   return (
@@ -311,6 +325,17 @@ const RouteList = ({
 
               <SpacerV />
               <Text style={[AppStyles.b, { color: Colors.Yellow }]}>{t("model.route.dfi_only")}</Text>
+            </>
+          )}
+
+          {[UserRole.Admin, UserRole.BETA].includes(session?.role ?? UserRole.Unknown) && (
+            <>
+              <SpacerV height={20} />
+              <ButtonContainer>
+                <DeFiButton mode="contained" onPress={onExportHistory} loading={isHistoryLoading}>
+                  {t("model.route.history")}
+                </DeFiButton>
+              </ButtonContainer>
             </>
           )}
         </>

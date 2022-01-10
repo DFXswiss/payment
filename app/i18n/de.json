@@ -125,6 +125,7 @@
         "location": "Ort",
         "country": "Land",
         "mail": "E-Mail Adresse",
+        "add_mail": "E-Mail Adresse hinzufügen",
         "mobile_number": "Handynummer",
         "ref": "Referral-Code",
         "used_ref": "Verwendeter Ref-Code",
@@ -151,8 +152,6 @@
         "ref_commission_hint": "Bist du sicher, dass du deine Provision auf {{fee}}% verkleinern möchtest? Dieser Schritt kann nicht mehr rückgängig gemacht werden."
       },
       "kyc":{
-        "increase": "Limit erhöhen",
-        "continue": "KYC fortsetzen",
         "leave": "Verlassen",
         "request": "Möchtest du dein Limit jetzt erhöhen?",
         "invest_volume": "Wie viel möchtest du total ungefähr investieren?",

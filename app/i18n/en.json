@@ -121,6 +121,7 @@
         "location": "Location",
         "country": "Country",
         "mail": "E-mail address",
+        "add_mail": "Add e-mail address",
         "mobile_number": "Mobile number",
         "ref": "Referral code",
         "used_ref": "Ref code used",
@@ -147,8 +148,6 @@
         "ref_commission_hint": "Are you sure you want to reduce your commission to {{fee}}%? This step cannot be undone."
       },
       "kyc":{
-        "increase": "Increase limit",
-        "continue": "Continue KYC",
         "leave": "Leave",
         "request": "Do you want to increase your limit now?",
         "invest_volume": "How much do you approximately want to invest in total?",

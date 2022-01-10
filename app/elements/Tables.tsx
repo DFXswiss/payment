@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   },
   cell: DefaultCursor,
   multiLineCell: {
+    flex: 1,
     justifyContent: "center",
     marginVertical: 3,
   },

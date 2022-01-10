@@ -125,6 +125,7 @@
         "location": "Localização",
         "country": "País",
         "mail": "Endereço de e-mail",
+        "add_mail": "Adicionar endereço de e-mail",
         "mobile_number": "Número de telemóvel",
         "ref": "Código de referência",
         "used_ref": "Código de referência usada",
@@ -151,8 +152,6 @@
         "ref_commission_hint": "Tem a certeza de que quer reduzir a sua comissão para {{fee}}%? Este passo não pode ser desfeito."
       },
       "kyc":{
-        "increase": "Aumentar o limite",
-        "continue": "Continuar KYC",
         "leave":"Sair",
         "request": "Quer aumentar o seu limite?",
         "invest_volume": "Quanto é que quer investir no total?",

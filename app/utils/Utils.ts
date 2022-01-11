@@ -15,10 +15,12 @@ export const createRules = (rules: any): any => {
   return rules;
 };
 
-export const openUrl = (url: string) => {
-  if(Platform.OS == 'web'){
-    window.open(url, '_blank');
+export const openUrl = (url: string): boolean => {
+  if (Platform.OS == "web") {
+    const newWindow = window.open(url, "_blank");
+    return newWindow != null && !newWindow.closed && typeof newWindow.closed != "undefined";
   } else {
     Linking.openURL(url);
+    return true;
   }
-}
+};

@@ -121,6 +121,7 @@
         "location": "Location",
         "country": "Country",
         "mail": "E-mail address",
+        "add_mail": "Add e-mail address",
         "mobile_number": "Mobile number",
         "ref": "Referral code",
         "used_ref": "Ref code used",
@@ -147,8 +148,7 @@
         "ref_commission_hint": "Are you sure you want to reduce your commission to {{fee}}%? This step cannot be undone."
       },
       "kyc":{
-        "increase": "Increase limit",
-        "continue": "Continue KYC",
+        "leave": "Leave",
         "request": "Do you want to increase your limit now?",
         "invest_volume": "How much do you approximately want to invest in total?",
         "volume": "Investment volume",
@@ -179,8 +179,10 @@
         "deposit_address": "Deposit address",
         "copy_deposit_address": "Copy deposit address",
         "conflict": "The route already exists!",
-        "exchange_rate_warning": "Attention, we buy this asset on DEX and cannot guarantee an exchange rate! Prices on DEX can be significantly lower or higher than on other exchanges, which can also have a negative impact on the exchange rate. DFX is already working on an improved procedure.",
-        "dfi_only": "Attention, please send only DFI UTXO to your deposit addresses. Tokens (dBTC, dETH, ...) are currently not processed and not returned!"
+        "exchange_rate_warning": "Attention, we buy this asset on DEX and cannot guarantee an exchange rate! Prices on DEX can be significantly lower or higher than on other exchanges, which can also have a negative impact on the exchange rate.",
+        "dfi_only": "Attention, please send only DFI UTXO to your deposit addresses. Tokens (dBTC, dETH, ...) are currently not processed and not returned!",
+        "history": "Transaction history",
+        "no_tx": "No successful transactions found!"
       },
       "payment": {
         "new": "New payments",

@@ -121,7 +121,6 @@ export interface User extends NewUser {
   country: Country;
   mail: string;
   mobileNumber: string;
-
   usedRef: string;
   fees: Fees;
   refData: RefData;

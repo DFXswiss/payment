@@ -125,6 +125,7 @@
         "location": "Localização",
         "country": "País",
         "mail": "Endereço de e-mail",
+        "add_mail": "Adicionar endereço de e-mail",
         "mobile_number": "Número de telemóvel",
         "ref": "Código de referência",
         "used_ref": "Código de referência usada",
@@ -151,8 +152,7 @@
         "ref_commission_hint": "Tem a certeza de que quer reduzir a sua comissão para {{fee}}%? Este passo não pode ser desfeito."
       },
       "kyc":{
-        "increase": "Aumentar o limite",
-        "continue": "Continuar KYC",
+        "leave":"Sair",
         "request": "Quer aumentar o seu limite?",
         "invest_volume": "Quanto é que quer investir no total?",
         "volume": "Volume de investimento",
@@ -184,8 +184,10 @@
         "deposit_address": "Endereço de depósito",
         "copy_deposit_address": "Endereço para depósito de cópias",
         "conflict": "A rota já existe!",
-        "exchange_rate_warning": "Atenção, compramos este bem no DEX e não podemos garantir uma taxa de câmbio! Os preços no DEX podem ser significativamente inferiores ou superiores aos de outras bolsas, o que também pode ter um impacto negativo sobre a taxa de câmbio. A DFX já está a trabalhar num processo melhorado.",
-        "dfi_only": "Atenção, por favor envie apenas a DFI UTXO para os seus endereços de depósito. As fichas (dBTC, dETH, ...) não são actualmente processadas e não são devolvidas!"
+        "exchange_rate_warning": "Atenção, compramos este bem no DEX e não podemos garantir uma taxa de câmbio! Os preços no DEX podem ser significativamente inferiores ou superiores aos de outras bolsas, o que também pode ter um impacto negativo sobre a taxa de câmbio.",
+        "dfi_only": "Atenção, por favor envie apenas a DFI UTXO para os seus endereços de depósito. As fichas (dBTC, dETH, ...) não são actualmente processadas e não são devolvidas!",
+        "history": "Histórico das transacções",
+        "no_tx": "Não foram encontradas transacções bem sucedidas!"
       },
       "payment": {
         "new": "Novos pagamentos",

@@ -32,7 +32,7 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
                   icon="chevron-down"
                   style={[styles.fab, { right: Math.max(0, (dimensions.width - Sizes.AppWidth) / 2) }]}
                   onPress={() => scrollRef.current?.scrollToEnd({ animated: true })}
-                  visible={contentSize > 2000 && scrollPosition > 250}
+                  visible={contentSize > 3000 && scrollPosition > 250}
                 />
               </Portal>
             </View>

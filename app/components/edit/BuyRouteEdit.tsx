@@ -1,7 +1,9 @@
+import { UserRole } from "../../models/User";
 import React, { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { ActivityIndicator } from "react-native-paper";
+import { Session } from "services/AuthService";
 import { DeFiButton } from "../../elements/Buttons";
 import { SpacerV } from "../../elements/Spacers";
 import { Alert } from "../../elements/Texts";
@@ -17,12 +19,16 @@ import Form from "../form/Form";
 import Input from "../form/Input";
 import ButtonContainer from "../util/ButtonContainer";
 
+const stockTokenChainIds = [16, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 31, 34, 37];
+
 const BuyRouteEdit = ({
   routes,
   onRouteCreated,
+  session,
 }: {
   routes?: BuyRoute[];
   onRouteCreated: (route: BuyRoute) => void;
+  session?: Session;
 }) => {
   const { t } = useTranslation();
   const {
@@ -49,23 +55,25 @@ const BuyRouteEdit = ({
     setError(undefined);
 
     // re-activate the route, if it already existed
-    const existingRoute = routes?.find((r) => !r.active && r.asset.id === route.asset.id && r.iban.split(' ').join('') === route.iban.split(' ').join(''));
+    const existingRoute = routes?.find(
+      (r) => !r.active && r.asset.id === route.asset.id && r.iban.split(" ").join("") === route.iban.split(" ").join("")
+    );
     if (existingRoute) existingRoute.active = true;
 
     (existingRoute ? putBuyRoute(existingRoute) : postBuyRoute(route))
       .then(onRouteCreated)
-      .catch((error: ApiError) => setError(error.statusCode == 409 ? 'model.route.conflict' : ''))
+      .catch((error: ApiError) => setError(error.statusCode == 409 ? "model.route.conflict" : ""))
       .finally(() => setIsSaving(false));
   };
 
-  const showAssetWarning = (): boolean => {
-    // dUSDC, dUSDT
-    return [3, 13].includes(asset?.chainId);
-  }
+  const showAssetWarning = (): boolean => stockTokenChainIds.includes(asset?.chainId);
+  const assetBuyable = (asset: Asset) =>
+    asset.buyable ||
+    (stockTokenChainIds.includes(asset?.chainId) && [UserRole.Admin, UserRole.BETA].includes(session?.role ?? UserRole.User));
 
   const rules: any = createRules({
     asset: Validations.Required,
-    iban: [Validations.Required, Validations.Iban]
+    iban: [Validations.Required, Validations.Iban],
   });
 
   return isLoading ? (
@@ -75,7 +83,7 @@ const BuyRouteEdit = ({
       <DeFiPicker
         name="asset"
         label={t("model.route.asset")}
-        items={assets.filter((a) => a.buyable)}
+        items={assets.filter((a) => assetBuyable(a))}
         idFunc={(i) => i.id}
         labelFunc={(i) => i.name}
       />

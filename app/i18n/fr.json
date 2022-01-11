@@ -123,7 +123,8 @@
         "zip": "POSTCODE",
         "location": "Localisation",
         "country": "Pays",
-        "mail": "Adresse électronique",
+        "mail": "Adresse e-mail",
+        "add_mail": "Ajouter une adresse e-mail",
         "mobile_number": "Numéro de téléphone mobile",
         "ref": "Code de référence",
         "used_ref": "Code de référence utilisé",
@@ -150,8 +151,7 @@
         "ref_commission_hint": "Êtes-vous sûr de vouloir réduire votre commission à {{fee}}%? Cette étape ne peut pas être annulée."
       },
       "kyc":{
-        "increase": "Augmenter la limite",
-        "continue": "Poursuivre le KYC",
+        "leave": "Quitter",
         "request": "Voulez-vous augmenter la limite?",
         "invest_volume": "Combien voulez-vous investir au total?",
         "volume": "Volume d'investissement",
@@ -183,8 +183,10 @@
         "deposit_address": "Adresse de dépôt",
         "copy_deposit_address": "Copie de l'adresse de dépôt",
         "conflict": "La route existe déjà !",
-        "exchange_rate_warning": "Attention, nous achetons cet actif sur DEX et ne pouvons pas garantir un taux de change ! Les prix sur DEX peuvent être sensiblement plus bas ou plus élevés que sur d'autres bourses, ce qui peut également avoir un impact négatif sur le taux de change. DFX travaille déjà sur un processus amélioré.",
-        "dfi_only": "Attention, veuillez envoyer uniquement des DFI UTXO sur vos adresses de dépôt. Les tokens (dBTC, dETH, ...) ne sont pas encore traités et ne sont pas retournés!"
+        "exchange_rate_warning": "Attention, nous achetons cet actif sur DEX et ne pouvons pas garantir un taux de change ! Les prix sur DEX peuvent être sensiblement plus bas ou plus élevés que sur d'autres bourses, ce qui peut également avoir un impact négatif sur le taux de change.",
+        "dfi_only": "Attention, veuillez envoyer uniquement des DFI UTXO sur vos adresses de dépôt. Les tokens (dBTC, dETH, ...) ne sont pas encore traités et ne sont pas retournés!",
+        "history": "Historique des transactions",
+        "no_tx": "Aucune transaction réussie trouvée !"
       },
       "payment": {
         "new": "Nouveaux paiements",

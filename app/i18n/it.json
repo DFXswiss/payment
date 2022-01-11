@@ -124,6 +124,7 @@
         "location": "Posizione",
         "country": "Paese",
         "mail": "Indirizzo e-mail",
+        "add_mail": "Aggiungere l'indirizzo e-mail",
         "mobile_number": "Numero di cellulare",
         "ref": "Codice di riferimento",
         "used_ref": "Codice di riferimento usato",
@@ -150,8 +151,7 @@
         "ref_commission_hint": "Sei sicuro di voler ridurre la tua commissione a {{fee}}%? Questo passo non può essere annullato."
       },
       "kyc":{
-        "increase": "Aumentare il limite",
-        "continue": "Continua KYC",
+        "leave":"Lasciare",
         "request": "Vuoi aumentare il tuo limite?",
         "invest_volume": "Quanto vuoi investire in totale?",
         "volume": "Volume degli investimenti",
@@ -183,8 +183,10 @@
         "deposit_address": "Indirizzo del deposito",
         "copy_deposit_address": "Copiare l'indirizzo del deposito",
         "conflict": "Il percorso esiste già!",
-        "exchange_rate_warning": "Attenzione, compriamo questo bene su DEX e non possiamo garantire un tasso di cambio! I prezzi su DEX possono essere significativamente inferiori o superiori a quelli di altre borse, il che può anche avere un impatto negativo sul tasso di cambio. DFX sta già lavorando su un processo migliorato.",
-        "dfi_only": "Attenzione, inviate solo DFI UTXO ai vostri indirizzi di deposito. I gettoni (dBTC, dETH, ...) non sono attualmente elaborati e non vengono restituiti!"
+        "exchange_rate_warning": "Attenzione, compriamo questo bene su DEX e non possiamo garantire un tasso di cambio! I prezzi su DEX possono essere significativamente inferiori o superiori a quelli di altre borse, il che può anche avere un impatto negativo sul tasso di cambio.",
+        "dfi_only": "Attenzione, inviate solo DFI UTXO ai vostri indirizzi di deposito. I gettoni (dBTC, dETH, ...) non sono attualmente elaborati e non vengono restituiti!",
+        "history": "Storia delle transazioni",
+        "no_tx": "Nessuna transazione di successo trovata!"
       },
       "payment": {
         "new": "Nuovi pagamenti",

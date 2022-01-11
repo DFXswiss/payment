@@ -7,16 +7,16 @@ import SellRouteEdit from "../../components/edit/SellRouteEdit";
 import DeFiModal from "../../components/util/DeFiModal";
 import IconButton from "../../components/util/IconButton";
 import { DeFiButton } from "../../elements/Buttons";
-import { SpacerV } from "../../elements/Spacers";
+import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { CompactRow, CompactCell, CompactHeader, CompactTitle } from "../../elements/Tables";
 import { H2, H3 } from "../../elements/Texts";
 import { useDevice } from "../../hooks/useDevice";
 import { BuyRoute } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import { putBuyRoute, putSellRoute } from "../../services/ApiService";
+import { createHistoryCsv, putBuyRoute, putSellRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import AppStyles from "../../styles/AppStyles";
-import { updateObject } from "../../utils/Utils";
+import { openUrl, updateObject } from "../../utils/Utils";
 import ClipboardService from "../../services/ClipboardService";
 import ButtonContainer from "../../components/util/ButtonContainer";
 import { DeviceClass } from "../../utils/Device";
@@ -24,6 +24,9 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Session } from "../../services/AuthService";
 import withSession from "../../hocs/withSession";
 import Colors from "../../config/Colors";
+import { Environment } from "../../env/Environment";
+import { ApiError } from "../../models/ApiDto";
+import { UserRole } from "../../models/User";
 
 interface Props {
   session?: Session;
@@ -82,6 +85,7 @@ const RouteList = ({
 
   const [isBuyLoading, setIsBuyLoading] = useState<{ [id: string]: boolean }>({});
   const [isSellLoading, setIsSellLoading] = useState<{ [id: string]: boolean }>({});
+  const [isHistoryLoading, setIsHistoryLoading] = useState(false);
   const [detailRoute, setDetailRoute] = useState<SellRoute | BuyRoute | undefined>(undefined);
 
   const activeBuyRoutes = buyRoutes?.filter((r) => r.active);
@@ -120,12 +124,32 @@ const RouteList = ({
       .finally(() => setIsSellLoading((obj) => updateObject(obj, { [route.id]: false })));
   };
 
+  const onExportHistory = () => {
+    setIsHistoryLoading(true);
+    createHistoryCsv()
+      .then((fileKey) => openUrl(`${Environment.api.baseUrl}/transaction/csv?key=${fileKey}`))
+      .catch((error: ApiError) =>
+        NotificationService.error(t(error.statusCode === 404 ? "model.route.no_tx" : "feedback.load_failed"))
+      )
+      .finally(() => setIsHistoryLoading(false));
+  };
+
   return (
     <>
-      <DeFiModal isVisible={isBuyRouteEdit} setIsVisible={setIsBuyRouteEdit} title={t("model.route.new_buy")} style={{ width: 400 }}>
-        <BuyRouteEdit routes={buyRoutes} onRouteCreated={onBuyRouteCreated} />
+      <DeFiModal
+        isVisible={isBuyRouteEdit}
+        setIsVisible={setIsBuyRouteEdit}
+        title={t("model.route.new_buy")}
+        style={{ width: 400 }}
+      >
+        <BuyRouteEdit routes={buyRoutes} onRouteCreated={onBuyRouteCreated} session={session} />
       </DeFiModal>
-      <DeFiModal isVisible={isSellRouteEdit} setIsVisible={setIsSellRouteEdit} title={t("model.route.new_sell")} style={{ width: 400 }}>
+      <DeFiModal
+        isVisible={isSellRouteEdit}
+        setIsVisible={setIsSellRouteEdit}
+        title={t("model.route.new_sell")}
+        style={{ width: 400 }}
+      >
         <SellRouteEdit routes={sellRoutes} onRouteCreated={onSellRouteCreated} />
       </DeFiModal>
       <DeFiModal
@@ -139,8 +163,12 @@ const RouteList = ({
             <DataTable>
               {routeData(detailRoute).map((data) => (
                 <CompactRow key={data.label}>
-                  <CompactCell multiLine style={{ flex: 1 }}>{t(data.label)}</CompactCell>
-                  <CompactCell multiLine style={{ flex: 2 }}>{data.value}</CompactCell>
+                  <CompactCell multiLine style={{ flex: 1 }}>
+                    {t(data.label)}
+                  </CompactCell>
+                  <CompactCell multiLine style={{ flex: 2 }}>
+                    {data.value}
+                  </CompactCell>
                 </CompactRow>
               ))}
             </DataTable>
@@ -162,7 +190,9 @@ const RouteList = ({
                   mode="contained"
                   loading={"asset" in detailRoute ? isBuyLoading[detailRoute.id] : isSellLoading[detailRoute.id]}
                   onPress={() => {
-                    ("asset" in detailRoute ? deleteBuyRoute(detailRoute) : deleteSellRoute(detailRoute)).then(() => setDetailRoute(undefined));
+                    ("asset" in detailRoute ? deleteBuyRoute(detailRoute) : deleteSellRoute(detailRoute)).then(() =>
+                      setDetailRoute(undefined)
+                    );
                   }}
                 >
                   {t("action.delete")}
@@ -192,7 +222,20 @@ const RouteList = ({
         )}
       </View>
 
-      {/* TODO: details */}
+      {!device.SM && (
+        <>
+          <SpacerV />
+          <View style={AppStyles.containerHorizontal}>
+            <DeFiButton mode="contained" onPress={() => setIsBuyRouteEdit(true)} style={{ flex: 1 }}>
+              {t("model.route.buy")}
+            </DeFiButton>
+            <SpacerH />
+            <DeFiButton mode="contained" onPress={() => setIsSellRouteEdit(true)} style={{ flex: 1 }}>
+              {t("model.route.sell")}
+            </DeFiButton>
+          </View>
+        </>
+      )}
 
       {(activeBuyRoutes?.length ?? 0) + (activeSellRoutes?.length ?? 0) > 0 ? (
         <>
@@ -261,7 +304,10 @@ const RouteList = ({
                       <CompactCell style={{ flex: undefined }}>
                         {device.SM ? (
                           <>
-                            <IconButton icon="content-copy" onPress={() => ClipboardService.copy(route.deposit?.address)} />
+                            <IconButton
+                              icon="content-copy"
+                              onPress={() => ClipboardService.copy(route.deposit?.address)}
+                            />
                             <IconButton
                               icon="delete"
                               onPress={() => deleteSellRoute(route)}
@@ -276,14 +322,28 @@ const RouteList = ({
                   </TouchableOpacity>
                 ))}
               </DataTable>
-              
+
               <SpacerV />
               <Text style={[AppStyles.b, { color: Colors.Yellow }]}>{t("model.route.dfi_only")}</Text>
             </>
           )}
+
+          {[UserRole.Admin, UserRole.BETA].includes(session?.role ?? UserRole.Unknown) && (
+            <>
+              <SpacerV height={20} />
+              <ButtonContainer>
+                <DeFiButton mode="contained" onPress={onExportHistory} loading={isHistoryLoading}>
+                  {t("model.route.history")}
+                </DeFiButton>
+              </ButtonContainer>
+            </>
+          )}
         </>
       ) : (
-        <Text style={AppStyles.i}>{t("model.route.none")}</Text>
+        <>
+          <SpacerV />
+          <Text style={AppStyles.i}>{t("model.route.none")}</Text>
+        </>
       )}
 
       {activeBuyRoutes && activeBuyRoutes.length > 0 && (
@@ -298,15 +358,24 @@ const RouteList = ({
           <SpacerV />
           <View style={AppStyles.containerHorizontal}>
             <Text>{`${t("model.route.iban")}: ${iban}`}</Text>
-            <IconButton icon="content-copy" onPress={() => ClipboardService.copy(iban)} style={device.SM ? undefined : AppStyles.mla} size={20} />
+            <IconButton
+              icon="content-copy"
+              onPress={() => ClipboardService.copy(iban)}
+              style={device.SM ? undefined : AppStyles.mla}
+              size={20}
+            />
           </View>
           <View style={AppStyles.containerHorizontal}>
             <Text>{`SWIFT/BIC: ${swift}`}</Text>
-            <IconButton icon="content-copy" onPress={() => ClipboardService.copy(swift)} style={device.SM ? undefined : AppStyles.mla} size={20} />
+            <IconButton
+              icon="content-copy"
+              onPress={() => ClipboardService.copy(swift)}
+              style={device.SM ? undefined : AppStyles.mla}
+              size={20}
+            />
           </View>
         </>
       )}
-      {!device.SM && <SpacerV height={60} />}
     </>
   );
 };

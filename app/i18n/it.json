@@ -34,7 +34,8 @@
       "file_error": "Errore nella lettura del file!",
       "request_submitted": "Richiesta inviata!",
       "request_failed": "Errore con la richiesta!",
-      "copied": "Copiato!"
+      "copied": "Copiato!",
+      "check_mails": "Successo! Controlla le tue mail."
     },
     "validation": {
       "required": "Campo obbligatorio",

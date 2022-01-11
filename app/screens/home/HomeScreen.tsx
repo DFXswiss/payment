@@ -101,7 +101,12 @@ const HomeScreen = ({ session }: { session?: Session }) => {
       if (!(typeof response == "boolean")) {
         navigate(Routes.ChatBot, { url: response.sessionUrl });
       } else {
-        NotificationService.error(t("feedback.load_failed"));
+        if(response){
+          NotificationService.success(t("feedback.check_mails"));
+        }else{
+          NotificationService.error(t("feedback.load_failed"));
+        }
+        
       }
     } else {
       NotificationService.success(t("feedback.request_submitted"));

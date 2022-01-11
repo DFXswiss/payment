@@ -34,7 +34,8 @@
       "file_error": "Error reading the file!",
       "request_submitted": "Request submitted!",
       "request_failed": "Request error!",
-      "copied": "Copied!"
+      "copied": "Copied!",
+      "check_mails": "Successful! Check your mails"
     },
     "validation": {
       "required": "Mandatory field",

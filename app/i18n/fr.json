@@ -34,7 +34,8 @@
       "file_error": "Erreur de lecture du fichier !",
       "request_submitted": "Demande soumise !",
       "request_failed": "Erreur avec la demande !",
-      "copied": "Copié !"
+      "copied": "Copié !",
+      "check_mails": "Réussir à tout prix ! Vérifie tes e-mails."
     },
     "validation": {
       "required": "Champ obligatoire",

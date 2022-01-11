@@ -35,7 +35,8 @@
       "file_error": "Erro na leitura do ficheiro!",
       "request_submitted": "Pedido apresentado!",
       "request_failed": "Erro com o pedido!",
-      "copied": "Copiado!"
+      "copied": "Copiado!",
+      "check_mails": "Bem sucedido! Verifique os seus correios."
     },
     "validation": {
       "required": "Campo Obrigatório",

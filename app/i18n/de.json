@@ -35,7 +35,8 @@
       "file_error": "Fehler beim Lesen der Datei!",
       "request_submitted": "Anfrage abgesetzt!",
       "request_failed": "Fehler bei der Anfrage!",
-      "copied": "Kopiert!"
+      "copied": "Kopiert!",
+      "check_mails": "Erfolgreich! Prüfe deine Mails."
     },
     "validation": {
       "required": "Pflichtfeld",

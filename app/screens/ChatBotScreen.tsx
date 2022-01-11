@@ -19,7 +19,7 @@ const ChatBotScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const [url, setUrl] = useState("");
 
-  useAuthGuard(session, [UserRole.Admin]);
+  useAuthGuard(session);
 
   useEffect(() => {
     const params = route.params as any;

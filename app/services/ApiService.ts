@@ -1,3 +1,4 @@
+import { Transaction } from "models/Transaction";
 import { Environment } from "../env/Environment";
 import { ApiError, AuthResponse } from "../models/ApiDto";
 import { Asset } from "../models/Asset";
@@ -38,6 +39,7 @@ const UserUrl = "user";
 const RefUrl = "ref";
 const BuyUrl = "buy";
 const SellUrl = "sell";
+const TransactionUrl = "transaction";
 const AssetUrl = "asset";
 const FiatUrl = "fiat";
 const CountryUrl = "country";
@@ -129,6 +131,14 @@ export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
     fromSellRouteDto
   );
 };
+
+export const getTransactions = (): Promise<Transaction[]> => {
+  return fetchFrom<Transaction[]>(TransactionUrl);
+}
+
+export const createHistoryCsv = (): Promise<number> => {
+  return fetchFrom(`${TransactionUrl}/csv`, "POST");
+}
 
 // --- PAYMENT --- //
 export const postSepaFiles = (files: File[]): Promise<void> => {

@@ -184,7 +184,9 @@
         "copy_deposit_address": "Copie de l'adresse de dépôt",
         "conflict": "La route existe déjà !",
         "exchange_rate_warning": "Attention, nous achetons cet actif sur DEX et ne pouvons pas garantir un taux de change ! Les prix sur DEX peuvent être sensiblement plus bas ou plus élevés que sur d'autres bourses, ce qui peut également avoir un impact négatif sur le taux de change.",
-        "dfi_only": "Attention, veuillez envoyer uniquement des DFI UTXO sur vos adresses de dépôt. Les tokens (dBTC, dETH, ...) ne sont pas encore traités et ne sont pas retournés!"
+        "dfi_only": "Attention, veuillez envoyer uniquement des DFI UTXO sur vos adresses de dépôt. Les tokens (dBTC, dETH, ...) ne sont pas encore traités et ne sont pas retournés!",
+        "history": "Historique des transactions",
+        "no_tx": "Aucune transaction réussie trouvée !"
       },
       "payment": {
         "new": "Nouveaux paiements",

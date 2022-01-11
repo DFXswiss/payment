@@ -7,7 +7,7 @@ import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
 import { H2, H3 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
-import { AccountType, ChatBotResponse, KycStatus, User } from "../../models/User";
+import { AccountType, KycStatus, User } from "../../models/User";
 import { getUserDetail, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
@@ -36,6 +36,7 @@ import Routes from "../../config/Routes";
 import IconButton from "../../components/util/IconButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import RefFeeEdit from "../../components/edit/RefFeeEdit";
+import { ChatBotResponse } from "../../models/ChatBotResponse";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 

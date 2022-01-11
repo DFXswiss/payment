@@ -34,13 +34,6 @@ export enum KycState {
   REMINDED = "Reminded",
 }
 
-export interface ChatBotResponse {
-  document: string;
-  reference: string;
-  sessionUrl: string;
-  version: string;
-}
-
 export enum AccountType {
   PERSONAL = "Personal",
   BUSINESS = "Business",
@@ -108,7 +101,7 @@ export interface UserDto extends NewUserDto {
   depositLimit: number;
   language: Language;
   ip: string;
-  chatBotResponse: ChatBotResponse;
+
   organizationName: string;
   organizationStreet: string;
   organizationHouseNumber: string;
@@ -138,7 +131,7 @@ export interface User extends NewUser {
   depositLimit: number;
   language: Language;
   ip: string;
-  chatBotResponse: ChatBotResponse;
+
   organizationName: string;
   organizationStreet: string;
   organizationHouseNumber: string;
@@ -181,7 +174,6 @@ export const fromUserDto = (user: UserDto): User => ({
   depositLimit: user.depositLimit,
   language: user.language,
   ip: user.ip,
-  chatBotResponse: user.chatBotResponse,
   organizationName: user.organizationName,
   organizationStreet: user.organizationStreet,
   organizationHouseNumber: user.organizationHouseNumber,
@@ -214,7 +206,6 @@ export const toUserDto = (user: User): UserDto => ({
   depositLimit: user.depositLimit,
   language: user.language,
   ip: user.ip,
-  chatBotResponse: user.chatBotResponse,
   organizationName: user.organizationName,
   organizationStreet: user.organizationStreet,
   organizationHouseNumber: user.organizationHouseNumber,

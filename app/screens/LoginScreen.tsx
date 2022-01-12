@@ -23,11 +23,13 @@ import { createRules, openUrl } from "../utils/Utils";
 import { ApiError } from "../models/ApiDto";
 import StorageService from "../services/StorageService";
 import Loading from "../components/util/Loading";
+import { getRefCode } from "../services/ApiService";
 
 interface LoginData {
   userName: string;
   password: string;
   walletId: number;
+  refCode: string;
 }
 
 const signingCommand = (address: string) => {
@@ -82,7 +84,8 @@ const LoginScreen = () => {
         // store the credentials for sign up
         Promise.all([
           StorageService.storeValue(StorageService.Keys.Credentials, credentials),
-          StorageService.storeValue(StorageService.Keys.WalletId, data.walletId),
+          data.walletId ? StorageService.storeValue(StorageService.Keys.WalletId, data.walletId) : Promise.resolve(0),
+          data.refCode ? StorageService.storeValue(StorageService.Keys.Ref, data.refCode) : Promise.resolve(""),
         ]).then(() => {
           switch (error.statusCode) {
             case 400:
@@ -93,7 +96,7 @@ const LoginScreen = () => {
               break;
             case 404:
               // new user
-              nav.navigate(Routes.Ref);
+              nav.navigate(Routes.Gtc);
               break;
             default:
               setError("");
@@ -114,6 +117,12 @@ const LoginScreen = () => {
 
     // TODO: remove 0 -> 1 conversion (fix for DFX Wallet v0.10.5)
     setValue("walletId", params?.walletId == 0 ? 1 : +params?.walletId);
+    setValue("refCode", params?.code);
+
+    // check for used ref link
+    getRefCode()
+      .then((ref) => StorageService.storeValue(StorageService.Keys.Ref, ref))
+      .catch(() => {});
 
     if (params?.address && params?.signature) {
       setValue("userName", params.address);
@@ -130,7 +139,13 @@ const LoginScreen = () => {
     }
 
     // reset params
-    nav.navigate(Routes.Login, { lang: undefined, address: undefined, signature: undefined, walletId: undefined });
+    nav.navigate(Routes.Login, {
+      lang: undefined,
+      address: undefined,
+      signature: undefined,
+      walletId: undefined,
+      code: undefined,
+    });
   }, []);
 
   const params = route.params as any;

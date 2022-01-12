@@ -19,7 +19,7 @@ import Form from "../form/Form";
 import Input from "../form/Input";
 import ButtonContainer from "../util/ButtonContainer";
 
-const stockTokenChainIds = [16, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 31, 34, 37];
+const stockTokenChainIds = [15, 16, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 31, 34, 37];
 
 const BuyRouteEdit = ({
   routes,

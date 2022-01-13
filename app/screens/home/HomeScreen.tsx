@@ -21,7 +21,7 @@ import { DeFiButton } from "../../elements/Buttons";
 import useLoader from "../../hooks/useLoader";
 import { BuyRoute } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import { createRules, join, resolve } from "../../utils/Utils";
+import { createRules, join, openUrl, resolve } from "../../utils/Utils";
 import useAuthGuard from "../../hooks/useAuthGuard";
 import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
@@ -31,12 +31,9 @@ import { useForm } from "react-hook-form";
 import Validations from "../../utils/Validations";
 import Input from "../../components/form/Input";
 import Form from "../../components/form/Form";
-import { navigate } from "../../utils/NavigationHelper";
-import Routes from "../../config/Routes";
 import IconButton from "../../components/util/IconButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import RefFeeEdit from "../../components/edit/RefFeeEdit";
-import { ChatBotResponse } from "../../models/ChatBotResponse";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
@@ -95,18 +92,15 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     setIsKycRequest(true);
   };
 
-  const onKycRequested = (response: boolean | ChatBotResponse) => {
+  const onKycRequested = (url: string | undefined) => {
     if (user?.kycStatus == KycStatus.NA || user?.kycStatus == KycStatus.WAIT_CHAT_BOT) {
       user.kycStatus = KycStatus.WAIT_CHAT_BOT;
-      if (!(typeof response == "boolean")) {
-        navigate(Routes.ChatBot, { url: response.sessionUrl });
+      if (url) {
+        openUrl(url);
+        // TODO: in iframe:
+        // navigate(Routes.ChatBot, { url });
       } else {
-        if(response){
-          NotificationService.success(t("feedback.check_mails"));
-        }else{
-          NotificationService.error(t("feedback.load_failed"));
-        }
-        
+        NotificationService.error(t("feedback.load_failed"));
       }
     } else {
       NotificationService.success(t("feedback.request_submitted"));

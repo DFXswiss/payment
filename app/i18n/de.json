@@ -36,7 +36,6 @@
       "request_submitted": "Anfrage abgesetzt!",
       "request_failed": "Fehler bei der Anfrage!",
       "copied": "Kopiert!",
-      "check_mails": "Erfolgreich! Prüfe deine Mails.",
       "pop_up_blocked": "Fehler beim Öffnen! Bitte erlaube Pop-up-Fenster in den Browser-Einstellungen."
     },
     "validation": {

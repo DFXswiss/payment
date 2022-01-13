@@ -127,10 +127,7 @@ const RouteList = ({
   const onExportHistory = () => {
     setIsHistoryLoading(true);
     createHistoryCsv()
-      .then((fileKey) => {
-        const downloadBlocked = !openUrl(`${Environment.api.baseUrl}/transaction/csv?key=${fileKey}`);
-        if (downloadBlocked) NotificationService.error(t("feedback.pop_up_blocked"));
-      })
+      .then((fileKey) => openUrl(`${Environment.api.baseUrl}/transaction/csv?key=${fileKey}`))
       .catch((error: ApiError) =>
         NotificationService.error(t(error.statusCode === 404 ? "model.route.no_tx" : "feedback.load_failed"))
       )

@@ -1,5 +1,7 @@
+import i18n from "../i18n/i18n";
 import { SetStateAction } from "react";
 import { Linking, Platform } from "react-native";
+import NotificationService from "../services/NotificationService";
 
 export const updateObject = (obj?: any, update?: any) => (obj ? { ...obj, ...update } : undefined);
 export const join = (array: any[], separator: string = ", ") => array.reduce((prev, curr) => (curr ? (prev ? prev + separator + curr : curr) : prev), "");
@@ -15,12 +17,13 @@ export const createRules = (rules: any): any => {
   return rules;
 };
 
-export const openUrl = (url: string): boolean => {
+export const openUrl = (url: string): void => {
   if (Platform.OS == "web") {
     const newWindow = window.open(url, "_blank");
-    return newWindow != null && !newWindow.closed && typeof newWindow.closed != "undefined";
+
+    const popUpBlocked = newWindow == null || newWindow.closed || typeof newWindow.closed == "undefined";
+    if (popUpBlocked) NotificationService.error(i18n.t("feedback.pop_up_blocked"));
   } else {
     Linking.openURL(url);
-    return true;
   }
 };

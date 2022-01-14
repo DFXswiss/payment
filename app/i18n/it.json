@@ -32,6 +32,7 @@
       "save_failed": "Errore durante il salvataggio!",
       "save_successful": "Salvato con successo!",
       "file_error": "Errore nella lettura del file!",
+      "mail_error": "L'e-mail esiste già. Registrati su support@dfx.swiss.",
       "request_submitted": "Richiesta inviata!",
       "request_failed": "Errore con la richiesta!",
       "copied": "Copiato!",
@@ -153,7 +154,6 @@
         "ref_commission_hint": "Sei sicuro di voler ridurre la tua commissione a {{fee}}%? Questo passo non può essere annullato."
       },
       "kyc":{
-        "leave":"Lasciare",
         "request": "Vuoi aumentare il tuo limite?",
         "invest_volume": "Quanto vuoi investire in totale?",
         "volume": "Volume degli investimenti",

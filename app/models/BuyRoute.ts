@@ -6,6 +6,8 @@ export interface BuyRouteDto {
   asset: Asset;
   bankUsage: string;
   iban: string;
+  volume: number;
+  annualVolume: number;
   active: boolean;
 }
 
@@ -15,6 +17,8 @@ export interface BuyRoute {
   asset: Asset;
   bankUsage: string;
   iban: string;
+  volume: number;
+  annualVolume: number;
   active: boolean;
 }
 
@@ -25,6 +29,8 @@ export const fromBuyRouteDto = (route: BuyRouteDto): BuyRoute => ({
   bankUsage: route.bankUsage,
   iban: route.iban.replace(/(.{4})/g, "$1 "),
   active: route.active,
+  volume: route.volume,
+  annualVolume: route.annualVolume,
 });
 
 export const toBuyRouteDto = (route: BuyRoute): BuyRouteDto => ({
@@ -34,4 +40,6 @@ export const toBuyRouteDto = (route: BuyRoute): BuyRouteDto => ({
   bankUsage: route.bankUsage,
   iban: route.iban.split(" ").join(""),
   active: route.active,
+  volume: route.volume,
+  annualVolume: route.annualVolume,
 });

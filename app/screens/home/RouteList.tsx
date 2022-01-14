@@ -26,9 +26,10 @@ import withSession from "../../hocs/withSession";
 import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
 import { ApiError } from "../../models/ApiDto";
-import { UserRole } from "../../models/User";
+import { User, UserRole } from "../../models/User";
 
 interface Props {
+  user?: User;
   session?: Session;
   buyRoutes?: BuyRoute[];
   setBuyRoutes: Dispatch<SetStateAction<BuyRoute[] | undefined>>;
@@ -56,20 +57,11 @@ const Placeholders = ({ device }: { device: DeviceClass }) => (
   </>
 );
 
-const routeData = (route: SellRoute | BuyRoute) => [
-  "asset" in route
-    ? { label: "model.route.asset", value: route.asset?.name }
-    : { label: "model.route.fiat", value: route.fiat?.name },
-  { label: "model.route.iban", value: route.iban },
-  "bankUsage" in route
-    ? { label: "model.route.bank_usage", value: route.bankUsage }
-    : { label: "model.route.deposit_address", value: route.deposit?.address },
-];
-
 const iban = "CH68 0857 3177 9752 0181 4";
 const swift = "MAEBCHZZ";
 
 const RouteList = ({
+  user,
   session,
   buyRoutes,
   setBuyRoutes,
@@ -93,10 +85,12 @@ const RouteList = ({
 
   const onBuyRouteCreated = (route: BuyRoute) => {
     setBuyRoutes((routes) => updateRoutes(route, routes));
+    setDetailRoute(route);
     setIsBuyRouteEdit(false);
   };
   const onSellRouteCreated = (route: SellRoute) => {
     setSellRoutes((routes) => updateRoutes(route, routes));
+    setDetailRoute(route);
     setIsSellRouteEdit(false);
   };
   const updateRoutes: <T extends BuyRoute | SellRoute>(route: T, routes?: T[]) => T[] | undefined = (route, routes) => {
@@ -134,6 +128,30 @@ const RouteList = ({
       .finally(() => setIsHistoryLoading(false));
   };
 
+  const routeData = (route: SellRoute | BuyRoute) => [
+    "asset" in route
+      ? { condition: true, label: "model.route.asset", value: route.asset?.name }
+      : { condition: true, label: "model.route.fiat", value: route.fiat?.name },
+    { condition: true, label: "model.route.iban", value: route.iban },
+    "bankUsage" in route
+      ? { condition: true, label: "model.route.bank_usage", value: route.bankUsage }
+      : { condition: true, label: "model.route.deposit_address", value: route.deposit?.address },
+    {
+      condition: "asset" in route,
+      label: "model.route.fee",
+      value:
+        `${user?.fees.buy}%` + (user?.fees.refBonus ? ` (${user.fees.refBonus}% ${t("model.route.ref_bonus")})` : ""),
+    },
+    {
+      condition: "fiat" in route,
+      label: "model.route.fee",
+      value: `${user?.fees.sell}%`,
+    },
+    { condition: "asset" in route, label: "model.route.volume", value: `${route.volume} €` },
+    { condition: "asset" in route, label: "model.route.annual_volume", value: `${route.annualVolume} €` },
+    { condition: "fiat" in route, label: "model.route.min_deposit", value: "0.1 DFI" },
+  ];
+
   return (
     <>
       <DeFiModal
@@ -156,21 +174,23 @@ const RouteList = ({
         isVisible={Boolean(detailRoute)}
         setIsVisible={() => setDetailRoute(undefined)}
         title={t("model.route.details")}
-        style={{ width: 1000 }}
+        style={{ width: 600 }}
       >
         {detailRoute && (
           <>
             <DataTable>
-              {routeData(detailRoute).map((data) => (
-                <CompactRow key={data.label}>
-                  <CompactCell multiLine style={{ flex: 1 }}>
-                    {t(data.label)}
-                  </CompactCell>
-                  <CompactCell multiLine style={{ flex: 2 }}>
-                    {data.value}
-                  </CompactCell>
-                </CompactRow>
-              ))}
+              {routeData(detailRoute)
+                .filter((d) => d.condition)
+                .map((data) => (
+                  <CompactRow key={data.label}>
+                    <CompactCell multiLine style={{ flex: 1 }}>
+                      {t(data.label)}
+                    </CompactCell>
+                    <CompactCell multiLine style={{ flex: 2 }}>
+                      {data.value}
+                    </CompactCell>
+                  </CompactRow>
+                ))}
             </DataTable>
 
             <SpacerV height={20} />
@@ -269,6 +289,7 @@ const RouteList = ({
                               onPress={() => deleteBuyRoute(route)}
                               isLoading={isBuyLoading[route.id]}
                             />
+                            <IconButton icon="chevron-right" onPress={() => setDetailRoute(route)} />
                           </>
                         ) : (
                           <IconButton icon="chevron-right" />
@@ -313,6 +334,7 @@ const RouteList = ({
                               onPress={() => deleteSellRoute(route)}
                               isLoading={isSellLoading[route.id]}
                             />
+                            <IconButton icon="chevron-right" onPress={() => setDetailRoute(route)} />
                           </>
                         ) : (
                           <IconButton icon="chevron-right" />

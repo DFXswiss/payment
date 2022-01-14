@@ -216,12 +216,6 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { condition: Boolean(user.mobileNumber), label: "model.user.mobile_number", value: user.mobileNumber },
     { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef },
     {
-      condition: true,
-      label: "model.user.buy_fee",
-      value: `${user.fees.buy}%` + (user.fees.refBonus ? ` (${user.fees.refBonus}% ${t("model.user.ref_bonus")})` : ""),
-    },
-    { condition: true, label: "model.user.sell_fee", value: `${user.fees.sell}%` },
-    {
       condition: Boolean(user.userVolume.buyVolume),
       label: "model.user.user_buy_volume",
       value: `${formatAmount(user.userVolume.buyVolume)} €`,
@@ -467,6 +461,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
           {(buyRoutes || sellRoutes) && (
             <RouteList
+              user={user}
               buyRoutes={buyRoutes}
               setBuyRoutes={setBuyRoutes}
               sellRoutes={sellRoutes}

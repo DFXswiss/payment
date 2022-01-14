@@ -100,7 +100,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
         // TODO: in iframe:
         // navigate(Routes.ChatBot, { url });
       } else {
-        NotificationService.error(t("feedback.load_failed"));
+        NotificationService.success(t("feedback.check_mails"));
       }
     } else {
       NotificationService.success(t("feedback.request_submitted"));

@@ -217,12 +217,17 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef },
     {
       condition: Boolean(user.userVolume.buyVolume),
-      label: "model.user.user_buy_volume",
+      label: "model.user.buy_volume",
       value: `${formatAmount(user.userVolume.buyVolume)} €`,
     },
     {
+      condition: Boolean(user.userVolume.annualBuyVolume),
+      label: "model.user.annual_buy_volume",
+      value: `${formatAmount(user.userVolume.annualBuyVolume)} €`,
+    },
+    {
       condition: Boolean(user.userVolume.sellVolume),
-      label: "model.user.user_sell_volume",
+      label: "model.user.sell_volume",
       value: `${formatAmount(user.userVolume.sellVolume)} €`,
     },
     {

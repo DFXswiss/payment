@@ -69,6 +69,7 @@ export interface Fees {
 
 export interface UserVolume {
   buyVolume: number;
+  annualBuyVolume: number;
   sellVolume: number;
 }
 

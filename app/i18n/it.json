@@ -153,7 +153,6 @@
         "ref_commission_hint": "Sei sicuro di voler ridurre la tua commissione a {{fee}}%? Questo passo non può essere annullato."
       },
       "kyc":{
-        "leave":"Lasciare",
         "request": "Vuoi aumentare il tuo limite?",
         "invest_volume": "Quanto vuoi investire in totale?",
         "volume": "Volume degli investimenti",

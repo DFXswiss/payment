@@ -32,6 +32,7 @@
       "save_failed": "Errore durante il salvataggio!",
       "save_successful": "Salvato con successo!",
       "file_error": "Errore nella lettura del file!",
+      "mail_error": "La posta elettronica esiste già. Registrati su support@dfx.swiss",
       "request_submitted": "Richiesta inviata!",
       "request_failed": "Errore con la richiesta!",
       "copied": "Copiato!",

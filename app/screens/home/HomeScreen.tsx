@@ -21,7 +21,7 @@ import { DeFiButton } from "../../elements/Buttons";
 import useLoader from "../../hooks/useLoader";
 import { BuyRoute } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import { createRules, join, openUrl, resolve } from "../../utils/Utils";
+import { createRules, join, resolve } from "../../utils/Utils";
 import useAuthGuard from "../../hooks/useAuthGuard";
 import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
@@ -34,6 +34,8 @@ import Form from "../../components/form/Form";
 import IconButton from "../../components/util/IconButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import RefFeeEdit from "../../components/edit/RefFeeEdit";
+import { navigate } from "../../utils/NavigationHelper";
+import Routes from "../../config/Routes";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
@@ -96,9 +98,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     if (user?.kycStatus == KycStatus.NA || user?.kycStatus == KycStatus.WAIT_CHAT_BOT) {
       user.kycStatus = KycStatus.WAIT_CHAT_BOT;
       if (url) {
-        openUrl(url);
-        // TODO: in iframe:
-        // navigate(Routes.ChatBot, { url });
+        navigate(Routes.ChatBot, { url });
       } else {
         NotificationService.success(t("feedback.check_mails"));
       }

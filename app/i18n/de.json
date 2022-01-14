@@ -33,7 +33,7 @@
       "save_failed": "Fehler beim Speichern!",
       "save_successful": "Speichern erfolgreich!",
       "file_error": "Fehler beim Lesen der Datei!",
-      "mail_error": "E-Mail existiert schon. Melde dich unter support@dfx.swiss",
+      "mail_error": "Diese E-Mail existiert schon. Melde dich unter support@dfx.swiss.",
       "request_submitted": "Anfrage abgesetzt!",
       "request_failed": "Fehler bei der Anfrage!",
       "copied": "Kopiert!",

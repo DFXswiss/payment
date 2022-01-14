@@ -19,6 +19,7 @@ import { DeFiButton } from "../../elements/Buttons";
 import ButtonContainer from "../util/ButtonContainer";
 import { createRules } from "../../utils/Utils";
 import { ActivityIndicator } from "react-native-paper";
+import { ApiError } from "models/ApiDto";
 
 interface Props {
   user?: User;
@@ -38,7 +39,7 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<string>();
   const [countries, setCountries] = useState<Country[]>([]);
 
   useEffect(() => {
@@ -50,11 +51,11 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
 
   const onSubmit = (updatedUser: User) => {
     setIsSaving(true);
-    setError(false);
+    setError(undefined);
 
     putUser(updatedUser)
       .then(onUserChanged)
-      .catch(() => setError(true))
+      .catch((error: ApiError) => setError(error.statusCode === 409 ? "feedback.mail_error" : ""))
       .finally(() => setIsSaving(false));
   };
 
@@ -164,9 +165,9 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
         </>
       )}
 
-      {error && (
+      {error != null && (
         <>
-          <Alert label={t("feedback.save_failed")} />
+          <Alert label={`${t("feedback.save_failed")} ${error ? t(error) : ""}`} />
           <SpacerV />
         </>
       )}

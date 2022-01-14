@@ -7,6 +7,8 @@ export interface SellRouteDto {
   fiat: Fiat;
   deposit: Deposit;
   iban: string;
+  volume: number;
+  annualVolume: number;
   active: boolean;
 }
 
@@ -16,6 +18,8 @@ export interface SellRoute {
   fiat: Fiat;
   deposit: Deposit;
   iban: string;
+  volume: number;
+  annualVolume: number;
   active: boolean;
 }
 
@@ -24,8 +28,10 @@ export const fromSellRouteDto = (route: SellRouteDto): SellRoute => ({
   address: route.address,
   fiat: route.fiat,
   deposit: route.deposit,
-  iban: route.iban.replace(/(.{4})/g,"$1 "),
+  iban: route.iban.replace(/(.{4})/g, "$1 "),
   active: route.active,
+  volume: route.volume,
+  annualVolume: route.annualVolume,
 });
 
 export const toSellRouteDto = (route: SellRoute): SellRouteDto => ({
@@ -35,4 +41,6 @@ export const toSellRouteDto = (route: SellRoute): SellRouteDto => ({
   deposit: route.deposit,
   iban: route.iban,
   active: route.active,
+  volume: route.volume,
+  annualVolume: route.annualVolume,
 });

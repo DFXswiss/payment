@@ -131,11 +131,9 @@
         "mobile_number": "Numéro de téléphone mobile",
         "ref": "Code de référence",
         "used_ref": "Code de référence utilisé",
-        "ref_bonus": "bonus ref",
-        "buy_fee": "Frais d'achat",
-        "sell_fee": "Frais de vente",
-        "user_buy_volume": "Votre investissement",
-        "user_sell_volume": "Volume déboursé",
+        "buy_volume": "Votre investissement",
+        "annual_buy_volume": "Votre investissement annuel",
+        "sell_volume": "Volume déboursé",
         "limit": "Votre limite",
         "per_day": "par jour",
         "per_year": "par an",
@@ -188,7 +186,12 @@
         "exchange_rate_warning": "Attention, nous achetons cet actif sur DEX et ne pouvons pas garantir un taux de change ! Les prix sur DEX peuvent être sensiblement plus bas ou plus élevés que sur d'autres bourses, ce qui peut également avoir un impact négatif sur le taux de change.",
         "dfi_only": "Attention, veuillez envoyer uniquement des DFI UTXO sur vos adresses de dépôt. Les tokens (dBTC, dETH, ...) ne sont pas encore traités et ne sont pas retournés!",
         "history": "Historique des transactions",
-        "no_tx": "Aucune transaction réussie trouvée !"
+        "no_tx": "Aucune transaction réussie trouvée !",
+        "ref_bonus": "bonus ref",
+        "fee": "Frais",
+        "volume": "Volume",
+        "annual_volume": "Volume annuel",
+        "min_deposit": "Dépôt min."
       },
       "payment": {
         "new": "Nouveaux paiements",

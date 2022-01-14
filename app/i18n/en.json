@@ -128,11 +128,9 @@
         "mobile_number": "Mobile number",
         "ref": "Referral code",
         "used_ref": "Ref code used",
-        "ref_bonus": "ref bonus",
-        "buy_fee": "Buy fee",
-        "sell_fee": "Sell fee",
-        "user_buy_volume": "Your investment",
-        "user_sell_volume": "Volume paid out",
+        "buy_volume": "Your investment",
+        "annual_buy_volume": "Your annual investment",
+        "sell_volume": "Volume paid out",
         "limit": "Your limit",
         "per_day": "per day",
         "per_year": "per year",
@@ -184,7 +182,12 @@
         "exchange_rate_warning": "Attention, we buy this asset on DEX and cannot guarantee an exchange rate! Prices on DEX can be significantly lower or higher than on other exchanges, which can also have a negative impact on the exchange rate.",
         "dfi_only": "Attention, please send only DFI UTXO to your deposit addresses. Tokens (dBTC, dETH, ...) are currently not processed and not returned!",
         "history": "Transaction history",
-        "no_tx": "No successful transactions found!"
+        "no_tx": "No successful transactions found!",
+        "ref_bonus": "ref bonus",
+        "fee": "Fee",
+        "volume": "Volume",
+        "annual_volume": "Annual volume",
+        "min_deposit": "Min. deposit"
       },
       "payment": {
         "new": "New payments",

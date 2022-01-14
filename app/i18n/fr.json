@@ -35,7 +35,8 @@
       "request_submitted": "Demande soumise !",
       "request_failed": "Erreur avec la demande !",
       "copied": "Copié !",
-      "check_mails": "Succès! Vérifie tes e-mails."
+      "check_mails": "Succès! Vérifie tes e-mails.",
+      "pop_up_blocked": "Erreur lors de l'ouverture ! Veuillez autoriser les fenêtres pop-up dans les paramètres de votre navigateur."
     },
     "validation": {
       "required": "Champ obligatoire",

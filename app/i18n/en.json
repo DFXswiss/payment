@@ -35,7 +35,8 @@
       "request_submitted": "Request submitted!",
       "request_failed": "Request error!",
       "copied": "Copied!",
-      "check_mails": "Successful! Check your mails"
+      "check_mails": "Successful! Check your mails",
+      "pop_up_blocked": "Error while opening! Please allow pop-up windows in the browser settings."
     },
     "validation": {
       "required": "Mandatory field",

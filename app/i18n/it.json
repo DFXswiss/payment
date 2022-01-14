@@ -35,7 +35,8 @@
       "request_submitted": "Richiesta inviata!",
       "request_failed": "Errore con la richiesta!",
       "copied": "Copiato!",
-      "check_mails": "Successo! Controlla le tue mail."
+      "check_mails": "Successo! Controlla le tue mail.",
+      "pop_up_blocked": "Errore all'apertura! Si prega di consentire le finestre pop-up nelle impostazioni del browser."
     },
     "validation": {
       "required": "Campo obbligatorio",

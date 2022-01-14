@@ -1,4 +1,3 @@
-import { ChatBotResponse } from "../models/ChatBotResponse";
 import { Transaction } from "../models/Transaction";
 import { Environment } from "../env/Environment";
 import { ApiError, AuthResponse } from "../models/ApiDto";
@@ -22,6 +21,7 @@ import {
   UserDto,
 } from "../models/User";
 import AuthService, { Credentials, Session } from "./AuthService";
+import { ChatbotResponse } from "models/ChatbotResponse";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -55,11 +55,11 @@ export const getUserDetail = (): Promise<UserDetail> => {
   return fetchFrom<UserDetailDto>(`${UserUrl}/detail`).then(fromUserDetailDto);
 };
 
-export const postKyc = (limit?: number): Promise<boolean | ChatBotResponse> => {
+export const postKyc = (limit?: number): Promise<string | undefined> => {
   let url = `${UserUrl}/kyc`;
   if (limit) url += `?depositLimit=${limit}`;
 
-  return fetchFrom(url, "POST");
+  return fetchFrom<{ url: string | undefined }>(url, "POST").then((r) => r.url);
 };
 export const putUser = (user: User): Promise<User> => {
   return fetchFrom<UserDto>(UserUrl, "PUT", toUserDto(user)).then(fromUserDto);

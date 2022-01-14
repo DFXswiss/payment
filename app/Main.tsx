@@ -9,7 +9,6 @@ import GtcScreen from "./screens/GtcScreen";
 import HomeScreen from "./screens/home/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
 import NotFoundScreen from "./screens/NotFoundScreen";
-import RefScreen from "./screens/RefScreen";
 import { navigationRef } from "./utils/NavigationHelper";
 import { StyleSheet, View } from "react-native";
 import HeaderContent from "./components/HeaderContent";
@@ -47,7 +46,6 @@ const Main = () => {
       screens: {
         [Routes.Home]: "/",
         [Routes.Login]: "login",
-        [Routes.Ref]: "ref",
         [Routes.Gtc]: "legal",
         [Routes.Cfp]: "cfp",
         [Routes.Admin]: "admin",
@@ -59,7 +57,6 @@ const Main = () => {
   const screens = [
     { route: Routes.Home, screen: HomeScreen },
     { route: Routes.Login, screen: LoginScreen },
-    { route: Routes.Ref, screen: RefScreen },
     { route: Routes.Gtc, screen: GtcScreen },
     { route: Routes.Cfp, screen: CfpScreen },
     { route: Routes.Admin, screen: AdminScreen },

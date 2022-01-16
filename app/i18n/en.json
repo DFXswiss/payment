@@ -111,6 +111,7 @@
         "account_type": "Account type",
         "personal": "Personal account",
         "business": "Business account",
+        "self_employed": "Self-employed account",
         "legacy_address": "Legacy address",
         "address": "ID",
         "signature": "Signature",

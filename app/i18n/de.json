@@ -115,7 +115,7 @@
         "account_type": "Kontotyp",
         "personal": "Privatkonto",
         "business": "Geschäftskonto",
-        "self_employed": "Selbstständig",
+        "self": "Selbstständig",
         "legacy_address": "Legacy Adresse",
         "address": "ID",
         "signature": "Signatur",

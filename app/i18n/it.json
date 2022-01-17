@@ -114,6 +114,7 @@
         "account_type": "Tipo di conto",
         "personal": "Conto privato",
         "business": "Conto commerciale",
+        "selfemployed": "Lavoratore autonomo",
         "legacy_address": "Indirizzo dell'eredità",
         "address": "ID",
         "signature": "Firma",

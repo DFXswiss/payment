@@ -214,7 +214,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { condition: Boolean(user.country), label: "model.user.country", value: user.country?.name },
     { condition: true, label: "model.user.mail", value: user.mail, emptyHint: t("model.user.add_mail") },
     { condition: Boolean(user.mobileNumber), label: "model.user.mobile_number", value: user.mobileNumber },
-    { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef },
+    { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef + (user?.fees.refBonus ? ` (${user.fees.refBonus}% ${t("model.route.ref_bonus")})` : "") },
     {
       condition: Boolean(user.userVolume.buyVolume),
       label: "model.user.buy_volume",

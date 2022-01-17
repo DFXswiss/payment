@@ -97,7 +97,7 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
       />
       <SpacerV />
 
-      {(accountType === AccountType.BUSINESS || accountType === AccountType.SELF)  && <H3 text={t("model.user.personal_info")} />}
+      {!(accountType === AccountType.PERSONAL)  && <H3 text={t("model.user.personal_info")} />}
 
       <View style={AppStyles.containerHorizontalWrap}>
         <Input name="firstName" label={t("model.user.first_name")} />
@@ -137,7 +137,7 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
       <Input name="usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />
       <SpacerV />
 
-      {(accountType === AccountType.BUSINESS || accountType === AccountType.SELF) && (
+      {!(accountType === AccountType.PERSONAL) && (
         <>
           <H3 text={t("model.user.organization_info")} />
           <Input name="organizationName" label={t("model.user.organization_name")} />

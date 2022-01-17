@@ -37,7 +37,7 @@ export enum KycState {
 export enum AccountType {
   PERSONAL = "Personal",
   BUSINESS = "Business",
-  SELF = "Self",
+  SELF_EMPLOYED = "Self",
 }
 
 export interface NewUserDto {

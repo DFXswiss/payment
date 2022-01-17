@@ -404,7 +404,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
               </DataTable>
               <SpacerV />
 
-              {(user.accountType === AccountType.BUSINESS || user.accountType === AccountType.SELF) && organizationData(user).some((d) => d.condition) && (
+              {!(user.accountType === AccountType.PERSONAL) && organizationData(user).some((d) => d.condition) && (
                 <>
                   <H3 text={t("model.user.organization_info")} />
                   <DataTable>

@@ -115,7 +115,7 @@
         "account_type": "Tipo de conta",
         "personal": "Conta privada",
         "business": "Conta comercial",
-        "self": "Conto comerciante único",
+        "selfemployed": "Conto comerciante único",
         "legacy_address": "Endereço Legacy",
         "address": "ID",
         "signature": "Assinatura",

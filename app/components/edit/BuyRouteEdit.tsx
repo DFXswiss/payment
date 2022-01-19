@@ -67,9 +67,6 @@ const BuyRouteEdit = ({
   };
 
   const showAssetWarning = (): boolean => stockTokenChainIds.includes(asset?.chainId);
-  const assetBuyable = (asset: Asset) =>
-    asset.buyable ||
-    (stockTokenChainIds.includes(asset?.chainId) && [UserRole.Admin, UserRole.BETA].includes(session?.role ?? UserRole.User));
 
   const rules: any = createRules({
     asset: Validations.Required,
@@ -83,7 +80,7 @@ const BuyRouteEdit = ({
       <DeFiPicker
         name="asset"
         label={t("model.route.asset")}
-        items={assets.filter((a) => assetBuyable(a))}
+        items={assets.filter((a) => a.buyable)}
         idFunc={(i) => i.id}
         labelFunc={(i) => i.name}
       />

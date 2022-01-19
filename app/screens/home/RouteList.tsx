@@ -27,7 +27,7 @@ import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
 import { ApiError } from "../../models/ApiDto";
 import { User } from "../../models/User";
-import { StakingRoute } from "models/StakingRoute";
+import { StakingRoute, StakingType } from "../../models/StakingRoute";
 import StakingRouteEdit from "../../components/edit/StakingRouteEdit";
 
 interface Props {
@@ -90,7 +90,7 @@ const RouteList = ({
   const [isSellLoading, setIsSellLoading] = useState<{ [id: string]: boolean }>({});
   const [isStakingLoading, setIsStakingLoading] = useState<{ [id: string]: boolean }>({});
   const [isHistoryLoading, setIsHistoryLoading] = useState(false);
-  const [detailRoute, setDetailRoute] = useState<BuyRoute | SellRoute | undefined>(undefined);
+  const [detailRoute, setDetailRoute] = useState<BuyRoute | SellRoute | StakingRoute | undefined>(undefined);
 
   const activeBuyRoutes = buyRoutes?.filter((r) => r.active);
   const activeSellRoutes = sellRoutes?.filter((r) => r.active);
@@ -108,7 +108,7 @@ const RouteList = ({
   };
   const onStakingRouteCreated = (route: StakingRoute) => {
     setStakingRoutes((routes) => updateRoutes(route, routes));
-    // setDetailRoute(route); // TODO
+    setDetailRoute(route);
     setIsStakingRouteEdit(false);
   };
   const updateRoutes: <T extends BuyRoute | SellRoute | StakingRoute>(route: T, routes?: T[]) => T[] | undefined = (
@@ -156,29 +156,51 @@ const RouteList = ({
       .finally(() => setIsHistoryLoading(false));
   };
 
-  const routeData = (route: BuyRoute | SellRoute) => [
-    "asset" in route
-      ? { condition: true, label: "model.route.asset", value: route.asset?.name }
-      : { condition: true, label: "model.route.fiat", value: route.fiat?.name },
-    { condition: true, label: "model.route.iban", value: route.iban },
-    "bankUsage" in route
-      ? { condition: true, label: "model.route.bank_usage", value: route.bankUsage }
-      : { condition: true, label: "model.route.deposit_address", value: route.deposit?.address },
-    {
-      condition: "asset" in route,
-      label: "model.route.fee",
-      value:
-        `${user?.fees.buy}%` + (user?.fees.refBonus ? ` (${user.fees.refBonus}% ${t("model.route.ref_bonus")})` : ""),
-    },
-    {
-      condition: "fiat" in route,
-      label: "model.route.fee",
-      value: `${user?.fees.sell}%`,
-    },
-    { condition: "asset" in route, label: "model.route.volume", value: `${route.volume} €` },
-    { condition: "asset" in route, label: "model.route.annual_volume", value: `${route.annualVolume} €` },
-    { condition: "fiat" in route, label: "model.route.min_deposit", value: "0.1 DFI" },
-  ];
+  const routeData = (route: BuyRoute | SellRoute | StakingRoute) =>
+    "asset" in route // buy route
+      ? [
+          { condition: true, label: "model.route.asset", value: route.asset?.name },
+          { condition: true, label: "model.route.iban", value: route.iban },
+          { condition: true, label: "model.route.bank_usage", value: route.bankUsage },
+          {
+            condition: true,
+            label: "model.route.fee",
+            value:
+              `${user?.fees.buy}%` +
+              (user?.fees.refBonus ? ` (${user.fees.refBonus}% ${t("model.route.ref_bonus")})` : ""),
+          },
+          { condition: true, label: "model.route.volume", value: `${route.volume} €` },
+          { condition: true, label: "model.route.annual_volume", value: `${route.annualVolume} €` },
+        ]
+      : "fiat" in route // sell route
+      ? [
+          { condition: true, label: "model.route.fiat", value: route.fiat?.name },
+          { condition: true, label: "model.route.iban", value: route.iban },
+          { condition: true, label: "model.route.deposit_address", value: route.deposit?.address },
+          { condition: true, label: "model.route.fee", value: `${user?.fees.sell}%` },
+          { condition: true, label: "model.route.min_deposit", value: "0.1 DFI" },
+        ]
+      : // staking route
+        [
+          { condition: true, label: "model.route.reward", value: t(`model.route.${route.rewardType.toLowerCase()}`) },
+          {
+            condition: route.rewardType === StakingType.PAYOUT,
+            label: "model.route.reward_sell",
+            value: `${route.rewardSell?.fiat.name} - ${route.rewardSell?.iban}`,
+          },
+          { condition: true, label: "model.route.payback", value: t(`model.route.${route.paybackType.toLowerCase()}`) },
+          {
+            condition: route.paybackType === StakingType.PAYOUT,
+            label: "model.route.payback_sell",
+            value: `${route.paybackSell?.fiat.name} - ${route.paybackSell?.iban}`,
+          },
+          { condition: true, label: "model.route.deposit_address", value: route.deposit?.address },
+          { condition: true, label: "model.route.fee", value: "0%" },
+          { condition: true, label: "model.route.min_deposit", value: "0.1 DFI" },
+          { condition: true, label: "model.route.min_invest", value: "100 DFI" },
+          { condition: true, label: "model.route.payback_date", value: "31.03.2022" },
+          // TODO: volume
+        ];
 
   return (
     <>
@@ -244,11 +266,20 @@ const RouteList = ({
                 </DeFiButton>
                 <DeFiButton
                   mode="contained"
-                  loading={"asset" in detailRoute ? isBuyLoading[detailRoute.id] : isSellLoading[detailRoute.id]}
+                  loading={
+                    "asset" in detailRoute
+                      ? isBuyLoading[detailRoute.id]
+                      : "fiat" in detailRoute
+                      ? isSellLoading[detailRoute.id]
+                      : isStakingLoading[detailRoute.id]
+                  }
                   onPress={() => {
-                    ("asset" in detailRoute ? deleteBuyRoute(detailRoute) : deleteSellRoute(detailRoute)).then(() =>
-                      setDetailRoute(undefined)
-                    );
+                    ("asset" in detailRoute
+                      ? deleteBuyRoute(detailRoute)
+                      : "fiat" in detailRoute
+                      ? deleteSellRoute(detailRoute)
+                      : deleteStakingRoute(detailRoute)
+                    ).then(() => setDetailRoute(undefined));
                   }}
                 >
                   {t("action.delete")}
@@ -418,13 +449,7 @@ const RouteList = ({
                 </CompactHeader>
 
                 {activeStakingRoutes.map((route) => (
-                  <TouchableOpacity
-                    key={route.id}
-                    onPress={() => {
-                      /*TODO setDetailRoute(route)*/
-                    }}
-                    disabled={device.SM}
-                  >
+                  <TouchableOpacity key={route.id} onPress={() => setDetailRoute(route)} disabled={device.SM}>
                     <CompactRow>
                       <CompactCell style={{ flex: 1 }}>
                         {t(`model.route.${route.rewardType.toLowerCase()}`)}
@@ -445,12 +470,7 @@ const RouteList = ({
                               onPress={() => deleteStakingRoute(route)}
                               isLoading={isStakingLoading[route.id]}
                             />
-                            <IconButton
-                              icon="chevron-right"
-                              onPress={() => {
-                                /*TODO setDetailRoute(route)*/
-                              }}
-                            />
+                            <IconButton icon="chevron-right" onPress={() => setDetailRoute(route)} />
                           </>
                         ) : (
                           <IconButton icon="chevron-right" />

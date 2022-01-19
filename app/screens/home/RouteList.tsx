@@ -182,17 +182,21 @@ const RouteList = ({
         ]
       : // staking route
         [
-          { condition: true, label: "model.route.reward", value: t(`model.route.${route.rewardType.toLowerCase()}`) },
           {
-            condition: route.rewardType === StakingType.PAYOUT,
-            label: "model.route.reward_sell",
-            value: `${route.rewardSell?.fiat.name} - ${route.rewardSell?.iban}`,
+            condition: true,
+            label: "model.route.reward",
+            value:
+              route.rewardType === StakingType.PAYOUT
+                ? `${route.rewardSell?.fiat.name} - ${route.rewardSell?.iban}`
+                : t(`model.route.${route.rewardType.toLowerCase()}`),
           },
-          { condition: true, label: "model.route.payback", value: t(`model.route.${route.paybackType.toLowerCase()}`) },
           {
-            condition: route.paybackType === StakingType.PAYOUT,
-            label: "model.route.payback_sell",
-            value: `${route.paybackSell?.fiat.name} - ${route.paybackSell?.iban}`,
+            condition: true,
+            label: "model.route.payback",
+            value:
+              route.paybackType === StakingType.PAYOUT
+                ? `${route.paybackSell?.fiat.name} - ${route.paybackSell?.iban}`
+                : t(`model.route.${route.paybackType.toLowerCase()}`),
           },
           { condition: true, label: "model.route.deposit_address", value: route.deposit?.address },
           { condition: true, label: "model.route.fee", value: "0%" },

@@ -76,6 +76,15 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     setIsSellRouteEdit(update);
   };
 
+  const stakingRouteEdit = (update: SetStateAction<boolean>) => {
+    if (![KycStatus.WAIT_VERIFY_MANUAL, KycStatus.COMPLETED].includes(user?.kycStatus ?? KycStatus.NA)) {
+      user?.kycStatus === KycStatus.NA ? onKyc() : continueKyc();
+      return;
+    }
+
+    setIsStakingRouteEdit(update);
+  };
+
   const userEdit = (edit: boolean) => {
     setIsUserEdit(edit);
     if (!edit) {
@@ -486,7 +495,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
               isSellRouteEdit={isSellRouteEdit && !isUserEdit}
               setIsSellRouteEdit={sellRouteEdit}
               isStakingRouteEdit={isStakingRouteEdit}
-              setIsStakingRouteEdit={setIsStakingRouteEdit}
+              setIsStakingRouteEdit={stakingRouteEdit}
             />
           )}
         </>

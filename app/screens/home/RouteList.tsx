@@ -182,6 +182,9 @@ const RouteList = ({
         ]
       : // staking route
         [
+          { condition: true, label: "model.route.deposit_address", value: route.deposit?.address },
+          { condition: true, label: "model.route.min_deposit", value: "0.1 DFI" },
+          { condition: true, label: "model.route.min_invest", value: "100 DFI" },
           {
             condition: true,
             label: "model.route.reward",
@@ -190,6 +193,8 @@ const RouteList = ({
                 ? `${route.rewardSell?.fiat.name} - ${route.rewardSell?.iban}`
                 : t(`model.route.${route.rewardType.toLowerCase()}`),
           },
+          { condition: true, label: "model.route.fee", value: "0%" },
+          { condition: true, label: "model.route.payback_date", value: "31.03.2022" },
           {
             condition: true,
             label: "model.route.payback",
@@ -198,11 +203,6 @@ const RouteList = ({
                 ? `${route.paybackSell?.fiat.name} - ${route.paybackSell?.iban}`
                 : t(`model.route.${route.paybackType.toLowerCase()}`),
           },
-          { condition: true, label: "model.route.deposit_address", value: route.deposit?.address },
-          { condition: true, label: "model.route.fee", value: "0%" },
-          { condition: true, label: "model.route.min_deposit", value: "0.1 DFI" },
-          { condition: true, label: "model.route.min_invest", value: "100 DFI" },
-          { condition: true, label: "model.route.payback_date", value: "31.03.2022" },
           // TODO: volume
         ];
 

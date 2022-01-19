@@ -194,7 +194,18 @@
         "fee": "Gebühr",
         "volume": "Volumen",
         "annual_volume": "Jahresvolumen",
-        "min_deposit": "Min. Einzahlung"
+        "min_deposit": "Min. Einzahlung",
+        "min_invest": "Min. Investment",
+        "staking": "Staking",
+        "new_staking": "Neue Stakingroute",
+        "reward": "Reward",
+        "payback": "Rückzahlung",
+        "reinvest": "Reinvest",
+        "wallet": "Wallet",
+        "payout": "Auszahlung",
+        "reward_sell": "Reward-Verkaufsroute",
+        "payback_sell": "Payback-Verkaufsroute",
+        "payback_date": "Rückzahlung am"
       },
       "payment": {
         "new": "Neue Zahlungen",

@@ -36,7 +36,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import RefFeeEdit from "../../components/edit/RefFeeEdit";
 import { navigate } from "../../utils/NavigationHelper";
 import Routes from "../../config/Routes";
-import { StakingRoute } from "models/StakingRoute";
+import { StakingRoute } from "../../models/StakingRoute";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 

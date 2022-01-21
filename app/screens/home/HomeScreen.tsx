@@ -36,6 +36,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import RefFeeEdit from "../../components/edit/RefFeeEdit";
 import { navigate } from "../../utils/NavigationHelper";
 import Routes from "../../config/Routes";
+import { StakingRoute } from "../../models/StakingRoute";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
@@ -47,9 +48,11 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const [user, setUser] = useState<User>();
   const [buyRoutes, setBuyRoutes] = useState<BuyRoute[]>();
   const [sellRoutes, setSellRoutes] = useState<SellRoute[]>();
+  const [stakingRoutes, setStakingRoutes] = useState<StakingRoute[]>();
   const [isUserEdit, setIsUserEdit] = useState(false);
   const [isBuyRouteEdit, setIsBuyRouteEdit] = useState(false);
   const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
+  const [isStakingRouteEdit, setIsStakingRouteEdit] = useState(false);
   const [isKycRequest, setIsKycRequest] = useState(false);
   const [isKycLoading, setIsKycLoading] = useState(false);
   const [isRefFeeEdit, setIsRefFeeEdit] = useState(false);
@@ -71,6 +74,15 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     }
 
     setIsSellRouteEdit(update);
+  };
+
+  const stakingRouteEdit = (update: SetStateAction<boolean>) => {
+    if (![KycStatus.WAIT_VERIFY_MANUAL, KycStatus.COMPLETED].includes(user?.kycStatus ?? KycStatus.NA)) {
+      user?.kycStatus === KycStatus.NA ? onKyc() : continueKyc();
+      return;
+    }
+
+    setIsStakingRouteEdit(update);
   };
 
   const userEdit = (edit: boolean) => {
@@ -168,6 +180,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
                 setUser(user);
                 setBuyRoutes(user.buys);
                 setSellRoutes(user.sells);
+                setStakingRoutes(user.stakingRoutes);
               }
             })
             .catch((e: ApiError) =>
@@ -214,7 +227,11 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { condition: Boolean(user.country), label: "model.user.country", value: user.country?.name },
     { condition: true, label: "model.user.mail", value: user.mail, emptyHint: t("model.user.add_mail") },
     { condition: Boolean(user.mobileNumber), label: "model.user.mobile_number", value: user.mobileNumber },
-    { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef },
+    {
+      condition: Boolean(user.usedRef),
+      label: "model.user.used_ref",
+      value: user.usedRef + (user?.fees.refBonus ? ` (${user.fees.refBonus}% ${t("model.route.ref_bonus")})` : ""),
+    },
     {
       condition: Boolean(user.userVolume.buyVolume),
       label: "model.user.buy_volume",
@@ -471,10 +488,14 @@ const HomeScreen = ({ session }: { session?: Session }) => {
               setBuyRoutes={setBuyRoutes}
               sellRoutes={sellRoutes}
               setSellRoutes={setSellRoutes}
+              stakingRoutes={stakingRoutes}
+              setStakingRoutes={setStakingRoutes}
               isBuyRouteEdit={isBuyRouteEdit}
               setIsBuyRouteEdit={setIsBuyRouteEdit}
               isSellRouteEdit={isSellRouteEdit && !isUserEdit}
               setIsSellRouteEdit={sellRouteEdit}
+              isStakingRouteEdit={isStakingRouteEdit}
+              setIsStakingRouteEdit={stakingRouteEdit}
             />
           )}
         </>

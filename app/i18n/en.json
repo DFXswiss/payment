@@ -188,7 +188,18 @@
         "fee": "Fee",
         "volume": "Volume",
         "annual_volume": "Annual volume",
-        "min_deposit": "Min. deposit"
+        "min_deposit": "Min. deposit",
+        "min_invest": "Min. investment",
+        "staking": "Staking",
+        "new_staking": "New staking route",
+        "reward": "Reward",
+        "payback": "Repayment",
+        "reinvest": "Reinvest",
+        "wallet": "Wallet",
+        "payout": "Payout",
+        "reward_sell": "Reward sale route",
+        "payback_sell": "Payback sale route",
+        "payback_date": "Payback on"
       },
       "payment": {
         "new": "New payments",

@@ -21,7 +21,7 @@ import {
   UserDto,
 } from "../models/User";
 import AuthService, { Credentials, Session } from "./AuthService";
-import { ChatbotResponse } from "models/ChatbotResponse";
+import { StakingRoute } from "models/StakingRoute";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -29,6 +29,7 @@ const UserUrl = "user";
 const RefUrl = "ref";
 const BuyUrl = "buy";
 const SellUrl = "sell";
+const StakingUrl = "staking";
 const TransactionUrl = "transaction";
 const AssetUrl = "asset";
 const FiatUrl = "fiat";
@@ -100,6 +101,14 @@ export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
 
 export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
   return fetchFrom<SellRouteDto>(SellUrl, "PUT", toSellRouteDto(route)).then(fromSellRouteDto);
+};
+
+export const postStakingRoute = (route: StakingRoute): Promise<StakingRoute> => {
+  return fetchFrom<StakingRoute>(StakingUrl, "POST", route);
+};
+
+export const putStakingRoute = (route: StakingRoute): Promise<StakingRoute> => {
+  return fetchFrom<StakingRoute>(StakingUrl, "PUT", route);
 };
 
 export const getTransactions = (): Promise<Transaction[]> => {

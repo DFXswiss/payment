@@ -345,7 +345,7 @@ const RouteList = ({
         </>
       )}
 
-      {(activeBuyRoutes?.length ?? 0) + (activeSellRoutes?.length ?? 0) > 0 ? (
+      {(activeBuyRoutes?.length ?? 0) + (activeSellRoutes?.length ?? 0) + (activeStakingRoutes?.length ?? 0) > 0 ? (
         <>
           {activeBuyRoutes && activeBuyRoutes.length > 0 && (
             <>

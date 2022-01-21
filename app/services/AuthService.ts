@@ -31,6 +31,10 @@ export class Session implements ISession {
     return Boolean(this.accessToken);
   }
 
+  public get isBetaUser(): boolean {
+    return [UserRole.Admin, UserRole.BETA].includes(this.role ?? UserRole.Unknown);
+  }
+
   public get isExpired(): boolean {
     return this.expires != null && Date.now() > this.expires.getTime();
   }

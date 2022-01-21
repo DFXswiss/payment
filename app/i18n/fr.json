@@ -189,7 +189,18 @@
         "fee": "Frais",
         "volume": "Volume",
         "annual_volume": "Volume annuel",
-        "min_deposit": "Dépôt min."
+        "min_deposit": "Dépôt min.",
+        "min_invest": "Investissement min.",
+        "staking": "Staking",
+        "new_staking": "Nouvelle route de staking",
+        "reward": "Récompense",
+        "payback": "Remboursement",
+        "reinvest": "Réinvestissement",
+        "wallet": "Portefeuille",
+        "payout": "Remboursement",
+        "reward_sell": "Route de vente pour récompense",
+        "payback_sell": "Route de vente pour remboursement",
+        "payback_date": "Remboursement le"
       },
       "payment": {
         "new": "Nouveaux paiements",

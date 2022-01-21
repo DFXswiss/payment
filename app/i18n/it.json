@@ -192,7 +192,18 @@
         "fee": "Tassa",
         "volume": "Volume",
         "annual_volume": "Volume annuale",
-        "min_deposit": "Deposito min."
+        "min_deposit": "Deposito min.",
+        "min_invest": "Investimento min.",
+        "staking": "Staking",
+        "new_staking": "Nuovo percorso di staking",
+        "reward": "Premiare",
+        "payback": "Rimborso",
+        "reinvest": "Reinvestire",
+        "wallet": "Portafoglio",
+        "payout": "Payout",
+        "reward_sell": "Premiare il percorso di vendita",
+        "payback_sell": "Rimborso il percorso di vendita",
+        "payback_date": "Ritorno di capitale su"
       },
       "payment": {
         "new": "Nuovi pagamenti",

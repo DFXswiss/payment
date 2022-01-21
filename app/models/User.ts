@@ -2,6 +2,7 @@ import { BuyRoute, BuyRouteDto, fromBuyRouteDto } from "./BuyRoute";
 import { Country } from "./Country";
 import { Language } from "./Language";
 import { fromSellRouteDto, SellRoute, SellRouteDto } from "./SellRoute";
+import { StakingRoute } from "./StakingRoute";
 
 export enum UserRole {
   Unknown = "Unknown",
@@ -145,11 +146,13 @@ export interface User extends NewUser {
 export interface UserDetailDto extends UserDto {
   buys: BuyRouteDto[];
   sells: SellRouteDto[];
+  stakingRoutes: StakingRoute[];
 }
 
 export interface UserDetail extends User {
   buys: BuyRoute[];
   sells: SellRoute[];
+  stakingRoutes: StakingRoute[];
 }
 
 export const fromUserDto = (user: UserDto): User => ({
@@ -220,7 +223,7 @@ export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
   ...fromUserDto(dto),
   buys: dto.buys.map((buy) => fromBuyRouteDto(buy)),
   sells: dto.sells.map((sell) => fromSellRouteDto(sell)),
+  stakingRoutes: dto.stakingRoutes,
 });
 
-const toStringDto = (string: string): string | null =>
-  string === "" ? null : string;
+const toStringDto = (string: string): string | null => (string === "" ? null : string);

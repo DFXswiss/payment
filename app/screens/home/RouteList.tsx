@@ -13,7 +13,7 @@ import { H2, H3 } from "../../elements/Texts";
 import { useDevice } from "../../hooks/useDevice";
 import { BuyRoute } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import { createHistoryCsv, putBuyRoute, putSellRoute } from "../../services/ApiService";
+import { createHistoryCsv, putBuyRoute, putSellRoute, putStakingRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import AppStyles from "../../styles/AppStyles";
 import { openUrl, updateObject } from "../../utils/Utils";
@@ -26,7 +26,9 @@ import withSession from "../../hocs/withSession";
 import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
 import { ApiError } from "../../models/ApiDto";
-import { User, UserRole } from "../../models/User";
+import { User } from "../../models/User";
+import { StakingRoute, StakingType } from "../../models/StakingRoute";
+import StakingRouteEdit from "../../components/edit/StakingRouteEdit";
 
 interface Props {
   user?: User;
@@ -35,10 +37,14 @@ interface Props {
   setBuyRoutes: Dispatch<SetStateAction<BuyRoute[] | undefined>>;
   sellRoutes?: SellRoute[];
   setSellRoutes: Dispatch<SetStateAction<SellRoute[] | undefined>>;
+  stakingRoutes?: StakingRoute[];
+  setStakingRoutes: Dispatch<SetStateAction<StakingRoute[] | undefined>>;
   isBuyRouteEdit: boolean;
   setIsBuyRouteEdit: Dispatch<SetStateAction<boolean>>;
   isSellRouteEdit: boolean;
   setIsSellRouteEdit: Dispatch<SetStateAction<boolean>>;
+  isStakingRouteEdit: boolean;
+  setIsStakingRouteEdit: Dispatch<SetStateAction<boolean>>;
 }
 
 const IconPlaceholder = ({ icon }: { icon: string }) => (
@@ -50,9 +56,10 @@ const Placeholders = ({ device }: { device: DeviceClass }) => (
       <>
         <IconPlaceholder icon="content-copy" />
         <IconPlaceholder icon="delete" />
+        <IconPlaceholder icon="chevron-right" />
       </>
     ) : (
-      <IconPlaceholder icon="magnify" />
+      <IconPlaceholder icon="chevron-right" />
     )}
   </>
 );
@@ -67,21 +74,27 @@ const RouteList = ({
   setBuyRoutes,
   sellRoutes,
   setSellRoutes,
+  stakingRoutes,
+  setStakingRoutes,
   isBuyRouteEdit,
   setIsBuyRouteEdit,
   isSellRouteEdit,
   setIsSellRouteEdit,
+  isStakingRouteEdit,
+  setIsStakingRouteEdit,
 }: Props) => {
   const { t } = useTranslation();
   const device = useDevice();
 
   const [isBuyLoading, setIsBuyLoading] = useState<{ [id: string]: boolean }>({});
   const [isSellLoading, setIsSellLoading] = useState<{ [id: string]: boolean }>({});
+  const [isStakingLoading, setIsStakingLoading] = useState<{ [id: string]: boolean }>({});
   const [isHistoryLoading, setIsHistoryLoading] = useState(false);
-  const [detailRoute, setDetailRoute] = useState<SellRoute | BuyRoute | undefined>(undefined);
+  const [detailRoute, setDetailRoute] = useState<BuyRoute | SellRoute | StakingRoute | undefined>(undefined);
 
   const activeBuyRoutes = buyRoutes?.filter((r) => r.active);
   const activeSellRoutes = sellRoutes?.filter((r) => r.active);
+  const activeStakingRoutes = stakingRoutes?.filter((r) => r.active);
 
   const onBuyRouteCreated = (route: BuyRoute) => {
     setBuyRoutes((routes) => updateRoutes(route, routes));
@@ -93,7 +106,15 @@ const RouteList = ({
     setDetailRoute(route);
     setIsSellRouteEdit(false);
   };
-  const updateRoutes: <T extends BuyRoute | SellRoute>(route: T, routes?: T[]) => T[] | undefined = (route, routes) => {
+  const onStakingRouteCreated = (route: StakingRoute) => {
+    setStakingRoutes((routes) => updateRoutes(route, routes));
+    setDetailRoute(route);
+    setIsStakingRouteEdit(false);
+  };
+  const updateRoutes: <T extends BuyRoute | SellRoute | StakingRoute>(route: T, routes?: T[]) => T[] | undefined = (
+    route,
+    routes
+  ) => {
     const oldRoute = routes?.find((r) => r.id === route.id);
     if (oldRoute) {
       Object.assign(oldRoute, route);
@@ -117,6 +138,13 @@ const RouteList = ({
       .catch(() => NotificationService.error(t("feedback.delete_failed")))
       .finally(() => setIsSellLoading((obj) => updateObject(obj, { [route.id]: false })));
   };
+  const deleteStakingRoute = (route: StakingRoute) => {
+    setIsStakingLoading((obj) => updateObject(obj, { [route.id]: true }));
+    return putStakingRoute(updateObject(route, { active: false }))
+      .then(() => (route.active = false))
+      .catch(() => NotificationService.error(t("feedback.delete_failed")))
+      .finally(() => setIsStakingLoading((obj) => updateObject(obj, { [route.id]: false })));
+  };
 
   const onExportHistory = () => {
     setIsHistoryLoading(true);
@@ -128,29 +156,55 @@ const RouteList = ({
       .finally(() => setIsHistoryLoading(false));
   };
 
-  const routeData = (route: SellRoute | BuyRoute) => [
-    "asset" in route
-      ? { condition: true, label: "model.route.asset", value: route.asset?.name }
-      : { condition: true, label: "model.route.fiat", value: route.fiat?.name },
-    { condition: true, label: "model.route.iban", value: route.iban },
-    "bankUsage" in route
-      ? { condition: true, label: "model.route.bank_usage", value: route.bankUsage }
-      : { condition: true, label: "model.route.deposit_address", value: route.deposit?.address },
-    {
-      condition: "asset" in route,
-      label: "model.route.fee",
-      value:
-        `${user?.fees.buy}%` + (user?.fees.refBonus ? ` (${user.fees.refBonus}% ${t("model.route.ref_bonus")})` : ""),
-    },
-    {
-      condition: "fiat" in route,
-      label: "model.route.fee",
-      value: `${user?.fees.sell}%`,
-    },
-    { condition: "asset" in route, label: "model.route.volume", value: `${route.volume} €` },
-    { condition: "asset" in route, label: "model.route.annual_volume", value: `${route.annualVolume} €` },
-    { condition: "fiat" in route, label: "model.route.min_deposit", value: "0.1 DFI" },
-  ];
+  const routeData = (route: BuyRoute | SellRoute | StakingRoute) =>
+    "asset" in route // buy route
+      ? [
+          { condition: true, label: "model.route.asset", value: route.asset?.name },
+          { condition: true, label: "model.route.iban", value: route.iban },
+          { condition: true, label: "model.route.bank_usage", value: route.bankUsage },
+          {
+            condition: true,
+            label: "model.route.fee",
+            value:
+              `${user?.fees.buy}%` +
+              (user?.fees.refBonus ? ` (${user.fees.refBonus}% ${t("model.route.ref_bonus")})` : ""),
+          },
+          { condition: true, label: "model.route.volume", value: `${route.volume} €` },
+          { condition: true, label: "model.route.annual_volume", value: `${route.annualVolume} €` },
+        ]
+      : "fiat" in route // sell route
+      ? [
+          { condition: true, label: "model.route.fiat", value: route.fiat?.name },
+          { condition: true, label: "model.route.iban", value: route.iban },
+          { condition: true, label: "model.route.deposit_address", value: route.deposit?.address },
+          { condition: true, label: "model.route.fee", value: `${user?.fees.sell}%` },
+          { condition: true, label: "model.route.min_deposit", value: "0.1 DFI" },
+        ]
+      : // staking route
+        [
+          { condition: true, label: "model.route.deposit_address", value: route.deposit?.address },
+          { condition: true, label: "model.route.min_deposit", value: "0.1 DFI" },
+          { condition: true, label: "model.route.min_invest", value: "100 DFI" },
+          {
+            condition: true,
+            label: "model.route.reward",
+            value:
+              route.rewardType === StakingType.PAYOUT
+                ? `${route.rewardSell?.fiat.name} - ${route.rewardSell?.iban}`
+                : t(`model.route.${route.rewardType.toLowerCase()}`),
+          },
+          { condition: true, label: "model.route.fee", value: "0%" },
+          { condition: true, label: "model.route.payback_date", value: "31.03.2022" },
+          {
+            condition: true,
+            label: "model.route.payback",
+            value:
+              route.paybackType === StakingType.PAYOUT
+                ? `${route.paybackSell?.fiat.name} - ${route.paybackSell?.iban}`
+                : t(`model.route.${route.paybackType.toLowerCase()}`),
+          },
+          // TODO: volume
+        ];
 
   return (
     <>
@@ -169,6 +223,14 @@ const RouteList = ({
         style={{ width: 400 }}
       >
         <SellRouteEdit routes={sellRoutes} onRouteCreated={onSellRouteCreated} />
+      </DeFiModal>
+      <DeFiModal
+        isVisible={isStakingRouteEdit}
+        setIsVisible={setIsStakingRouteEdit}
+        title={t("model.route.new_staking")}
+        style={{ width: 400 }}
+      >
+        <StakingRouteEdit routes={stakingRoutes} onRouteCreated={onStakingRouteCreated} sells={activeSellRoutes} />
       </DeFiModal>
       <DeFiModal
         isVisible={Boolean(detailRoute)}
@@ -208,11 +270,20 @@ const RouteList = ({
                 </DeFiButton>
                 <DeFiButton
                   mode="contained"
-                  loading={"asset" in detailRoute ? isBuyLoading[detailRoute.id] : isSellLoading[detailRoute.id]}
+                  loading={
+                    "asset" in detailRoute
+                      ? isBuyLoading[detailRoute.id]
+                      : "fiat" in detailRoute
+                      ? isSellLoading[detailRoute.id]
+                      : isStakingLoading[detailRoute.id]
+                  }
                   onPress={() => {
-                    ("asset" in detailRoute ? deleteBuyRoute(detailRoute) : deleteSellRoute(detailRoute)).then(() =>
-                      setDetailRoute(undefined)
-                    );
+                    ("asset" in detailRoute
+                      ? deleteBuyRoute(detailRoute)
+                      : "fiat" in detailRoute
+                      ? deleteSellRoute(detailRoute)
+                      : deleteStakingRoute(detailRoute)
+                    ).then(() => setDetailRoute(undefined));
                   }}
                 >
                   {t("action.delete")}
@@ -238,6 +309,13 @@ const RouteList = ({
                 {t("model.route.sell")}
               </DeFiButton>
             </View>
+            {session?.isBetaUser && (
+              <View style={AppStyles.ml10}>
+                <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)}>
+                  {t("model.route.staking")}
+                </DeFiButton>
+              </View>
+            )}
           </>
         )}
       </View>
@@ -254,6 +332,16 @@ const RouteList = ({
               {t("model.route.sell")}
             </DeFiButton>
           </View>
+          {session?.isBetaUser && (
+            <>
+              <SpacerV />
+              <View style={AppStyles.containerHorizontal}>
+                <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)} style={{ flex: 1 }}>
+                  {t("model.route.staking")}
+                </DeFiButton>
+              </View>
+            </>
+          )}
         </>
       )}
 
@@ -267,8 +355,8 @@ const RouteList = ({
               <DataTable>
                 <CompactHeader>
                   <CompactTitle style={{ flex: 1 }}>{t("model.route.asset")}</CompactTitle>
-                  <CompactTitle style={{ flex: 2 }}>{t("model.route.bank_usage")}</CompactTitle>
                   {device.SM && <CompactTitle style={{ flex: 2 }}>{t("model.route.iban")}</CompactTitle>}
+                  <CompactTitle style={{ flex: 2 }}>{t("model.route.bank_usage")}</CompactTitle>
                   <CompactTitle style={{ flex: undefined }}>
                     <Placeholders device={device} />
                   </CompactTitle>
@@ -278,8 +366,8 @@ const RouteList = ({
                   <TouchableOpacity key={route.id} onPress={() => setDetailRoute(route)} disabled={device.SM}>
                     <CompactRow>
                       <CompactCell style={{ flex: 1 }}>{route.asset?.name}</CompactCell>
-                      <CompactCell style={{ flex: 2 }}>{route.bankUsage}</CompactCell>
                       {device.SM && <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>}
+                      <CompactCell style={{ flex: 2 }}>{route.bankUsage}</CompactCell>
                       <CompactCell style={{ flex: undefined }}>
                         {device.SM ? (
                           <>
@@ -309,8 +397,8 @@ const RouteList = ({
               <DataTable>
                 <CompactHeader>
                   <CompactTitle style={{ flex: 1 }}>{t("model.route.fiat")}</CompactTitle>
-                  <CompactTitle style={{ flex: 2 }}>{t("model.route.deposit_address")}</CompactTitle>
                   {device.SM && <CompactTitle style={{ flex: 2 }}>{t("model.route.iban")}</CompactTitle>}
+                  <CompactTitle style={{ flex: 2 }}>{t("model.route.deposit_address")}</CompactTitle>
                   <CompactTitle style={{ flex: undefined }}>
                     <Placeholders device={device} />
                   </CompactTitle>
@@ -320,8 +408,8 @@ const RouteList = ({
                   <TouchableOpacity key={route.id} onPress={() => setDetailRoute(route)} disabled={device.SM}>
                     <CompactRow>
                       <CompactCell style={{ flex: 1 }}>{route.fiat?.name}</CompactCell>
-                      <CompactCell style={{ flex: 2 }}>{route.deposit?.address}</CompactCell>
                       {device.SM && <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>}
+                      <CompactCell style={{ flex: 2 }}>{route.deposit?.address}</CompactCell>
                       <CompactCell style={{ flex: undefined }}>
                         {device.SM ? (
                           <>
@@ -349,8 +437,57 @@ const RouteList = ({
               <Text style={[AppStyles.b, { color: Colors.Yellow }]}>{t("model.route.dfi_only")}</Text>
             </>
           )}
+          {activeStakingRoutes && activeStakingRoutes.length > 0 && (
+            <>
+              <SpacerV height={20} />
+              <H3 text={t("model.route.staking")} />
 
-          {[UserRole.Admin, UserRole.BETA].includes(session?.role ?? UserRole.Unknown) && (
+              <DataTable>
+                <CompactHeader>
+                  <CompactTitle style={{ flex: 1 }}>{t("model.route.reward")}</CompactTitle>
+                  <CompactTitle style={{ flex: 1 }}>{t("model.route.payback")}</CompactTitle>
+                  {device.SM && <CompactTitle style={{ flex: 2 }}>{t("model.route.deposit_address")}</CompactTitle>}
+                  <CompactTitle style={{ flex: undefined }}>
+                    <Placeholders device={device} />
+                  </CompactTitle>
+                </CompactHeader>
+
+                {activeStakingRoutes.map((route) => (
+                  <TouchableOpacity key={route.id} onPress={() => setDetailRoute(route)} disabled={device.SM}>
+                    <CompactRow>
+                      <CompactCell style={{ flex: 1 }}>
+                        {t(`model.route.${route.rewardType.toLowerCase()}`)}
+                      </CompactCell>
+                      <CompactCell style={{ flex: 1 }}>
+                        {t(`model.route.${route.paybackType.toLowerCase()}`)}
+                      </CompactCell>
+                      {device.SM && <CompactCell style={{ flex: 2 }}>{route.deposit?.address}</CompactCell>}
+                      <CompactCell style={{ flex: undefined }}>
+                        {device.SM ? (
+                          <>
+                            <IconButton
+                              icon="content-copy"
+                              onPress={() => ClipboardService.copy(route.deposit?.address)}
+                            />
+                            <IconButton
+                              icon="delete"
+                              onPress={() => deleteStakingRoute(route)}
+                              isLoading={isStakingLoading[route.id]}
+                            />
+                            <IconButton icon="chevron-right" onPress={() => setDetailRoute(route)} />
+                          </>
+                        ) : (
+                          <IconButton icon="chevron-right" />
+                        )}
+                      </CompactCell>
+                    </CompactRow>
+                  </TouchableOpacity>
+                ))}
+              </DataTable>
+            </>
+          )}
+
+          {session?.isBetaUser && (
             <>
               <SpacerV height={20} />
               <ButtonContainer>

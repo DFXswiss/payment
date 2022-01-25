@@ -111,7 +111,7 @@
         "account_type": "Type de compte",
         "personal": "Compte privé",
         "business": "Compte professionnel",
-        "selfemployed": "Travailleur indépendant",
+        "soleproprietorship": "Travailleur indépendant",
         "legacy_address": "Legacy Adresse",
         "address": "ID",
         "signature": "Signature",

@@ -111,7 +111,7 @@
           "account_type": "Tipo de cuenta",
           "personal": "Cuenta personal",
           "business": "Cuenta de negocios",
-          "selfemployed": "Cuenta de autónomo",
+          "soleproprietorship": "Cuenta de autónomo",
           "legacy_address": "Cuenta de patrimonio",
           "address": "Identificador",
           "signature": "Firma",

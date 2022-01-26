@@ -258,16 +258,6 @@ const RouteList = ({
             <View>
               <ButtonContainer>
                 <DeFiButton
-                  onPress={() =>
-                    "asset" in detailRoute
-                      ? ClipboardService.copy(detailRoute.bankUsage)
-                      : ClipboardService.copy(detailRoute.deposit?.address)
-                  }
-                >
-                  {t("asset" in detailRoute ? "model.route.copy_bank_usage" : "model.route.copy_deposit_address")}
-                </DeFiButton>
-                <DeFiButton
-                  mode="contained"
                   loading={
                     "asset" in detailRoute
                       ? isBuyLoading[detailRoute.id]
@@ -286,6 +276,16 @@ const RouteList = ({
                   disabled={"isInUse" in detailRoute && detailRoute.isInUse}
                 >
                   {t("action.delete")}
+                </DeFiButton>
+                <DeFiButton
+                  mode="contained"
+                  onPress={() =>
+                    "asset" in detailRoute
+                      ? ClipboardService.copy(detailRoute.bankUsage)
+                      : ClipboardService.copy(detailRoute.deposit?.address)
+                  }
+                >
+                  {t("asset" in detailRoute ? "model.route.copy_bank_usage" : "model.route.copy_deposit_address")}
                 </DeFiButton>
               </ButtonContainer>
             </View>

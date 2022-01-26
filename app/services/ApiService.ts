@@ -21,13 +21,15 @@ import {
   UserDto,
 } from "../models/User";
 import AuthService, { Credentials, Session } from "./AuthService";
-import { StakingRoute } from "models/StakingRoute";
+import { StakingRoute } from "../models/StakingRoute";
+import { RoutesDto, fromRoutesDto, Routes } from "../models/Route";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
 const UserUrl = "user";
 const RefUrl = "ref";
 const BuyUrl = "buy";
+const RouteUrl = "route";
 const SellUrl = "sell";
 const StakingUrl = "staking";
 const TransactionUrl = "transaction";
@@ -62,8 +64,8 @@ export const postKyc = (limit?: number): Promise<string | undefined> => {
 
   return fetchFrom<{ url: string | undefined }>(url, "POST").then((r) => r.url);
 };
-export const putUser = (user: User): Promise<User> => {
-  return fetchFrom<UserDto>(UserUrl, "PUT", toUserDto(user)).then(fromUserDto);
+export const putUser = (user: User): Promise<UserDetail> => {
+  return fetchFrom<UserDetailDto>(UserUrl, "PUT", toUserDto(user)).then(fromUserDetailDto);
 };
 
 export const putUserLanguage = (language: Language): Promise<void> => {
@@ -79,6 +81,10 @@ export const updateRefFee = (fee: number): Promise<void> => {
 };
 
 // --- PAYMENT ROUTES --- //
+export const getRoutes = (): Promise<Routes> => {
+  return fetchFrom<RoutesDto>(RouteUrl).then(fromRoutesDto);
+};
+
 export const getBuyRoutes = (): Promise<BuyRoute[]> => {
   return fetchFrom<BuyRouteDto[]>(BuyUrl).then((dtoList) => dtoList.map((dto) => fromBuyRouteDto(dto)));
 };

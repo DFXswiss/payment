@@ -165,9 +165,7 @@ const RouteList = ({
           {
             condition: true,
             label: "model.route.fee",
-            value:
-              `${user?.fees.buy}%` +
-              (user?.fees.refBonus ? ` (${user.fees.refBonus}% ${t("model.route.ref_bonus")})` : ""),
+            value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
           },
           { condition: true, label: "model.route.volume", value: `${route.volume} €` },
           { condition: true, label: "model.route.annual_volume", value: `${route.annualVolume} €` },
@@ -177,7 +175,7 @@ const RouteList = ({
           { condition: true, label: "model.route.fiat", value: route.fiat?.name },
           { condition: true, label: "model.route.iban", value: route.iban },
           { condition: true, label: "model.route.deposit_address", value: route.deposit?.address },
-          { condition: true, label: "model.route.fee", value: `${user?.fees.sell}%` },
+          { condition: true, label: "model.route.fee", value: `${route.fee}%` },
           { condition: true, label: "model.route.min_deposit", value: "0.1 DFI" },
         ]
       : // staking route

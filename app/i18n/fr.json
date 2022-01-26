@@ -200,7 +200,8 @@
         "payout": "Remboursement",
         "reward_sell": "Route de vente pour récompense",
         "payback_sell": "Route de vente pour remboursement",
-        "payback_date": "Remboursement le"
+        "payback_date": "Remboursement le",
+        "balance": "Avoirs"
       },
       "payment": {
         "new": "Nouveaux paiements",

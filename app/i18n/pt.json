@@ -204,7 +204,8 @@
         "payout": "Pagamento",
         "reward_sell": "Rota de vendas de recompensas",
         "payback_sell": "Rota de vendas de retorno",
-        "payback_date": "Retorno em"
+        "payback_date": "Retorno em",
+        "balance": "Crédito"
       },
       "payment": {
         "new": "Novos pagamentos",

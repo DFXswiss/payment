@@ -205,7 +205,8 @@
         "payout": "Auszahlung",
         "reward_sell": "Reward-Verkaufsroute",
         "payback_sell": "Payback-Verkaufsroute",
-        "payback_date": "Rückzahlung am"
+        "payback_date": "Rückzahlung am",
+        "balance": "Guthaben"
       },
       "payment": {
         "new": "Neue Zahlungen",

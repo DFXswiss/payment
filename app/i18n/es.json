@@ -198,7 +198,8 @@
           "payout": "Desembolso",
           "reward_sell": "Ruta para recompensar",
           "payback_sell": "Ruta de reembolso",
-          "payback_date": "Reembolso activado"
+          "payback_date": "Reembolso activado",
+          "balance": "Crédito"
         },
         "payment": {
           "new": "Nuevos pagos",

@@ -201,7 +201,7 @@ const RouteList = ({
                 ? `${route.paybackSell?.fiat.name} - ${route.paybackSell?.iban}`
                 : t(`model.route.${route.paybackType.toLowerCase()}`),
           },
-          // TODO: volume
+          { condition: true, label: "model.route.balance", value: `${route.balance} DFI` },
         ];
 
   return (

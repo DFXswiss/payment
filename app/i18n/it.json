@@ -203,7 +203,8 @@
         "payout": "Payout",
         "reward_sell": "Premiare il percorso di vendita",
         "payback_sell": "Rimborso il percorso di vendita",
-        "payback_date": "Ritorno di capitale su"
+        "payback_date": "Ritorno di capitale su",
+        "balance": "Credito"
       },
       "payment": {
         "new": "Nuovi pagamenti",

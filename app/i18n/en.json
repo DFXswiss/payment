@@ -199,7 +199,8 @@
         "payout": "Payout",
         "reward_sell": "Reward sale route",
         "payback_sell": "Payback sale route",
-        "payback_date": "Payback on"
+        "payback_date": "Payback on",
+        "balance": "Balance"
       },
       "payment": {
         "new": "New payments",

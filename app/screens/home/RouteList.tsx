@@ -283,6 +283,7 @@ const RouteList = ({
                       : deleteStakingRoute(detailRoute)
                     ).then(() => setDetailRoute(undefined));
                   }}
+                  disabled={"isInUse" in detailRoute && detailRoute.isInUse}
                 >
                   {t("action.delete")}
                 </DeFiButton>
@@ -419,6 +420,7 @@ const RouteList = ({
                               icon="delete"
                               onPress={() => deleteSellRoute(route)}
                               isLoading={isSellLoading[route.id]}
+                              disabled={route.isInUse}
                             />
                             <IconButton icon="chevron-right" onPress={() => setDetailRoute(route)} />
                           </>
@@ -471,6 +473,7 @@ const RouteList = ({
                               icon="delete"
                               onPress={() => deleteStakingRoute(route)}
                               isLoading={isStakingLoading[route.id]}
+                              disabled={route.isInUse}
                             />
                             <IconButton icon="chevron-right" onPress={() => setDetailRoute(route)} />
                           </>

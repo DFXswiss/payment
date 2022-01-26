@@ -10,6 +10,7 @@ export interface SellRouteDto {
   annualVolume: number;
   active: boolean;
   fee: number;
+  isInUse: boolean;
 }
 
 export interface SellRoute {
@@ -21,6 +22,7 @@ export interface SellRoute {
   annualVolume: number;
   active: boolean;
   fee: number;
+  isInUse: boolean;
 }
 
 export const fromSellRouteDto = (route: SellRouteDto): SellRoute => ({
@@ -32,6 +34,7 @@ export const fromSellRouteDto = (route: SellRouteDto): SellRoute => ({
   volume: route.volume,
   annualVolume: route.annualVolume,
   fee: route.fee,
+  isInUse: route.isInUse,
 });
 
 export const toSellRouteDto = (route: SellRoute): SellRouteDto => ({
@@ -43,4 +46,5 @@ export const toSellRouteDto = (route: SellRoute): SellRouteDto => ({
   volume: route.volume,
   annualVolume: route.annualVolume,
   fee: route.fee,
+  isInUse: route.isInUse,
 });

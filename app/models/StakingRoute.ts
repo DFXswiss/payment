@@ -16,4 +16,5 @@ export interface StakingRoute {
   paybackType: StakingType;
   paybackSell?: SellRoute;
   balance: number;
+  isInUse: boolean;
 }

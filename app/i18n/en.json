@@ -150,7 +150,7 @@
         "ref_commission_hint": "Are you sure you want to reduce your commission to {{fee}}%? This step cannot be undone."
       },
       "kyc":{
-        "request": "Do you want to increase your limit now?",
+        "request": "We need to verify your account first. Do you want to start the verification process?",
         "invest_volume": "How much do you approximately want to invest in total?",
         "volume": "Investment volume",
         "status": "KYC status",
@@ -186,12 +186,14 @@
         "no_tx": "No successful transactions found!",
         "ref_bonus": "ref bonus",
         "fee": "Fee",
+        "reward_fee": "Reward fee",
         "volume": "Volume",
         "annual_volume": "Annual volume",
         "min_deposit": "Min. deposit",
         "min_invest": "Min. investment",
         "staking": "Staking",
         "new_staking": "New staking route",
+        "edit_staking": "Edit staking route",
         "reward": "Reward",
         "payback": "Repayment",
         "reinvest": "Reinvest",

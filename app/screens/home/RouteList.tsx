@@ -191,7 +191,7 @@ const RouteList = ({
                 ? `${route.rewardSell?.fiat.name} - ${route.rewardSell?.iban}`
                 : t(`model.route.${route.rewardType.toLowerCase()}`),
           },
-          { condition: true, label: "model.route.fee", value: "0%" },
+          { condition: true, label: "model.route.reward_fee", value: "0%" },
           { condition: true, label: "model.route.payback_date", value: "31.03.2022" },
           {
             condition: true,
@@ -206,30 +206,6 @@ const RouteList = ({
 
   return (
     <>
-      <DeFiModal
-        isVisible={isBuyRouteEdit}
-        setIsVisible={setIsBuyRouteEdit}
-        title={t("model.route.new_buy")}
-        style={{ width: 400 }}
-      >
-        <BuyRouteEdit routes={buyRoutes} onRouteCreated={onBuyRouteCreated} session={session} />
-      </DeFiModal>
-      <DeFiModal
-        isVisible={isSellRouteEdit}
-        setIsVisible={setIsSellRouteEdit}
-        title={t("model.route.new_sell")}
-        style={{ width: 400 }}
-      >
-        <SellRouteEdit routes={sellRoutes} onRouteCreated={onSellRouteCreated} />
-      </DeFiModal>
-      <DeFiModal
-        isVisible={isStakingRouteEdit}
-        setIsVisible={setIsStakingRouteEdit}
-        title={t("model.route.new_staking")}
-        style={{ width: 400 }}
-      >
-        <StakingRouteEdit routes={stakingRoutes} onRouteCreated={onStakingRouteCreated} sells={activeSellRoutes} />
-      </DeFiModal>
       <DeFiModal
         isVisible={Boolean(detailRoute)}
         setIsVisible={() => setDetailRoute(undefined)}
@@ -267,16 +243,21 @@ const RouteList = ({
                   }
                   onPress={() => {
                     ("asset" in detailRoute
-                      ? deleteBuyRoute(detailRoute)
+                      ? deleteBuyRoute(buyRoutes?.find((r) => r.id === detailRoute.id) as BuyRoute)
                       : "fiat" in detailRoute
-                      ? deleteSellRoute(detailRoute)
-                      : deleteStakingRoute(detailRoute)
+                      ? deleteSellRoute(sellRoutes?.find((r) => r.id === detailRoute.id) as SellRoute)
+                      : deleteStakingRoute(stakingRoutes?.find((r) => r.id === detailRoute.id) as StakingRoute)
                     ).then(() => setDetailRoute(undefined));
                   }}
                   disabled={"isInUse" in detailRoute && detailRoute.isInUse}
                 >
                   {t("action.delete")}
                 </DeFiButton>
+                <>
+                  {"rewardType" in detailRoute && (
+                    <DeFiButton onPress={() => setIsStakingRouteEdit(true)}>{t("action.edit")}</DeFiButton>
+                  )}
+                </>
                 <DeFiButton
                   mode="contained"
                   onPress={() =>
@@ -291,6 +272,35 @@ const RouteList = ({
             </View>
           </>
         )}
+      </DeFiModal>
+      <DeFiModal
+        isVisible={isBuyRouteEdit}
+        setIsVisible={setIsBuyRouteEdit}
+        title={t("model.route.new_buy")}
+        style={{ width: 400 }}
+      >
+        <BuyRouteEdit routes={buyRoutes} onRouteCreated={onBuyRouteCreated} session={session} />
+      </DeFiModal>
+      <DeFiModal
+        isVisible={isSellRouteEdit}
+        setIsVisible={setIsSellRouteEdit}
+        title={t("model.route.new_sell")}
+        style={{ width: 400 }}
+      >
+        <SellRouteEdit routes={sellRoutes} onRouteCreated={onSellRouteCreated} />
+      </DeFiModal>
+      <DeFiModal
+        isVisible={isStakingRouteEdit}
+        setIsVisible={setIsStakingRouteEdit}
+        title={t(detailRoute ? "model.route.edit_staking" : "model.route.new_staking")}
+        style={{ width: 400 }}
+      >
+        <StakingRouteEdit
+          route={detailRoute as StakingRoute}
+          routes={stakingRoutes}
+          onRouteCreated={onStakingRouteCreated}
+          sells={activeSellRoutes}
+        />
       </DeFiModal>
 
       <View style={AppStyles.containerHorizontal}>

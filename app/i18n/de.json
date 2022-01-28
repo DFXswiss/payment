@@ -154,7 +154,7 @@
         "ref_commission_hint": "Bist du sicher, dass du deine Provision auf {{fee}}% verkleinern möchtest? Dieser Schritt kann nicht mehr rückgängig gemacht werden."
       },
       "kyc":{
-        "request": "Wir müssen dein Konto zuerst verifizieren.\nDafür musst du einen Chatbot und Online Identifikation durchführen.\nMöchtest du die Verifizierung starten?",
+        "request": "Dein Konto muss zuerst mit dem Chatbot und Online Identifikation verifiziert werden.\nMöchtest du mit dem Chatbot starten?",
         "invest_volume": "Wie viel möchtest du total ungefähr investieren?",
         "volume": "Investitionsvolumen",
         "status": "KYC Status",

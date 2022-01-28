@@ -150,7 +150,7 @@
           "ref_commission_hint": "¿Estás seguro de que quieres reducir tu comisión a {{fee}}%? Este paso no se puede rehacer."
         },
         "kyc":{
-          "request": "Primero tenemos que verificar su cuenta. ¿Desea iniciar el proceso de verificación?",
+          "request": "Su cuenta debe ser verificada primero con el chatbot y la identificación en línea.\n¿Desea comenzar con el chatbot?",
           "invest_volume": "¿Cúanto quieres invertir en total?",
           "volume": "Volumen de inversión",
           "status": "Estado KYC (Identificación personal)",

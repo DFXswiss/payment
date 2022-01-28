@@ -160,6 +160,7 @@
           "videoid": "En progreso (Identificación por video)",
           "manual": "Provisional KYC (Identificación personal)",
           "completed": "Completado KYC (Identificación personal)",
+          "not_finish_chatbot": "Chatbot aún no terminado",
           "finish_chatbot": "Completado chatbot"
         },
         "route": {

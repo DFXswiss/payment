@@ -160,6 +160,7 @@
         "videoid": "In progress (Video identification)",
         "manual": "Provisional KYC",
         "completed": "Full KYC",
+        "not_finish_chatbot": "Chatbot not finished",
         "finish_chatbot": "Finished chatbot"
       },
       "route": {

@@ -49,11 +49,11 @@ const [url, setUrl] = useState("");
             setShow(user.kycStatus);
             setUrl(url);
           } else {
-            NotificationService.error(t("feedback.request_failed"));
+            NotificationService.error(t("feedback.not_finish_chatbot"));
           }
         })
         })
-    .catch(() => NotificationService.error(t("feedback.request_failed")))
+    .catch(() => NotificationService.error(t("feedback.not_finish_chatbot")))
     .finally(() => setLoading(false));
 }} compact>
               {t("model.kyc.finish_chatbot")}

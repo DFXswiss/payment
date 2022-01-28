@@ -165,6 +165,7 @@
         "videoid": "Em curso (Identificação vídeo)",
         "manual": "KYC provisório",
         "completed": "KYC completo",
+        "not_finish_chatbot": "Chatbot noch nicht beendet",
         "finish_chatbot": "Chatbot completo"
       },
       "route": {

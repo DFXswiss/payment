@@ -430,9 +430,6 @@ const RouteList = ({
                   </TouchableOpacity>
                 ))}
               </DataTable>
-
-              <SpacerV />
-              <Text style={[AppStyles.b, { color: Colors.Yellow }]}>{t("model.route.dfi_only")}</Text>
             </>
           )}
           {activeStakingRoutes && activeStakingRoutes.length > 0 && (

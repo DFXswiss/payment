@@ -183,7 +183,6 @@
         "copy_deposit_address": "Copiare l'indirizzo di deposito",
         "conflict": "Il percorso esiste già!",
         "exchange_rate_warning": "Attenzione, compriamo questo bene su DEX e non possiamo garantire un tasso di cambio! I prezzi su DEX possono essere significativamente inferiori o superiori a quelli di altre borse, il che può anche avere un impatto negativo sul tasso di cambio.",
-        "dfi_only": "Attenzione, inviate solo DFI UTXO ai vostri indirizzi di deposito. I token (dBTC, dETH, ...) non sono attualmente elaborati e non vengono restituiti!",
         "history": "Storico delle transazioni",
         "no_tx": "Nessuna transazione di successo trovata!",
         "ref_bonus": "Bonus referral",

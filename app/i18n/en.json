@@ -182,7 +182,6 @@
         "copy_deposit_address": "Copy deposit address",
         "conflict": "The route already exists!",
         "exchange_rate_warning": "Attention, we buy this asset on DEX and cannot guarantee an exchange rate! Prices on DEX can be significantly lower or higher than on other exchanges, which can also have a negative impact on the exchange rate.",
-        "dfi_only": "Attention, please send only DFI UTXO to your deposit addresses. Tokens (dBTC, dETH, ...) are currently not processed and not returned!",
         "history": "Transaction history",
         "no_tx": "No successful transactions found!",
         "ref_bonus": "ref bonus",

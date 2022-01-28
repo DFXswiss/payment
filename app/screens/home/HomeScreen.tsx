@@ -7,8 +7,8 @@ import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
 import { H2, H3 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
-import { AccountType, KycStatus, User } from "../../models/User";
-import { getUserDetail, postKyc } from "../../services/ApiService";
+import { AccountType, KycStatus, User, UserDetail } from "../../models/User";
+import { getRoutes, getUserDetail, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
@@ -45,7 +45,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   const device = useDevice();
   const RefUrl = Environment.api.refUrl;
   const [isLoading, setLoading] = useState(true);
-  const [user, setUser] = useState<User>();
+  const [user, setUser] = useState<UserDetail>();
   const [buyRoutes, setBuyRoutes] = useState<BuyRoute[]>();
   const [sellRoutes, setSellRoutes] = useState<SellRoute[]>();
   const [stakingRoutes, setStakingRoutes] = useState<StakingRoute[]>();
@@ -93,7 +93,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     }
   };
 
-  const onUserChanged = (newUser: User) => {
+  const onUserChanged = (newUser: UserDetail) => {
     setUser(newUser);
     setIsUserEdit(false);
   };
@@ -174,13 +174,13 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     (cancelled) => {
       if (session) {
         if (session.isLoggedIn) {
-          getUserDetail()
-            .then((user) => {
+          Promise.all([getUserDetail(), getRoutes()])
+            .then(([user, routes]) => {
               if (!cancelled()) {
                 setUser(user);
-                setBuyRoutes(user.buys);
-                setSellRoutes(user.sells);
-                setStakingRoutes(user.stakingRoutes);
+                setBuyRoutes(routes.buy);
+                setSellRoutes(routes.sell);
+                setStakingRoutes(routes.staking);
               }
             })
             .catch((e: ApiError) =>
@@ -210,6 +210,10 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     }
   };
 
+  const buyVolume = () => (buyRoutes ?? []).reduce((prev, curr) => prev + curr.volume, 0);
+  const annualBuyVolume = () => (buyRoutes ?? []).reduce((prev, curr) => prev + curr.annualVolume, 0);
+  const sellVolume = () => (sellRoutes ?? []).reduce((prev, curr) => prev + curr.volume, 0);
+
   const userData = (user: User) => [
     { condition: Boolean(user.address), label: "model.user.address", value: user.address },
     {
@@ -227,25 +231,21 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     { condition: Boolean(user.country), label: "model.user.country", value: user.country?.name },
     { condition: true, label: "model.user.mail", value: user.mail, emptyHint: t("model.user.add_mail") },
     { condition: Boolean(user.mobileNumber), label: "model.user.mobile_number", value: user.mobileNumber },
+    { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef },
     {
-      condition: Boolean(user.usedRef),
-      label: "model.user.used_ref",
-      value: user.usedRef + (user?.fees.refBonus ? ` (${user.fees.refBonus}% ${t("model.route.ref_bonus")})` : ""),
-    },
-    {
-      condition: Boolean(user.userVolume.buyVolume),
+      condition: Boolean(buyVolume()),
       label: "model.user.buy_volume",
-      value: `${formatAmount(user.userVolume.buyVolume)} €`,
+      value: `${formatAmount(buyVolume())} €`,
     },
     {
-      condition: Boolean(user.userVolume.annualBuyVolume),
+      condition: Boolean(annualBuyVolume()),
       label: "model.user.annual_buy_volume",
-      value: `${formatAmount(user.userVolume.annualBuyVolume)} €`,
+      value: `${formatAmount(annualBuyVolume())} €`,
     },
     {
-      condition: Boolean(user.userVolume.sellVolume),
+      condition: Boolean(sellVolume()),
       label: "model.user.sell_volume",
-      value: `${formatAmount(user.userVolume.sellVolume)} €`,
+      value: `${formatAmount(sellVolume())} €`,
     },
     {
       condition: user.kycStatus != KycStatus.NA,
@@ -287,7 +287,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     },
   ];
 
-  const refData = (user: User) => [
+  const refData = (user: UserDetail) => [
     {
       condition: Boolean(user.refData.ref),
       label: "model.user.own_ref",

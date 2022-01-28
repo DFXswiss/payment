@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { DataTable, Text } from "react-native-paper";
 import BuyRouteEdit from "../../components/edit/BuyRouteEdit";
 import SellRouteEdit from "../../components/edit/SellRouteEdit";
@@ -165,9 +165,7 @@ const RouteList = ({
           {
             condition: true,
             label: "model.route.fee",
-            value:
-              `${user?.fees.buy}%` +
-              (user?.fees.refBonus ? ` (${user.fees.refBonus}% ${t("model.route.ref_bonus")})` : ""),
+            value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
           },
           { condition: true, label: "model.route.volume", value: `${route.volume} €` },
           { condition: true, label: "model.route.annual_volume", value: `${route.annualVolume} €` },
@@ -177,7 +175,7 @@ const RouteList = ({
           { condition: true, label: "model.route.fiat", value: route.fiat?.name },
           { condition: true, label: "model.route.iban", value: route.iban },
           { condition: true, label: "model.route.deposit_address", value: route.deposit?.address },
-          { condition: true, label: "model.route.fee", value: `${user?.fees.sell}%` },
+          { condition: true, label: "model.route.fee", value: `${route.fee}%` },
           { condition: true, label: "model.route.min_deposit", value: "0.1 DFI" },
         ]
       : // staking route
@@ -193,7 +191,7 @@ const RouteList = ({
                 ? `${route.rewardSell?.fiat.name} - ${route.rewardSell?.iban}`
                 : t(`model.route.${route.rewardType.toLowerCase()}`),
           },
-          { condition: true, label: "model.route.fee", value: "0%" },
+          { condition: true, label: "model.route.reward_fee", value: "0%" },
           { condition: true, label: "model.route.payback_date", value: "31.03.2022" },
           {
             condition: true,
@@ -203,35 +201,11 @@ const RouteList = ({
                 ? `${route.paybackSell?.fiat.name} - ${route.paybackSell?.iban}`
                 : t(`model.route.${route.paybackType.toLowerCase()}`),
           },
-          // TODO: volume
+          { condition: true, label: "model.route.balance", value: `${route.balance} DFI` },
         ];
 
   return (
     <>
-      <DeFiModal
-        isVisible={isBuyRouteEdit}
-        setIsVisible={setIsBuyRouteEdit}
-        title={t("model.route.new_buy")}
-        style={{ width: 400 }}
-      >
-        <BuyRouteEdit routes={buyRoutes} onRouteCreated={onBuyRouteCreated} session={session} />
-      </DeFiModal>
-      <DeFiModal
-        isVisible={isSellRouteEdit}
-        setIsVisible={setIsSellRouteEdit}
-        title={t("model.route.new_sell")}
-        style={{ width: 400 }}
-      >
-        <SellRouteEdit routes={sellRoutes} onRouteCreated={onSellRouteCreated} />
-      </DeFiModal>
-      <DeFiModal
-        isVisible={isStakingRouteEdit}
-        setIsVisible={setIsStakingRouteEdit}
-        title={t("model.route.new_staking")}
-        style={{ width: 400 }}
-      >
-        <StakingRouteEdit routes={stakingRoutes} onRouteCreated={onStakingRouteCreated} sells={activeSellRoutes} />
-      </DeFiModal>
       <DeFiModal
         isVisible={Boolean(detailRoute)}
         setIsVisible={() => setDetailRoute(undefined)}
@@ -260,16 +234,6 @@ const RouteList = ({
             <View>
               <ButtonContainer>
                 <DeFiButton
-                  onPress={() =>
-                    "asset" in detailRoute
-                      ? ClipboardService.copy(detailRoute.bankUsage)
-                      : ClipboardService.copy(detailRoute.deposit?.address)
-                  }
-                >
-                  {t("asset" in detailRoute ? "model.route.copy_bank_usage" : "model.route.copy_deposit_address")}
-                </DeFiButton>
-                <DeFiButton
-                  mode="contained"
                   loading={
                     "asset" in detailRoute
                       ? isBuyLoading[detailRoute.id]
@@ -279,19 +243,64 @@ const RouteList = ({
                   }
                   onPress={() => {
                     ("asset" in detailRoute
-                      ? deleteBuyRoute(detailRoute)
+                      ? deleteBuyRoute(buyRoutes?.find((r) => r.id === detailRoute.id) as BuyRoute)
                       : "fiat" in detailRoute
-                      ? deleteSellRoute(detailRoute)
-                      : deleteStakingRoute(detailRoute)
+                      ? deleteSellRoute(sellRoutes?.find((r) => r.id === detailRoute.id) as SellRoute)
+                      : deleteStakingRoute(stakingRoutes?.find((r) => r.id === detailRoute.id) as StakingRoute)
                     ).then(() => setDetailRoute(undefined));
                   }}
+                  disabled={"isInUse" in detailRoute && detailRoute.isInUse}
                 >
                   {t("action.delete")}
+                </DeFiButton>
+                <>
+                  {"rewardType" in detailRoute && (
+                    <DeFiButton onPress={() => setIsStakingRouteEdit(true)}>{t("action.edit")}</DeFiButton>
+                  )}
+                </>
+                <DeFiButton
+                  mode="contained"
+                  onPress={() =>
+                    "asset" in detailRoute
+                      ? ClipboardService.copy(detailRoute.bankUsage)
+                      : ClipboardService.copy(detailRoute.deposit?.address)
+                  }
+                >
+                  {t("asset" in detailRoute ? "model.route.copy_bank_usage" : "model.route.copy_deposit_address")}
                 </DeFiButton>
               </ButtonContainer>
             </View>
           </>
         )}
+      </DeFiModal>
+      <DeFiModal
+        isVisible={isBuyRouteEdit}
+        setIsVisible={setIsBuyRouteEdit}
+        title={t("model.route.new_buy")}
+        style={{ width: 400 }}
+      >
+        <BuyRouteEdit routes={buyRoutes} onRouteCreated={onBuyRouteCreated} session={session} />
+      </DeFiModal>
+      <DeFiModal
+        isVisible={isSellRouteEdit}
+        setIsVisible={setIsSellRouteEdit}
+        title={t("model.route.new_sell")}
+        style={{ width: 400 }}
+      >
+        <SellRouteEdit routes={sellRoutes} onRouteCreated={onSellRouteCreated} />
+      </DeFiModal>
+      <DeFiModal
+        isVisible={isStakingRouteEdit}
+        setIsVisible={setIsStakingRouteEdit}
+        title={t(detailRoute ? "model.route.edit_staking" : "model.route.new_staking")}
+        style={{ width: 400 }}
+      >
+        <StakingRouteEdit
+          route={detailRoute as StakingRoute}
+          routes={stakingRoutes}
+          onRouteCreated={onStakingRouteCreated}
+          sells={activeSellRoutes}
+        />
       </DeFiModal>
 
       <View style={AppStyles.containerHorizontal}>
@@ -421,6 +430,7 @@ const RouteList = ({
                               icon="delete"
                               onPress={() => deleteSellRoute(route)}
                               isLoading={isSellLoading[route.id]}
+                              disabled={route.isInUse}
                             />
                             <IconButton icon="chevron-right" onPress={() => setDetailRoute(route)} />
                           </>
@@ -440,7 +450,12 @@ const RouteList = ({
           {activeStakingRoutes && activeStakingRoutes.length > 0 && (
             <>
               <SpacerV height={20} />
-              <H3 text={t("model.route.staking")} />
+              <View style={AppStyles.containerHorizontal}>
+                <H3 text={t("model.route.staking")} />
+                <View style={styles.betaContainer}>
+                  <Text style={styles.beta}> Beta</Text>
+                </View>
+              </View>
 
               <DataTable>
                 <CompactHeader>
@@ -473,6 +488,7 @@ const RouteList = ({
                               icon="delete"
                               onPress={() => deleteStakingRoute(route)}
                               isLoading={isStakingLoading[route.id]}
+                              disabled={route.isInUse}
                             />
                             <IconButton icon="chevron-right" onPress={() => setDetailRoute(route)} />
                           </>
@@ -538,5 +554,16 @@ const RouteList = ({
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  betaContainer: {
+    alignItems: "flex-start",
+    height: "100%",
+  },
+  beta: {
+    fontSize: 12,
+    marginTop: 6,
+  },
+});
 
 export default withSession(RouteList);

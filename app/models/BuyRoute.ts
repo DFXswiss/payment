@@ -9,6 +9,8 @@ export interface BuyRouteDto {
   volume: number;
   annualVolume: number;
   active: boolean;
+  fee: number;
+  refBonus: number;
 }
 
 export interface BuyRoute {
@@ -20,6 +22,8 @@ export interface BuyRoute {
   volume: number;
   annualVolume: number;
   active: boolean;
+  fee: number;
+  refBonus: number;
 }
 
 export const fromBuyRouteDto = (route: BuyRouteDto): BuyRoute => ({
@@ -31,6 +35,8 @@ export const fromBuyRouteDto = (route: BuyRouteDto): BuyRoute => ({
   active: route.active,
   volume: route.volume,
   annualVolume: route.annualVolume,
+  fee: route.fee,
+  refBonus: route.refBonus,
 });
 
 export const toBuyRouteDto = (route: BuyRoute): BuyRouteDto => ({
@@ -42,4 +48,6 @@ export const toBuyRouteDto = (route: BuyRoute): BuyRouteDto => ({
   active: route.active,
   volume: route.volume,
   annualVolume: route.annualVolume,
+  fee: route.fee,
+  refBonus: route.refBonus,
 });

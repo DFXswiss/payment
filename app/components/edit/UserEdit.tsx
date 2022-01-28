@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { Country } from "../../models/Country";
-import { AccountType, User } from "../../models/User";
+import { AccountType, User, UserDetail } from "../../models/User";
 import { getCountries, putUser } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import DeFiPicker from "../form/DeFiPicker";
@@ -19,11 +19,11 @@ import { DeFiButton } from "../../elements/Buttons";
 import ButtonContainer from "../util/ButtonContainer";
 import { createRules } from "../../utils/Utils";
 import { ActivityIndicator } from "react-native-paper";
-import { ApiError } from "models/ApiDto";
+import { ApiError } from "../../models/ApiDto";
 
 interface Props {
-  user?: User;
-  onUserChanged: (user: User) => void;
+  user?: UserDetail;
+  onUserChanged: (user: UserDetail) => void;
   allDataRequired: boolean;
 }
 

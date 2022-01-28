@@ -1,8 +1,5 @@
-import { BuyRoute, BuyRouteDto, fromBuyRouteDto } from "./BuyRoute";
 import { Country } from "./Country";
 import { Language } from "./Language";
-import { fromSellRouteDto, SellRoute, SellRouteDto } from "./SellRoute";
-import { StakingRoute } from "./StakingRoute";
 
 export enum UserRole {
   Unknown = "Unknown",
@@ -69,12 +66,6 @@ export interface Fees {
   sell: number;
 }
 
-export interface UserVolume {
-  buyVolume: number;
-  annualBuyVolume: number;
-  sellVolume: number;
-}
-
 export const toNewUserDto = (user: NewUser): NewUserDto => ({
   address: user.address,
   signature: user.signature,
@@ -95,9 +86,6 @@ export interface UserDto extends NewUserDto {
   phone: string;
 
   usedRef: string | null;
-  fees: Fees;
-  refData: RefData;
-  userVolume: UserVolume;
   status: UserStatus;
   kycStatus: KycStatus;
   kycState: KycState;
@@ -125,9 +113,6 @@ export interface User extends NewUser {
   mail: string;
   mobileNumber: string;
   usedRef: string;
-  fees: Fees;
-  refData: RefData;
-  userVolume: UserVolume;
   status: UserStatus;
   kycStatus: KycStatus;
   kycState: KycState;
@@ -144,15 +129,11 @@ export interface User extends NewUser {
 }
 
 export interface UserDetailDto extends UserDto {
-  buys: BuyRouteDto[];
-  sells: SellRouteDto[];
-  stakingRoutes: StakingRoute[];
+  refData: RefData;
 }
 
 export interface UserDetail extends User {
-  buys: BuyRoute[];
-  sells: SellRoute[];
-  stakingRoutes: StakingRoute[];
+  refData: RefData;
 }
 
 export const fromUserDto = (user: UserDto): User => ({
@@ -169,9 +150,6 @@ export const fromUserDto = (user: UserDto): User => ({
   mail: user.mail ?? "",
   mobileNumber: user.phone,
   usedRef: user.usedRef ?? "",
-  fees: user.fees,
-  refData: user.refData,
-  userVolume: user.userVolume,
   walletId: user.wallet,
   status: user.status,
   kycStatus: user.kycStatus,
@@ -201,9 +179,6 @@ export const toUserDto = (user: User): UserDto => ({
   mail: toStringDto(user.mail),
   phone: user.mobileNumber,
   usedRef: toStringDto(user.usedRef),
-  fees: user.fees,
-  refData: user.refData,
-  userVolume: user.userVolume,
   wallet: user.walletId,
   status: user.status,
   kycStatus: user.kycStatus,
@@ -221,9 +196,7 @@ export const toUserDto = (user: User): UserDto => ({
 
 export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
   ...fromUserDto(dto),
-  buys: dto.buys.map((buy) => fromBuyRouteDto(buy)),
-  sells: dto.sells.map((sell) => fromSellRouteDto(sell)),
-  stakingRoutes: dto.stakingRoutes,
+  refData: dto.refData,
 });
 
 const toStringDto = (string: string): string | null => (string === "" ? null : string);

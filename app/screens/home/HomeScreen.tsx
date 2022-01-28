@@ -108,10 +108,10 @@ const HomeScreen = ({ session }: { session?: Session }) => {
 
   const onKycRequested = (url: string | undefined) => {
     if(user){
-    if ([KycStatus.NA,KycStatus.WAIT_VERIFY_ONLINE,KycStatus.WAIT_VERIFY_VIDEO].includes(user.kycStatus)) {
-      user.kycStatus = KycStatus.WAIT_CHAT_BOT;
+    if ([KycStatus.NA,KycStatus.WAIT_CHAT_BOT,KycStatus.WAIT_VERIFY_ONLINE,KycStatus.WAIT_VERIFY_VIDEO].includes(user.kycStatus)) {
       if (url) {
-        navigate(Routes.OnBoarding, { url });
+        const kycStatus = user.kycStatus
+        navigate(Routes.OnBoarding, { url, kycStatus });
       } else {
         NotificationService.success(t("feedback.check_mails"));
       }

@@ -159,7 +159,8 @@
           "onlineid": "En progreso (Identificación online)",
           "videoid": "En progreso (Identificación por video)",
           "manual": "Provisional KYC (Identificación personal)",
-          "completed": "Completado KYC (Identificación personal)"
+          "completed": "Completado KYC (Identificación personal)",
+          "finish_chatbot": "Completado chatbot"
         },
         "route": {
           "routes": "Rutas de pago",

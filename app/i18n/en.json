@@ -159,7 +159,8 @@
         "onlineid": "In progress (Online identification)",
         "videoid": "In progress (Video identification)",
         "manual": "Provisional KYC",
-        "completed": "Full KYC"
+        "completed": "Full KYC",
+        "finish_chatbot": "Finished chatbot"
       },
       "route": {
         "routes": "Payment Routes",

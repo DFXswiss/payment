@@ -164,7 +164,8 @@
         "onlineid": "In Bearbeitung (Online Identifikation)",
         "videoid": "In Bearbeitung (Video Identifikation)",
         "manual": "Provisorisches KYC",
-        "completed": "Vollständiges KYC"
+        "completed": "Vollständiges KYC",
+        "finish_chatbot": "Chatbot fertig"
       },
       "route": {
         "routes": "Payment Routen",

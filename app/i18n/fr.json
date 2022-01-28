@@ -160,7 +160,8 @@
         "onlineid": "En cours (Identification en ligne)",
         "videoid": "En cours (Identification en vidéo)",
         "manual": "KYC incomplet",
-        "completed": "KYC complet"
+        "completed": "KYC complet",
+        "finish_chatbot": "Chatbot complet"
       },
       "route": {
         "routes": "Routes de paiement",

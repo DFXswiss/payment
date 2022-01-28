@@ -57,7 +57,7 @@ const OnBoardingScreen = ({ session }: { session?: Session }) => {
       <SpacerV height={20} />
       <View style={styles.container}>
         <Iframe src={url}></Iframe>
-        {kycState === KycStatus.WAIT_CHAT_BOT && (
+        {kycState === KycStatus.WAIT_CHAT_BOT || kycState === KycStatus.NA && (
           <DeFiButton onPress={finishChatBot} loading={isLoading}>
             {t("model.kyc.finish_chatbot")}
           </DeFiButton>

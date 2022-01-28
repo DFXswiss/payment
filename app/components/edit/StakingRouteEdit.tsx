@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, MutableRefObject } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { SpacerV } from "../../elements/Spacers";
@@ -14,23 +14,35 @@ import { createRules } from "../../utils/Utils";
 import { ActivityIndicator } from "react-native-paper";
 import { ApiError } from "../../models/ApiDto";
 import { SellRoute } from "../../models/SellRoute";
+import { View } from "react-native";
+import AppStyles from "../../styles/AppStyles";
+
+enum SellType {
+  REWARD = "Reward",
+  PAYBACK = "Payback",
+}
 
 const StakingRouteEdit = ({
   route,
   routes,
   onRouteCreated,
   sells,
+  createSellRoute,
+  newSellRouteCreated,
 }: {
   route?: StakingRoute;
   routes?: StakingRoute[];
   onRouteCreated: (route: StakingRoute) => void;
   sells?: SellRoute[];
+  createSellRoute: () => void;
+  newSellRouteCreated: MutableRefObject<((route: SellRoute) => void) | undefined>;
 }) => {
   const { t } = useTranslation();
   const {
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<StakingRoute>({ defaultValues: route });
   const rewardType = useWatch({ control, name: "rewardType", defaultValue: undefined });
   const paybackType = useWatch({ control, name: "paybackType", defaultValue: undefined });
@@ -38,6 +50,17 @@ const StakingRouteEdit = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string>();
+  const [newSellRouteType, setNewSellRouteType] = useState<SellType | undefined>();
+
+  useEffect(() => {
+    newSellRouteCreated.current = (newSellRoute: SellRoute) => {
+      if (newSellRoute && newSellRouteType) {
+        setValue(newSellRouteType === SellType.REWARD ? "rewardSell" : "paybackSell", newSellRoute, {
+          shouldValidate: true
+        });
+      }
+    };
+  });
 
   const onSubmit = (update: StakingRoute) => {
     setIsSaving(true);
@@ -75,6 +98,19 @@ const StakingRouteEdit = ({
     paybackSell: paybackType === StakingType.PAYOUT && Validations.Required,
   });
 
+  const newSellRouteButton = (type: SellType) => (
+    <View style={[AppStyles.containerHorizontal, { justifyContent: "flex-end" }]}>
+      <DeFiButton
+        onPress={() => {
+          setNewSellRouteType(type);
+          createSellRoute();
+        }}
+        compact
+      >
+        {t("model.route.new_sell")}
+      </DeFiButton>
+    </View>
+  );
   return isLoading ? (
     <ActivityIndicator size="large" />
   ) : (
@@ -96,6 +132,7 @@ const StakingRouteEdit = ({
             idFunc={(i) => i.id}
             labelFunc={(i) => `${i.fiat.name} - ${i.iban}`}
           />
+          {newSellRouteButton(SellType.REWARD)}
           <SpacerV />
         </>
       )}
@@ -117,6 +154,7 @@ const StakingRouteEdit = ({
             idFunc={(i) => i.id}
             labelFunc={(i) => `${i.fiat.name} - ${i.iban}`}
           />
+          {newSellRouteButton(SellType.PAYBACK)}
           <SpacerV />
         </>
       )}

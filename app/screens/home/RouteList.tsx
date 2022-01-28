@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { DataTable, Text } from "react-native-paper";
@@ -55,7 +55,6 @@ const Placeholders = ({ device }: { device: DeviceClass }) => (
     {device.SM ? (
       <>
         <IconPlaceholder icon="content-copy" />
-        <IconPlaceholder icon="delete" />
         <IconPlaceholder icon="chevron-right" />
       </>
     ) : (
@@ -85,6 +84,7 @@ const RouteList = ({
 }: Props) => {
   const { t } = useTranslation();
   const device = useDevice();
+  const newSellRouteCreated = useRef<(route: SellRoute) => {}>();
 
   const [isBuyLoading, setIsBuyLoading] = useState<{ [id: string]: boolean }>({});
   const [isSellLoading, setIsSellLoading] = useState<{ [id: string]: boolean }>({});
@@ -103,8 +103,12 @@ const RouteList = ({
   };
   const onSellRouteCreated = (route: SellRoute) => {
     setSellRoutes((routes) => updateRoutes(route, routes));
-    setDetailRoute(route);
     setIsSellRouteEdit(false);
+    if (isStakingRouteEdit && newSellRouteCreated?.current) {
+      newSellRouteCreated.current(route);
+    } else {
+      setDetailRoute(route);
+    }
   };
   const onStakingRouteCreated = (route: StakingRoute) => {
     setStakingRoutes((routes) => updateRoutes(route, routes));
@@ -274,22 +278,6 @@ const RouteList = ({
         )}
       </DeFiModal>
       <DeFiModal
-        isVisible={isBuyRouteEdit}
-        setIsVisible={setIsBuyRouteEdit}
-        title={t("model.route.new_buy")}
-        style={{ width: 400 }}
-      >
-        <BuyRouteEdit routes={buyRoutes} onRouteCreated={onBuyRouteCreated} session={session} />
-      </DeFiModal>
-      <DeFiModal
-        isVisible={isSellRouteEdit}
-        setIsVisible={setIsSellRouteEdit}
-        title={t("model.route.new_sell")}
-        style={{ width: 400 }}
-      >
-        <SellRouteEdit routes={sellRoutes} onRouteCreated={onSellRouteCreated} />
-      </DeFiModal>
-      <DeFiModal
         isVisible={isStakingRouteEdit}
         setIsVisible={setIsStakingRouteEdit}
         title={t(detailRoute ? "model.route.edit_staking" : "model.route.new_staking")}
@@ -300,7 +288,25 @@ const RouteList = ({
           routes={stakingRoutes}
           onRouteCreated={onStakingRouteCreated}
           sells={activeSellRoutes}
+          createSellRoute={() => setIsSellRouteEdit(true)}
+          newSellRouteCreated={newSellRouteCreated}
         />
+      </DeFiModal>
+      <DeFiModal
+        isVisible={isSellRouteEdit}
+        setIsVisible={setIsSellRouteEdit}
+        title={t("model.route.new_sell")}
+        style={{ width: 400 }}
+      >
+        <SellRouteEdit routes={sellRoutes} onRouteCreated={onSellRouteCreated} />
+      </DeFiModal>
+      <DeFiModal
+        isVisible={isBuyRouteEdit}
+        setIsVisible={setIsBuyRouteEdit}
+        title={t("model.route.new_buy")}
+        style={{ width: 400 }}
+      >
+        <BuyRouteEdit routes={buyRoutes} onRouteCreated={onBuyRouteCreated} session={session} />
       </DeFiModal>
 
       <View style={AppStyles.containerHorizontal}>
@@ -381,11 +387,6 @@ const RouteList = ({
                         {device.SM ? (
                           <>
                             <IconButton icon="content-copy" onPress={() => ClipboardService.copy(route.bankUsage)} />
-                            <IconButton
-                              icon="delete"
-                              onPress={() => deleteBuyRoute(route)}
-                              isLoading={isBuyLoading[route.id]}
-                            />
                             <IconButton icon="chevron-right" onPress={() => setDetailRoute(route)} />
                           </>
                         ) : (
@@ -426,12 +427,6 @@ const RouteList = ({
                               icon="content-copy"
                               onPress={() => ClipboardService.copy(route.deposit?.address)}
                             />
-                            <IconButton
-                              icon="delete"
-                              onPress={() => deleteSellRoute(route)}
-                              isLoading={isSellLoading[route.id]}
-                              disabled={route.isInUse}
-                            />
                             <IconButton icon="chevron-right" onPress={() => setDetailRoute(route)} />
                           </>
                         ) : (
@@ -442,9 +437,6 @@ const RouteList = ({
                   </TouchableOpacity>
                 ))}
               </DataTable>
-
-              <SpacerV />
-              <Text style={[AppStyles.b, { color: Colors.Yellow }]}>{t("model.route.dfi_only")}</Text>
             </>
           )}
           {activeStakingRoutes && activeStakingRoutes.length > 0 && (
@@ -483,12 +475,6 @@ const RouteList = ({
                             <IconButton
                               icon="content-copy"
                               onPress={() => ClipboardService.copy(route.deposit?.address)}
-                            />
-                            <IconButton
-                              icon="delete"
-                              onPress={() => deleteStakingRoute(route)}
-                              isLoading={isStakingLoading[route.id]}
-                              disabled={route.isInUse}
                             />
                             <IconButton icon="chevron-right" onPress={() => setDetailRoute(route)} />
                           </>

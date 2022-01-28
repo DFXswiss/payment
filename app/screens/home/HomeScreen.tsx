@@ -77,9 +77,17 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   };
 
   const stakingRouteEdit = (update: SetStateAction<boolean>) => {
-    if (![KycStatus.WAIT_VERIFY_MANUAL, KycStatus.COMPLETED].includes(user?.kycStatus ?? KycStatus.NA)) {
+    if (
+      ![KycStatus.WAIT_VERIFY_MANUAL, KycStatus.COMPLETED].includes(user?.kycStatus ?? KycStatus.NA) &&
+      resolve(update, isStakingRouteEdit)
+    ) {
       user?.kycStatus === KycStatus.NA ? onKyc() : continueKyc();
       return;
+    }
+
+    // reload all routes after close (may impact sell routes)
+    if (!resolve(update, isStakingRouteEdit)) {
+      loadRoutes();
     }
 
     setIsStakingRouteEdit(update);
@@ -170,17 +178,22 @@ const HomeScreen = ({ session }: { session?: Session }) => {
     setIsUserEdit(false);
   };
 
+  const loadRoutes = (): Promise<void> => {
+    return getRoutes().then((routes) => {
+      setBuyRoutes(routes.buy);
+      setSellRoutes(routes.sell);
+      setStakingRoutes(routes.staking);
+    });
+  };
+
   useLoader(
     (cancelled) => {
       if (session) {
         if (session.isLoggedIn) {
-          Promise.all([getUserDetail(), getRoutes()])
-            .then(([user, routes]) => {
+          Promise.all([getUserDetail(), loadRoutes()])
+            .then(([user, _]) => {
               if (!cancelled()) {
                 setUser(user);
-                setBuyRoutes(routes.buy);
-                setSellRoutes(routes.sell);
-                setStakingRoutes(routes.staking);
               }
             })
             .catch((e: ApiError) =>

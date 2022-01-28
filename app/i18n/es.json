@@ -181,7 +181,6 @@
           "copy_deposit_address": "Copia la dirección de depósito",
           "conflict": "¡La ruta ya existe!",
           "exchange_rate_warning": "¡Atención, nosotros compramos este activo en el Exchange descentralizado y no podemos garantizar una tasa de cambio específica. Los precios en el Exchange pueden ser significativamente más altos o bajos que en otros exchanges, lo que pudiera tener un impacto negativo en la tasa de cambio.",
-          "dfi_only": "¡Atención, envía sólo DFI UTXO a tus direcciones de depósito. Tokens (dBTC, dETH, ...) no se procesan actualmente y no se retornan!",
           "history": "Historial de transacciones",
           "no_tx": "¡No se han encontrado transacciones exitosas!",
           "ref_bonus": "Bonificación de referidos",

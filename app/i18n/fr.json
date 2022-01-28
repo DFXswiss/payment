@@ -200,9 +200,11 @@
         "payback": "Remboursement",
         "reinvest": "Réinvestissement",
         "wallet": "Portefeuille",
-        "payout": "Remboursement",
+        "bankaccount": "Compte bancaire",
         "reward_sell": "Route de vente pour récompense",
         "payback_sell": "Route de vente pour remboursement",
+        "reward_asset": "Actif de récompense",
+        "payback_asset": "Actif de remboursement",
         "payback_date": "Remboursement le",
         "balance": "Avoirs"
       },

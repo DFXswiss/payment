@@ -198,9 +198,11 @@
           "payback": "Reembolso",
           "reinvest": "Reinvertir",
           "wallet": "Billetera",
-          "payout": "Desembolso",
+          "bankaccount": "Cuenta bancaria",
           "reward_sell": "Ruta para recompensar",
           "payback_sell": "Ruta de reembolso",
+          "reward_asset": "Activo de recompensa",
+          "payback_asset": "Activo de reembolso",
           "payback_date": "Reembolso activado",
           "balance": "Crédito"
         },

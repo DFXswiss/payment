@@ -200,9 +200,11 @@
         "payback": "Rimborso",
         "reinvest": "Reinvestire",
         "wallet": "Portafoglio",
-        "payout": "Payout",
+        "bankaccount": "Conto bancario",
         "reward_sell": "Premiare il percorso di vendita",
         "payback_sell": "Rimborso il percorso di vendita",
+        "reward_asset": "Risorsa di ricompensa",
+        "payback_asset": "Risorsa di rimborso",
         "payback_date": "Ritorno di capitale su",
         "balance": "Credito"
       },

@@ -204,9 +204,11 @@
         "payback": "Rückzahlung",
         "reinvest": "Reinvest",
         "wallet": "Wallet",
-        "payout": "Auszahlung",
+        "bankaccount": "Bankkonto",
         "reward_sell": "Reward-Verkaufsroute",
-        "payback_sell": "Payback-Verkaufsroute",
+        "payback_sell": "Rückzahlungs-Verkaufsroute",
+        "reward_asset": "Reward-Asset",
+        "payback_asset": "Rückzahlungs-Asset",
         "payback_date": "Rückzahlung am",
         "balance": "Guthaben"
       },

@@ -1,10 +1,11 @@
+import { Asset } from "./Asset";
 import { Deposit } from "./Deposit";
 import { SellRoute } from "./SellRoute";
 
 export enum StakingType {
   REINVEST = "Reinvest",
   WALLET = "Wallet",
-  PAYOUT = "Payout",
+  BANK_ACCOUNT = 'BankAccount'
 }
 
 export interface StakingRoute {
@@ -13,8 +14,10 @@ export interface StakingRoute {
   deposit: Deposit;
   rewardType: StakingType;
   rewardSell?: SellRoute;
+  rewardAsset?: Asset;
   paybackType: StakingType;
   paybackSell?: SellRoute;
+  paybackAsset?: Asset;
   balance: number;
   isInUse: boolean;
 }

@@ -204,9 +204,11 @@
         "payback": "Retorno",
         "reinvest": "Reinvestir",
         "wallet": "Carteira",
-        "payout": "Pagamento",
+        "bankaccount": "Conta bancária",
         "reward_sell": "Rota de vendas de recompensas",
         "payback_sell": "Rota de vendas de retorno",
+        "reward_asset": "Bens de recompensa",
+        "payback_asset": "Bens de retorno",
         "payback_date": "Retorno em",
         "balance": "Crédito"
       },

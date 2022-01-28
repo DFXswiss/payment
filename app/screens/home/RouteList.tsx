@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { DataTable, Text } from "react-native-paper";
 import BuyRouteEdit from "../../components/edit/BuyRouteEdit";
 import SellRouteEdit from "../../components/edit/SellRouteEdit";
@@ -450,7 +450,12 @@ const RouteList = ({
           {activeStakingRoutes && activeStakingRoutes.length > 0 && (
             <>
               <SpacerV height={20} />
-              <H3 text={t("model.route.staking")} />
+              <View style={AppStyles.containerHorizontal}>
+                <H3 text={t("model.route.staking")} />
+                <View style={styles.betaContainer}>
+                  <Text style={styles.beta}> Beta</Text>
+                </View>
+              </View>
 
               <DataTable>
                 <CompactHeader>
@@ -549,5 +554,16 @@ const RouteList = ({
     </>
   );
 };
+
+const styles = StyleSheet.create({
+  betaContainer: {
+    alignItems: "flex-start",
+    height: "100%",
+  },
+  beta: {
+    fontSize: 12,
+    marginTop: 6,
+  },
+});
 
 export default withSession(RouteList);

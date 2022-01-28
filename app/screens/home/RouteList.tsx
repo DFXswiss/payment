@@ -55,7 +55,6 @@ const Placeholders = ({ device }: { device: DeviceClass }) => (
     {device.SM ? (
       <>
         <IconPlaceholder icon="content-copy" />
-        <IconPlaceholder icon="delete" />
         <IconPlaceholder icon="chevron-right" />
       </>
     ) : (
@@ -381,11 +380,6 @@ const RouteList = ({
                         {device.SM ? (
                           <>
                             <IconButton icon="content-copy" onPress={() => ClipboardService.copy(route.bankUsage)} />
-                            <IconButton
-                              icon="delete"
-                              onPress={() => deleteBuyRoute(route)}
-                              isLoading={isBuyLoading[route.id]}
-                            />
                             <IconButton icon="chevron-right" onPress={() => setDetailRoute(route)} />
                           </>
                         ) : (
@@ -425,12 +419,6 @@ const RouteList = ({
                             <IconButton
                               icon="content-copy"
                               onPress={() => ClipboardService.copy(route.deposit?.address)}
-                            />
-                            <IconButton
-                              icon="delete"
-                              onPress={() => deleteSellRoute(route)}
-                              isLoading={isSellLoading[route.id]}
-                              disabled={route.isInUse}
                             />
                             <IconButton icon="chevron-right" onPress={() => setDetailRoute(route)} />
                           </>
@@ -483,12 +471,6 @@ const RouteList = ({
                             <IconButton
                               icon="content-copy"
                               onPress={() => ClipboardService.copy(route.deposit?.address)}
-                            />
-                            <IconButton
-                              icon="delete"
-                              onPress={() => deleteStakingRoute(route)}
-                              isLoading={isStakingLoading[route.id]}
-                              disabled={route.isInUse}
                             />
                             <IconButton icon="chevron-right" onPress={() => setDetailRoute(route)} />
                           </>

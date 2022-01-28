@@ -36,7 +36,7 @@
       "request_submitted": "Request submitted!",
       "request_failed": "Request error!",
       "copied": "Copied!",
-      "check_mails": "Successful! Check your mails",
+      "check_mails": "Successful! Check your mails.",
       "pop_up_blocked": "Error while opening! Please allow pop-up windows in the browser settings."
     },
     "validation": {
@@ -160,8 +160,8 @@
         "videoid": "In progress (Video identification)",
         "manual": "Provisional KYC",
         "completed": "Full KYC",
-        "not_finish_chatbot": "Chatbot not finished",
-        "finish_chatbot": "Finished chatbot"
+        "not_finish_chatbot": "Error! Chatbot not yet finished.",
+        "finish_chatbot": "Chatbot finished"
       },
       "route": {
         "routes": "Payment Routes",

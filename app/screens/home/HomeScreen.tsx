@@ -115,17 +115,21 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   };
 
   const onKycRequested = (url: string | undefined) => {
-    if(user){
-    if ([KycStatus.NA,KycStatus.WAIT_CHAT_BOT,KycStatus.WAIT_VERIFY_ONLINE,KycStatus.WAIT_VERIFY_VIDEO].includes(user.kycStatus)) {
-      if (url) {
-        const kycStatus = user.kycStatus
-        navigate(Routes.OnBoarding, { url, kycStatus });
+    if (user) {
+      if (
+        [KycStatus.NA, KycStatus.WAIT_CHAT_BOT, KycStatus.WAIT_VERIFY_ONLINE, KycStatus.WAIT_VERIFY_VIDEO].includes(
+          user.kycStatus
+        )
+      ) {
+        if (url) {
+          navigate(Routes.OnBoarding, { url, kycStatus: user.kycStatus });
+        } else {
+          NotificationService.success(t("feedback.check_mails"));
+        }
       } else {
-        NotificationService.success(t("feedback.check_mails"));
+        NotificationService.success(t("feedback.request_submitted"));
       }
-    } else {
-      NotificationService.success(t("feedback.request_submitted"));
-    }}
+    }
   };
 
   const continueKyc = () => {
@@ -265,10 +269,11 @@ const HomeScreen = ({ session }: { session?: Session }) => {
       condition: user.kycStatus != KycStatus.NA,
       label: "model.kyc.status",
       value: t(`model.kyc.${user.kycStatus.toLowerCase()}`),
-      icon:
-        [KycStatus.WAIT_VERIFY_VIDEO,KycStatus.WAIT_CHAT_BOT,KycStatus.WAIT_VERIFY_ONLINE].includes(user.kycStatus) 
-          ? "reload"
-          : undefined,
+      icon: [KycStatus.WAIT_VERIFY_VIDEO, KycStatus.WAIT_CHAT_BOT, KycStatus.WAIT_VERIFY_ONLINE].includes(
+        user.kycStatus
+      )
+        ? "reload"
+        : undefined,
       onPress: continueKyc,
     },
     {

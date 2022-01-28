@@ -14,55 +14,58 @@ import { getUser, postKyc } from "../services/ApiService";
 import NotificationService from "../services/NotificationService";
 import { KycStatus } from "../models/User";
 
-
-
 const OnBoardingScreen = ({ session }: { session?: Session }) => {
-const { t } = useTranslation();
-const [isLoading, setLoading] = useState(true);
-const [isShow, setShow] = useState(KycStatus.WAIT_CHAT_BOT || KycStatus.WAIT_VERIFY_ONLINE || KycStatus.WAIT_VERIFY_VIDEO);
-const nav = useNavigation();
-const route = useRoute();
-const [url, setUrl] = useState("");
+  const { t } = useTranslation();
+  const nav = useNavigation();
+  const route = useRoute();
+
+  const [isLoading, setLoading] = useState(false);
+  const [url, setUrl] = useState("");
+  const [kycState, setKycState] = useState<KycStatus>();
+
   useAuthGuard(session);
 
   useEffect(() => {
+    // get params
     const params = route.params as any;
     setUrl(params?.url);
-    setShow(params?.kycStatus)
+    setKycState(params?.kycStatus);
+
     // reset params
     nav.navigate(Routes.OnBoarding, { url: undefined, kycStatus: undefined });
   }, []);
+
+  const finishChatBot = () => {
+    setLoading(true);
+    postKyc()
+      .then((url: string | undefined) => {
+        getUser().then((user) => {
+          if (user.kycStatus !== KycStatus.WAIT_CHAT_BOT && url) {
+            setKycState(user.kycStatus);
+            setUrl(url);
+          } else {
+            NotificationService.error(t("model.kyc.not_finish_chatbot"));
+          }
+        });
+      })
+      .catch(() => NotificationService.error(t("model.kyc.not_finish_chatbot")))
+      .finally(() => setLoading(false));
+  };
 
   return (
     <AppLayout>
       <SpacerV height={20} />
       <View style={styles.container}>
-      <Iframe src={url}></Iframe>
-      { isShow === KycStatus.WAIT_CHAT_BOT ? 
-      <DeFiButton onPress={() => {
-  setLoading(true);
-  postKyc()
-    .then((url: string | undefined) => {
-      getUser()
-      .then((user) => 
-          {if(url) {
-            setShow(user.kycStatus);
-            setUrl(url);
-          } else {
-            NotificationService.error(t("feedback.not_finish_chatbot"));
-          }
-        })
-        })
-    .catch(() => NotificationService.error(t("feedback.not_finish_chatbot")))
-    .finally(() => setLoading(false));
-}} compact>
-              {t("model.kyc.finish_chatbot")}
-            </DeFiButton>: null}
+        <Iframe src={url}></Iframe>
+        {kycState === KycStatus.WAIT_CHAT_BOT && (
+          <DeFiButton onPress={finishChatBot} loading={isLoading}>
+            {t("model.kyc.finish_chatbot")}
+          </DeFiButton>
+        )}
       </View>
     </AppLayout>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {

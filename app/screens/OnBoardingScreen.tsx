@@ -10,10 +10,9 @@ import Routes from "../config/Routes";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 
-const ChatBotScreen = ({ session }: { session?: Session }) => {
+const OnBoardingScreen = ({ session }: { session?: Session }) => {
   const nav = useNavigation();
   const route = useRoute();
-  const { t } = useTranslation();
   const [url, setUrl] = useState("");
 
   useAuthGuard(session);
@@ -23,7 +22,7 @@ const ChatBotScreen = ({ session }: { session?: Session }) => {
     setUrl(params?.url);
 
     // reset params
-    nav.navigate(Routes.ChatBot, { url: undefined });
+    nav.navigate(Routes.OnBoarding, { url: undefined });
   }, []);
 
   return (
@@ -44,4 +43,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withSession(ChatBotScreen);
+export default withSession(OnBoardingScreen);

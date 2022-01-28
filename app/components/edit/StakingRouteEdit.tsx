@@ -1,27 +1,27 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { SpacerV } from "../../elements/Spacers";
 import { Alert } from "../../elements/Texts";
-import { Fiat } from "../../models/Fiat";
 import { StakingRoute, StakingType } from "../../models/StakingRoute";
-import { getFiats, postStakingRoute, putStakingRoute } from "../../services/ApiService";
+import { postStakingRoute, putStakingRoute } from "../../services/ApiService";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
 import Validations from "../../utils/Validations";
-import NotificationService from "../../services/NotificationService";
 import { DeFiButton } from "../../elements/Buttons";
 import ButtonContainer from "../util/ButtonContainer";
 import { createRules } from "../../utils/Utils";
 import { ActivityIndicator } from "react-native-paper";
 import { ApiError } from "../../models/ApiDto";
-import { SellRoute } from "models/SellRoute";
+import { SellRoute } from "../../models/SellRoute";
 
 const StakingRouteEdit = ({
+  route,
   routes,
   onRouteCreated,
   sells,
 }: {
+  route?: StakingRoute;
   routes?: StakingRoute[];
   onRouteCreated: (route: StakingRoute) => void;
   sells?: SellRoute[];
@@ -31,7 +31,7 @@ const StakingRouteEdit = ({
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<StakingRoute>();
+  } = useForm<StakingRoute>({ defaultValues: route });
   const rewardType = useWatch({ control, name: "rewardType", defaultValue: undefined });
   const paybackType = useWatch({ control, name: "paybackType", defaultValue: undefined });
 
@@ -39,25 +39,33 @@ const StakingRouteEdit = ({
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string>();
 
-  const onSubmit = (route: StakingRoute) => {
+  const onSubmit = (update: StakingRoute) => {
     setIsSaving(true);
     setError(undefined);
 
-    // re-activate the route, if it already existed
-    const existingRoute = routes?.find(
-      (r) =>
-        !r.active &&
-        r.rewardType === route.rewardType &&
-        r.rewardSell?.id === route.rewardSell?.id &&
-        r.paybackType === route.paybackType &&
-        r.paybackSell?.id === route.paybackSell?.id
-    );
-    if (existingRoute) existingRoute.active = true;
+    if (route) {
+      // update
+      putStakingRoute(update)
+        .then(onRouteCreated)
+        .catch(() => setError(""))
+        .finally(() => setIsSaving(false));
+    } else {
+      // re-activate the route, if it already existed
+      const existingRoute = routes?.find(
+        (r) =>
+          !r.active &&
+          r.rewardType === update.rewardType &&
+          (update.rewardType !== StakingType.PAYOUT || r.rewardSell?.id === update.rewardSell?.id) &&
+          r.paybackType === update.paybackType &&
+          (update.paybackType !== StakingType.PAYOUT || r.paybackSell?.id === update.paybackSell?.id)
+      );
+      if (existingRoute) existingRoute.active = true;
 
-    (existingRoute ? putStakingRoute(existingRoute) : postStakingRoute(route))
-      .then(onRouteCreated)
-      .catch((error: ApiError) => setError(error.statusCode == 409 ? "model.route.conflict" : ""))
-      .finally(() => setIsSaving(false));
+      (existingRoute ? putStakingRoute(existingRoute) : postStakingRoute(update))
+        .then(onRouteCreated)
+        .catch((error: ApiError) => setError(error.statusCode == 409 ? "model.route.conflict" : ""))
+        .finally(() => setIsSaving(false));
+    }
   };
 
   const rules: any = createRules({

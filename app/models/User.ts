@@ -199,4 +199,5 @@ export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
   refData: dto.refData,
 });
 
-const toStringDto = (string: string): string | null => (string === "" ? null : string);
+const toStringDto = (string: string): string | null =>
+  string === "" ? null : string;

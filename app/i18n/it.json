@@ -206,7 +206,8 @@
         "reward_asset": "Risorsa di ricompensa",
         "payback_asset": "Risorsa di rimborso",
         "payback_date": "Ritorno di capitale su",
-        "balance": "Credito"
+        "balance": "Credito",
+        "type": "Tipo"
       },
       "payment": {
         "new": "Nuovi pagamenti",

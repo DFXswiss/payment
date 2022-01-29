@@ -11,7 +11,7 @@ import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { CompactRow, CompactCell, CompactHeader, CompactTitle } from "../../elements/Tables";
 import { H2, H3 } from "../../elements/Texts";
 import { useDevice } from "../../hooks/useDevice";
-import { BuyRoute } from "../../models/BuyRoute";
+import { BuyRoute, BuyType } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
 import { createHistoryCsv, putBuyRoute, putSellRoute, putStakingRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
@@ -160,9 +160,17 @@ const RouteList = ({
   };
 
   const routeData = (route: BuyRoute | SellRoute | StakingRoute) =>
-    "asset" in route // buy route
+    "type" in route // buy route
       ? [
-          { condition: true, label: "model.route.asset", value: route.asset?.name },
+          { condition: true, label: "model.route.type", value: t(`model.route.${route.type.toLowerCase()}`) },
+          { condition: route.type === BuyType.WALLET, label: "model.route.asset", value: route.asset?.name },
+          {
+            condition: route.type === BuyType.STAKING,
+            label: "model.route.staking",
+            value: `${t("model.route." + route.staking?.rewardType.toLowerCase())} - ${t(
+              "model.route." + route.staking?.paybackType.toLowerCase()
+            )}`,
+          },
           { condition: true, label: "model.route.iban", value: route.iban },
           { condition: true, label: "model.route.bank_usage", value: route.bankUsage },
           {
@@ -315,7 +323,12 @@ const RouteList = ({
         title={t("model.route.new_buy")}
         style={{ width: 400 }}
       >
-        <BuyRouteEdit routes={buyRoutes} onRouteCreated={onBuyRouteCreated} session={session} />
+        <BuyRouteEdit
+          routes={buyRoutes}
+          onRouteCreated={onBuyRouteCreated}
+          session={session}
+          stakingRoutes={activeStakingRoutes}
+        />
       </DeFiModal>
 
       <View style={AppStyles.containerHorizontal}>
@@ -378,6 +391,7 @@ const RouteList = ({
 
               <DataTable>
                 <CompactHeader>
+                  <CompactTitle style={{ flex: 1 }}>{t("model.route.type")}</CompactTitle>
                   <CompactTitle style={{ flex: 1 }}>{t("model.route.asset")}</CompactTitle>
                   {device.SM && <CompactTitle style={{ flex: 2 }}>{t("model.route.iban")}</CompactTitle>}
                   <CompactTitle style={{ flex: 2 }}>{t("model.route.bank_usage")}</CompactTitle>
@@ -389,6 +403,7 @@ const RouteList = ({
                 {activeBuyRoutes.map((route) => (
                   <TouchableOpacity key={route.id} onPress={() => setDetailRoute(route)} disabled={device.SM}>
                     <CompactRow>
+                      <CompactCell style={{ flex: 1 }}>{t(`model.route.${route.type.toLowerCase()}`)}</CompactCell>
                       <CompactCell style={{ flex: 1 }}>{route.asset?.name}</CompactCell>
                       {device.SM && <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>}
                       <CompactCell style={{ flex: 2 }}>{route.bankUsage}</CompactCell>

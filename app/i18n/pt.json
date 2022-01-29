@@ -210,7 +210,8 @@
         "reward_asset": "Bens de recompensa",
         "payback_asset": "Bens de retorno",
         "payback_date": "Retorno em",
-        "balance": "Crédito"
+        "balance": "Crédito",
+        "type": "Tipo"
       },
       "payment": {
         "new": "Novos pagamentos",

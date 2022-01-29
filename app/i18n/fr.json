@@ -206,7 +206,8 @@
         "reward_asset": "Actif de récompense",
         "payback_asset": "Actif de remboursement",
         "payback_date": "Remboursement le",
-        "balance": "Avoirs"
+        "balance": "Avoirs",
+        "type": "Type"
       },
       "payment": {
         "new": "Nouveaux paiements",

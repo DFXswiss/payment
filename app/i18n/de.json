@@ -158,15 +158,15 @@
       "kyc":{
         "request": "Dein Konto muss zuerst mit dem Chatbot und Online Identifikation verifiziert werden.\nMöchtest du mit dem Chatbot starten?",
         "invest_volume": "Wie viel möchtest du total ungefähr investieren?",
-        "volume": "Investitionsvolumen",
+        "volume": "Kaufvolumen",
         "status": "KYC Status",
         "na": "Kein KYC",
         "chatbot": "In Bearbeitung (Chatbot onboarding)",
         "address": "In Bearbeitung (Invoice upload)",
         "onlineid": "In Bearbeitung (Online Identifikation)",
         "videoid": "In Bearbeitung (Video Identifikation)",
-        "manual": "Provisorisches KYC",
-        "completed": "Vollständiges KYC",
+        "manual": "Verifizierung abgeschlossen",
+        "completed": "Verifizierung abgeschlossen",
         "not_finish_chatbot": "Fehler! Chatbot noch nicht beendet!",
         "finish_chatbot": "Chatbot fertig"
       },

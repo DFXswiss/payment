@@ -165,8 +165,8 @@
         "address": "In progress (Invoice upload)",
         "onlineid": "In progress (Online identification)",
         "videoid": "In progress (Video identification)",
-        "manual": "Provisional KYC",
-        "completed": "Full KYC",
+        "manual": "Verification completed",
+        "completed": "Verification completed",
         "not_finish_chatbot": "Error! Chatbot not yet finished.",
         "finish_chatbot": "Chatbot finished"
       },

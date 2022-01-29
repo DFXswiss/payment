@@ -205,7 +205,8 @@
         "reward_asset": "Reward asset",
         "payback_asset": "Payback asset",
         "payback_date": "Payback on",
-        "balance": "Balance"
+        "balance": "Balance",
+        "type": "Type"
       },
       "payment": {
         "new": "New payments",

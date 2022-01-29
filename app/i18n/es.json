@@ -204,7 +204,8 @@
           "reward_asset": "Activo de recompensa",
           "payback_asset": "Activo de reembolso",
           "payback_date": "Reembolso activado",
-          "balance": "Crédito"
+          "balance": "Crédito",
+          "type": "Tipo"
         },
         "payment": {
           "new": "Nuevos pagos",

@@ -212,7 +212,8 @@
         "reward_asset": "Reward-Asset",
         "payback_asset": "Rückzahlungs-Asset",
         "payback_date": "Rückzahlung am",
-        "balance": "Guthaben"
+        "balance": "Guthaben",
+        "type": "Typ"
       },
       "payment": {
         "new": "Neue Zahlungen",

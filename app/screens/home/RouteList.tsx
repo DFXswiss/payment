@@ -23,7 +23,6 @@ import { DeviceClass } from "../../utils/Device";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Session } from "../../services/AuthService";
 import withSession from "../../hocs/withSession";
-import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
 import { ApiError } from "../../models/ApiDto";
 import { User } from "../../models/User";
@@ -499,7 +498,7 @@ const RouteList = ({
             </>
           )}
 
-          {session?.isBetaUser && (
+          {(
             <>
               <SpacerV height={20} />
               <ButtonContainer>

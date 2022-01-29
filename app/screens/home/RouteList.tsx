@@ -191,9 +191,14 @@ const RouteList = ({
             condition: true,
             label: "model.route.reward",
             value:
-              route.rewardType === StakingType.PAYOUT
+              route.rewardType === StakingType.BANK_ACCOUNT
                 ? `${route.rewardSell?.fiat.name} - ${route.rewardSell?.iban}`
                 : t(`model.route.${route.rewardType.toLowerCase()}`),
+          },
+          {
+            condition: route.rewardType === StakingType.WALLET,
+            label: "model.route.reward_asset",
+            value: route.rewardAsset?.name,
           },
           { condition: true, label: "model.route.reward_fee", value: "0%" },
           { condition: true, label: "model.route.payback_date", value: "31.03.2022" },
@@ -201,9 +206,14 @@ const RouteList = ({
             condition: true,
             label: "model.route.payback",
             value:
-              route.paybackType === StakingType.PAYOUT
+              route.paybackType === StakingType.BANK_ACCOUNT
                 ? `${route.paybackSell?.fiat.name} - ${route.paybackSell?.iban}`
                 : t(`model.route.${route.paybackType.toLowerCase()}`),
+          },
+          {
+            condition: route.paybackType === StakingType.WALLET,
+            label: "model.route.payback_asset",
+            value: route.paybackAsset?.name,
           },
           { condition: true, label: "model.route.balance", value: `${route.balance} DFI` },
         ];

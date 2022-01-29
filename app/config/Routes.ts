@@ -6,6 +6,6 @@ export default {
   Gtc: `${PageTitle} - Legal`,
   Cfp: `${PageTitle} - CFPs`,
   Admin: `${PageTitle} - Admin`,
-  ChatBot: `${PageTitle} - ChatBot`,
+  OnBoarding: `${PageTitle} - OnBoarding`,
   NotFound: `${PageTitle} - NotFound`,
 };

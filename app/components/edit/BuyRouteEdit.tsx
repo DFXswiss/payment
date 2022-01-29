@@ -37,7 +37,7 @@ const BuyRouteEdit = ({
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<BuyRoute>();
+  } = useForm<BuyRoute>({ defaultValues: { type: BuyType.WALLET } });
   const type = useWatch({ control, name: "type" });
   const asset = useWatch({ control, name: "asset" });
 
@@ -59,10 +59,11 @@ const BuyRouteEdit = ({
 
     // re-activate the route, if it already existed
     const existingRoute = routes?.find(
-      (r) => !r.active &&
-      (route.type !== BuyType.WALLET || r.asset?.id === route.asset?.id) &&
-      (route.type !== BuyType.STAKING || r.staking?.id === route.staking?.id) &&
-       r.iban.split(" ").join("") === route.iban.split(" ").join("")
+      (r) =>
+        !r.active &&
+        (route.type !== BuyType.WALLET || r.asset?.id === route.asset?.id) &&
+        (route.type !== BuyType.STAKING || r.staking?.id === route.staking?.id) &&
+        r.iban.split(" ").join("") === route.iban.split(" ").join("")
     );
     if (existingRoute) existingRoute.active = true;
 
@@ -85,13 +86,17 @@ const BuyRouteEdit = ({
     <ActivityIndicator size="large" />
   ) : (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
-      <DeFiPicker
-        name="type"
-        label={t("model.route.type")}
-        items={Object.values(BuyType)}
-        labelFunc={(i) => t(`model.route.${i.toLowerCase()}`)}
-      />
-      <SpacerV />
+      {session?.isBetaUser && (
+        <>
+          <DeFiPicker
+            name="type"
+            label={t("model.route.type")}
+            items={Object.values(BuyType)}
+            labelFunc={(i) => t(`model.route.${i.toLowerCase()}`)}
+          />
+          <SpacerV />
+        </>
+      )}
 
       {type === BuyType.WALLET && (
         <>

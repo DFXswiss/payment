@@ -154,7 +154,7 @@
         "ref_commission_hint": "Tem a certeza de que quer reduzir a sua comissão para {{fee}}%? Este passo não pode ser desfeito."
       },
       "kyc":{
-        "request": "Precisamos de verificar primeiro a sua conta. Quer iniciar o processo de verificação?",
+        "request": "A sua conta deve primeiro ser verificada com o chatbot e a identificação em linha.\n Quer começar com o chatbot?",
         "invest_volume": "Quanto é que quer investir no total?",
         "volume": "Volume de investimento",
         "status": "KYC Status",
@@ -164,7 +164,9 @@
         "onlineid": "Em curso (Identificação online)",
         "videoid": "Em curso (Identificação vídeo)",
         "manual": "KYC provisório",
-        "completed": "KYC completo"
+        "completed": "KYC completo",
+        "not_finish_chatbot": "Erro! Chatbot ainda não terminado.",
+        "finish_chatbot": "Chatbot completo"
       },
       "route": {
         "routes": "Rotas de pagamento",
@@ -202,9 +204,11 @@
         "payback": "Retorno",
         "reinvest": "Reinvestir",
         "wallet": "Carteira",
-        "payout": "Pagamento",
+        "bankaccount": "Conta bancária",
         "reward_sell": "Rota de vendas de recompensas",
         "payback_sell": "Rota de vendas de retorno",
+        "reward_asset": "Bens de recompensa",
+        "payback_asset": "Bens de retorno",
         "payback_date": "Retorno em",
         "balance": "Crédito"
       },

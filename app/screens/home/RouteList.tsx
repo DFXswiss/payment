@@ -256,14 +256,14 @@ const RouteList = ({
               <ButtonContainer>
                 <DeFiButton
                   loading={
-                    "asset" in detailRoute
+                    "type" in detailRoute
                       ? isBuyLoading[detailRoute.id]
                       : "fiat" in detailRoute
                       ? isSellLoading[detailRoute.id]
                       : isStakingLoading[detailRoute.id]
                   }
                   onPress={() => {
-                    ("asset" in detailRoute
+                    ("type" in detailRoute
                       ? deleteBuyRoute(buyRoutes?.find((r) => r.id === detailRoute.id) as BuyRoute)
                       : "fiat" in detailRoute
                       ? deleteSellRoute(sellRoutes?.find((r) => r.id === detailRoute.id) as SellRoute)
@@ -282,12 +282,12 @@ const RouteList = ({
                 <DeFiButton
                   mode="contained"
                   onPress={() =>
-                    "asset" in detailRoute
+                    "type" in detailRoute
                       ? ClipboardService.copy(detailRoute.bankUsage)
                       : ClipboardService.copy(detailRoute.deposit?.address)
                   }
                 >
-                  {t("asset" in detailRoute ? "model.route.copy_bank_usage" : "model.route.copy_deposit_address")}
+                  {t("type" in detailRoute ? "model.route.copy_bank_usage" : "model.route.copy_deposit_address")}
                 </DeFiButton>
               </ButtonContainer>
             </View>
@@ -346,13 +346,11 @@ const RouteList = ({
                 {t("model.route.sell")}
               </DeFiButton>
             </View>
-            {session?.isBetaUser && (
-              <View style={AppStyles.ml10}>
-                <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)}>
-                  {t("model.route.staking")}
-                </DeFiButton>
-              </View>
-            )}
+            <View style={AppStyles.ml10}>
+              <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)}>
+                {t("model.route.staking")}
+              </DeFiButton>
+            </View>
           </>
         )}
       </View>
@@ -369,16 +367,12 @@ const RouteList = ({
               {t("model.route.sell")}
             </DeFiButton>
           </View>
-          {session?.isBetaUser && (
-            <>
-              <SpacerV />
-              <View style={AppStyles.containerHorizontal}>
-                <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)} style={{ flex: 1 }}>
-                  {t("model.route.staking")}
-                </DeFiButton>
-              </View>
-            </>
-          )}
+          <SpacerV />
+          <View style={AppStyles.containerHorizontal}>
+            <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)} style={{ flex: 1 }}>
+              {t("model.route.staking")}
+            </DeFiButton>
+          </View>
         </>
       )}
 

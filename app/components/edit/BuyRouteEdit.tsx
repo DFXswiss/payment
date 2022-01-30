@@ -37,7 +37,7 @@ const BuyRouteEdit = ({
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<BuyRoute>({ defaultValues: { type: BuyType.WALLET } });
+  } = useForm<BuyRoute>();
   const type = useWatch({ control, name: "type" });
   const asset = useWatch({ control, name: "asset" });
 
@@ -86,17 +86,13 @@ const BuyRouteEdit = ({
     <ActivityIndicator size="large" />
   ) : (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
-      {session?.isBetaUser && (
-        <>
-          <DeFiPicker
-            name="type"
-            label={t("model.route.type")}
-            items={Object.values(BuyType)}
-            labelFunc={(i) => t(`model.route.${i.toLowerCase()}`)}
-          />
-          <SpacerV />
-        </>
-      )}
+      <DeFiPicker
+        name="type"
+        label={t("model.route.type")}
+        items={Object.values(BuyType)}
+        labelFunc={(i) => t(`model.route.${i.toLowerCase()}`)}
+      />
+      <SpacerV />
 
       {type === BuyType.WALLET && (
         <>

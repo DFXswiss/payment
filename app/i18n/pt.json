@@ -163,8 +163,8 @@
         "address": "Em curso (Carregamento de facturas)",
         "onlineid": "Em curso (Identificação online)",
         "videoid": "Em curso (Identificação vídeo)",
-        "manual": "KYC provisório",
-        "completed": "KYC completo",
+        "manual": "Verificação concluída",
+        "completed": "Verificação concluída",
         "not_finish_chatbot": "Erro! Chatbot ainda não terminado.",
         "finish_chatbot": "Chatbot completo"
       },

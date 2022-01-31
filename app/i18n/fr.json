@@ -159,8 +159,8 @@
         "address": "En cours (Téléchargement de factures)",
         "onlineid": "En cours (Identification en ligne)",
         "videoid": "En cours (Identification en vidéo)",
-        "manual": "KYC incomplet",
-        "completed": "KYC complet",
+        "manual": "Vérification terminée",
+        "completed": "Vérification terminée",
         "not_finish_chatbot": "Erreur ! Le chatbot n'est pas encore complet.",
         "finish_chatbot": "Chatbot complet"
       },

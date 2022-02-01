@@ -54,7 +54,6 @@ const OnBoardingScreen = ({ session }: { session?: Session }) => {
 
   return (
     <AppLayout>
-      <SpacerV height={20} />
       <View style={styles.container}>
         <Iframe src={url}></Iframe>
         {kycState === KycStatus.WAIT_CHAT_BOT || kycState === KycStatus.NA && (

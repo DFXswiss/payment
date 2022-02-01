@@ -37,10 +37,12 @@ import RefFeeEdit from "../../components/edit/RefFeeEdit";
 import { navigate } from "../../utils/NavigationHelper";
 import Routes from "../../config/Routes";
 import { StakingRoute } from "../../models/StakingRoute";
+import withSettings from "../../hocs/withSettings";
+import { AppSettings } from "../../services/SettingsService";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
-const HomeScreen = ({ session }: { session?: Session }) => {
+const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSettings }) => {
   const { t } = useTranslation();
   const device = useDevice();
   const RefUrl = Environment.api.refUrl;
@@ -393,7 +395,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
         />
       </DeFiModal>
 
-      <SpacerV height={50} />
+      {settings?.showHeader && <SpacerV height={30} />}
 
       {isLoading && <Loading size="large" />}
 
@@ -523,4 +525,4 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   );
 };
 
-export default withSession(HomeScreen);
+export default withSettings(withSession(HomeScreen));

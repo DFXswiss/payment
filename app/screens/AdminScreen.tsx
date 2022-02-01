@@ -23,7 +23,6 @@ const AdminScreen = ({ session }: { session?: Session }) => {
 
   return (
     <AppLayout>
-      <SpacerV height={20} />
       <H1 style={AppStyles.center} text={t("admin.title")} />
 
       <SpacerV height={20} />

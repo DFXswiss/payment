@@ -14,7 +14,7 @@ import * as DocumentPicker from "expo-document-picker";
 import NotificationService from "../services/NotificationService";
 import { StyleSheet, View } from "react-native";
 import { useDevice } from "../hooks/useDevice";
-import { postSepaFiles } from "../services/ApiService";
+import { postFounderCertificate, postSepaFiles } from "../services/ApiService";
 
 const AdminScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
@@ -42,7 +42,7 @@ const PaymentsUpload = () => {
   const device = useDevice();
 
   const uploadXml = () => {
-    DocumentPicker.getDocumentAsync({ type: "text/xml", multiple: true })
+    DocumentPicker.getDocumentAsync({ type: "*/*", multiple: false })
       .then((result) => {
         if (result.type === "success") {
           const files: File[] = [...Array(result.output?.length).keys()]
@@ -50,12 +50,12 @@ const PaymentsUpload = () => {
             .filter((f) => f != null)
             .map((f) => f as File);
 
-          if (!files.find((f) => f.type !== "text/xml")) return files;
+          return files;
         }
 
         throw new Error();
       })
-      .then(postSepaFiles)
+      .then(postFounderCertificate)
       .then(() => NotificationService.success(t("feedback.save_successful")))
       .catch(() => NotificationService.error(t("feedback.file_error")));
   };

@@ -32,11 +32,11 @@
         "save_failed": "¡Error mientras se guardaba!",
         "save_successful": "¡Se guardó con éxito!",
         "file_error": "¡Error al leer el documento!",
-        "mail_error": "¡El correo electrónico ya existe. Contáctanos en supportES@dfx.swiss",
+        "mail_error": "¡El correo electrónico ya existe. Contáctanos en supportES@dfx.swiss.",
         "request_submitted": "¡Propuesta presentada!",
         "request_failed": "¡Propuesta fallida!",
         "copied": "¡Copiada!",
-        "check_mails": "¡Exitoso! Comprueba tu correo electrónico",
+        "check_mails": "¡Exitoso! Comprueba tu correo electrónico.",
         "pop_up_blocked": "¡Error mientras se abría! Por favor permite las ventanas emergentes en los ajustes de tu buscador."
       },
       "validation": {
@@ -150,7 +150,7 @@
           "ref_commission_hint": "¿Estás seguro de que quieres reducir tu comisión a {{fee}}%? Este paso no se puede rehacer."
         },
         "kyc":{
-          "request": "Primero tenemos que verificar su cuenta. ¿Desea iniciar el proceso de verificación?",
+          "request": "Su cuenta debe ser verificada primero con el chatbot y la identificación en línea.\n¿Desea comenzar con el chatbot?",
           "invest_volume": "¿Cúanto quieres invertir en total?",
           "volume": "Volumen de inversión",
           "status": "Estado KYC (Identificación personal)",
@@ -158,8 +158,10 @@
           "address": "En progreso (Cargando recibo)",
           "onlineid": "En progreso (Identificación online)",
           "videoid": "En progreso (Identificación por video)",
-          "manual": "Provisional KYC (Identificación personal)",
-          "completed": "Completado KYC (Identificación personal)"
+          "manual": "Verificación completada",
+          "completed": "Verificación completada",
+          "not_finish_chatbot": "¡Error! El chatbot aún no está terminado.",
+          "finish_chatbot": "Completado chatbot"
         },
         "route": {
           "routes": "Rutas de pago",
@@ -196,11 +198,14 @@
           "payback": "Reembolso",
           "reinvest": "Reinvertir",
           "wallet": "Billetera",
-          "payout": "Desembolso",
+          "bankaccount": "Cuenta bancaria",
           "reward_sell": "Ruta para recompensar",
           "payback_sell": "Ruta de reembolso",
+          "reward_asset": "Activo de recompensa",
+          "payback_asset": "Activo de reembolso",
           "payback_date": "Reembolso activado",
-          "balance": "Crédito"
+          "balance": "Crédito",
+          "type": "Tipo"
         },
         "payment": {
           "new": "Nuevos pagos",

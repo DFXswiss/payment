@@ -150,7 +150,7 @@
         "ref_commission_hint": "Sei sicuro di voler ridurre la tua commissione a {{fee}}%? Questo passo non può essere annullato."
       },
       "kyc":{
-        "request": "Dobbiamo prima verificare il tuo account. Vuoi iniziare il processo di verifica?",
+        "request": "Il tuo account deve prima essere verificato con il chatbot e l'identificazione online.\nVuoi iniziare con il chatbot?",
         "invest_volume": "Quanto vuoi investire in totale?",
         "volume": "Volume degli investimenti",
         "status": "Stato del KYC",
@@ -159,8 +159,10 @@
         "address": "In corso (Caricamento della fattura)",
         "onlineid": "In corso (Identificazione online)",
         "videoid": "In corso (Identificazione video)",
-        "manual": "KYC provvisorio",
-        "completed": "KYC completo"
+        "manual": "Verifica completata",
+        "completed": "Verifica completata",
+        "not_finish_chatbot": "Errore! Chatbot non ancora finito.",
+        "finish_chatbot": "Chatbot completo"
       },
       "route": {
         "routes": "Modalità di pagamento",
@@ -198,11 +200,14 @@
         "payback": "Rimborso",
         "reinvest": "Reinvestire",
         "wallet": "Portafoglio",
-        "payout": "Payout",
+        "bankaccount": "Conto bancario",
         "reward_sell": "Premiare il percorso di vendita",
         "payback_sell": "Rimborso il percorso di vendita",
+        "reward_asset": "Risorsa di ricompensa",
+        "payback_asset": "Risorsa di rimborso",
         "payback_date": "Ritorno di capitale su",
-        "balance": "Credito"
+        "balance": "Credito",
+        "type": "Tipo"
       },
       "payment": {
         "new": "Nuovi pagamenti",

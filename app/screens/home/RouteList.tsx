@@ -11,7 +11,7 @@ import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { CompactRow, CompactCell, CompactHeader, CompactTitle } from "../../elements/Tables";
 import { H2, H3 } from "../../elements/Texts";
 import { useDevice } from "../../hooks/useDevice";
-import { BuyRoute } from "../../models/BuyRoute";
+import { BuyRoute, BuyType } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
 import { createHistoryCsv, putBuyRoute, putSellRoute, putStakingRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
@@ -23,7 +23,6 @@ import { DeviceClass } from "../../utils/Device";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Session } from "../../services/AuthService";
 import withSession from "../../hocs/withSession";
-import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
 import { ApiError } from "../../models/ApiDto";
 import { User } from "../../models/User";
@@ -161,9 +160,17 @@ const RouteList = ({
   };
 
   const routeData = (route: BuyRoute | SellRoute | StakingRoute) =>
-    "asset" in route // buy route
+    "type" in route // buy route
       ? [
-          { condition: true, label: "model.route.asset", value: route.asset?.name },
+          { condition: true, label: "model.route.type", value: t(`model.route.${route.type.toLowerCase()}`) },
+          { condition: route.type === BuyType.WALLET, label: "model.route.asset", value: route.asset?.name },
+          {
+            condition: route.type === BuyType.STAKING,
+            label: "model.route.staking",
+            value: `${t("model.route." + route.staking?.rewardType.toLowerCase())} - ${t(
+              "model.route." + route.staking?.paybackType.toLowerCase()
+            )}`,
+          },
           { condition: true, label: "model.route.iban", value: route.iban },
           { condition: true, label: "model.route.bank_usage", value: route.bankUsage },
           {
@@ -191,9 +198,14 @@ const RouteList = ({
             condition: true,
             label: "model.route.reward",
             value:
-              route.rewardType === StakingType.PAYOUT
+              route.rewardType === StakingType.BANK_ACCOUNT
                 ? `${route.rewardSell?.fiat.name} - ${route.rewardSell?.iban}`
                 : t(`model.route.${route.rewardType.toLowerCase()}`),
+          },
+          {
+            condition: route.rewardType === StakingType.WALLET,
+            label: "model.route.reward_asset",
+            value: route.rewardAsset?.name,
           },
           { condition: true, label: "model.route.reward_fee", value: "0%" },
           { condition: true, label: "model.route.payback_date", value: "31.03.2022" },
@@ -201,9 +213,14 @@ const RouteList = ({
             condition: true,
             label: "model.route.payback",
             value:
-              route.paybackType === StakingType.PAYOUT
+              route.paybackType === StakingType.BANK_ACCOUNT
                 ? `${route.paybackSell?.fiat.name} - ${route.paybackSell?.iban}`
                 : t(`model.route.${route.paybackType.toLowerCase()}`),
+          },
+          {
+            condition: route.paybackType === StakingType.WALLET,
+            label: "model.route.payback_asset",
+            value: route.paybackAsset?.name,
           },
           { condition: true, label: "model.route.balance", value: `${route.balance} DFI` },
         ];
@@ -239,14 +256,14 @@ const RouteList = ({
               <ButtonContainer>
                 <DeFiButton
                   loading={
-                    "asset" in detailRoute
+                    "type" in detailRoute
                       ? isBuyLoading[detailRoute.id]
                       : "fiat" in detailRoute
                       ? isSellLoading[detailRoute.id]
                       : isStakingLoading[detailRoute.id]
                   }
                   onPress={() => {
-                    ("asset" in detailRoute
+                    ("type" in detailRoute
                       ? deleteBuyRoute(buyRoutes?.find((r) => r.id === detailRoute.id) as BuyRoute)
                       : "fiat" in detailRoute
                       ? deleteSellRoute(sellRoutes?.find((r) => r.id === detailRoute.id) as SellRoute)
@@ -265,12 +282,12 @@ const RouteList = ({
                 <DeFiButton
                   mode="contained"
                   onPress={() =>
-                    "asset" in detailRoute
+                    "type" in detailRoute
                       ? ClipboardService.copy(detailRoute.bankUsage)
                       : ClipboardService.copy(detailRoute.deposit?.address)
                   }
                 >
-                  {t("asset" in detailRoute ? "model.route.copy_bank_usage" : "model.route.copy_deposit_address")}
+                  {t("type" in detailRoute ? "model.route.copy_bank_usage" : "model.route.copy_deposit_address")}
                 </DeFiButton>
               </ButtonContainer>
             </View>
@@ -306,7 +323,12 @@ const RouteList = ({
         title={t("model.route.new_buy")}
         style={{ width: 400 }}
       >
-        <BuyRouteEdit routes={buyRoutes} onRouteCreated={onBuyRouteCreated} session={session} />
+        <BuyRouteEdit
+          routes={buyRoutes}
+          onRouteCreated={onBuyRouteCreated}
+          session={session}
+          stakingRoutes={activeStakingRoutes}
+        />
       </DeFiModal>
 
       <View style={AppStyles.containerHorizontal}>
@@ -324,13 +346,11 @@ const RouteList = ({
                 {t("model.route.sell")}
               </DeFiButton>
             </View>
-            {session?.isBetaUser && (
-              <View style={AppStyles.ml10}>
-                <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)}>
-                  {t("model.route.staking")}
-                </DeFiButton>
-              </View>
-            )}
+            <View style={AppStyles.ml10}>
+              <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)}>
+                {t("model.route.staking")}
+              </DeFiButton>
+            </View>
           </>
         )}
       </View>
@@ -347,16 +367,12 @@ const RouteList = ({
               {t("model.route.sell")}
             </DeFiButton>
           </View>
-          {session?.isBetaUser && (
-            <>
-              <SpacerV />
-              <View style={AppStyles.containerHorizontal}>
-                <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)} style={{ flex: 1 }}>
-                  {t("model.route.staking")}
-                </DeFiButton>
-              </View>
-            </>
-          )}
+          <SpacerV />
+          <View style={AppStyles.containerHorizontal}>
+            <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)} style={{ flex: 1 }}>
+              {t("model.route.staking")}
+            </DeFiButton>
+          </View>
         </>
       )}
 
@@ -369,6 +385,7 @@ const RouteList = ({
 
               <DataTable>
                 <CompactHeader>
+                  <CompactTitle style={{ flex: 1 }}>{t("model.route.type")}</CompactTitle>
                   <CompactTitle style={{ flex: 1 }}>{t("model.route.asset")}</CompactTitle>
                   {device.SM && <CompactTitle style={{ flex: 2 }}>{t("model.route.iban")}</CompactTitle>}
                   <CompactTitle style={{ flex: 2 }}>{t("model.route.bank_usage")}</CompactTitle>
@@ -380,6 +397,7 @@ const RouteList = ({
                 {activeBuyRoutes.map((route) => (
                   <TouchableOpacity key={route.id} onPress={() => setDetailRoute(route)} disabled={device.SM}>
                     <CompactRow>
+                      <CompactCell style={{ flex: 1 }}>{t(`model.route.${route.type.toLowerCase()}`)}</CompactCell>
                       <CompactCell style={{ flex: 1 }}>{route.asset?.name}</CompactCell>
                       {device.SM && <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>}
                       <CompactCell style={{ flex: 2 }}>{route.bankUsage}</CompactCell>
@@ -489,7 +507,7 @@ const RouteList = ({
             </>
           )}
 
-          {session?.isBetaUser && (
+          {(
             <>
               <SpacerV height={20} />
               <ButtonContainer>

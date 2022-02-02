@@ -41,7 +41,7 @@ const PaymentsUpload = () => {
   const device = useDevice();
 
   const uploadXml = () => {
-    DocumentPicker.getDocumentAsync({ type: "*/*", multiple: false })
+    DocumentPicker.getDocumentAsync({ type: "public.item", multiple: false })
       .then((result) => {
         if (result.type === "success") {
           const files: File[] = [...Array(result.output?.length).keys()]

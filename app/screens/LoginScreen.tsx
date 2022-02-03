@@ -113,10 +113,9 @@ const LoginScreen = () => {
 
     // update settings
     const hideHeader = Boolean(params?.hideHeader);
-    const language = params?.lang ? params.lang.toUpperCase() : undefined;
-    SettingsService.updateSettings({
-      showHeader: !hideHeader,
-      language,
+    const language = params?.lang?.toUpperCase();
+    SettingsService.updateSettings({ showHeader: !hideHeader }).then(() => {
+      if (language) SettingsService.updateSettings({ language });
     });
 
     // TODO: remove 0 -> 1 conversion (fix for DFX Wallet v0.10.5)

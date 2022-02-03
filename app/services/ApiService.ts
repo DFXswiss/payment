@@ -173,7 +173,12 @@ export const postFounderCertificate = (files: File[]): Promise<void> => {
   for (const key in files) {
     formData.append("files", files[key]);
   }
-  return fetchFrom(`${UserUrl}/upload`, "POST", formData, true);
+  return fetchFrom(
+    `${UserUrl}/uploadIncorporationCertificate`,
+    "POST",
+    formData,
+    true
+  );
 };
 // --- STATISTIC --- //
 export const getCfpResults = (voting: string): Promise<CfpResult[]> => {

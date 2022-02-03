@@ -174,7 +174,7 @@ export const postFounderCertificate = (files: File[]): Promise<void> => {
     formData.append("files", files[key]);
   }
   return fetchFrom(
-    `${UserUrl}/uploadIncorporationCertificate`,
+    `${UserUrl}/incorporationCertificate`,
     "POST",
     formData,
     true

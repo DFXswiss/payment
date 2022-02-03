@@ -162,7 +162,8 @@
         "manual": "Vérification terminée",
         "completed": "Vérification terminée",
         "not_finish_chatbot": "Erreur ! Le chatbot n'est pas encore complet.",
-        "finish_chatbot": "Chatbot complet"
+        "finish_chatbot": "Chatbot complet",
+        "upload_incorporation_certificate": "Veuillez télécharger l'acte de constitution, l'extrait du registre du commerce ou les statuts de la société."
       },
       "route": {
         "routes": "Routes de paiement",

@@ -168,7 +168,8 @@
         "manual": "Verification completed",
         "completed": "Verification completed",
         "not_finish_chatbot": "Error! Chatbot not yet finished.",
-        "finish_chatbot": "Chatbot finished"
+        "finish_chatbot": "Chatbot finished",
+        "upload_incorporation_certificate": "Please upload certificate of incorporation, excerpt from the commercial register or articles of association of the company."
       },
       "route": {
         "routes": "Payment Routes",

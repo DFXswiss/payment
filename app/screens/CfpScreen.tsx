@@ -18,18 +18,18 @@ import { Session } from "../services/AuthService";
 import NotificationService from "../services/NotificationService";
 import AppStyles from "../styles/AppStyles";
 
-const DfxCfpNumbers = [84, 85];
+const DfxCfpNumbers: string[] = [];
 
 const CfpScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
-  const [cfpFilter, setCfpFilter] = useState<"all" | "dfx">("dfx");
+  const [cfpFilter, setCfpFilter] = useState<"all" | "dfx">("all");
   const [cfpResults, setCfpResults] = useState<CfpResult[]>();
 
   useAuthGuard(session);
 
   useEffect(() => {
-    getCfpResults("2201")
+    getCfpResults("2202")
       .then(setCfpResults)
       .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));
@@ -69,7 +69,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
           <ActivityIndicator size="large" />
         ) : (
           <>
-            <View style={AppStyles.containerHorizontalWrap}>
+            {/* <View style={AppStyles.containerHorizontalWrap}>
               <TouchableRipple onPress={() => setCfpFilter("dfx")}>
                 <View style={styles.radioRow}>
                   <View pointerEvents="none">
@@ -86,7 +86,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
                   <Paragraph>{t("cfp.all")}</Paragraph>
                 </View>
               </TouchableRipple>
-            </View>
+            </View> */}
 
             <SpacerV height={50} />
 

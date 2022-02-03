@@ -112,11 +112,10 @@ const LoginScreen = () => {
     setIsOldSignature(false);
 
     // update settings
-    const hideHeader = Boolean(params?.hideHeader);
-    const language = params?.lang ? params.lang.toUpperCase() : undefined;
-    SettingsService.updateSettings({
-      showHeader: !hideHeader,
-      language,
+    const isIframe = Boolean(params?.iframe);
+    const language = params?.lang?.toUpperCase();
+    SettingsService.updateSettings({ isIframe }).then(() => {
+      if (language) SettingsService.updateSettings({ language });
     });
 
     // TODO: remove 0 -> 1 conversion (fix for DFX Wallet v0.10.5)
@@ -149,7 +148,7 @@ const LoginScreen = () => {
       signature: undefined,
       walletId: undefined,
       code: undefined,
-      hideHeader: undefined,
+      iframe: undefined,
     });
   }, []);
 

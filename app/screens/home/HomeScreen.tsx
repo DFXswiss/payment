@@ -395,7 +395,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
         />
       </DeFiModal>
 
-      {settings?.showHeader && <SpacerV height={30} />}
+      {!settings?.isIframe && <SpacerV height={30} />}
 
       {isLoading && <Loading size="large" />}
 

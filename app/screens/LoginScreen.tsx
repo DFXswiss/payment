@@ -112,9 +112,9 @@ const LoginScreen = () => {
     setIsOldSignature(false);
 
     // update settings
-    const hideHeader = Boolean(params?.hideHeader);
+    const isIframe = Boolean(params?.iframe);
     const language = params?.lang?.toUpperCase();
-    SettingsService.updateSettings({ showHeader: !hideHeader }).then(() => {
+    SettingsService.updateSettings({ isIframe }).then(() => {
       if (language) SettingsService.updateSettings({ language });
     });
 
@@ -148,7 +148,7 @@ const LoginScreen = () => {
       signature: undefined,
       walletId: undefined,
       code: undefined,
-      hideHeader: undefined,
+      iframe: undefined,
     });
   }, []);
 

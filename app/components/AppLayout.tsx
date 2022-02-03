@@ -28,7 +28,7 @@ const AppLayout = ({ settings, children }: { settings?: AppSettings; children: R
         >
           <View style={[AppStyles.container, styles.container]}>
             <View style={[AppStyles.container, styles.appContainer]}>
-              {settings?.showHeader && (
+              {!settings?.isIframe && (
                 <>
                   <Header></Header>
                   <SpacerV height={20} />

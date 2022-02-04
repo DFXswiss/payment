@@ -330,9 +330,9 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       value: user.refData.refCountActive,
     },
     {
-      condition: Boolean(user.refData.refVolume),
+      condition: Boolean(user.refVolume),
       label: "model.user.ref_volume",
-      value: `${formatAmount(user.refData.refVolume)} €`,
+      value: `${formatAmount(user.refVolume)} €`,
     },
   ];
 

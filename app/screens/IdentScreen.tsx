@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import AppLayout from "../components/AppLayout";
-import { SpacerV } from "../elements/Spacers";
 import withSession from "../hocs/withSession";
 import useAuthGuard from "../hooks/useAuthGuard";
 import { Session } from "../services/AuthService";
@@ -10,11 +9,11 @@ import Routes from "../config/Routes";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { DeFiButton } from "../elements/Buttons";
-import { getUser, postKyc } from "../services/ApiService";
+import { postKyc } from "../services/ApiService";
 import NotificationService from "../services/NotificationService";
-import { KycStatus } from "../models/User";
+import { KycResult, KycStatus } from "../models/User";
 
-const OnBoardingScreen = ({ session }: { session?: Session }) => {
+const IdentScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const nav = useNavigation();
   const route = useRoute();
@@ -28,27 +27,29 @@ const OnBoardingScreen = ({ session }: { session?: Session }) => {
   useEffect(() => {
     // get params
     const params = route.params as any;
-    setUrl(params?.url);
-    setKycState(params?.kycStatus);
+    if (params?.url && params?.kycStatus) {
+      setUrl(params.url);
+      setKycState(params.kycStatus);
 
-    // reset params
-    nav.navigate(Routes.OnBoarding, { url: undefined, kycStatus: undefined });
+      // reset params
+      nav.navigate(Routes.Ident, { url: undefined, kycStatus: undefined });
+    } else {
+      nav.navigate(Routes.Home);
+    }
   }, []);
 
   const finishChatBot = () => {
     setLoading(true);
     postKyc()
-      .then((url: string | undefined) => {
-        getUser().then((user) => {
-          if (user.kycStatus !== KycStatus.WAIT_CHAT_BOT && url) {
-            setKycState(user.kycStatus);
-            setUrl(url);
-          } else {
-            NotificationService.error(t("model.kyc.not_finish_chatbot"));
-          }
-        });
+      .then((result: KycResult) => {
+        if (result.status === KycStatus.CHATBOT || !result.identUrl) {
+          NotificationService.error(t("model.kyc.chatbot_not_finished"));
+        } else {
+          setKycState(result.status);
+          setUrl(result.identUrl);
+        }
       })
-      .catch(() => NotificationService.error(t("model.kyc.not_finish_chatbot")))
+      .catch(() => NotificationService.error(t("model.kyc.chatbot_not_finished")))
       .finally(() => setLoading(false));
   };
 
@@ -56,7 +57,7 @@ const OnBoardingScreen = ({ session }: { session?: Session }) => {
     <AppLayout>
       <View style={styles.container}>
         <Iframe src={url}></Iframe>
-        {kycState === KycStatus.WAIT_CHAT_BOT || kycState === KycStatus.NA && (
+        {kycState === KycStatus.CHATBOT && (
           <DeFiButton onPress={finishChatBot} loading={isLoading}>
             {t("model.kyc.finish_chatbot")}
           </DeFiButton>
@@ -74,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withSession(OnBoardingScreen);
+export default withSession(IdentScreen);

@@ -12,6 +12,8 @@ import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../mo
 import {
   fromUserDetailDto,
   fromUserDto,
+  KycResult,
+  KycStatus,
   NewUser,
   toNewUserDto,
   toUserDto,
@@ -58,12 +60,13 @@ export const getUserDetail = (): Promise<UserDetail> => {
   return fetchFrom<UserDetailDto>(`${UserUrl}/detail`).then(fromUserDetailDto);
 };
 
-export const postKyc = (limit?: number): Promise<string | undefined> => {
+export const postKyc = (limit?: number): Promise<KycResult> => {
   let url = `${UserUrl}/kyc`;
   if (limit) url += `?depositLimit=${limit}`;
 
-  return fetchFrom<{ url: string | undefined }>(url, "POST").then((r) => r.url);
+  return fetchFrom<KycResult>(url, "POST");
 };
+
 export const putUser = (user: User): Promise<UserDetail> => {
   return fetchFrom<UserDetailDto>(UserUrl, "PUT", toUserDto(user)).then(fromUserDetailDto);
 };

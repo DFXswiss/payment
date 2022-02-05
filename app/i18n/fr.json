@@ -158,6 +158,7 @@
       },
       "kyc":{
         "request": "Ton compte doit d'abord être vérifié avec le chatbot et l'identification en ligne.\nTu veux commencer avec le chatbot?",
+        "request_business": "Veuillez tout d'abord télécharger les statuts de la société, l'acte de fondation, l'extrait du registre du commerce ou les statuts de la société.\nTout de suite après, ton compte doit être vérifié avec le chatbot et l'identification en ligne.",
         "invest_volume": "Combien voulez-vous investir au total ?",
         "volume": "Volume d'achat",
         "status": "Statut KYC",

@@ -8,7 +8,7 @@ import { SpacerV } from "../../elements/Spacers";
 import { H2, H3 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
 import { AccountType, KycStatus, User, UserDetail } from "../../models/User";
-import { getRoutes, getUserDetail, postKyc } from "../../services/ApiService";
+import { getRoutes, getUserDetail, postFounderCertificate, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
@@ -39,6 +39,8 @@ import Routes from "../../config/Routes";
 import { StakingRoute } from "../../models/StakingRoute";
 import withSettings from "../../hocs/withSettings";
 import { AppSettings } from "../../services/SettingsService";
+import * as DocumentPicker from "expo-document-picker";
+import { DrawerContentScrollView } from "@react-navigation/drawer";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
@@ -292,6 +294,32 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     },
   ];
 
+
+  
+    const uploadFounderCertificate = () : void=> {
+      
+      DocumentPicker.getDocumentAsync({ type: "public.item", multiple: false })
+        .then((result) => {
+          setIsKycRequest(false);
+          setLoading(true);
+          if (result.type === "success") {
+            const files: File[] = [...Array(result.output?.length).keys()]
+              .map((i) => result.output?.item(i))
+              .filter((f) => f != null)
+              .map((f) => f as File);
+            return files;
+          }
+          throw new Error();
+        })
+        .then(postFounderCertificate)
+        .then(() => {
+          NotificationService.success(t("feedback.save_successful"));
+          return requestKyc({limit:undefined});
+        }
+        )
+        .catch(() => NotificationService.error(t("feedback.file_error")));     
+    };
+  
   const organizationData = (user: User) => [
     { condition: Boolean(user.organizationName), label: "model.user.organization_name", value: user.organizationName },
     {
@@ -341,7 +369,14 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       <Portal>
         <Dialog visible={isKycRequest && !isUserEdit} onDismiss={() => setIsKycRequest(false)} style={AppStyles.dialog}>
           <Dialog.Content>
-            {user?.kycStatus === KycStatus.NA ? (
+            {user?.kycStatus === KycStatus.NA ? 
+            user?.accountType !== AccountType.PERSONAL ? 
+              <>
+                <Paragraph>{t("model.kyc.request_business")}</Paragraph>
+                <SpacerV />
+              </>
+              :
+            (
               <Paragraph>{t("model.kyc.request")}</Paragraph>
             ) : (
               <>
@@ -369,10 +404,10 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
               {t("action.abort")}
             </DeFiButton>
             <DeFiButton
-              onPress={user?.kycStatus === KycStatus.NA ? requestKyc : handleSubmit(requestKyc)}
+              onPress={user?.kycStatus === KycStatus.NA ? user?.accountType !== AccountType.PERSONAL? uploadFounderCertificate : requestKyc : handleSubmit(requestKyc)}
               loading={isKycLoading}
             >
-              {t(user?.kycStatus === KycStatus.NA ? "action.yes" : "action.send")}
+              {t(user?.kycStatus === KycStatus.NA ? user?.accountType !== AccountType.PERSONAL?  "action.upload" : "action.yes" : "action.send")}
             </DeFiButton>
           </Dialog.Actions>
         </Dialog>
@@ -524,5 +559,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     </AppLayout>
   );
 };
+
+
 
 export default withSettings(withSession(HomeScreen));

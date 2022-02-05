@@ -154,7 +154,8 @@
         "ref_commission_hint": "Tem a certeza de que quer reduzir a sua comissão para {{fee}}%? Este passo não pode ser desfeito."
       },
       "kyc":{
-        "request": "A sua conta deve primeiro ser verificada com o chatbot e a identificação em linha.\n Quer começar com o chatbot?",
+        "request": "A sua conta deve primeiro ser verificada com o chatbot e a identificação em linha.\nQuer começar com o chatbot?",
+        "request_business": "Por favor, carregue primeiro os estatutos da empresa, certificado de constituição, excerto do registo comercial ou estatutos da empresa.\nDepois disso, a sua conta deve ser verificada com o chatbot e identificação online.",
         "invest_volume": "Quanto é que quer investir no total?",
         "volume": "Volume de investimento",
         "status": "KYC Status",

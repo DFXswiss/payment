@@ -151,6 +151,7 @@
         },
         "kyc":{
           "request": "Su cuenta debe ser verificada primero con el chatbot y la identificación en línea.\n¿Desea comenzar con el chatbot?",
+          "request_business": "Por favor, cargue primero los estatutos de la empresa, el certificado de constitución, el extracto del registro mercantil o los estatutos de la empresa.\nDespués, su cuenta debe ser verificada con el chatbot y la identificación en línea.",
           "invest_volume": "¿Cúanto quieres invertir en total?",
           "volume": "Volumen de inversión",
           "status": "Estado KYC (Identificación personal)",

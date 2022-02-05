@@ -158,6 +158,7 @@
       },
       "kyc":{
         "request": "Your account must first be verified with the chatbot and online identification.\nDo you want to start with the chatbot?",
+        "request_business": "Please first upload the company's articles of association, certificate of incorporation, excerpt from the commercial register or bylaws of the company.\nAfter that, your account must be verified with the chatbot and online identification.",
         "invest_volume": "How much do you approximately want to invest in total?",
         "volume": "Investment volume",
         "status": "KYC status",

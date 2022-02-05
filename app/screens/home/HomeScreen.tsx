@@ -313,8 +313,8 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
         })
         .then(postFounderCertificate)
         .then(() => {
-          setLoading(false);
           NotificationService.success(t("feedback.save_successful"));
+          return requestKyc({limit:undefined});
         }
         )
         .catch(() => NotificationService.error(t("feedback.file_error")));     

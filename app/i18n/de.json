@@ -169,7 +169,7 @@
         "completed": "Verifizierung abgeschlossen",
         "not_finish_chatbot": "Fehler! Chatbot noch nicht beendet!",
         "finish_chatbot": "Chatbot fertig",
-        "upload_incorporation_certificate": "Bitte Gründungsurkunde, Handelsregisterauszug oder Statuten der Gesellschaft hochladen."
+        "upload_incorporation_certificate": "Bitte Satzung der Firma, Gründungsurkunde, Handelsregisterauszug oder Statuten der Gesellschaft hochladen."
       },
       "route": {
         "routes": "Payment Routen",

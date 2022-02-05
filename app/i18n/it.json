@@ -159,6 +159,7 @@
       },
       "kyc":{
         "request": "Il tuo account deve prima essere verificato con il chatbot e con l'identificazione online.\nVuoi iniziare con il chatbot?",
+        "request_business": "Si prega di caricare prima l'atto costitutivo della società, il certificato di costituzione, l'estratto del registro delle imprese o lo statuto della società.\nDopo di che, il tuo account deve essere verificato con il chatbot e l'identificazione online.",
         "invest_volume": "Quanto vuoi investire in totale?",
         "volume": "Volume degli investimenti",
         "status": "Stato del KYC",
@@ -169,8 +170,7 @@
         "manual": "Verifica completata",
         "completed": "Verifica completata",
         "not_finish_chatbot": "Errore! Chatbot non ancora terminato.",
-        "finish_chatbot": "Chatbot terminato",
-        "upload_incorporation_certificate": "Si prega di caricare il certificato di incorporazione, l'estratto del registro commerciale o lo statuto della società."
+        "finish_chatbot": "Chatbot terminato"
       },
       "route": {
         "routes": "Modalità di pagamento",

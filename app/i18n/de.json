@@ -156,7 +156,8 @@
         "ref_commission_hint": "Bist du sicher, dass du deine Provision auf {{fee}}% verkleinern möchtest? Dieser Schritt kann nicht mehr rückgängig gemacht werden."
       },
       "kyc":{
-        "request": "Dein Konto muss zuerst mit dem Chatbot und Online Identifikation verifiziert werden.\nMöchtest du mit dem Chatbot starten?",
+        "request": "Dein Konto muss zuerst mit dem Chatbot und Online Identifikation verifiziert werden.\nMöchtest du mit dem Chatbot starten?",        
+        "request_business": "Bitte zurerst die Satzung der Firma, Gründungsurkunde, Handelsregisterauszug oder Statuten der Gesellschaft hochladen.\nDanach muss dein Konto mit dem Chatbot und Online Identifikation verifiziert werden.",
         "invest_volume": "Wie viel möchtest du total ungefähr investieren?",
         "volume": "Kaufvolumen",
         "status": "KYC Status",
@@ -168,8 +169,7 @@
         "manual": "Verifizierung abgeschlossen",
         "completed": "Verifizierung abgeschlossen",
         "not_finish_chatbot": "Fehler! Chatbot noch nicht beendet!",
-        "finish_chatbot": "Chatbot fertig",
-        "upload_incorporation_certificate": "Bitte Satzung der Firma, Gründungsurkunde, Handelsregisterauszug oder Statuten der Gesellschaft hochladen."
+        "finish_chatbot": "Chatbot fertig"
       },
       "route": {
         "routes": "Payment Routen",

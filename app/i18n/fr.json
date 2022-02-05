@@ -158,6 +158,7 @@
       },
       "kyc":{
         "request": "Ton compte doit d'abord être vérifié avec le chatbot et l'identification en ligne.\nTu veux commencer avec le chatbot?",
+        "request_business": "Veuillez tout d'abord télécharger les statuts de la société, l'acte de fondation, l'extrait du registre du commerce ou les statuts de la société.\nTout de suite après, ton compte doit être vérifié avec le chatbot et l'identification en ligne.",
         "invest_volume": "Combien voulez-vous investir au total ?",
         "volume": "Volume d'achat",
         "status": "Statut KYC",
@@ -169,8 +170,7 @@
         "manual": "Vérification terminée",
         "completed": "Vérification terminée",
         "not_finish_chatbot": "Erreur ! Le chatbot n'est pas encore complet.",
-        "finish_chatbot": "Chatbot complet",
-        "upload_incorporation_certificate": "Veuillez télécharger l'acte de constitution, l'extrait du registre du commerce ou les statuts de la société."
+        "finish_chatbot": "Chatbot complet"
       },
       "route": {
         "routes": "Routes de paiement",

@@ -372,7 +372,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
             {user?.kycStatus === KycStatus.NA ? 
             user?.accountType !== AccountType.PERSONAL ? 
               <>
-                <Paragraph>{t("model.kyc.upload_incorporation_certificate")}</Paragraph>
+                <Paragraph>{t("model.kyc.request_business")}</Paragraph>
                 <SpacerV />
               </>
               :

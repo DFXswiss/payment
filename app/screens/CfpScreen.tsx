@@ -27,7 +27,7 @@ import { CfpVote, CfpVotes } from "../models/User";
 import { getCfpResults, getCfpVotes, getIsVotingOpen, getStakingRoutes, putCfpVotes } from "../services/ApiService";
 import { Session } from "../services/AuthService";
 import NotificationService from "../services/NotificationService";
-import AppStyles from "../styles/AppStyles";
+import AppStyles, { DefaultCursor } from "../styles/AppStyles";
 import { openUrl } from "../utils/Utils";
 
 const DfxCfpNumbers: number[] = [];
@@ -42,7 +42,7 @@ interface RadioButtonProps {
 
 const DfxRadioButton = ({ label, onPress, checked, disabled, loading }: RadioButtonProps) => {
   return (
-    <TouchableRipple onPress={onPress} disabled={disabled}>
+    <TouchableRipple onPress={onPress} disabled={disabled} style={disabled && DefaultCursor}>
       <View style={styles.radioRow}>
         <View pointerEvents="none">
           {loading ? (

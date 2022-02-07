@@ -41,7 +41,7 @@ const PaymentsUpload = () => {
   const device = useDevice();
 
   const uploadXml = () => {
-    DocumentPicker.getDocumentAsync({ type: "public.item", multiple: false })
+    DocumentPicker.getDocumentAsync({ type: "text/xml", multiple: true })
       .then((result) => {
         if (result.type === "success") {
           const files: File[] = [...Array(result.output?.length).keys()]
@@ -49,12 +49,12 @@ const PaymentsUpload = () => {
             .filter((f) => f != null)
             .map((f) => f as File);
 
-          return files;
+          if (!files.find((f) => f.type !== "text/xml")) return files;
         }
 
         throw new Error();
       })
-      .then(postFounderCertificate)
+      .then(postSepaFiles)
       .then(() => NotificationService.success(t("feedback.save_successful")))
       .catch(() => NotificationService.error(t("feedback.file_error")));
   };

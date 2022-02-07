@@ -4,5 +4,6 @@
     },
     "cSpell.words": [
         "soleproprietorship"
-    ]
+    ],
+    "prettier.printWidth": 120
 }

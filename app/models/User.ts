@@ -38,6 +38,12 @@ export enum AccountType {
   SOLE_PROPRIETORSHIP = "SoleProprietorship",
 }
 
+export enum CfpVote {
+  YES = "Yes",
+  NO = "No",
+  NEUTRAL = "Neutral",
+}
+
 export interface NewUserDto {
   address: string;
   signature: string;
@@ -64,6 +70,10 @@ export interface Fees {
   buy: number;
   refBonus: number;
   sell: number;
+}
+
+export interface CfpVotes {
+  [number: number]: CfpVote;
 }
 
 export const toNewUserDto = (user: NewUser): NewUserDto => ({
@@ -102,6 +112,8 @@ export interface UserDto extends NewUserDto {
   organizationLocation: string;
   organizationZip: string;
   organizationCountry: Country;
+
+  cfpVotes: CfpVotes;
 }
 
 export interface User extends NewUser {
@@ -132,6 +144,8 @@ export interface User extends NewUser {
   organizationLocation: string;
   organizationZip: string;
   organizationCountry: Country;
+
+  cfpVotes: CfpVotes;
 }
 
 export interface UserDetailDto extends UserDto {
@@ -171,6 +185,7 @@ export const fromUserDto = (user: UserDto): User => ({
   organizationLocation: user.organizationLocation,
   organizationZip: user.organizationZip,
   organizationCountry: user.organizationCountry,
+  cfpVotes: user.cfpVotes,
 });
 
 export const toUserDto = (user: User): UserDto => ({
@@ -202,6 +217,7 @@ export const toUserDto = (user: User): UserDto => ({
   organizationLocation: user.organizationLocation,
   organizationZip: user.organizationZip,
   organizationCountry: user.organizationCountry,
+  cfpVotes: user.cfpVotes,
 });
 
 export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({

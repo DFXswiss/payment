@@ -14,7 +14,7 @@ import * as DocumentPicker from "expo-document-picker";
 import NotificationService from "../services/NotificationService";
 import { StyleSheet, View } from "react-native";
 import { useDevice } from "../hooks/useDevice";
-import { postFounderCertificate, postSepaFiles } from "../services/ApiService";
+import { postSepaFiles } from "../services/ApiService";
 
 const AdminScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();

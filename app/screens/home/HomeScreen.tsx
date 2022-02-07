@@ -1,6 +1,6 @@
 import React, { useState, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { View, Image } from "react-native";
 import DeFiModal from "../../components/util/DeFiModal";
 import Loading from "../../components/util/Loading";
 import UserEdit from "../../components/edit/UserEdit";
@@ -8,7 +8,7 @@ import { SpacerV } from "../../elements/Spacers";
 import { H2, H3 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
 import { AccountType, KycStatus, User, UserDetail } from "../../models/User";
-import { getRoutes, getUserDetail, postFounderCertificate, postKyc } from "../../services/ApiService";
+import { getIsVotingOpen, getRoutes, getUserDetail, postFounderCertificate, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
@@ -40,7 +40,6 @@ import { StakingRoute } from "../../models/StakingRoute";
 import withSettings from "../../hocs/withSettings";
 import { AppSettings } from "../../services/SettingsService";
 import * as DocumentPicker from "expo-document-picker";
-import { DrawerContentScrollView } from "@react-navigation/drawer";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
@@ -60,6 +59,10 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const [isKycRequest, setIsKycRequest] = useState(false);
   const [isKycLoading, setIsKycLoading] = useState(false);
   const [isRefFeeEdit, setIsRefFeeEdit] = useState(false);
+
+  const [isVotingOpen, setIsVotingOpen] = useState(false);
+  const [canVote, setCanVote] = useState(false);
+  const [votingImageWidth, setVotingImageWidth] = useState(0);
 
   const {
     control,
@@ -213,6 +216,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       setBuyRoutes(routes.buy);
       setSellRoutes(routes.sell);
       setStakingRoutes(routes.staking);
+      setCanVote(routes.staking.find((r) => r.balance >= 100) != null);
     });
   };
 
@@ -220,10 +224,11 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     (cancelled) => {
       if (session) {
         if (session.isLoggedIn) {
-          Promise.all([getUserDetail(), loadRoutes()])
-            .then(([user, _]) => {
+          Promise.all([getUserDetail(), loadRoutes(), getIsVotingOpen()])
+            .then(([user, _, votingOpen]) => {
               if (!cancelled()) {
                 setUser(user);
+                setIsVotingOpen(votingOpen);
               }
             })
             .catch((e: ApiError) =>
@@ -431,6 +436,21 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
           onCancel={() => setIsRefFeeEdit(false)}
         />
       </DeFiModal>
+
+      {isVotingOpen && canVote && (
+        <View onLayout={(event) => setVotingImageWidth(event.nativeEvent.layout.width)}>
+          <TouchableOpacity onPress={() => navigate(Routes.Cfp)}>
+            <Image
+              style={{ width: votingImageWidth, height: votingImageWidth / 3 }}
+              source={
+                settings?.language === "DE"
+                  ? require("../../assets/voting_2202_de.svg")
+                  : require("../../assets/voting_2202_en.svg")
+              }
+            />
+          </TouchableOpacity>
+        </View>
+      )}
 
       {!settings?.isIframe && <SpacerV height={30} />}
 

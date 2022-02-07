@@ -10,6 +10,7 @@ import { Language } from "../models/Language";
 import { Ref } from "../models/Ref";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import {
+  CfpVotes,
   fromUserDetailDto,
   fromUserDto,
   NewUser,
@@ -64,6 +65,7 @@ export const postKyc = (limit?: number): Promise<string | undefined> => {
 
   return fetchFrom<{ url: string | undefined }>(url, "POST").then((r) => r.url);
 };
+
 export const putUser = (user: User): Promise<UserDetail> => {
   return fetchFrom<UserDetailDto>(UserUrl, "PUT", toUserDto(user)).then(fromUserDetailDto);
 };
@@ -82,6 +84,19 @@ export const updateRefFee = (fee: number): Promise<void> => {
 
 export const postFounderCertificate = (files: File[]): Promise<void> => {
   return postFiles(`${UserUrl}/incorporationCertificate`, files);
+};
+
+// --- VOTING --- //
+export const getIsVotingOpen = (): Promise<boolean> => {
+  return fetchFrom<boolean>(`${StatisticUrl}/cfp/votingOpen`);
+};
+
+export const getCfpVotes = (): Promise<CfpVotes> => {
+  return fetchFrom<CfpVotes>(`${UserUrl}/cfpVotes`);
+};
+
+export const putCfpVotes = (votes: CfpVotes): Promise<CfpVotes> => {
+  return fetchFrom<CfpVotes>(`${UserUrl}/cfpVotes`, "PUT", votes);
 };
 
 // --- PAYMENT ROUTES --- //
@@ -111,6 +126,10 @@ export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
 
 export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
   return fetchFrom<SellRouteDto>(SellUrl, "PUT", toSellRouteDto(route)).then(fromSellRouteDto);
+};
+
+export const getStakingRoutes = (): Promise<StakingRoute[]> => {
+  return fetchFrom<StakingRoute[]>(StakingUrl);
 };
 
 export const postStakingRoute = (route: StakingRoute): Promise<StakingRoute> => {

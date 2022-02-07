@@ -103,7 +103,9 @@
       "vote_turnout": "Stimmbeteiligung",
       "current_result": "Aktuelles Resultat",
       "approved": "Angenommen",
-      "not approved": "Nicht angenommen"
+      "not approved": "Nicht angenommen",
+      "read_proposal": "Proposal lesen",
+      "your_vote": "Deine Stimme"
     },
     "admin": {
       "title": "Admin"

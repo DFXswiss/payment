@@ -97,7 +97,9 @@
         "vote_turnout": "Número de votos",
         "current_result": "Resultado actual",
         "approved": "Aprobado",
-        "not approved": "No aprobado"
+        "not approved": "No aprobado",
+        "read_proposal": "Leer propuesta",
+        "your_vote": "Su voto"
       },
       "admin": {
         "title": "Administrador"

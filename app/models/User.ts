@@ -40,7 +40,7 @@ export enum AccountType {
 
 export enum CfpVote {
   YES = "Yes",
-  NO = "NO",
+  NO = "No",
   NEUTRAL = "Neutral",
 }
 

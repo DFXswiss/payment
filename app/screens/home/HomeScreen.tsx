@@ -1,6 +1,6 @@
 import React, { useState, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { View, Image } from "react-native";
 import DeFiModal from "../../components/util/DeFiModal";
 import Loading from "../../components/util/Loading";
 import UserEdit from "../../components/edit/UserEdit";
@@ -40,7 +40,6 @@ import { StakingRoute } from "../../models/StakingRoute";
 import withSettings from "../../hocs/withSettings";
 import { AppSettings } from "../../services/SettingsService";
 import * as DocumentPicker from "expo-document-picker";
-import { DrawerContentScrollView } from "@react-navigation/drawer";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
@@ -60,6 +59,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const [isKycRequest, setIsKycRequest] = useState(false);
   const [isKycLoading, setIsKycLoading] = useState(false);
   const [isRefFeeEdit, setIsRefFeeEdit] = useState(false);
+  const [votingImageWidth, setVotingImageWidth] = useState(0);
 
   const {
     control,
@@ -431,6 +431,19 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
           onCancel={() => setIsRefFeeEdit(false)}
         />
       </DeFiModal>
+
+      <View onLayout={(event) => setVotingImageWidth(event.nativeEvent.layout.width)}>
+        <TouchableOpacity onPress={() => navigate(Routes.Cfp)}>
+          <Image
+            style={{ width: votingImageWidth, height: votingImageWidth / 3 }}
+            source={
+              settings?.language === "DE"
+                ? require("../../assets/voting_2202_de.svg")
+                : require("../../assets/voting_2202_en.svg")
+            }
+          />
+        </TouchableOpacity>
+      </View>
 
       {!settings?.isIframe && <SpacerV height={30} />}
 

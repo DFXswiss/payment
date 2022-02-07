@@ -13,6 +13,8 @@ import { postKyc } from "../services/ApiService";
 import NotificationService from "../services/NotificationService";
 import { KycResult, KycStatus } from "../models/User";
 import { sleep } from "../utils/Utils";
+import { SpacerV } from "../elements/Spacers";
+import Colors from "../config/Colors";
 
 const IdentScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
@@ -50,8 +52,9 @@ const IdentScreen = ({ session }: { session?: Session }) => {
           }
           NotificationService.error(t("model.kyc.chatbot_not_finished"));
         } else {
-          setKycStatus(result.status);
           setUrl(result.identUrl);
+          // wait for new page to load
+          setTimeout(() => setKycStatus(result.status), 1000);
         }
       })
       .catch(() => NotificationService.error(t("model.kyc.chatbot_not_finished")))
@@ -61,11 +64,17 @@ const IdentScreen = ({ session }: { session?: Session }) => {
   return (
     <AppLayout>
       <View style={styles.container}>
-        <Iframe src={url}></Iframe>
+        <Iframe src={url} />
+
         {kycStatus === KycStatus.CHATBOT && (
-          <DeFiButton onPress={() => finishChatBot()} loading={isLoading}>
-            {t("model.kyc.finish_chatbot")}
-          </DeFiButton>
+          <>
+            <SpacerV height={10} />
+            <View style={styles.chatbotButtonContainer}>
+              <DeFiButton onPress={() => finishChatBot()} loading={isLoading} labelStyle={styles.chatbotButton}>
+                {t("model.kyc.finish_chatbot")}
+              </DeFiButton>
+            </View>
+          </>
         )}
       </View>
     </AppLayout>
@@ -77,6 +86,17 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
     flex: 1,
+  },
+  chatbotButtonContainer: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    height: 50,
+    backgroundColor: Colors.Blue,
+    justifyContent: "flex-end",
+  },
+  chatbotButton: {
+    fontSize: 18,
   },
 });
 

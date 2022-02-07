@@ -104,7 +104,9 @@
       "vote_turnout": "Vote turnout",
       "current_result": "Current result",
       "approved": "Approved",
-      "not approved": "Not approved"
+      "not approved": "Not approved",
+      "read_proposal": "Read proposal",
+      "your_vote": "Your vote"
     },
     "admin": {
       "title": "Admin"

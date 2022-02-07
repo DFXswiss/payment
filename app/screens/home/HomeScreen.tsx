@@ -7,7 +7,7 @@ import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
 import { H2, H3 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
-import { AccountType, KycStatus, User, UserDetail } from "../../models/User";
+import { AccountType, KycResult, KycStatus, User, UserDetail } from "../../models/User";
 import { getIsVotingOpen, getRoutes, getUserDetail, postFounderCertificate, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
@@ -85,7 +85,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
 
   const stakingRouteEdit = (update: SetStateAction<boolean>) => {
     if (
-      ![KycStatus.WAIT_VERIFY_MANUAL, KycStatus.COMPLETED].includes(user?.kycStatus ?? KycStatus.NA) &&
+      ![KycStatus.MANUAL, KycStatus.COMPLETED].includes(user?.kycStatus ?? KycStatus.NA) &&
       resolve(update, isStakingRouteEdit)
     ) {
       user?.kycStatus === KycStatus.NA ? onKyc() : continueKyc();
@@ -121,20 +121,14 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     setIsKycRequest(true);
   };
 
-  const onKycRequested = (url: string | undefined) => {
-    if (user) {
-      if (
-        [KycStatus.NA, KycStatus.WAIT_CHAT_BOT, KycStatus.WAIT_VERIFY_ONLINE, KycStatus.WAIT_VERIFY_VIDEO].includes(
-          user.kycStatus
-        )
-      ) {
-        if (url) {
-          navigate(Routes.OnBoarding, { url, kycStatus: user.kycStatus });
-        } else {
-          NotificationService.success(t("feedback.check_mails"));
-        }
+  const onKycRequested = (result: KycResult) => {
+    if ([KycStatus.MANUAL, KycStatus.COMPLETED].includes(result.status)) {
+      NotificationService.success(t("feedback.request_submitted"));
+    } else {
+      if (result.identUrl) {
+        navigate(Routes.Ident, { url: result.identUrl, kycStatus: result.status });
       } else {
-        NotificationService.success(t("feedback.request_submitted"));
+        NotificationService.success(t("feedback.check_mails"));
       }
     }
   };
@@ -251,7 +245,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   useAuthGuard(session);
 
   const limit = (user: User): string => {
-    if (user.kycStatus != KycStatus.COMPLETED && user.kycStatus != KycStatus.WAIT_VERIFY_MANUAL) {
+    if (user.kycStatus != KycStatus.COMPLETED && user.kycStatus != KycStatus.MANUAL) {
       return `${formatAmount(900)} € ${t("model.user.per_day")}`;
     } else {
       return `${formatAmount(user.depositLimit)} € ${t("model.user.per_year")}`;
@@ -299,9 +293,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       condition: user.kycStatus != KycStatus.NA,
       label: "model.kyc.status",
       value: t(`model.kyc.${user.kycStatus.toLowerCase()}`),
-      icon: [KycStatus.WAIT_VERIFY_VIDEO, KycStatus.WAIT_CHAT_BOT, KycStatus.WAIT_VERIFY_ONLINE].includes(
-        user.kycStatus
-      )
+      icon: [KycStatus.VIDEO_ID, KycStatus.CHATBOT, KycStatus.ONLINE_ID].includes(user.kycStatus)
         ? "reload"
         : undefined,
       onPress: continueKyc,
@@ -311,9 +303,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       label: "model.user.limit",
       value: limit(user),
       icon:
-        user.kycStatus === KycStatus.NA ||
-        user.kycStatus === KycStatus.WAIT_VERIFY_MANUAL ||
-        user.kycStatus === KycStatus.COMPLETED
+        user.kycStatus === KycStatus.NA || user.kycStatus === KycStatus.MANUAL || user.kycStatus === KycStatus.COMPLETED
           ? "arrow-up"
           : undefined,
       onPress: onKyc,

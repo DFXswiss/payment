@@ -18,11 +18,10 @@ export enum UserStatus {
 
 export enum KycStatus {
   NA = "NA",
-  WAIT_CHAT_BOT = "Chatbot",
-  WAIT_VERIFY_ADDRESS = "Address",
-  WAIT_VERIFY_ONLINE = "OnlineId",
-  WAIT_VERIFY_VIDEO = "VideoId",
-  WAIT_VERIFY_MANUAL = "Manual",
+  CHATBOT = "Chatbot",
+  ONLINE_ID = "OnlineId",
+  VIDEO_ID = "VideoId",
+  MANUAL = "Manual",
   COMPLETED = "Completed",
 }
 
@@ -42,6 +41,11 @@ export enum CfpVote {
   YES = "Yes",
   NO = "No",
   NEUTRAL = "Neutral",
+}
+
+export interface KycResult {
+  status: KycStatus;
+  identUrl?: string;
 }
 
 export interface NewUserDto {

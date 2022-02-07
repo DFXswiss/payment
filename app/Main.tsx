@@ -19,7 +19,7 @@ import AppStyles from "./styles/AppStyles";
 import AdminScreen from "./screens/AdminScreen";
 import CfpScreen from "./screens/CfpScreen";
 import Colors from "./config/Colors";
-import OnBoardingScreen from "./screens/OnBoardingScreen";
+import IdentScreen from "./screens/IdentScreen";
 
 const DrawerContent = () => {
   const device = useDevice();
@@ -49,7 +49,7 @@ const Main = () => {
         [Routes.Gtc]: "legal",
         [Routes.Cfp]: "cfp",
         [Routes.Admin]: "admin",
-        [Routes.OnBoarding]: "onboarding",
+        [Routes.Ident]: "ident",
         [Routes.NotFound]: "*",
       },
     },
@@ -60,7 +60,7 @@ const Main = () => {
     { route: Routes.Gtc, screen: GtcScreen },
     { route: Routes.Cfp, screen: CfpScreen },
     { route: Routes.Admin, screen: AdminScreen },
-    {route: Routes.OnBoarding, screen: OnBoardingScreen},
+    {route: Routes.Ident, screen: IdentScreen},
     { route: Routes.NotFound, screen: NotFoundScreen },
   ];
 

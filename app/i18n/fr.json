@@ -171,7 +171,7 @@
         "videoid": "En cours (Identification en vidéo)",
         "manual": "Vérification terminée",
         "completed": "Vérification terminée",
-        "not_finish_chatbot": "Erreur ! Le chatbot n'est pas encore complet.",
+        "chatbot_not_finished": "Erreur ! Le chatbot n'est pas encore complet.",
         "finish_chatbot": "Chatbot complet"
       },
       "route": {

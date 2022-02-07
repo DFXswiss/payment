@@ -27,3 +27,5 @@ export const openUrl = (url: string): void => {
     Linking.openURL(url);
   }
 };
+
+export const sleep = (seconds: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, seconds * 1000));

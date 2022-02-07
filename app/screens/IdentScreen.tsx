@@ -12,6 +12,7 @@ import { DeFiButton } from "../elements/Buttons";
 import { postKyc } from "../services/ApiService";
 import NotificationService from "../services/NotificationService";
 import { KycResult, KycStatus } from "../models/User";
+import { sleep } from "../utils/Utils";
 
 const IdentScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
@@ -27,22 +28,26 @@ const IdentScreen = ({ session }: { session?: Session }) => {
   useEffect(() => {
     // get params
     const params = route.params as any;
-    if (params?.url && params?.kycStatus) {
+    if (params?.url && params?.status) {
       setUrl(params.url);
-      setKycStatus(params.kycStatus);
+      setKycStatus(params.status);
 
       // reset params
-      nav.navigate(Routes.Ident, { url: undefined, kycStatus: undefined });
+      nav.navigate(Routes.Ident, { url: undefined, status: undefined });
     } else {
       nav.navigate(Routes.Home);
     }
   }, []);
 
-  const finishChatBot = () => {
+  const finishChatBot = (nthTry = 2) => {
     setLoading(true);
     postKyc()
       .then((result: KycResult) => {
         if (result.status === KycStatus.CHATBOT || !result.identUrl) {
+          // retry
+          if (nthTry > 1) {
+            return sleep(3).then(() => finishChatBot(nthTry - 1));
+          }
           NotificationService.error(t("model.kyc.chatbot_not_finished"));
         } else {
           setKycStatus(result.status);
@@ -58,7 +63,7 @@ const IdentScreen = ({ session }: { session?: Session }) => {
       <View style={styles.container}>
         <Iframe src={url}></Iframe>
         {kycStatus === KycStatus.CHATBOT && (
-          <DeFiButton onPress={finishChatBot} loading={isLoading}>
+          <DeFiButton onPress={() => finishChatBot()} loading={isLoading}>
             {t("model.kyc.finish_chatbot")}
           </DeFiButton>
         )}

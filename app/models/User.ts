@@ -46,6 +46,7 @@ export enum CfpVote {
 export interface KycResult {
   status: KycStatus;
   identUrl?: string;
+  setupUrl?: string;
 }
 
 export interface NewUserDto {

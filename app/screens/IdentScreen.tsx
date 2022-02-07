@@ -23,6 +23,7 @@ const IdentScreen = ({ session }: { session?: Session }) => {
 
   const [isLoading, setLoading] = useState(false);
   const [url, setUrl] = useState("");
+  const [setupUrl, setSetupUrl] = useState<string | undefined>();
   const [kycStatus, setKycStatus] = useState<KycStatus>();
 
   useAuthGuard(session);
@@ -32,10 +33,11 @@ const IdentScreen = ({ session }: { session?: Session }) => {
     const params = route.params as any;
     if (params?.url && params?.status) {
       setUrl(params.url);
+      setSetupUrl(params.setupUrl);
       setKycStatus(params.status);
 
       // reset params
-      nav.navigate(Routes.Ident, { url: undefined, status: undefined });
+      nav.navigate(Routes.Ident, { status: undefined, url: undefined, setupUrl: undefined });
     } else {
       nav.navigate(Routes.Home);
     }
@@ -53,6 +55,7 @@ const IdentScreen = ({ session }: { session?: Session }) => {
           NotificationService.error(t("model.kyc.chatbot_not_finished"));
         } else {
           setUrl(result.identUrl);
+          setSetupUrl(result.setupUrl);
           // wait for new page to load
           setTimeout(() => setKycStatus(result.status), 1000);
         }
@@ -64,6 +67,11 @@ const IdentScreen = ({ session }: { session?: Session }) => {
   return (
     <AppLayout>
       <View style={styles.container}>
+        {setupUrl && (
+          <View style={styles.hiddenIframe}>
+            <Iframe src={setupUrl} />
+          </View>
+        )}
         <Iframe src={url} />
 
         {kycStatus === KycStatus.CHATBOT && (
@@ -86,6 +94,10 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "space-between",
     flex: 1,
+  },
+  hiddenIframe: {
+    height: 0,
+    overflow: "hidden",
   },
   chatbotButtonContainer: {
     position: "absolute",

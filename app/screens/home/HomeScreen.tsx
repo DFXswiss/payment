@@ -126,7 +126,11 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       NotificationService.success(t("feedback.request_submitted"));
     } else {
       if (result.identUrl) {
-        navigate(Routes.Ident, { url: result.identUrl, status: result.status });
+        navigate(Routes.Ident, {
+          status: result.status,
+          url: result.identUrl,
+          ...(result.setupUrl && { setupUrl: result.setupUrl }),
+        });
       } else {
         NotificationService.success(t("feedback.check_mails"));
       }

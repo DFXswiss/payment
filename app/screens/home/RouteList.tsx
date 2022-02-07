@@ -398,7 +398,9 @@ const RouteList = ({
                   <TouchableOpacity key={route.id} onPress={() => setDetailRoute(route)} disabled={device.SM}>
                     <CompactRow>
                       <CompactCell style={{ flex: 1 }}>{t(`model.route.${route.type.toLowerCase()}`)}</CompactCell>
-                      <CompactCell style={{ flex: 1 }}>{route.asset?.name}</CompactCell>
+                      <CompactCell style={{ flex: 1 }}>
+                        {route.type === BuyType.WALLET && route.asset?.name}
+                      </CompactCell>
                       {device.SM && <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>}
                       <CompactCell style={{ flex: 2 }}>{route.bankUsage}</CompactCell>
                       <CompactCell style={{ flex: undefined }}>
@@ -507,7 +509,7 @@ const RouteList = ({
             </>
           )}
 
-          {(
+          {
             <>
               <SpacerV height={20} />
               <ButtonContainer>
@@ -516,7 +518,7 @@ const RouteList = ({
                 </DeFiButton>
               </ButtonContainer>
             </>
-          )}
+          }
         </>
       ) : (
         <>

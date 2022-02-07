@@ -4,8 +4,17 @@ import { StyleSheet, View } from "react-native";
 import { StackedBarChart } from "react-native-chart-kit";
 import { AbstractChartConfig } from "react-native-chart-kit/dist/AbstractChart";
 import { StackedBarChartData } from "react-native-chart-kit/dist/StackedBarChart";
-import { ActivityIndicator, DataTable, Paragraph, RadioButton, TouchableRipple, Text } from "react-native-paper";
+import {
+  ActivityIndicator,
+  DataTable,
+  Paragraph,
+  RadioButton,
+  TouchableRipple,
+  Text,
+  IconButton,
+} from "react-native-paper";
 import AppLayout from "../components/AppLayout";
+import Loading from "../components/util/Loading";
 import Colors from "../config/Colors";
 import { DeFiButton } from "../elements/Buttons";
 import { SpacerV } from "../elements/Spacers";
@@ -28,14 +37,19 @@ interface RadioButtonProps {
   onPress: () => void;
   checked: boolean;
   disabled?: boolean;
+  loading?: boolean;
 }
 
-const DfxRadioButton = ({ label, onPress, checked, disabled }: RadioButtonProps) => {
+const DfxRadioButton = ({ label, onPress, checked, disabled, loading }: RadioButtonProps) => {
   return (
     <TouchableRipple onPress={onPress} disabled={disabled}>
       <View style={styles.radioRow}>
         <View pointerEvents="none">
-          <RadioButton value="dfx" status={checked ? "checked" : "unchecked"} disabled={disabled} />
+          {loading ? (
+            <Loading size={20} style={{ marginRight: 16 }} />
+          ) : (
+            <RadioButton value="dfx" status={checked ? "checked" : "unchecked"} disabled={disabled} />
+          )}
         </View>
         <Paragraph>{label}</Paragraph>
       </View>
@@ -51,6 +65,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
   const [canVote, setCanVote] = useState(false);
   const [isVotingOpen, setIsVotingOpen] = useState(false);
   const [votes, setVotes] = useState<CfpVotes | undefined>();
+  const [isSaving, setIsSaving] = useState<{ number: Number; vote: CfpVote } | undefined>();
 
   useAuthGuard(session);
 
@@ -79,10 +94,13 @@ const CfpScreen = ({ session }: { session?: Session }) => {
     };
   };
 
-  const onVote = (cfpNumber: number, vote: CfpVote) => {
+  const onVote = (number: number, vote: CfpVote) => {
     setVotes((votes) => {
-      votes = { ...(votes ?? {}), [cfpNumber]: vote };
-      putCfpVotes(votes);
+      votes = { ...(votes ?? {}), [number]: vote };
+
+      setIsSaving({ number, vote });
+      putCfpVotes(votes).finally(() => setIsSaving(undefined));
+
       return votes;
     });
   };
@@ -193,18 +211,21 @@ const CfpScreen = ({ session }: { session?: Session }) => {
                           onPress={() => onVote(result.number, CfpVote.YES)}
                           checked={votes?.[result.number] === CfpVote.YES}
                           disabled={!isVotingOpen}
+                          loading={isSaving?.number === result.number && isSaving.vote === CfpVote.YES}
                         />
                         <DfxRadioButton
                           label={t("cfp.no")}
                           onPress={() => onVote(result.number, CfpVote.NO)}
                           checked={votes?.[result.number] === CfpVote.NO}
                           disabled={!isVotingOpen}
+                          loading={isSaving?.number === result.number && isSaving.vote === CfpVote.NO}
                         />
                         <DfxRadioButton
                           label={t("cfp.neutral")}
                           onPress={() => onVote(result.number, CfpVote.NEUTRAL)}
                           checked={(votes?.[result.number] ?? CfpVote.NEUTRAL) === CfpVote.NEUTRAL}
                           disabled={!isVotingOpen}
+                          loading={isSaving?.number === result.number && isSaving.vote === CfpVote.NEUTRAL}
                         />
                       </View>
                     </>

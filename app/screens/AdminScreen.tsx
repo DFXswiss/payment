@@ -14,7 +14,7 @@ import * as DocumentPicker from "expo-document-picker";
 import NotificationService from "../services/NotificationService";
 import { StyleSheet, View } from "react-native";
 import { useDevice } from "../hooks/useDevice";
-import { postSepaFiles } from "../services/ApiService";
+import { postFounderCertificate, postSepaFiles } from "../services/ApiService";
 
 const AdminScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
@@ -23,7 +23,6 @@ const AdminScreen = ({ session }: { session?: Session }) => {
 
   return (
     <AppLayout>
-      <SpacerV height={20} />
       <H1 style={AppStyles.center} text={t("admin.title")} />
 
       <SpacerV height={20} />

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import AppLayout from "../components/AppLayout";
-import { SpacerV } from "../elements/Spacers";
 import withSession from "../hocs/withSession";
 import useAuthGuard from "../hooks/useAuthGuard";
 import { Session } from "../services/AuthService";
@@ -21,7 +20,7 @@ const OnBoardingScreen = ({ session }: { session?: Session }) => {
 
   const [isLoading, setLoading] = useState(false);
   const [url, setUrl] = useState("");
-  const [kycState, setKycState] = useState<KycStatus>();
+  const [isChatBot, setChatBot] = useState<boolean>();
 
   useAuthGuard(session);
 
@@ -29,7 +28,7 @@ const OnBoardingScreen = ({ session }: { session?: Session }) => {
     // get params
     const params = route.params as any;
     setUrl(params?.url);
-    setKycState(params?.kycStatus);
+    setChatBot(params?.kycStatus == KycStatus.WAIT_CHAT_BOT || params?.kycStatus == KycStatus.NA);
 
     // reset params
     nav.navigate(Routes.OnBoarding, { url: undefined, kycStatus: undefined });
@@ -41,7 +40,7 @@ const OnBoardingScreen = ({ session }: { session?: Session }) => {
       .then((url: string | undefined) => {
         getUser().then((user) => {
           if (user.kycStatus !== KycStatus.WAIT_CHAT_BOT && url) {
-            setKycState(user.kycStatus);
+            setChatBot(true);
             setUrl(url);
           } else {
             NotificationService.error(t("model.kyc.not_finish_chatbot"));
@@ -52,16 +51,15 @@ const OnBoardingScreen = ({ session }: { session?: Session }) => {
       .finally(() => setLoading(false));
   };
 
+  getUser().then((user) => setChatBot(user?.kycStatus == KycStatus.WAIT_CHAT_BOT || user?.kycStatus == KycStatus.NA));
+
   return (
     <AppLayout>
-      <SpacerV height={20} />
       <View style={styles.container}>
         <Iframe src={url}></Iframe>
-        {kycState === KycStatus.WAIT_CHAT_BOT || kycState === KycStatus.NA && (
-          <DeFiButton onPress={finishChatBot} loading={isLoading}>
-            {t("model.kyc.finish_chatbot")}
-          </DeFiButton>
-        )}
+        <DeFiButton onPress={finishChatBot} loading={isLoading} visible={isChatBot}>
+          {t("model.kyc.finish_chatbot")}
+        </DeFiButton>
       </View>
     </AppLayout>
   );

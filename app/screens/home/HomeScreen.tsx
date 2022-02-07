@@ -8,7 +8,7 @@ import { SpacerV } from "../../elements/Spacers";
 import { H2, H3 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
 import { AccountType, KycStatus, User, UserDetail } from "../../models/User";
-import { getRoutes, getUserDetail, postKyc } from "../../services/ApiService";
+import { getRoutes, getUserDetail, postFounderCertificate, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
@@ -37,10 +37,14 @@ import RefFeeEdit from "../../components/edit/RefFeeEdit";
 import { navigate } from "../../utils/NavigationHelper";
 import Routes from "../../config/Routes";
 import { StakingRoute } from "../../models/StakingRoute";
+import withSettings from "../../hocs/withSettings";
+import { AppSettings } from "../../services/SettingsService";
+import * as DocumentPicker from "expo-document-picker";
+import { DrawerContentScrollView } from "@react-navigation/drawer";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
-const HomeScreen = ({ session }: { session?: Session }) => {
+const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSettings }) => {
   const { t } = useTranslation();
   const device = useDevice();
   const RefUrl = Environment.api.refUrl;
@@ -140,12 +144,33 @@ const HomeScreen = ({ session }: { session?: Session }) => {
       .finally(() => setLoading(false));
   };
 
-  const requestKyc = ({ limit }: { limit?: string }): void => {
+  const requestKyc = ({ limit }: { limit?: string }): Promise<void> => {
     setIsKycLoading(true);
     const limitNumber = limit ? +limit : undefined;
-    postKyc(limitNumber)
+    return postKyc(limitNumber)
       .then(onKycRequested)
       .catch(() => NotificationService.error(t("feedback.request_failed")))
+      .finally(() => {
+        setIsKycRequest(false);
+        setIsKycLoading(false);
+      });
+  };
+
+  const uploadFounderCertificate = (): void => {
+    DocumentPicker.getDocumentAsync({ type: "public.item", multiple: false })
+      .then((result) => {
+        setIsKycLoading(true);
+        if (result.type === "success") {
+          return [...Array(result.output?.length).keys()]
+            .map((i) => result.output?.item(i))
+            .filter((f) => f != null)
+            .map((f) => f as File);
+        }
+        throw new Error();
+      })
+      .then(postFounderCertificate)
+      .catch(() => NotificationService.error(t("feedback.file_error")))
+      .then(() => requestKyc({}))
       .finally(() => {
         setIsKycRequest(false);
         setIsKycLoading(false);
@@ -328,9 +353,9 @@ const HomeScreen = ({ session }: { session?: Session }) => {
       value: user.refData.refCountActive,
     },
     {
-      condition: Boolean(user.refData.refVolume),
+      condition: Boolean(user.refVolume),
       label: "model.user.ref_volume",
-      value: `${formatAmount(user.refData.refVolume)} €`,
+      value: `${formatAmount(user.refVolume)} €`,
     },
   ];
 
@@ -340,7 +365,9 @@ const HomeScreen = ({ session }: { session?: Session }) => {
         <Dialog visible={isKycRequest && !isUserEdit} onDismiss={() => setIsKycRequest(false)} style={AppStyles.dialog}>
           <Dialog.Content>
             {user?.kycStatus === KycStatus.NA ? (
-              <Paragraph>{t("model.kyc.request")}</Paragraph>
+              <Paragraph>
+                {t(user?.accountType === AccountType.PERSONAL ? "model.kyc.request" : "model.kyc.request_business")}
+              </Paragraph>
             ) : (
               <>
                 <Paragraph>{t("model.kyc.invest_volume")}</Paragraph>
@@ -367,10 +394,22 @@ const HomeScreen = ({ session }: { session?: Session }) => {
               {t("action.abort")}
             </DeFiButton>
             <DeFiButton
-              onPress={user?.kycStatus === KycStatus.NA ? requestKyc : handleSubmit(requestKyc)}
+              onPress={
+                user?.kycStatus === KycStatus.NA
+                  ? user?.accountType !== AccountType.PERSONAL
+                    ? uploadFounderCertificate
+                    : requestKyc
+                  : handleSubmit(requestKyc)
+              }
               loading={isKycLoading}
             >
-              {t(user?.kycStatus === KycStatus.NA ? "action.yes" : "action.send")}
+              {t(
+                user?.kycStatus === KycStatus.NA
+                  ? user?.accountType !== AccountType.PERSONAL
+                    ? "action.upload"
+                    : "action.yes"
+                  : "action.send"
+              )}
             </DeFiButton>
           </Dialog.Actions>
         </Dialog>
@@ -393,7 +432,7 @@ const HomeScreen = ({ session }: { session?: Session }) => {
         />
       </DeFiModal>
 
-      <SpacerV height={50} />
+      {!settings?.isIframe && <SpacerV height={30} />}
 
       {isLoading && <Loading size="large" />}
 
@@ -523,4 +562,4 @@ const HomeScreen = ({ session }: { session?: Session }) => {
   );
 };
 
-export default withSession(HomeScreen);
+export default withSettings(withSession(HomeScreen));

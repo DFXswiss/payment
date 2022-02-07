@@ -111,9 +111,12 @@ const LoginScreen = () => {
     // TODO: remove at some point ...
     setIsOldSignature(false);
 
-    if (params?.lang) {
-      SettingsService.updateSettings({ language: params.lang.toUpperCase() });
-    }
+    // update settings
+    const isIframe = Boolean(params?.iframe);
+    const language = params?.lang?.toUpperCase();
+    SettingsService.updateSettings({ isIframe }).then(() => {
+      if (language) SettingsService.updateSettings({ language });
+    });
 
     // TODO: remove 0 -> 1 conversion (fix for DFX Wallet v0.10.5)
     setValue("walletId", params?.walletId == 0 ? 1 : +params?.walletId);
@@ -145,6 +148,7 @@ const LoginScreen = () => {
       signature: undefined,
       walletId: undefined,
       code: undefined,
+      iframe: undefined,
     });
   }, []);
 
@@ -164,7 +168,6 @@ const LoginScreen = () => {
           </>
         ) : (
           <>
-            <SpacerV height={20} />
             <H1 text={t("session.sign_up")} />
             <DeFiButton onPress={openInstructions} compact>
               {t("session.instructions")}

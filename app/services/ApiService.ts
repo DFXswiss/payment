@@ -80,6 +80,10 @@ export const updateRefFee = (fee: number): Promise<void> => {
   return fetchFrom(`${UserUrl}/ref`, "PUT", { fee });
 };
 
+export const postFounderCertificate = (files: File[]): Promise<void> => {
+  return postFiles(`${UserUrl}/incorporationCertificate`, files);
+};
+
 // --- PAYMENT ROUTES --- //
 export const getRoutes = (): Promise<Routes> => {
   return fetchFrom<RoutesDto>(RouteUrl).then(fromRoutesDto);
@@ -127,11 +131,7 @@ export const createHistoryCsv = (): Promise<number> => {
 
 // --- PAYMENT --- //
 export const postSepaFiles = (files: File[]): Promise<void> => {
-  const formData = new FormData();
-  for (const key in files) {
-    formData.append("files", files[key]);
-  }
-  return fetchFrom(BankTxUrl, "POST", formData, true);
+  return postFiles(BankTxUrl, files);
 };
 
 // --- STATISTIC --- //
@@ -157,6 +157,14 @@ export const getLanguages = (): Promise<Language[]> => {
 };
 
 // --- HELPERS --- //
+const postFiles = (url: string, files: File[]): Promise<void> => {
+  const formData = new FormData();
+  for (const key in files) {
+    formData.append("files", files[key]);
+  }
+  return fetchFrom(url, "POST", formData, true);
+};
+
 const fetchFrom = <T>(
   url: string,
   method: "GET" | "PUT" | "POST" = "GET",

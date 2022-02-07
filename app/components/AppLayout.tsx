@@ -2,10 +2,13 @@ import React, { createRef, ReactNode, RefObject, useState } from "react";
 import { ScrollView, StyleSheet, View, useWindowDimensions } from "react-native";
 import { FAB, Portal } from "react-native-paper";
 import Sizes from "../config/Sizes";
+import { SpacerV } from "../elements/Spacers";
+import withSettings from "../hocs/withSettings";
+import { AppSettings } from "../services/SettingsService";
 import AppStyles from "../styles/AppStyles";
 import Header from "./Header";
 
-const AppLayout = ({ children }: { children: ReactNode }) => {
+const AppLayout = ({ settings, children }: { settings?: AppSettings; children: ReactNode }) => {
   const dimensions = useWindowDimensions();
   const [contentSize, setContentSize] = useState(0);
   const [contentOffset, setContentOffset] = useState(0);
@@ -25,7 +28,12 @@ const AppLayout = ({ children }: { children: ReactNode }) => {
         >
           <View style={[AppStyles.container, styles.container]}>
             <View style={[AppStyles.container, styles.appContainer]}>
-              <Header></Header>
+              {!settings?.isIframe && (
+                <>
+                  <Header></Header>
+                  <SpacerV height={20} />
+                </>
+              )}
               {children}
               <Portal>
                 <FAB
@@ -62,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppLayout;
+export default withSettings(AppLayout);

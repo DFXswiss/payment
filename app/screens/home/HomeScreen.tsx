@@ -144,12 +144,33 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       .finally(() => setLoading(false));
   };
 
-  const requestKyc = ({ limit }: { limit?: string }): void => {
+  const requestKyc = ({ limit }: { limit?: string }): Promise<void> => {
     setIsKycLoading(true);
     const limitNumber = limit ? +limit : undefined;
-    postKyc(limitNumber)
+    return postKyc(limitNumber)
       .then(onKycRequested)
       .catch(() => NotificationService.error(t("feedback.request_failed")))
+      .finally(() => {
+        setIsKycRequest(false);
+        setIsKycLoading(false);
+      });
+  };
+
+  const uploadFounderCertificate = (): void => {
+    DocumentPicker.getDocumentAsync({ type: "public.item", multiple: false })
+      .then((result) => {
+        setIsKycLoading(true);
+        if (result.type === "success") {
+          return [...Array(result.output?.length).keys()]
+            .map((i) => result.output?.item(i))
+            .filter((f) => f != null)
+            .map((f) => f as File);
+        }
+        throw new Error();
+      })
+      .then(postFounderCertificate)
+      .catch(() => NotificationService.error(t("feedback.file_error")))
+      .then(() => requestKyc({}))
       .finally(() => {
         setIsKycRequest(false);
         setIsKycLoading(false);
@@ -294,32 +315,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     },
   ];
 
-
-  
-    const uploadFounderCertificate = () : void=> {
-      
-      DocumentPicker.getDocumentAsync({ type: "public.item", multiple: false })
-        .then((result) => {
-          setIsKycRequest(false);
-          setLoading(true);
-          if (result.type === "success") {
-            const files: File[] = [...Array(result.output?.length).keys()]
-              .map((i) => result.output?.item(i))
-              .filter((f) => f != null)
-              .map((f) => f as File);
-            return files;
-          }
-          throw new Error();
-        })
-        .then(postFounderCertificate)
-        .then(() => {
-          NotificationService.success(t("feedback.save_successful"));
-          return requestKyc({limit:undefined});
-        }
-        )
-        .catch(() => NotificationService.error(t("feedback.file_error")));     
-    };
-  
   const organizationData = (user: User) => [
     { condition: Boolean(user.organizationName), label: "model.user.organization_name", value: user.organizationName },
     {
@@ -369,15 +364,10 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       <Portal>
         <Dialog visible={isKycRequest && !isUserEdit} onDismiss={() => setIsKycRequest(false)} style={AppStyles.dialog}>
           <Dialog.Content>
-            {user?.kycStatus === KycStatus.NA ? 
-            user?.accountType !== AccountType.PERSONAL ? 
-              <>
-                <Paragraph>{t("model.kyc.request_business")}</Paragraph>
-                <SpacerV />
-              </>
-              :
-            (
-              <Paragraph>{t("model.kyc.request")}</Paragraph>
+            {user?.kycStatus === KycStatus.NA ? (
+              <Paragraph>
+                {t(user?.accountType === AccountType.PERSONAL ? "model.kyc.request" : "model.kyc.request_business")}
+              </Paragraph>
             ) : (
               <>
                 <Paragraph>{t("model.kyc.invest_volume")}</Paragraph>
@@ -404,10 +394,22 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
               {t("action.abort")}
             </DeFiButton>
             <DeFiButton
-              onPress={user?.kycStatus === KycStatus.NA ? user?.accountType !== AccountType.PERSONAL? uploadFounderCertificate : requestKyc : handleSubmit(requestKyc)}
+              onPress={
+                user?.kycStatus === KycStatus.NA
+                  ? user?.accountType !== AccountType.PERSONAL
+                    ? uploadFounderCertificate
+                    : requestKyc
+                  : handleSubmit(requestKyc)
+              }
               loading={isKycLoading}
             >
-              {t(user?.kycStatus === KycStatus.NA ? user?.accountType !== AccountType.PERSONAL?  "action.upload" : "action.yes" : "action.send")}
+              {t(
+                user?.kycStatus === KycStatus.NA
+                  ? user?.accountType !== AccountType.PERSONAL
+                    ? "action.upload"
+                    : "action.yes"
+                  : "action.send"
+              )}
             </DeFiButton>
           </Dialog.Actions>
         </Dialog>
@@ -559,7 +561,5 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     </AppLayout>
   );
 };
-
-
 
 export default withSettings(withSession(HomeScreen));

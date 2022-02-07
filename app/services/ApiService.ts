@@ -2,23 +2,13 @@ import { Transaction } from "../models/Transaction";
 import { Environment } from "../env/Environment";
 import { ApiError, AuthResponse } from "../models/ApiDto";
 import { Asset } from "../models/Asset";
-import {
-  BuyRoute,
-  BuyRouteDto,
-  fromBuyRouteDto,
-  toBuyRouteDto,
-} from "../models/BuyRoute";
+import { BuyRoute, BuyRouteDto, fromBuyRouteDto, toBuyRouteDto } from "../models/BuyRoute";
 import { CfpResult } from "../models/CfpResult";
 import { Country } from "../models/Country";
 import { Fiat } from "../models/Fiat";
 import { Language } from "../models/Language";
 import { Ref } from "../models/Ref";
-import {
-  fromSellRouteDto,
-  SellRoute,
-  SellRouteDto,
-  toSellRouteDto,
-} from "../models/SellRoute";
+import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import {
   fromUserDetailDto,
   fromUserDto,
@@ -52,17 +42,11 @@ const StatisticUrl = "statistic";
 
 // --- AUTH --- //
 export const signIn = (credentials?: Credentials): Promise<string> => {
-  return fetchFrom<AuthResponse>(`${AuthUrl}/signIn`, "POST", credentials).then(
-    (resp) => resp.accessToken
-  );
+  return fetchFrom<AuthResponse>(`${AuthUrl}/signIn`, "POST", credentials).then((resp) => resp.accessToken);
 };
 
 export const signUp = (user: NewUser): Promise<string> => {
-  return fetchFrom<AuthResponse>(
-    `${AuthUrl}/signUp`,
-    "POST",
-    toNewUserDto(user)
-  ).then((resp) => resp.accessToken);
+  return fetchFrom<AuthResponse>(`${AuthUrl}/signUp`, "POST", toNewUserDto(user)).then((resp) => resp.accessToken);
 };
 
 // --- USER --- //
@@ -81,15 +65,11 @@ export const postKyc = (limit?: number): Promise<string | undefined> => {
   return fetchFrom<{ url: string | undefined }>(url, "POST").then((r) => r.url);
 };
 export const putUser = (user: User): Promise<UserDetail> => {
-  return fetchFrom<UserDetailDto>(UserUrl, "PUT", toUserDto(user)).then(
-    fromUserDetailDto
-  );
+  return fetchFrom<UserDetailDto>(UserUrl, "PUT", toUserDto(user)).then(fromUserDetailDto);
 };
 
 export const putUserLanguage = (language: Language): Promise<void> => {
-  return AuthService.Session.then((session) =>
-    fetchFrom<void>(UserUrl, "PUT", { address: session.address, language })
-  );
+  return AuthService.Session.then((session) => fetchFrom<void>(UserUrl, "PUT", { address: session.address, language }));
 };
 
 export const getRefCode = (): Promise<string> => {
@@ -100,50 +80,40 @@ export const updateRefFee = (fee: number): Promise<void> => {
   return fetchFrom(`${UserUrl}/ref`, "PUT", { fee });
 };
 
+export const postFounderCertificate = (files: File[]): Promise<void> => {
+  return postFiles(`${UserUrl}/incorporationCertificate`, files);
+};
+
 // --- PAYMENT ROUTES --- //
 export const getRoutes = (): Promise<Routes> => {
   return fetchFrom<RoutesDto>(RouteUrl).then(fromRoutesDto);
 };
 
 export const getBuyRoutes = (): Promise<BuyRoute[]> => {
-  return fetchFrom<BuyRouteDto[]>(BuyUrl).then((dtoList) =>
-    dtoList.map((dto) => fromBuyRouteDto(dto))
-  );
+  return fetchFrom<BuyRouteDto[]>(BuyUrl).then((dtoList) => dtoList.map((dto) => fromBuyRouteDto(dto)));
 };
 
 export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
-  return fetchFrom<BuyRouteDto>(BuyUrl, "POST", toBuyRouteDto(route)).then(
-    fromBuyRouteDto
-  );
+  return fetchFrom<BuyRouteDto>(BuyUrl, "POST", toBuyRouteDto(route)).then(fromBuyRouteDto);
 };
 
 export const putBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
-  return fetchFrom<BuyRouteDto>(BuyUrl, "PUT", toBuyRouteDto(route)).then(
-    fromBuyRouteDto
-  );
+  return fetchFrom<BuyRouteDto>(BuyUrl, "PUT", toBuyRouteDto(route)).then(fromBuyRouteDto);
 };
 
 export const getSellRoutes = (): Promise<SellRoute[]> => {
-  return fetchFrom<SellRouteDto[]>(SellUrl).then((dtoList) =>
-    dtoList.map((dto) => fromSellRouteDto(dto))
-  );
+  return fetchFrom<SellRouteDto[]>(SellUrl).then((dtoList) => dtoList.map((dto) => fromSellRouteDto(dto)));
 };
 
 export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
-  return fetchFrom<SellRouteDto>(SellUrl, "POST", toSellRouteDto(route)).then(
-    fromSellRouteDto
-  );
+  return fetchFrom<SellRouteDto>(SellUrl, "POST", toSellRouteDto(route)).then(fromSellRouteDto);
 };
 
 export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
-  return fetchFrom<SellRouteDto>(SellUrl, "PUT", toSellRouteDto(route)).then(
-    fromSellRouteDto
-  );
+  return fetchFrom<SellRouteDto>(SellUrl, "PUT", toSellRouteDto(route)).then(fromSellRouteDto);
 };
 
-export const postStakingRoute = (
-  route: StakingRoute
-): Promise<StakingRoute> => {
+export const postStakingRoute = (route: StakingRoute): Promise<StakingRoute> => {
   return fetchFrom<StakingRoute>(StakingUrl, "POST", route);
 };
 
@@ -161,25 +131,9 @@ export const createHistoryCsv = (): Promise<number> => {
 
 // --- PAYMENT --- //
 export const postSepaFiles = (files: File[]): Promise<void> => {
-  const formData = new FormData();
-  for (const key in files) {
-    formData.append("files", files[key]);
-  }
-  return fetchFrom(BankTxUrl, "POST", formData, true);
+  return postFiles(BankTxUrl, files);
 };
 
-export const postFounderCertificate = (files: File[]): Promise<void> => {
-  const formData = new FormData();
-  for (const key in files) {
-    formData.append("files", files[key]);
-  }
-  return fetchFrom(
-    `${UserUrl}/incorporationCertificate`,
-    "POST",
-    formData,
-    true
-  );
-};
 // --- STATISTIC --- //
 export const getCfpResults = (voting: string): Promise<CfpResult[]> => {
   return fetchFrom(`${StatisticUrl}/cfp/${voting}`);
@@ -195,9 +149,7 @@ export const getFiats = (): Promise<Fiat[]> => {
 };
 
 export const getCountries = (): Promise<Country[]> => {
-  return fetchFrom<Country[]>(CountryUrl).then((countries) =>
-    countries.sort((a, b) => (a.name > b.name ? 1 : -1))
-  );
+  return fetchFrom<Country[]>(CountryUrl).then((countries) => countries.sort((a, b) => (a.name > b.name ? 1 : -1)));
 };
 
 export const getLanguages = (): Promise<Language[]> => {
@@ -205,6 +157,14 @@ export const getLanguages = (): Promise<Language[]> => {
 };
 
 // --- HELPERS --- //
+const postFiles = (url: string, files: File[]): Promise<void> => {
+  const formData = new FormData();
+  for (const key in files) {
+    formData.append("files", files[key]);
+  }
+  return fetchFrom(url, "POST", formData, true);
+};
+
 const fetchFrom = <T>(
   url: string,
   method: "GET" | "PUT" | "POST" = "GET",
@@ -212,9 +172,7 @@ const fetchFrom = <T>(
   noJson?: boolean
 ): Promise<T> => {
   return (
-    AuthService.Session.then((session) =>
-      buildInit(method, session, data, noJson)
-    )
+    AuthService.Session.then((session) => buildInit(method, session, data, noJson))
       .then((init) => fetch(`${BaseUrl}/${url}`, init))
       .then((response) => {
         if (response.ok) {
@@ -235,12 +193,7 @@ const fetchFrom = <T>(
   );
 };
 
-const buildInit = (
-  method: "GET" | "PUT" | "POST",
-  session: Session,
-  data?: any,
-  noJson?: boolean
-): RequestInit => ({
+const buildInit = (method: "GET" | "PUT" | "POST", session: Session, data?: any, noJson?: boolean): RequestInit => ({
   method: method,
   headers: {
     ...(noJson ? undefined : { "Content-Type": "application/json" }),

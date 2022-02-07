@@ -50,16 +50,15 @@ const OnBoardingScreen = ({ session }: { session?: Session }) => {
       .catch(() => NotificationService.error(t("model.kyc.not_finish_chatbot")))
       .finally(() => setLoading(false));
   };
-  getUser().then((user) => {
-      setChatBot(user?.kycStatus == KycStatus.WAIT_CHAT_BOT || user?.kycStatus == KycStatus.NA);
-      console.log(user.kycStatus);
-    })
+
+  getUser().then((user) => setChatBot(user?.kycStatus == KycStatus.WAIT_CHAT_BOT || user?.kycStatus == KycStatus.NA));
+
   return (
     <AppLayout>
       <View style={styles.container}>
         <Iframe src={url}></Iframe>
         <DeFiButton onPress={finishChatBot} loading={isLoading} visible={isChatBot}>
-            {t("model.kyc.finish_chatbot")}
+          {t("model.kyc.finish_chatbot")}
         </DeFiButton>
       </View>
     </AppLayout>

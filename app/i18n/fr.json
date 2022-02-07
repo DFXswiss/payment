@@ -157,8 +157,8 @@
         "ref_commission_hint": "Êtes-vous sûr de vouloir réduire votre commission à {{fee}}%? Cette étape ne peut pas être annulée."
       },
       "kyc":{
-        "request": "Ton compte doit d'abord être vérifié avec le chatbot et l'identification en ligne.\nTu veux commencer avec le chatbot?",
-        "request_business": "Veuillez tout d'abord télécharger les statuts de la société, l'acte de fondation, l'extrait du registre du commerce ou les statuts de la société.\nTout de suite après, ton compte doit être vérifié avec le chatbot et l'identification en ligne.",
+        "request": "Votre compte doit d'abord être vérifié avec le chatbot et l'identification en ligne.\nTu veux commencer avec le chatbot?",
+        "request_business": "Veuillez tout d'abord télécharger les statuts de la société, l'acte de fondation, l'extrait du registre du commerce ou les statuts de la société.\nTout de suite après, votre compte doit être vérifié avec le chatbot et l'identification en ligne.",
         "invest_volume": "Combien voulez-vous investir au total ?",
         "volume": "Volume d'achat",
         "status": "Statut KYC",

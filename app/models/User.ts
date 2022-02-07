@@ -145,7 +145,7 @@ export interface User extends NewUser {
   organizationZip: string;
   organizationCountry: Country;
 
-  cfpVotes: { [number: number]: CfpVote };
+  cfpVotes: CfpVotes;
 }
 
 export interface UserDetailDto extends UserDto {

@@ -4,19 +4,11 @@ import { StyleSheet, View } from "react-native";
 import { StackedBarChart } from "react-native-chart-kit";
 import { AbstractChartConfig } from "react-native-chart-kit/dist/AbstractChart";
 import { StackedBarChartData } from "react-native-chart-kit/dist/StackedBarChart";
-import {
-  ActivityIndicator,
-  DataTable,
-  Paragraph,
-  RadioButton,
-  TouchableRipple,
-  Text,
-  IconButton,
-} from "react-native-paper";
+import { ActivityIndicator, DataTable, Text } from "react-native-paper";
 import AppLayout from "../components/AppLayout";
-import Loading from "../components/util/Loading";
 import Colors from "../config/Colors";
 import { DeFiButton } from "../elements/Buttons";
+import { RadioButton } from "../elements/RadioButton";
 import { SpacerV } from "../elements/Spacers";
 import { CompactRow, CompactCell } from "../elements/Tables";
 import { H1, H3 } from "../elements/Texts";
@@ -27,35 +19,10 @@ import { CfpVote, CfpVotes } from "../models/User";
 import { getCfpResults, getCfpVotes, getIsVotingOpen, getStakingRoutes, putCfpVotes } from "../services/ApiService";
 import { Session } from "../services/AuthService";
 import NotificationService from "../services/NotificationService";
-import AppStyles, { DefaultCursor } from "../styles/AppStyles";
+import AppStyles from "../styles/AppStyles";
 import { openUrl } from "../utils/Utils";
 
 const DfxCfpNumbers: number[] = [];
-
-interface RadioButtonProps {
-  label: string;
-  onPress: () => void;
-  checked: boolean;
-  disabled?: boolean;
-  loading?: boolean;
-}
-
-const DfxRadioButton = ({ label, onPress, checked, disabled, loading }: RadioButtonProps) => {
-  return (
-    <TouchableRipple onPress={onPress} disabled={disabled} style={disabled && DefaultCursor}>
-      <View style={styles.radioRow}>
-        <View pointerEvents="none">
-          {loading ? (
-            <Loading size={20} style={{ marginRight: 16 }} />
-          ) : (
-            <RadioButton value="dfx" status={checked ? "checked" : "unchecked"} disabled={disabled} />
-          )}
-        </View>
-        <Paragraph>{label}</Paragraph>
-      </View>
-    </TouchableRipple>
-  );
-};
 
 const CfpScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
@@ -127,26 +94,19 @@ const CfpScreen = ({ session }: { session?: Session }) => {
           <ActivityIndicator size="large" />
         ) : (
           <>
-            {/* <View style={AppStyles.containerHorizontalWrap}>
-              <TouchableRipple onPress={() => setCfpFilter("dfx")}>
-                <View style={styles.radioRow}>
-                  <View pointerEvents="none">
-                    <RadioButton value="dfx" status={cfpFilter === "dfx" ? "checked" : "unchecked"} />
-                  </View>
-                  <Paragraph>{t("cfp.dfx_only")}</Paragraph>
+            {DfxCfpNumbers.length > 0 && (
+              <>
+                <View style={AppStyles.containerHorizontalWrap}>
+                  <RadioButton
+                    label={t("cfp.dfx_only")}
+                    onPress={() => setCfpFilter("dfx")}
+                    checked={cfpFilter === "dfx"}
+                  />
+                  <RadioButton label={t("cfp.all")} onPress={() => setCfpFilter("all")} checked={cfpFilter === "all"} />
                 </View>
-              </TouchableRipple>
-              <TouchableRipple onPress={() => setCfpFilter("all")}>
-                <View style={styles.radioRow}>
-                  <View pointerEvents="none">
-                    <RadioButton value="all" status={cfpFilter === "all" ? "checked" : "unchecked"} />
-                  </View>
-                  <Paragraph>{t("cfp.all")}</Paragraph>
-                </View>
-              </TouchableRipple>
-            </View> */}
-
-            <SpacerV height={50} />
+                <SpacerV height={50} />
+              </>
+            )}
 
             {cfpResults
               ?.filter((r) => cfpFilter === "all" || DfxCfpNumbers.includes(r.number))
@@ -206,21 +166,21 @@ const CfpScreen = ({ session }: { session?: Session }) => {
                       <SpacerV />
                       <Text style={[AppStyles.center, AppStyles.b]}>{t("cfp.your_vote")}</Text>
                       <View style={[AppStyles.containerHorizontalWrap, styles.voteContainer]}>
-                        <DfxRadioButton
+                        <RadioButton
                           label={t("cfp.yes")}
                           onPress={() => onVote(result.number, CfpVote.YES)}
                           checked={votes?.[result.number] === CfpVote.YES}
                           disabled={!isVotingOpen}
                           loading={isSaving?.number === result.number && isSaving.vote === CfpVote.YES}
                         />
-                        <DfxRadioButton
+                        <RadioButton
                           label={t("cfp.no")}
                           onPress={() => onVote(result.number, CfpVote.NO)}
                           checked={votes?.[result.number] === CfpVote.NO}
                           disabled={!isVotingOpen}
                           loading={isSaving?.number === result.number && isSaving.vote === CfpVote.NO}
                         />
-                        <DfxRadioButton
+                        <RadioButton
                           label={t("cfp.neutral")}
                           onPress={() => onVote(result.number, CfpVote.NEUTRAL)}
                           checked={(votes?.[result.number] ?? CfpVote.NEUTRAL) === CfpVote.NEUTRAL}

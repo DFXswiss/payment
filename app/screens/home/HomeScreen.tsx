@@ -40,6 +40,7 @@ import { StakingRoute } from "../../models/StakingRoute";
 import withSettings from "../../hocs/withSettings";
 import { AppSettings } from "../../services/SettingsService";
 import * as DocumentPicker from "expo-document-picker";
+import KycInit from "../../components/KycInit";
 
 const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
@@ -57,6 +58,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
   const [isStakingRouteEdit, setIsStakingRouteEdit] = useState(false);
   const [isKycRequest, setIsKycRequest] = useState(false);
+  const [isFileUploading, setIsFileUploading] = useState(false);
   const [isKycLoading, setIsKycLoading] = useState(false);
   const [isRefFeeEdit, setIsRefFeeEdit] = useState(false);
 
@@ -138,21 +140,21 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   };
 
   const continueKyc = () => {
-    setLoading(true);
+    setIsKycLoading(true);
     postKyc()
       .then(onKycRequested)
       .catch(() => NotificationService.error(t("feedback.request_failed")))
-      .finally(() => setLoading(false));
+      .finally(() => setIsKycLoading(false));
   };
 
   const requestKyc = ({ limit }: { limit?: string }): Promise<void> => {
+    setIsKycRequest(false);
     setIsKycLoading(true);
     const limitNumber = limit ? +limit : undefined;
     return postKyc(limitNumber)
       .then(onKycRequested)
       .catch(() => NotificationService.error(t("feedback.request_failed")))
       .finally(() => {
-        setIsKycRequest(false);
         setIsKycLoading(false);
       });
   };
@@ -160,7 +162,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const uploadFounderCertificate = (): void => {
     DocumentPicker.getDocumentAsync({ type: "public.item", multiple: false })
       .then((result) => {
-        setIsKycLoading(true);
+        setIsFileUploading(true);
         if (result.type === "success") {
           return [...Array(result.output?.length).keys()]
             .map((i) => result.output?.item(i))
@@ -174,7 +176,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       .then(() => requestKyc({}))
       .finally(() => {
         setIsKycRequest(false);
-        setIsKycLoading(false);
+        setIsFileUploading(false);
       });
   };
 
@@ -375,7 +377,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
                   control={control}
                   rules={rules}
                   errors={errors}
-                  disabled={isKycLoading}
+                  disabled={isFileUploading}
                   onSubmit={handleSubmit(requestKyc)}
                 >
                   <Input
@@ -400,7 +402,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
                     : requestKyc
                   : handleSubmit(requestKyc)
               }
-              loading={isKycLoading}
+              loading={isFileUploading}
             >
               {t(
                 user?.kycStatus === KycStatus.NA
@@ -412,6 +414,8 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
             </DeFiButton>
           </Dialog.Actions>
         </Dialog>
+
+        <KycInit isVisible={isKycLoading} setIsVisible={setIsKycLoading} />
       </Portal>
 
       <DeFiModal isVisible={isUserEdit} setIsVisible={userEdit} title={t("model.user.edit")} style={{ width: 500 }}>

@@ -164,7 +164,8 @@
           "manual": "Verificación completada",
           "completed": "Verificación completada",
           "chatbot_not_finished": "¡Error! El chatbot aún no está terminado.",
-          "finish_chatbot": "Completado chatbot"
+          "finish_chatbot": "Completado chatbot",
+          "initiating": "La verificación está en preparación, puede llevar un tiempo. Le pedimos que tenga paciencia."
         },
         "route": {
           "routes": "Rutas de pago",

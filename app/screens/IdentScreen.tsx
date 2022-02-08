@@ -15,13 +15,14 @@ import { KycResult, KycStatus } from "../models/User";
 import { sleep } from "../utils/Utils";
 import { SpacerV } from "../elements/Spacers";
 import Colors from "../config/Colors";
+import KycInit from "../components/KycInit";
 
 const IdentScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const nav = useNavigation();
   const route = useRoute();
 
-  const [isLoading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [url, setUrl] = useState("");
   const [setupUrl, setSetupUrl] = useState<string | undefined>();
   const [kycStatus, setKycStatus] = useState<KycStatus>();
@@ -43,14 +44,14 @@ const IdentScreen = ({ session }: { session?: Session }) => {
     }
   }, []);
 
-  const finishChatBot = (nthTry = 2) => {
-    setLoading(true);
-    postKyc()
+  const finishChatBot = (nthTry = 13): Promise<void> => {
+    setIsLoading(true);
+    return postKyc()
       .then((result: KycResult) => {
         if (result.status === KycStatus.CHATBOT || !result.identUrl) {
           // retry
           if (nthTry > 1) {
-            return sleep(3).then(() => finishChatBot(nthTry - 1));
+            return sleep(5).then(() => finishChatBot(nthTry - 1));
           }
           NotificationService.error(t("model.kyc.chatbot_not_finished"));
         } else {
@@ -61,11 +62,13 @@ const IdentScreen = ({ session }: { session?: Session }) => {
         }
       })
       .catch(() => NotificationService.error(t("model.kyc.chatbot_not_finished")))
-      .finally(() => setLoading(false));
+      .finally(() => setIsLoading(false));
   };
 
   return (
     <AppLayout>
+      <KycInit isVisible={isLoading} setIsVisible={setIsLoading} />
+
       <View style={styles.container}>
         {setupUrl && (
           <View style={styles.hiddenIframe}>

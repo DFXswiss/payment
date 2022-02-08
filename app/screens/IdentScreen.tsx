@@ -53,16 +53,23 @@ const IdentScreen = ({ session }: { session?: Session }) => {
           if (nthTry > 1) {
             return sleep(5).then(() => finishChatBot(nthTry - 1));
           }
-          NotificationService.error(t("model.kyc.chatbot_not_finished"));
+
+          throw Error();
         } else {
           setUrl(result.identUrl);
           setSetupUrl(result.setupUrl);
+          
           // wait for new page to load
-          setTimeout(() => setKycStatus(result.status), 1000);
+          setTimeout(() => {
+            setKycStatus(result.status);
+            setIsLoading(false);
+          }, 1000);
         }
       })
-      .catch(() => NotificationService.error(t("model.kyc.chatbot_not_finished")))
-      .finally(() => setIsLoading(false));
+      .catch(() => {
+        setIsLoading(false);
+        NotificationService.error(t("model.kyc.chatbot_not_finished"));
+      });
   };
 
   return (

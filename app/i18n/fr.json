@@ -43,7 +43,8 @@
       "required": "Champ obligatoire",
       "pattern_invalid": "Format non valide",
       "iban_invalid": "IBAN non valide",
-      "code_and_number": "Veuillez indiquer l'indicatif régional et le numéro"
+      "code_and_number": "Veuillez indiquer l'indicatif régional et le numéro",
+      "file_too_large": "Fichier trop grand"
     },
     "session": {
       "instructions": "Guide d'enregistrement",
@@ -161,8 +162,6 @@
       "kyc":{
         "request": "Votre compte doit d'abord être vérifié avec le chatbot et l'identification en ligne.\nTu veux commencer avec le chatbot?",
         "request_business": "Veuillez tout d'abord télécharger les statuts de la société, l'acte de fondation, l'extrait du registre du commerce ou les statuts de la société.\nTout de suite après, votre compte doit être vérifié avec le chatbot et l'identification en ligne.",
-        "invest_volume": "Combien voulez-vous investir au total ?",
-        "volume": "Volume d'achat",
         "status": "Statut KYC",
         "na": "Pas de KYC",
         "chatbot": "En cours (Chatbot onboarding)",
@@ -173,7 +172,27 @@
         "completed": "Vérification terminée",
         "chatbot_not_finished": "Erreur ! Le chatbot n'est pas encore complet.",
         "finish_chatbot": "Chatbot complet",
-        "initiating": "La vérification est en préparation, cela peut prendre un certain temps. Nous vous prions de faire preuve de patience."
+        "initiating": "La vérification est en préparation, cela peut prendre un certain temps. Nous vous prions de faire preuve de patience.",
+        "increase_limit": "Augmenter la limite",
+        "volume": "Volume d'investissement",
+        "investment_date": "Moment de l'investissement",
+        "now": "Actifs actuels",
+        "future": "Actifs futurs",
+        "fund_origin": "Origine des fonds",
+        "savings": "Epargne",
+        "businessprofits": "Bénéfices commerciaux",
+        "stockgains": "Gains de cours des actions",
+        "cryptogains": "Gains sur les cours des cryptos",
+        "inheritance": "Héritage",
+        "other": "Autre",
+        "savings_future": "Epargne future",
+        "businessprofits_future": "Bénéfices commerciaux futurs",
+        "stockgains_future": "Futurs gains de cours des actions",
+        "cryptogains_future": "Futurs gains de cours de crypto",
+        "inheritance_future": "Héritage futur",
+        "other_future": "Autre",
+        "fund_origin_text": "Origine des fonds (texte libre)",
+        "document_proof": "Preuve documentaire"
       },
       "route": {
         "routes": "Routes de paiement",

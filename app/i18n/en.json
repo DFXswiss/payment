@@ -43,7 +43,8 @@
       "required": "Mandatory field",
       "pattern_invalid": "Invalid format",
       "iban_invalid": "Invalid IBAN",
-      "code_and_number": "Please fill in area code and number"
+      "code_and_number": "Please fill in area code and number",
+      "file_too_large": "File is too large"
     },
     "session": {
       "instructions": "Registration manual",
@@ -161,8 +162,6 @@
       "kyc":{
         "request": "Your account must first be verified with the chatbot and online identification.\nDo you want to start with the chatbot?",
         "request_business": "Please first upload the company's articles of association, certificate of incorporation, excerpt from the commercial register or bylaws of the company.\nAfter that, your account must be verified with the chatbot and online identification.",
-        "invest_volume": "How much do you approximately want to invest in total?",
-        "volume": "Investment volume",
         "status": "KYC status",
         "chatbot": "In progress (Chatbot onboarding)",
         "address": "In progress (Invoice upload)",
@@ -172,7 +171,27 @@
         "completed": "Verification completed",
         "chatbot_not_finished": "Error! Chatbot not yet finished.",
         "finish_chatbot": "Chatbot finished",
-        "initiating": "Verification is in preparation, it may take a while. We ask for patience."
+        "initiating": "Verification is in preparation, it may take a while. We ask for patience.",
+        "increase_limit": "Increase limit",
+        "volume": "Investment volume",
+        "investment_date": "Investment date",
+        "now": "Current assets",
+        "future": "Future assets",
+        "fund_origin": "Origin of funds",
+        "savings": "Savings",
+        "businessprofits": "Business profits",
+        "stockgains": "Stock price gains",
+        "cryptogains": "Crypto price gains",
+        "inheritance": "Inheritance",
+        "other": "Other",
+        "savings_future": "Future savings",
+        "businessprofits_future": "Future business profits",
+        "stockgains_future": "Future stock price gains",
+        "cryptogains_future": "Future crypto price gains",
+        "inheritance_future": "Future inheritance",
+        "other_future": "Other",
+        "fund_origin_text": "Origin of funds (free text)",
+        "document_proof": "Document proof"
       },
       "route": {
         "routes": "Payment Routes",

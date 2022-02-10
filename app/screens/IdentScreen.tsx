@@ -58,7 +58,7 @@ const IdentScreen = ({ session }: { session?: Session }) => {
         } else {
           setUrl(result.identUrl);
           setSetupUrl(result.setupUrl);
-          
+
           // wait for new page to load
           setTimeout(() => {
             setKycStatus(result.status);
@@ -85,14 +85,9 @@ const IdentScreen = ({ session }: { session?: Session }) => {
         <Iframe src={url} />
 
         {kycStatus === KycStatus.CHATBOT && (
-          <>
-            <SpacerV height={10} />
-            <View style={styles.chatbotButtonContainer}>
-              <DeFiButton onPress={() => finishChatBot()} loading={isLoading} labelStyle={styles.chatbotButton}>
-                {t("model.kyc.finish_chatbot")}
-              </DeFiButton>
-            </View>
-          </>
+          <DeFiButton onPress={() => finishChatBot()} loading={isLoading} labelStyle={styles.chatbotButton}>
+            {t("model.kyc.finish_chatbot")}
+          </DeFiButton>
         )}
       </View>
     </AppLayout>
@@ -108,14 +103,6 @@ const styles = StyleSheet.create({
   hiddenIframe: {
     height: 0,
     overflow: "hidden",
-  },
-  chatbotButtonContainer: {
-    position: "absolute",
-    bottom: 0,
-    width: "100%",
-    height: 50,
-    backgroundColor: Colors.Blue,
-    justifyContent: "flex-end",
   },
   chatbotButton: {
     fontSize: 18,

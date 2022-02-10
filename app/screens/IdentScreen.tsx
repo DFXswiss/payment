@@ -58,7 +58,7 @@ const IdentScreen = ({ session }: { session?: Session }) => {
         } else {
           setUrl(result.identUrl);
           setSetupUrl(result.setupUrl);
-          
+
           // wait for new page to load
           setTimeout(() => {
             setKycStatus(result.status);
@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     width: "100%",
-    height: 50,
+    height: 40,
     backgroundColor: Colors.Blue,
     justifyContent: "flex-end",
   },

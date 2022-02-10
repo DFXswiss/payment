@@ -43,7 +43,8 @@
         "required": "Campo obligatorio",
         "pattern_invalid": "Formato inválido",
         "iban_invalid": "IBAN inválido",
-        "code_and_number": "Por favor rellena el código de area y el número"
+        "code_and_number": "Por favor rellena el código de area y el número",
+        "file_too_large": "El fichero es demasiado grande"
       },
       "session": {
         "instructions": "Registro manual",
@@ -154,8 +155,6 @@
         "kyc":{
           "request": "Su cuenta debe ser verificada primero con el chatbot y la identificación en línea.\n¿Desea comenzar con el chatbot?",
           "request_business": "Por favor, cargue primero los estatutos de la empresa, el certificado de constitución, el extracto del registro mercantil o los estatutos de la empresa.\nDespués, su cuenta debe ser verificada con el chatbot y la identificación en línea.",
-          "invest_volume": "¿Cúanto quieres invertir en total?",
-          "volume": "Volumen de inversión",
           "status": "Estado KYC (Identificación personal)",
           "chatbot": "En progreso (Conectando con el chatbot)",
           "address": "En progreso (Cargando recibo)",
@@ -165,7 +164,27 @@
           "completed": "Verificación completada",
           "chatbot_not_finished": "¡Error! El chatbot aún no está terminado.",
           "finish_chatbot": "Completado chatbot",
-          "initiating": "La verificación está en preparación, puede llevar un tiempo. Le pedimos que tenga paciencia."
+          "initiating": "La verificación está en preparación, puede llevar un tiempo. Le pedimos que tenga paciencia.",
+          "increase_limit": "Aumentar el límite",
+          "volume": "Volumen de inversión",
+          "investment_date": "Calendario de inversiones",
+          "now": "Activos corrientes",
+          "future": "Activos futuros",
+          "fund_origin": "Fuente de fondos",
+          "savings": "Ahorro",
+          "businessprofits": "Beneficios empresariales",
+          "stockgains": "Ganancias en la cotización de las acciones",
+          "cryptogains": "Ganancias en el precio de las criptomonedas",
+          "inheritance": "Herencia",
+          "other": "Otros",
+          "savings_future": "Ahorro futuro",
+          "businessprofits_future": "Futuros beneficios empresariales",
+          "stockgains_future": "Futuras ganancias en la cotización de las acciones",
+          "cryptogains_future": "Futuras ganancias en el precio de las criptomonedas",
+          "inheritance_future": "Herencia futura",
+          "other_future": "Otros",
+          "fund_origin_text": "Origen de los fondos (texto libre)",
+          "document_proof": "Pruebas documentales"
         },
         "route": {
           "routes": "Rutas de pago",

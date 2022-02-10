@@ -14,7 +14,6 @@ import {
   fromUserDetailDto,
   fromUserDto,
   KycResult,
-  KycStatus,
   NewUser,
   toNewUserDto,
   toUserDto,
@@ -26,6 +25,7 @@ import {
 import AuthService, { Credentials, Session } from "./AuthService";
 import { StakingRoute } from "../models/StakingRoute";
 import { RoutesDto, fromRoutesDto, Routes } from "../models/Route";
+import { LimitRequest } from "../models/LimitRequest";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -61,11 +61,12 @@ export const getUserDetail = (): Promise<UserDetail> => {
   return fetchFrom<UserDetailDto>(`${UserUrl}/detail`).then(fromUserDetailDto);
 };
 
-export const postKyc = (limit?: number): Promise<KycResult> => {
-  let url = `${UserUrl}/kyc`;
-  if (limit) url += `?depositLimit=${limit}`;
+export const postKyc = (): Promise<KycResult> => {
+  return fetchFrom<KycResult>(`${UserUrl}/kyc`, "POST");
+};
 
-  return fetchFrom<KycResult>(url, "POST");
+export const postLimit = (request: LimitRequest): Promise<LimitRequest> => {
+  return fetchFrom<LimitRequest>(`${UserUrl}/limit`, "POST", request);
 };
 
 export const putUser = (user: User): Promise<UserDetail> => {

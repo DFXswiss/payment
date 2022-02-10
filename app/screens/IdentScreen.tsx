@@ -13,8 +13,6 @@ import { postKyc } from "../services/ApiService";
 import NotificationService from "../services/NotificationService";
 import { KycResult, KycStatus } from "../models/User";
 import { sleep } from "../utils/Utils";
-import { SpacerV } from "../elements/Spacers";
-import Colors from "../config/Colors";
 import KycInit from "../components/KycInit";
 
 const IdentScreen = ({ session }: { session?: Session }) => {

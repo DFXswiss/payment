@@ -198,7 +198,7 @@
           "new_sell": "Nueva ruta de venta",
           "payment_info": "Información de pago",
           "details": "Detalles de la ruta",
-          "iban": "IBAN: Número de cuenta",
+          "iban": "IBAN (número de cuenta)",
           "your_iban": "Tu IBAN",
           "bank_usage": "Próposito del pago (o Referencia o Concepto)",
           "copy_bank_usage": "Copia propósito de pago",

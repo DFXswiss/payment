@@ -44,6 +44,7 @@
       "required": "Pflichtfeld",
       "pattern_invalid": "Ungültiges Format",
       "iban_invalid": "Ungültige IBAN",
+      "iban_country_invalid": "IBAN Ländercode nicht erlaubt",
       "code_and_number": "Bitte Vorwahl und Nummer ausfüllen",
       "file_too_large": "Datei ist zu gross"
     },

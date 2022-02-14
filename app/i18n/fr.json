@@ -43,6 +43,7 @@
       "required": "Champ obligatoire",
       "pattern_invalid": "Format non valide",
       "iban_invalid": "IBAN non valide",
+      "iban_country_invalid": "IBAN code pays non autorisé",
       "code_and_number": "Veuillez indiquer l'indicatif régional et le numéro",
       "file_too_large": "Fichier trop grand"
     },

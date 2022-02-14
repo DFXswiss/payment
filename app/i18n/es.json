@@ -43,6 +43,7 @@
         "required": "Campo obligatorio",
         "pattern_invalid": "Formato inválido",
         "iban_invalid": "IBAN inválido",
+        "iban_country_invalid": "Código de país IBAN no permitido",
         "code_and_number": "Por favor rellena el código de area y el número",
         "file_too_large": "El fichero es demasiado grande"
       },

@@ -13,7 +13,6 @@ export enum UserRole {
 export enum UserStatus {
   NA = "NA",
   ACTIVE = "Active",
-  VERIFY = "Verified",
 }
 
 export enum KycStatus {

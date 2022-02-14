@@ -37,12 +37,14 @@
         "request_failed": "¡Propuesta fallida!",
         "copied": "¡Copiada!",
         "check_mails": "¡Exitoso! Comprueba tu correo electrónico.",
-        "pop_up_blocked": "¡Error mientras se abría! Por favor permite las ventanas emergentes en los ajustes de tu buscador."
+        "pop_up_blocked": "¡Error mientras se abría! Por favor permite las ventanas emergentes en los ajustes de tu buscador.",
+        "bank_tx_required": "Para utilizar esta función, primero debe completar con éxito una transacción bancaria (compra o venta)."
       },
       "validation": {
         "required": "Campo obligatorio",
         "pattern_invalid": "Formato inválido",
         "iban_invalid": "IBAN inválido",
+        "iban_country_invalid": "Código de país IBAN no permitido",
         "code_and_number": "Por favor rellena el código de area y el número",
         "file_too_large": "El fichero es demasiado grande"
       },
@@ -196,7 +198,7 @@
           "new_sell": "Nueva ruta de venta",
           "payment_info": "Información de pago",
           "details": "Detalles de la ruta",
-          "iban": "IBAN: Número de cuenta",
+          "iban": "IBAN (número de cuenta)",
           "your_iban": "Tu IBAN",
           "bank_usage": "Próposito del pago (o Referencia o Concepto)",
           "copy_bank_usage": "Copia propósito de pago",

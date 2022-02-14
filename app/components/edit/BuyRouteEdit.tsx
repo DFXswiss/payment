@@ -9,7 +9,7 @@ import { Alert } from "../../elements/Texts";
 import { ApiError } from "../../models/ApiDto";
 import { Asset } from "../../models/Asset";
 import { BuyRoute, BuyType } from "../../models/BuyRoute";
-import { getAssets, postBuyRoute, putBuyRoute } from "../../services/ApiService";
+import { getAssets, getCountries, postBuyRoute, putBuyRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import { createRules } from "../../utils/Utils";
 import Validations from "../../utils/Validations";
@@ -18,6 +18,7 @@ import Form from "../form/Form";
 import Input from "../form/Input";
 import ButtonContainer from "../util/ButtonContainer";
 import { StakingRoute } from "../../models/StakingRoute";
+import { Country } from "../../models/Country";
 
 const stockTokenChainIds = [15, 16, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 31, 34, 37];
 
@@ -45,10 +46,14 @@ const BuyRouteEdit = ({
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string>();
   const [assets, setAssets] = useState<Asset[]>([]);
+  const [countries, setCountries] = useState<Country[]>([]);
 
   useEffect(() => {
-    getAssets()
-      .then(setAssets)
+    Promise.all([getAssets(), getCountries()])
+      .then(([a, c]) => {
+        setAssets(a);
+        setCountries(c);
+      })
       .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));
   }, []);
@@ -79,7 +84,7 @@ const BuyRouteEdit = ({
     type: Validations.Required,
     asset: type === BuyType.WALLET && Validations.Required,
     staking: type === BuyType.STAKING && Validations.Required,
-    iban: [Validations.Required, Validations.Iban],
+    iban: [Validations.Required, Validations.Iban(countries)],
   });
 
   return isLoading ? (

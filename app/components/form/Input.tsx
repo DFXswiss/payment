@@ -7,9 +7,11 @@ import { ControlProps } from "./Form";
 
 interface Props extends ControlProps {
   onSubmit?: () => void;
+  valueHook: (val: string) => string;
 }
 
-const Input = forwardRef<any, any>(({ control, name, label, rules, error, disabled = false, onSubmit, ...props }: Props, ref) => {
+const Input = forwardRef<any, any>(
+  ({ control, name, label, rules, error, disabled = false, onSubmit, valueHook = (v) => v, ...props }: Props, ref) => {
     return (
       <Controller
         control={control}
@@ -18,7 +20,7 @@ const Input = forwardRef<any, any>(({ control, name, label, rules, error, disabl
             <TextInput
               label={label}
               onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
+              onChangeText={(value) => onChange(valueHook(value))}
               value={value ?? ""}
               error={Boolean(error)}
               disabled={disabled}

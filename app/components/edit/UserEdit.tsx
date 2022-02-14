@@ -97,7 +97,7 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
       />
       <SpacerV />
 
-      {accountType !== AccountType.PERSONAL  && <H3 text={t("model.user.personal_info")} />}
+      {accountType !== AccountType.PERSONAL && <H3 text={t("model.user.personal_info")} />}
 
       <View style={AppStyles.containerHorizontalWrap}>
         <Input name="firstName" label={t("model.user.first_name")} />
@@ -125,7 +125,7 @@ const UserEdit = ({ user, onUserChanged, allDataRequired }: Props) => {
         labelFunc={(i) => i.name}
       />
       <SpacerV />
-      <Input name="mail" label={t("model.user.mail")} />
+      <Input name="mail" label={t("model.user.mail")} valueHook={(v: string) => v.trim()} />
       <SpacerV />
       <PhoneNumber
         name="mobileNumber"

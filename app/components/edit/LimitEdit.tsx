@@ -38,7 +38,6 @@ const LimitEdit = ({ onSuccess }: { onSuccess: () => void }) => {
     handleSubmit,
     formState: { errors },
     setValue,
-    setError: setFormError,
   } = useForm<LimitRequest>();
   const investmentDate = useWatch({ control, name: "investmentDate" });
 

@@ -38,7 +38,8 @@
       "request_failed": "Fehler bei der Anfrage!",
       "copied": "Kopiert!",
       "check_mails": "Erfolgreich! Prüfe deine Mails.",
-      "pop_up_blocked": "Fehler beim Öffnen! Bitte erlaube Pop-up-Fenster in den Browser-Einstellungen."
+      "pop_up_blocked": "Fehler beim Öffnen! Bitte erlaube Pop-up-Fenster in den Browser-Einstellungen.",
+      "bank_tx_required": "Um diese Funktion zu nutzen, musst du zunächst eine Banktransaktion (Kauf oder Verkauf) erfolgreich abschliessen!"
     },
     "validation": {
       "required": "Pflichtfeld",

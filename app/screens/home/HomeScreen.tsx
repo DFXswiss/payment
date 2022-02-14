@@ -7,7 +7,7 @@ import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
 import { H2, H3 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
-import { AccountType, kycCompleted, kycInProgress, KycResult, KycStatus, User, UserDetail } from "../../models/User";
+import { AccountType, kycCompleted, kycInProgress, KycResult, KycStatus, User, UserDetail, UserStatus } from "../../models/User";
 import { getIsVotingOpen, getRoutes, getUserDetail, postFounderCertificate, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
@@ -75,7 +75,11 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     if (resolve(update, isStakingRouteEdit)) {
       // check if user has KYC
       if (user?.kycStatus === KycStatus.NA) {
-        onIncreaseLimit();
+        if (user.status === UserStatus.ACTIVE) {
+          onIncreaseLimit();
+        } else {
+          NotificationService.error(t('feedback.bank_tx_required'))
+        }
         return;
       } else if (kycInProgress(user?.kycStatus)) {
         requestKyc();

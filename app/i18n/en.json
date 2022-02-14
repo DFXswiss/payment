@@ -37,7 +37,8 @@
       "request_failed": "Request error!",
       "copied": "Copied!",
       "check_mails": "Successful! Check your mails.",
-      "pop_up_blocked": "Error while opening! Please allow pop-up windows in the browser settings."
+      "pop_up_blocked": "Error while opening! Please allow pop-up windows in the browser settings.",
+      "bank_tx_required": "To use this feature, you must first successfully complete a bank transaction (buy or sell)!"
     },
     "validation": {
       "required": "Mandatory field",

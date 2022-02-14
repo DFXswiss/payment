@@ -40,7 +40,7 @@ class ValidationsClass {
     return this.Custom((number: string) => {
       if (number && !number.match(/^\+\d+ .+$/)) {
         return "validation.code_and_number";
-      } else if (number && !number.match(/^[+\d ]*$/)) {
+      } else if (number && !number.match(/^\+[\d ]*$/)) {
         return "validation.pattern_invalid";
       }
 

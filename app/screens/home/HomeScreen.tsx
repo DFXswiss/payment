@@ -120,7 +120,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   };
 
   const startKyc = async () => {
-    const doStartKyc = user?.accountType === AccountType.PERSONAL ? true : await uploadFounderCertificate();
+    const doStartKyc = user?.accountType === AccountType.BUSINESS ? await uploadFounderCertificate() :true  ;
     setIsKycRequest(false);
     if (doStartKyc) await requestKyc();
   };
@@ -339,7 +339,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
         <Dialog visible={isKycRequest && !isUserEdit} onDismiss={() => setIsKycRequest(false)} style={AppStyles.dialog}>
           <Dialog.Content>
             <Paragraph>
-              {t(user?.accountType === AccountType.PERSONAL ? "model.kyc.request" : "model.kyc.request_business")}
+              {t(user?.accountType === AccountType.BUSINESS ? "model.kyc.request_business" : "model.kyc.request")}
             </Paragraph>
           </Dialog.Content>
           <Dialog.Actions>
@@ -347,7 +347,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
               {t("action.abort")}
             </DeFiButton>
             <DeFiButton onPress={startKyc} loading={isFileUploading}>
-              {t(user?.accountType !== AccountType.PERSONAL ? "action.upload" : "action.yes")}
+              {t(user?.accountType !== AccountType.BUSINESS ? "action.yes" : "action.upload")}
             </DeFiButton>
           </Dialog.Actions>
         </Dialog>

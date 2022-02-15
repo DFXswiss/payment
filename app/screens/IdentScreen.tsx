@@ -26,8 +26,6 @@ const IdentScreen = ({ session }: { session?: Session }) => {
   const [setupUrl, setSetupUrl] = useState<string | undefined>();
   const [kycStatus, setKycStatus] = useState<KycStatus>();
 
-  useAuthGuard(session);
-
   useEffect(() => {
     // get params
     const params = route.params as any;

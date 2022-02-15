@@ -30,6 +30,7 @@ import { LimitRequest } from "../models/LimitRequest";
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
 const UserUrl = "user";
+const IdentUrl = "ident";
 const RefUrl = "ref";
 const BuyUrl = "buy";
 const RouteUrl = "route";
@@ -61,18 +62,6 @@ export const getUserDetail = (): Promise<UserDetail> => {
   return fetchFrom<UserDetailDto>(`${UserUrl}/detail`).then(fromUserDetailDto);
 };
 
-export const postKyc = (): Promise<string> => {
-  return fetchFrom<string>(`${UserUrl}/kyc`, "POST");
-};
-
-export const getKyc = (code?: string): Promise<KycResult> => {
-  return fetchFrom<KycResult>(`${UserUrl}/kyc?code=${code}`);
-};
-
-export const postLimit = (request: LimitRequest): Promise<LimitRequest> => {
-  return fetchFrom<LimitRequest>(`${UserUrl}/limit`, "POST", request);
-};
-
 export const putUser = (user: User): Promise<UserDetail> => {
   return fetchFrom<UserDetailDto>(UserUrl, "PUT", toUserDto(user)).then(fromUserDetailDto);
 };
@@ -89,8 +78,21 @@ export const updateRefFee = (fee: number): Promise<void> => {
   return fetchFrom(`${UserUrl}/ref`, "PUT", { fee });
 };
 
+// --- IDENT --- //
+export const postKyc = (): Promise<string> => {
+  return fetchFrom<string>(IdentUrl, "POST");
+};
+
+export const getKyc = (code?: string): Promise<KycResult> => {
+  return fetchFrom<KycResult>(`${IdentUrl}?code=${code}`);
+};
+
+export const postLimit = (request: LimitRequest): Promise<LimitRequest> => {
+  return fetchFrom<LimitRequest>(`${IdentUrl}/limit`, "POST", request);
+};
+
 export const postFounderCertificate = (files: File[]): Promise<void> => {
-  return postFiles(`${UserUrl}/incorporationCertificate`, files);
+  return postFiles(`${IdentUrl}/incorporationCertificate`, files);
 };
 
 // --- VOTING --- //

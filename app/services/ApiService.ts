@@ -61,8 +61,12 @@ export const getUserDetail = (): Promise<UserDetail> => {
   return fetchFrom<UserDetailDto>(`${UserUrl}/detail`).then(fromUserDetailDto);
 };
 
-export const postKyc = (): Promise<KycResult> => {
-  return fetchFrom<KycResult>(`${UserUrl}/kyc`, "POST");
+export const postKyc = (): Promise<string> => {
+  return fetchFrom<string>(`${UserUrl}/kyc`, "POST");
+};
+
+export const getKyc = (code?: string): Promise<KycResult> => {
+  return fetchFrom<KycResult>(`${UserUrl}/kyc?code=${code}`);
 };
 
 export const postLimit = (request: LimitRequest): Promise<LimitRequest> => {

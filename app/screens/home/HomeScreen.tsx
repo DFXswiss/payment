@@ -7,7 +7,7 @@ import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
 import { H2, H3 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
-import { AccountType, kycCompleted, kycInProgress, KycResult, KycStatus, User, UserDetail, UserStatus } from "../../models/User";
+import { AccountType, kycCompleted, kycInProgress, KycStatus, User, UserDetail, UserStatus } from "../../models/User";
 import { getIsVotingOpen, getRoutes, getUserDetail, postFounderCertificate, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
@@ -75,14 +75,11 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     if (resolve(update, isStakingRouteEdit)) {
       // check if user has KYC
       if (user?.kycStatus === KycStatus.NA) {
-        if (user.status === UserStatus.ACTIVE) {
-          onIncreaseLimit();
-        } else {
-          NotificationService.error(t('feedback.bank_tx_required'))
-        }
-        return;
+        return user.status === UserStatus.ACTIVE
+          ? onIncreaseLimit()
+          : NotificationService.error(t("feedback.bank_tx_required"));
       } else if (kycInProgress(user?.kycStatus)) {
-        requestKyc();
+        goToIdent();
         return;
       }
     } else {
@@ -143,20 +140,12 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     setIsKycInit(true);
 
     return postKyc()
-      .then((result: KycResult) => {
-        if (result.identUrl) {
-          navigate(Routes.Ident, {
-            status: result.status,
-            url: result.identUrl,
-            ...(result.setupUrl && { setupUrl: result.setupUrl }),
-          });
-        } else {
-          NotificationService.success(t("feedback.check_mails"));
-        }
-      })
+      .then(goToIdent)
       .catch(() => NotificationService.error(t("feedback.request_failed")))
       .finally(() => setIsKycInit(false));
   };
+
+  const goToIdent = (code: string | undefined = user?.kycHash) => navigate(Routes.Ident, { code: code ?? "" });
 
   const onRefFeeChanged = (fee: number): void => {
     if (user) user.refData.refFee = fee;
@@ -278,7 +267,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       label: "model.kyc.status",
       value: t(`model.kyc.${user.kycStatus.toLowerCase()}`),
       icon: kycInProgress(user.kycStatus) ? "reload" : undefined,
-      onPress: requestKyc,
+      onPress: () => goToIdent(),
     },
     {
       condition: true,

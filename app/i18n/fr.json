@@ -36,7 +36,6 @@
       "request_submitted": "Demande soumise !",
       "request_failed": "La demande a échoué !",
       "copied": "Copié !",
-      "check_mails": "Succès ! Vérifiez vos e-mails.",
       "pop_up_blocked": "Erreur lors de l'ouverture ! Veuillez autoriser les fenêtres pop-up dans les paramètres de votre navigateur.",
       "bank_tx_required": "Pour utiliser cette fonction, vous devez d'abord réussir une transaction bancaire (achat ou vente) !"
     },

@@ -37,7 +37,6 @@
       "request_submitted": "Pedido apresentado!",
       "request_failed": "Erro com o pedido!",
       "copied": "Copiado!",
-      "check_mails": "Bem sucedido! Verifique os seus correios.",
       "pop_up_blocked": "Erro ao abrir! Por favor permitir janelas pop-up nas definições do navegador.",
       "bank_tx_required": "Para utilizar esta função, deve primeiro concluir com êxito uma transacção bancária (compra ou venda)!"
     },

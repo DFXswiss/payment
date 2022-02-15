@@ -9,7 +9,7 @@ import Routes from "../config/Routes";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { DeFiButton } from "../elements/Buttons";
-import { postKyc } from "../services/ApiService";
+import { getKyc } from "../services/ApiService";
 import NotificationService from "../services/NotificationService";
 import { KycResult, KycStatus } from "../models/User";
 import { sleep } from "../utils/Utils";
@@ -20,8 +20,9 @@ const IdentScreen = ({ session }: { session?: Session }) => {
   const nav = useNavigation();
   const route = useRoute();
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [url, setUrl] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [code, setCode] = useState<string | undefined>();
+  const [identUrl, setIdentUrl] = useState<string | undefined>();
   const [setupUrl, setSetupUrl] = useState<string | undefined>();
   const [kycStatus, setKycStatus] = useState<KycStatus>();
 
@@ -30,21 +31,22 @@ const IdentScreen = ({ session }: { session?: Session }) => {
   useEffect(() => {
     // get params
     const params = route.params as any;
-    if (params?.url && params?.status) {
-      setUrl(params.url);
-      setSetupUrl(params.setupUrl);
-      setKycStatus(params.status);
+    if (!params?.code) return nav.navigate(Routes.Home);
 
-      // reset params
-      nav.navigate(Routes.Ident, { status: undefined, url: undefined, setupUrl: undefined });
-    } else {
-      nav.navigate(Routes.Home);
-    }
+    setCode(params.code);
+
+    // reset params
+    nav.navigate(Routes.Ident, { code: undefined });
+
+    // get KYC info
+    getKyc(params?.code)
+      .then(updateState)
+      .catch(() => nav.navigate(Routes.Home));
   }, []);
 
   const finishChatBot = (nthTry = 13): Promise<void> => {
     setIsLoading(true);
-    return postKyc()
+    return getKyc(code)
       .then((result: KycResult) => {
         if (result.status === KycStatus.CHATBOT || !result.identUrl) {
           // retry
@@ -54,14 +56,7 @@ const IdentScreen = ({ session }: { session?: Session }) => {
 
           throw Error();
         } else {
-          setUrl(result.identUrl);
-          setSetupUrl(result.setupUrl);
-
-          // wait for new page to load
-          setTimeout(() => {
-            setKycStatus(result.status);
-            setIsLoading(false);
-          }, 1000);
+          updateState(result);
         }
       })
       .catch(() => {
@@ -70,24 +65,37 @@ const IdentScreen = ({ session }: { session?: Session }) => {
       });
   };
 
+  const updateState = (result: KycResult) => {
+    setIdentUrl(result.identUrl);
+    setSetupUrl(result.setupUrl);
+
+    // wait for new page to load
+    setTimeout(() => {
+      setKycStatus(result.status);
+      setIsLoading(false);
+    }, 1000);
+  };
+
   return (
     <AppLayout>
       <KycInit isVisible={isLoading} setIsVisible={setIsLoading} />
 
-      <View style={styles.container}>
-        {setupUrl && (
-          <View style={styles.hiddenIframe}>
-            <Iframe src={setupUrl} />
-          </View>
-        )}
-        <Iframe src={url} />
+      {identUrl && (
+        <View style={styles.container}>
+          {setupUrl && (
+            <View style={styles.hiddenIframe}>
+              <Iframe src={setupUrl} />
+            </View>
+          )}
+          <Iframe src={identUrl} />
 
-        {kycStatus === KycStatus.CHATBOT && (
-          <DeFiButton onPress={() => finishChatBot()} loading={isLoading} labelStyle={styles.chatbotButton}>
-            {t("model.kyc.finish_chatbot")}
-          </DeFiButton>
-        )}
-      </View>
+          {kycStatus === KycStatus.CHATBOT && (
+            <DeFiButton onPress={() => finishChatBot()} loading={isLoading} labelStyle={styles.chatbotButton}>
+              {t("model.kyc.finish_chatbot")}
+            </DeFiButton>
+          )}
+        </View>
+      )}
     </AppLayout>
   );
 };

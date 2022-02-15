@@ -109,9 +109,9 @@
       "model": {
         "user": {
           "edit": "Edita la información del usuario",
-          "data_missing": "¡Por favor rellena la información del usuario primero!",
           "your_data": "Tu información de usuario",
           "data": "Nosotros",
+          "ident_data": "Datos de identificación",
           "account_type": "Tipo de cuenta",
           "personal": "Cuenta personal",
           "business": "Cuenta de negocios",

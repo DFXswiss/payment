@@ -115,9 +115,9 @@
     "model": {
       "user": {
         "edit": "Benutzerdaten bearbeiten",
-        "data_missing": "Fülle bitte zuerst deine Benutzerdaten komplett aus!",
         "your_data": "Deine Benutzerdaten",
         "data": "Benutzerdaten",
+        "ident_data": "Identifikationsdaten",
         "account_type": "Kontotyp",
         "personal": "Privatkonto",
         "business": "Geschäftskonto",

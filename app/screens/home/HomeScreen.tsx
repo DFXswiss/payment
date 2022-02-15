@@ -5,10 +5,17 @@ import DeFiModal from "../../components/util/DeFiModal";
 import Loading from "../../components/util/Loading";
 import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
-import { H2, H3 } from "../../elements/Texts";
+import { H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
 import { AccountType, kycCompleted, kycInProgress, KycStatus, User, UserDetail, UserStatus } from "../../models/User";
-import { getIsVotingOpen, getRoutes, getUserDetail, postFounderCertificate, postKyc } from "../../services/ApiService";
+import {
+  getIdentDataComplete,
+  getIsVotingOpen,
+  getRoutes,
+  getUserDetail,
+  postFounderCertificate,
+  postKyc,
+} from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
@@ -21,7 +28,7 @@ import { DeFiButton } from "../../elements/Buttons";
 import useLoader from "../../hooks/useLoader";
 import { BuyRoute } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import { join, pickDocuments, resolve } from "../../utils/Utils";
+import { pickDocuments, resolve } from "../../utils/Utils";
 import useAuthGuard from "../../hooks/useAuthGuard";
 import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
@@ -64,7 +71,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const [votingImageWidth, setVotingImageWidth] = useState(0);
 
   const sellRouteEdit = (update: SetStateAction<boolean>) => {
-    if (!userDataComplete() && resolve(update, isSellRouteEdit)) {
+    if (resolve(update, isSellRouteEdit) && !user?.identDataComplete) {
       setIsUserEdit(true);
     }
 
@@ -106,7 +113,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const onIncreaseLimit = () => {
     if (user?.kycStatus === KycStatus.NA) {
       // start KYC
-      if (!userDataComplete()) {
+      if (!user?.identDataComplete) {
         setIsUserEdit(true);
       }
       setIsKycRequest(true);
@@ -117,7 +124,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   };
 
   const startKyc = async () => {
-    const doStartKyc = user?.accountType === AccountType.BUSINESS ? await uploadFounderCertificate() :true  ;
+    const doStartKyc = user?.accountType === AccountType.BUSINESS ? await uploadFounderCertificate() : true;
     setIsKycRequest(false);
     if (doStartKyc) await requestKyc();
   };
@@ -148,27 +155,9 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const goToIdent = (code: string | undefined = user?.kycHash) => navigate(Routes.Ident, { code: code ?? "" });
 
   const onRefFeeChanged = (fee: number): void => {
-    if (user) user.refData.refFee = fee;
+    if (user) user.refFeePercent = fee;
     setIsRefFeeEdit(false);
   };
-
-  const userDataComplete = () =>
-    user?.firstName &&
-    user?.lastName &&
-    user?.street &&
-    user?.houseNumber &&
-    user?.zip &&
-    user?.location &&
-    user?.country &&
-    user?.mobileNumber &&
-    user?.mail &&
-    (user?.accountType === AccountType.PERSONAL ||
-      (user?.organizationName &&
-        user?.organizationStreet &&
-        user?.organizationHouseNumber &&
-        user?.organizationLocation &&
-        user?.organizationZip &&
-        user?.organizationCountry));
 
   const reset = (): void => {
     setLoading(true);
@@ -231,19 +220,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
 
   const userData = (user: User) => [
     { condition: Boolean(user.address), label: "model.user.address", value: user.address },
-    {
-      condition: Boolean(user.firstName || user.lastName),
-      label: "model.user.name",
-      value: join([user.firstName, user.lastName], " "),
-    },
-    {
-      condition: Boolean(user.street || user.houseNumber),
-      label: "model.user.home",
-      value: join([user.street, user.houseNumber], " "),
-    },
-    { condition: Boolean(user.zip), label: "model.user.zip", value: user.zip },
-    { condition: Boolean(user.location), label: "model.user.location", value: user.location },
-    { condition: Boolean(user.country), label: "model.user.country", value: user.country?.name },
     { condition: true, label: "model.user.mail", value: user.mail, emptyHint: t("model.user.add_mail") },
     { condition: Boolean(user.mobileNumber), label: "model.user.mobile_number", value: user.mobileNumber },
     { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef },
@@ -278,42 +254,26 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     },
   ];
 
-  const organizationData = (user: User) => [
-    { condition: Boolean(user.organizationName), label: "model.user.organization_name", value: user.organizationName },
-    {
-      condition: Boolean(user.organizationStreet || user.organizationHouseNumber),
-      label: "model.user.home",
-      value: join([user.organizationStreet, user.organizationHouseNumber], " "),
-    },
-    { condition: Boolean(user.organizationZip), label: "model.user.zip", value: user.organizationZip },
-    { condition: Boolean(user.organizationLocation), label: "model.user.location", value: user.organizationLocation },
-    {
-      condition: Boolean(user.organizationCountry),
-      label: "model.user.country",
-      value: user.organizationCountry?.name,
-    },
-  ];
-
   const refData = (user: UserDetail) => [
     {
-      condition: Boolean(user.refData.ref),
+      condition: Boolean(user.ref),
       label: "model.user.own_ref",
-      value: user.refData.ref,
+      value: user.ref,
       icon: "content-copy",
-      onPress: () => ClipboardService.copy(`${RefUrl}${user?.refData.ref}`),
+      onPress: () => ClipboardService.copy(`${RefUrl}${user.ref}`),
     },
     {
-      condition: Boolean(user.refData.ref),
+      condition: Boolean(user.ref),
       label: "model.user.ref_commission",
-      value: `${user.refData.refFee}%`,
+      value: `${user.refFeePercent}%`,
       icon: "chevron-right",
       onPress: () => setIsRefFeeEdit(true),
     },
-    { condition: Boolean(user.refData.refCount), label: "model.user.ref_count", value: user.refData.refCount },
+    { condition: Boolean(user.refCount), label: "model.user.ref_count", value: user.refCount },
     {
-      condition: Boolean(user.refData.refCountActive),
+      condition: Boolean(user.refCountActive),
       label: "model.user.ref_count_active",
-      value: user.refData.refCountActive,
+      value: user.refCountActive,
     },
     {
       condition: Boolean(user.refVolume),
@@ -354,7 +314,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       </DeFiModal>
 
       <DeFiModal isVisible={isUserEdit} setIsVisible={userEdit} title={t("model.user.edit")} style={{ width: 500 }}>
-        <UserEdit user={user} onUserChanged={onUserChanged} allDataRequired={isSellRouteEdit || isKycRequest} />
+        <UserEdit user={user} onUserChanged={onUserChanged} identDataEdit={isSellRouteEdit || isKycRequest} />
       </DeFiModal>
 
       <DeFiModal
@@ -364,7 +324,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
         style={{ width: 400 }}
       >
         <RefFeeEdit
-          currentRefFee={user?.refData.refFee ?? 0}
+          currentRefFee={user?.refFeePercent ?? 0}
           onRefFeeChanged={onRefFeeChanged}
           onCancel={() => setIsRefFeeEdit(false)}
         />
@@ -431,24 +391,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
                 )}
               </DataTable>
               <SpacerV />
-
-              {user.accountType !== AccountType.PERSONAL && organizationData(user).some((d) => d.condition) && (
-                <>
-                  <H3 text={t("model.user.organization_info")} />
-                  <DataTable>
-                    {organizationData(user).map(
-                      (d) =>
-                        d.condition && (
-                          <CompactRow key={d.label}>
-                            <CompactCell>{t(d.label)}</CompactCell>
-                            <CompactCell style={{ flex: device.SM ? 2 : 1 }}>{d.value}</CompactCell>
-                          </CompactRow>
-                        )
-                    )}
-                  </DataTable>
-                  <SpacerV />
-                </>
-              )}
 
               {!device.SM && (
                 <>

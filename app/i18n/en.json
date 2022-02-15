@@ -116,9 +116,9 @@
     "model": {
       "user": {
         "edit": "Edit user data",
-        "data_missing": "Please fill out your user data completely first!",
         "your_data": "Your user data",
         "data": "User data",
+        "ident_data": "Identification data",
         "account_type": "Account type",
         "personal": "Personal account",
         "business": "Business account",

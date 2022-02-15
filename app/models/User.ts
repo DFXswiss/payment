@@ -103,6 +103,7 @@ export interface UserDto extends NewUserDto {
   status: UserStatus;
   kycStatus: KycStatus;
   kycState: KycState;
+  kycHash: string;
   depositLimit: number;
   language: Language;
   ip: string;
@@ -135,6 +136,7 @@ export interface User extends NewUser {
   status: UserStatus;
   kycStatus: KycStatus;
   kycState: KycState;
+  kycHash: string;
   depositLimit: number;
   language: Language;
   ip: string;
@@ -178,6 +180,7 @@ export const fromUserDto = (user: UserDto): User => ({
   status: user.status,
   kycStatus: user.kycStatus,
   kycState: user.kycState,
+  kycHash: user.kycHash,
   depositLimit: user.depositLimit,
   language: user.language,
   ip: user.ip,
@@ -210,6 +213,7 @@ export const toUserDto = (user: User): UserDto => ({
   status: user.status,
   kycStatus: user.kycStatus,
   kycState: user.kycState,
+  kycHash: user.kycHash,
   depositLimit: user.depositLimit,
   language: user.language,
   ip: user.ip,

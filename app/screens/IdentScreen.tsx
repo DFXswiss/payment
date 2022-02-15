@@ -41,7 +41,10 @@ const IdentScreen = ({ session }: { session?: Session }) => {
     // get KYC info
     getKyc(params?.code)
       .then(updateState)
-      .catch(() => nav.navigate(Routes.Home));
+      .catch(() => {
+        NotificationService.error(t("feedback.load_failed"));
+        nav.navigate(Routes.Home);
+      });
   }, []);
 
   const finishChatBot = (nthTry = 13): Promise<void> => {

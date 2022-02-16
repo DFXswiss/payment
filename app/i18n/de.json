@@ -114,7 +114,7 @@
     },
     "model": {
       "user": {
-        "edit": "Benutzerdaten bearbeiten",
+        "edit": "Benutzereinstellungen",
         "your_data": "Deine Benutzerdaten",
         "data": "Benutzerdaten",
         "ident_data": "Identifikationsdaten",

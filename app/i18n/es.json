@@ -108,7 +108,7 @@
       },
       "model": {
         "user": {
-          "edit": "Edita la información del usuario",
+          "edit": "Configuración del usuario",
           "your_data": "Tu información de usuario",
           "data": "Nosotros",
           "ident_data": "Datos de identificación",

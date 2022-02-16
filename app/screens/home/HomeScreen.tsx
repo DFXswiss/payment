@@ -351,15 +351,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
             <View>
               <View style={[AppStyles.containerHorizontal]}>
                 <H2 text={t("model.user.your_data")} />
-                {device.SM && (
-                  <View style={[AppStyles.mla, AppStyles.containerHorizontal]}>
-                    <View>
-                      <DeFiButton mode="contained" onPress={() => setIsUserEdit(true)}>
-                        {t("action.edit")}
-                      </DeFiButton>
-                    </View>
-                  </View>
-                )}
+                <IconButton icon="cog" style={AppStyles.mla} size={30} onPress={() => setIsUserEdit(true)} />
               </View>
               <SpacerV />
               <DataTable>
@@ -387,14 +379,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
                 )}
               </DataTable>
               <SpacerV />
-
-              {!device.SM && (
-                <>
-                  <DeFiButton mode="contained" onPress={() => setIsUserEdit(true)}>
-                    {t("action.edit")}
-                  </DeFiButton>
-                </>
-              )}
 
               {refData(user).some((d) => d.condition) && (
                 <>

@@ -112,7 +112,7 @@
     },
     "model": {
       "user": {
-        "edit": "Editar dados do utilizador",
+        "edit": "Configurações do utilizador",
         "your_data": "Os seus dados de utilizador",
         "data": "Dados do utilizador",
         "ident_data": "Dados de identificação",

@@ -1,5 +1,5 @@
 import { getCountries, getCountryCallingCode } from "libphonenumber-js";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
 import { View } from "react-native";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
@@ -15,6 +15,7 @@ interface Props extends ControlProps {
   placeholder?: string;
   onSubmit?: () => void;
   wrap?: boolean;
+  country?: string;
 }
 
 interface PhoneNumber {
@@ -44,6 +45,7 @@ const PhoneNumber = ({
   disabled = false,
   onSubmit,
   wrap = false,
+  country,
 }: Props) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [phoneCode, setPhoneCode] = useState<PhoneCode>();
@@ -64,7 +66,12 @@ const PhoneNumber = ({
     return join([code?.dialCode, number], " ");
   };
 
-  // TODO: auto-select phone codes with selected country
+  useEffect(() => {
+    if (phoneCode == null) {
+      setPhoneCode(phoneCodes.find((c) => c.code === country));
+    }
+  }, [country]);
+
   const updateRules = (rules?: any): any => ({
     ...rules,
     ...Validations.Phone,

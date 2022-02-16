@@ -37,6 +37,7 @@ const UserEdit = ({ user, onUserChanged, identDataEdit }: Props) => {
     formState: { errors },
   } = useForm<User & IdentData>({ defaultValues: user });
   const accountType = useWatch({ control, name: "accountType" });
+  const country = useWatch({ control, name: "country" });
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -87,22 +88,7 @@ const UserEdit = ({ user, onUserChanged, identDataEdit }: Props) => {
     <ActivityIndicator size="large" />
   ) : (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
-      <Input name="mail" label={t("model.user.mail")} valueHook={(v: string) => v.trim()} />
-      <SpacerV />
-      <PhoneNumber
-        name="mobileNumber"
-        label={t("model.user.mobile_number")}
-        placeholder="6912345678"
-        wrap={!device.SM}
-      />
-      <SpacerV />
-
-      {!identDataEdit ? (
-        <>
-          <Input name="usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />
-          <SpacerV />
-        </>
-      ) : (
+      {identDataEdit && (
         <>
           <SpacerV />
           <H3 text={t("model.user.ident_data")} />
@@ -170,6 +156,26 @@ const UserEdit = ({ user, onUserChanged, identDataEdit }: Props) => {
               <SpacerV />
             </>
           )}
+
+          <H3 text={t("model.user.contact_data")} />
+        </>
+      )}
+
+      <Input name="mail" label={t("model.user.mail")} valueHook={(v: string) => v.trim()} />
+      <SpacerV />
+      <PhoneNumber
+        name="mobileNumber"
+        label={t("model.user.mobile_number")}
+        placeholder="6912345678"
+        wrap={!device.SM}
+        country={country?.symbol}
+      />
+      <SpacerV />
+
+      {!identDataEdit && (
+        <>
+          <Input name="usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />
+          <SpacerV />
         </>
       )}
 

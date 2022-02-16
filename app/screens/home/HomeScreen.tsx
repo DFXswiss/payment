@@ -99,6 +99,9 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   };
 
   const onUserChanged = (newUser: UserDetail) => {
+    // reload all routes (may impact fee)
+    if (user?.usedRef !== newUser.usedRef) loadRoutes();
+
     setUser(newUser);
     setIsUserEdit(false);
   };

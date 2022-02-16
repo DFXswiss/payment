@@ -15,7 +15,6 @@ import {
   fromUserDto,
   KycResult,
   NewUser,
-  toNewUserDto,
   toUserDto,
   User,
   UserDetail,
@@ -26,6 +25,7 @@ import AuthService, { Credentials, Session } from "./AuthService";
 import { StakingRoute } from "../models/StakingRoute";
 import { RoutesDto, fromRoutesDto, Routes } from "../models/Route";
 import { LimitRequest } from "../models/LimitRequest";
+import { IdentData, toIdentDataDto } from "../models/IdentData";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -50,7 +50,7 @@ export const signIn = (credentials?: Credentials): Promise<string> => {
 };
 
 export const signUp = (user: NewUser): Promise<string> => {
-  return fetchFrom<AuthResponse>(`${AuthUrl}/signUp`, "POST", toNewUserDto(user)).then((resp) => resp.accessToken);
+  return fetchFrom<AuthResponse>(`${AuthUrl}/signUp`, "POST", user).then((resp) => resp.accessToken);
 };
 
 // --- USER --- //
@@ -79,6 +79,10 @@ export const updateRefFee = (fee: number): Promise<void> => {
 };
 
 // --- IDENT --- //
+export const putIdentData = (data: IdentData): Promise<void> => {
+  return fetchFrom(`${IdentUrl}/data`, "POST", toIdentDataDto(data));
+};
+
 export const postKyc = (): Promise<string> => {
   return fetchFrom<string>(IdentUrl, "POST");
 };

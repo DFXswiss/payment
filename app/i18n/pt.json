@@ -113,9 +113,10 @@
     "model": {
       "user": {
         "edit": "Editar dados do utilizador",
-        "data_missing": "Preencha por favor os seus dados de utilizador em primeiro lugar!",
         "your_data": "Os seus dados de utilizador",
         "data": "Dados do utilizador",
+        "ident_data": "Dados de identificação",
+        "contact_data": "Dados de contacto",
         "account_type": "Tipo de conta",
         "personal": "Conta privada",
         "business": "Conta comercial",

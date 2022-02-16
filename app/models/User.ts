@@ -1,4 +1,3 @@
-import { Country } from "./Country";
 import { Language } from "./Language";
 
 export enum UserRole {
@@ -48,26 +47,11 @@ export interface KycResult {
   setupUrl?: string;
 }
 
-export interface NewUserDto {
-  address: string;
-  signature: string;
-  wallet: number;
-  usedRef: string | undefined | null;
-}
-
 export interface NewUser {
   address: string;
   signature: string;
   walletId: number;
   usedRef: string | undefined | null;
-}
-
-export interface RefData {
-  ref: string;
-  refFee: number;
-  refCount: number;
-  refCountActive: number;
-  refVolume: number;
 }
 
 export interface Fees {
@@ -80,157 +64,105 @@ export interface CfpVotes {
   [number: number]: CfpVote;
 }
 
-export const toNewUserDto = (user: NewUser): NewUserDto => ({
-  address: user.address,
-  signature: user.signature,
-  wallet: user.walletId,
-  usedRef: user.usedRef === "" ? null : user.usedRef,
-});
-
-export interface UserDto extends NewUserDto {
+export interface UserDto {
   accountType: AccountType;
-  firstname: string;
-  surname: string;
-  street: string;
-  houseNumber: string;
-  zip: string;
-  location: string;
-  country: Country;
+  address: string;
   mail: string | null;
   phone: string;
-
+  language: Language;
   usedRef: string | null;
   status: UserStatus;
+
   kycStatus: KycStatus;
   kycState: KycState;
   kycHash: string;
   depositLimit: number;
-  language: Language;
-  ip: string;
-
-  refVolume: number;
-  refCredit: number;
-
-  organizationName: string;
-  organizationStreet: string;
-  organizationHouseNumber: string;
-  organizationLocation: string;
-  organizationZip: string;
-  organizationCountry: Country;
+  identDataComplete: boolean;
 
   cfpVotes: CfpVotes;
 }
 
-export interface User extends NewUser {
+export interface User {
   accountType: AccountType;
-  firstName: string;
-  lastName: string;
-  street: string;
-  houseNumber: string;
-  zip: string;
-  location: string;
-  country: Country;
+  address: string;
   mail: string;
   mobileNumber: string;
+  language: Language;
   usedRef: string;
   status: UserStatus;
+
   kycStatus: KycStatus;
   kycState: KycState;
   kycHash: string;
   depositLimit: number;
-  language: Language;
-  ip: string;
-
-  refVolume: number;
-  refCredit: number;
-
-  organizationName: string;
-  organizationStreet: string;
-  organizationHouseNumber: string;
-  organizationLocation: string;
-  organizationZip: string;
-  organizationCountry: Country;
+  identDataComplete: boolean;
 
   cfpVotes: CfpVotes;
 }
 
 export interface UserDetailDto extends UserDto {
-  refData: RefData;
+  ref?: string;
+  refFeePercent?: number;
+  refVolume: number;
+  refCredit: number;
+  refCount: number;
+  refCountActive: number;
 }
 
 export interface UserDetail extends User {
-  refData: RefData;
+  ref?: string;
+  refFeePercent?: number;
+  refVolume: number;
+  refCredit: number;
+  refCount: number;
+  refCountActive: number;
 }
 
 export const fromUserDto = (user: UserDto): User => ({
   accountType: user.accountType,
   address: user.address,
-  signature: user.signature,
-  firstName: user.firstname,
-  lastName: user.surname,
-  street: user.street,
-  houseNumber: user.houseNumber,
-  zip: user.zip,
-  location: user.location,
-  country: user.country,
   mail: user.mail ?? "",
   mobileNumber: user.phone,
+  language: user.language,
   usedRef: user.usedRef ?? "",
-  walletId: user.wallet,
   status: user.status,
+
   kycStatus: user.kycStatus,
   kycState: user.kycState,
   kycHash: user.kycHash,
   depositLimit: user.depositLimit,
-  language: user.language,
-  ip: user.ip,
-  refVolume: user.refVolume,
-  refCredit: user.refCredit,
-  organizationName: user.organizationName,
-  organizationStreet: user.organizationStreet,
-  organizationHouseNumber: user.organizationHouseNumber,
-  organizationLocation: user.organizationLocation,
-  organizationZip: user.organizationZip,
-  organizationCountry: user.organizationCountry,
+  identDataComplete: user.identDataComplete,
+
   cfpVotes: user.cfpVotes,
 });
 
 export const toUserDto = (user: User): UserDto => ({
   accountType: user.accountType,
   address: user.address,
-  signature: user.signature,
-  firstname: user.firstName,
-  surname: user.lastName,
-  street: user.street,
-  houseNumber: user.houseNumber,
-  zip: user.zip,
-  location: user.location,
-  country: user.country,
+
   mail: toStringDto(user.mail),
   phone: user.mobileNumber,
+  language: user.language,
   usedRef: toStringDto(user.usedRef),
-  wallet: user.walletId,
   status: user.status,
+
   kycStatus: user.kycStatus,
   kycState: user.kycState,
   kycHash: user.kycHash,
   depositLimit: user.depositLimit,
-  language: user.language,
-  ip: user.ip,
-  refVolume: user.refVolume,
-  refCredit: user.refCredit,
-  organizationName: user.organizationName,
-  organizationStreet: user.organizationStreet,
-  organizationHouseNumber: user.organizationHouseNumber,
-  organizationLocation: user.organizationLocation,
-  organizationZip: user.organizationZip,
-  organizationCountry: user.organizationCountry,
+  identDataComplete: user.identDataComplete,
+
   cfpVotes: user.cfpVotes,
 });
 
 export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
   ...fromUserDto(dto),
-  refData: dto.refData,
+  ref: dto.ref,
+  refFeePercent: dto.refFeePercent,
+  refVolume: dto.refVolume,
+  refCredit: dto.refCredit,
+  refCount: dto.refCount,
+  refCountActive: dto.refCountActive,
 });
 
 const toStringDto = (string: string): string | null => (string === "" ? null : string);

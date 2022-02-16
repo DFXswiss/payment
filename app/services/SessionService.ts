@@ -40,10 +40,7 @@ class SessionServiceClass {
   }
 
   private updateUserLanguage(): Promise<void> {
-    return SettingsService.Language.then((lang) => {
-      debugger;
-      lang ? putUserLanguage(lang) : Promise.resolve();
-    });
+    return SettingsService.Language.then((lang) => (lang ? putUserLanguage(lang) : Promise.resolve()));
   }
 }
 

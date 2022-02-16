@@ -35,7 +35,7 @@ class ValidationsClass {
   public get Ref() {
     return {
       pattern: {
-        value: /^\d{3}-\d{3}$/,
+        value: /^\w{3}-\w{3}$/,
         message: i18n.t("validation.pattern_invalid"),
       },
     };

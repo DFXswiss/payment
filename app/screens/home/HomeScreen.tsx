@@ -8,14 +8,7 @@ import { SpacerV } from "../../elements/Spacers";
 import { H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
 import { AccountType, kycCompleted, kycInProgress, KycStatus, User, UserDetail, UserStatus } from "../../models/User";
-import {
-  getIdentDataComplete,
-  getIsVotingOpen,
-  getRoutes,
-  getUserDetail,
-  postFounderCertificate,
-  postKyc,
-} from "../../services/ApiService";
+import { getIsVotingOpen, getRoutes, getUserDetail, postFounderCertificate, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";

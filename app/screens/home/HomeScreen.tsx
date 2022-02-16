@@ -309,7 +309,12 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
         <LimitEdit onSuccess={() => setIsLimitRequest(false)} />
       </DeFiModal>
 
-      <DeFiModal isVisible={isUserEdit} setIsVisible={userEdit} title={t("model.user.edit")} style={{ width: 500 }}>
+      <DeFiModal
+        isVisible={isUserEdit}
+        setIsVisible={userEdit}
+        title={t(isSellRouteEdit || isKycRequest ? "model.user.edit" : "model.user.settings")}
+        style={{ width: 500 }}
+      >
         <UserEdit user={user} onUserChanged={onUserChanged} identDataEdit={isSellRouteEdit || isKycRequest} />
       </DeFiModal>
 

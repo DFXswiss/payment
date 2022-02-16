@@ -115,7 +115,8 @@
     },
     "model": {
       "user": {
-        "edit": "Paramètres utilisateur",
+        "edit": "Modifier les données personnelles",
+        "settings": "Paramètres utilisateur",
         "your_data": "Vos données personnelles",
         "data": "Données personnelles",
         "ident_data": "Données d'identification",

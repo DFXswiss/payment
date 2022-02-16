@@ -115,7 +115,8 @@
     },
     "model": {
       "user": {
-        "edit": "User settings",
+        "edit": "Edit user data",
+        "settings": "User settings",
         "your_data": "Your user data",
         "data": "User data",
         "ident_data": "Identification data",

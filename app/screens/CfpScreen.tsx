@@ -16,7 +16,7 @@ import withSession from "../hocs/withSession";
 import useAuthGuard from "../hooks/useAuthGuard";
 import { CfpResult } from "../models/CfpResult";
 import { CfpVote, CfpVotes } from "../models/User";
-import { getCfpResults, getCfpVotes, getIsVotingOpen, getStakingRoutes, putCfpVotes } from "../services/ApiService";
+import { getCfpResults, getCfpVotes, getSettings, getStakingRoutes, putCfpVotes } from "../services/ApiService";
 import { Session } from "../services/AuthService";
 import NotificationService from "../services/NotificationService";
 import AppStyles from "../styles/AppStyles";
@@ -37,12 +37,12 @@ const CfpScreen = ({ session }: { session?: Session }) => {
   useAuthGuard(session);
 
   useEffect(() => {
-    Promise.all([getCfpResults("2202"), getCfpVotes(), getStakingRoutes(), getIsVotingOpen()])
-      .then(([results, votes, stakingRoutes, votingOpen]) => {
+    Promise.all([getCfpResults("2202"), getCfpVotes(), getStakingRoutes(), getSettings()])
+      .then(([results, votes, stakingRoutes, settings]) => {
         setCfpResults(results);
         setVotes(votes);
         setCanVote(stakingRoutes.find((r) => r.balance >= 100) != null);
-        setIsVotingOpen(votingOpen);
+        setIsVotingOpen(settings.cfpVotingOpen);
       })
       .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));

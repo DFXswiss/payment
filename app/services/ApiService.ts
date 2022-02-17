@@ -26,6 +26,7 @@ import { StakingRoute } from "../models/StakingRoute";
 import { RoutesDto, fromRoutesDto, Routes } from "../models/Route";
 import { LimitRequest } from "../models/LimitRequest";
 import { IdentData, toIdentDataDto } from "../models/IdentData";
+import { Settings } from "../models/Settings";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -43,6 +44,7 @@ const CountryUrl = "country";
 const LanguageUrl = "language";
 const BankTxUrl = "bankTx";
 const StatisticUrl = "statistic";
+const SettingUrl = "setting";
 
 // --- AUTH --- //
 export const signIn = (credentials?: Credentials): Promise<string> => {
@@ -100,8 +102,8 @@ export const postFounderCertificate = (files: File[]): Promise<void> => {
 };
 
 // --- VOTING --- //
-export const getIsVotingOpen = (): Promise<boolean> => {
-  return fetchFrom<boolean>(`${StatisticUrl}/cfp/votingOpen`);
+export const getSettings = (): Promise<Settings> => {
+  return fetchFrom<Settings>(SettingUrl);
 };
 
 export const getCfpVotes = (): Promise<CfpVotes> => {

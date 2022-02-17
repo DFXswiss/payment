@@ -8,7 +8,7 @@ import { SpacerV } from "../../elements/Spacers";
 import { H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
 import { AccountType, kycCompleted, kycInProgress, KycStatus, User, UserDetail, UserStatus } from "../../models/User";
-import { getIsVotingOpen, getRoutes, getUserDetail, postFounderCertificate, postKyc } from "../../services/ApiService";
+import { getRoutes, getSettings, getUserDetail, postFounderCertificate, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
@@ -176,11 +176,11 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     (cancelled) => {
       if (session) {
         if (session.isLoggedIn) {
-          Promise.all([getUserDetail(), loadRoutes(), getIsVotingOpen()])
-            .then(([user, _, votingOpen]) => {
+          Promise.all([getUserDetail(), loadRoutes(), getSettings()])
+            .then(([user, _, settings]) => {
               if (!cancelled()) {
                 setUser(user);
-                setIsVotingOpen(votingOpen);
+                setIsVotingOpen(settings.cfpVotingOpen);
               }
             })
             .catch((e: ApiError) =>

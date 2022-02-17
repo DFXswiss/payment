@@ -97,7 +97,7 @@ const PhoneNumber = ({
                   )
                 }
                 list={(rules?.required ? [] : [{ label: " ", value: undefined as unknown as string }]).concat(
-                  phoneCodes?.map((code) => ({ label: `${code.country} ${code.dialCode}`, value: code.code }))
+                  phoneCodes?.map((code) => ({ label: `${code.dialCode} ${code.country}`, value: code.code }))
                 )}
                 visible={showDropDown}
                 showDropDown={() => setShowDropDown(!disabled)}

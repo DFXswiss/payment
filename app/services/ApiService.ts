@@ -75,7 +75,7 @@ export const getRefCode = (): Promise<string> => {
 };
 
 export const updateRefFee = (fee: number): Promise<void> => {
-  return fetchFrom(`${UserUrl}/ref`, "PUT", { fee });
+  return fetchFrom(UserUrl, "PUT", { refFeePercent: fee });
 };
 
 // --- IDENT --- //

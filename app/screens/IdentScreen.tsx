@@ -29,7 +29,7 @@ const IdentScreen = ({ session }: { session?: Session }) => {
   useEffect(() => {
     // get params
     const params = route.params as any;
-    if (!params?.code) return nav.navigate(Routes.Home);
+    if (!params?.code) return onLoadFailed();
 
     setCode(params.code);
 
@@ -39,10 +39,7 @@ const IdentScreen = ({ session }: { session?: Session }) => {
     // get KYC info
     getKyc(params?.code)
       .then(updateState)
-      .catch(() => {
-        NotificationService.error(t("feedback.load_failed"));
-        nav.navigate(Routes.Home);
-      });
+      .catch(onLoadFailed);
   }, []);
 
   const finishChatBot = (nthTry = 13): Promise<void> => {
@@ -64,6 +61,11 @@ const IdentScreen = ({ session }: { session?: Session }) => {
         setIsLoading(false);
         NotificationService.error(t("model.kyc.chatbot_not_finished"));
       });
+  };
+
+  const onLoadFailed = () => {
+    NotificationService.error(t("feedback.load_failed"));
+    nav.navigate(Routes.Home);
   };
 
   const updateState = (result: KycResult) => {

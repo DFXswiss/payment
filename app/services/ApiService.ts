@@ -126,7 +126,7 @@ export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
 };
 
 export const putBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
-  return fetchFrom<BuyRouteDto>(BuyUrl, "PUT", toBuyRouteDto(route)).then(fromBuyRouteDto);
+  return fetchFrom<BuyRouteDto>(`${BuyUrl}/${route.id}`, "PUT", toBuyRouteDto(route)).then(fromBuyRouteDto);
 };
 
 export const getSellRoutes = (): Promise<SellRoute[]> => {
@@ -138,7 +138,7 @@ export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
 };
 
 export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
-  return fetchFrom<SellRouteDto>(SellUrl, "PUT", toSellRouteDto(route)).then(fromSellRouteDto);
+  return fetchFrom<SellRouteDto>(`${SellUrl}/${route.id}`, "PUT", toSellRouteDto(route)).then(fromSellRouteDto);
 };
 
 export const getStakingRoutes = (): Promise<StakingRoute[]> => {
@@ -150,7 +150,7 @@ export const postStakingRoute = (route: StakingRoute): Promise<StakingRoute> => 
 };
 
 export const putStakingRoute = (route: StakingRoute): Promise<StakingRoute> => {
-  return fetchFrom<StakingRoute>(StakingUrl, "PUT", route);
+  return fetchFrom<StakingRoute>(`${StakingUrl}/${route.id}`, "PUT", route);
 };
 
 export const getTransactions = (): Promise<Transaction[]> => {

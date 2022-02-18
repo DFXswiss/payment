@@ -1,6 +1,6 @@
 import { getCountries, getCountryCallingCode } from "libphonenumber-js";
 import React, { useEffect, useState } from "react";
-import { Controller } from "react-hook-form";
+import { Controller, useWatch } from "react-hook-form";
 import { View } from "react-native";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import AppStyles from "../../styles/AppStyles";
@@ -50,6 +50,8 @@ const PhoneNumber = ({
   const [showDropDown, setShowDropDown] = useState(false);
   const [phoneCode, setPhoneCode] = useState<PhoneCode>();
 
+  const value = useWatch({ control, name: "mobileNumber" });
+
   const parseNumber = (phoneNumber: string): PhoneNumber => {
     const code = phoneCode ?? phoneCodes.find((c) => phoneNumber?.startsWith(c.dialCode));
     const tempNumber = phoneNumber?.replace(code?.dialCode ?? "", "").trimLeft();
@@ -67,7 +69,7 @@ const PhoneNumber = ({
   };
 
   useEffect(() => {
-    if (phoneCode == null) {
+    if (!value) {
       setPhoneCode(phoneCodes.find((c) => c.code === country));
     }
   }, [country]);

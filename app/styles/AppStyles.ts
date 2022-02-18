@@ -49,6 +49,9 @@ export default StyleSheet.create({
   h3: {
     fontSize: 20,
   },
+  h4: {
+    fontSize: 16,
+  },
   error: {
     backgroundColor: Colors.Error,
     padding: 10,

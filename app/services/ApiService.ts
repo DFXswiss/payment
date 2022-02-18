@@ -15,7 +15,6 @@ import {
   fromUserDto,
   KycResult,
   NewUser,
-  toNewUserDto,
   toUserDto,
   User,
   UserDetail,
@@ -26,6 +25,8 @@ import AuthService, { Credentials, Session } from "./AuthService";
 import { StakingRoute } from "../models/StakingRoute";
 import { RoutesDto, fromRoutesDto, Routes } from "../models/Route";
 import { LimitRequest } from "../models/LimitRequest";
+import { IdentData, toIdentDataDto } from "../models/IdentData";
+import { Settings } from "../models/Settings";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -43,6 +44,7 @@ const CountryUrl = "country";
 const LanguageUrl = "language";
 const BankTxUrl = "bankTx";
 const StatisticUrl = "statistic";
+const SettingUrl = "setting";
 
 // --- AUTH --- //
 export const signIn = (credentials?: Credentials): Promise<string> => {
@@ -50,7 +52,7 @@ export const signIn = (credentials?: Credentials): Promise<string> => {
 };
 
 export const signUp = (user: NewUser): Promise<string> => {
-  return fetchFrom<AuthResponse>(`${AuthUrl}/signUp`, "POST", toNewUserDto(user)).then((resp) => resp.accessToken);
+  return fetchFrom<AuthResponse>(`${AuthUrl}/signUp`, "POST", user).then((resp) => resp.accessToken);
 };
 
 // --- USER --- //
@@ -75,10 +77,14 @@ export const getRefCode = (): Promise<string> => {
 };
 
 export const updateRefFee = (fee: number): Promise<void> => {
-  return fetchFrom(`${UserUrl}/ref`, "PUT", { fee });
+  return fetchFrom(UserUrl, "PUT", { refFeePercent: fee });
 };
 
 // --- IDENT --- //
+export const putIdentData = (data: IdentData): Promise<void> => {
+  return fetchFrom(`${IdentUrl}/data`, "POST", toIdentDataDto(data));
+};
+
 export const postKyc = (): Promise<string> => {
   return fetchFrom<string>(IdentUrl, "POST");
 };
@@ -96,8 +102,8 @@ export const postFounderCertificate = (files: File[]): Promise<void> => {
 };
 
 // --- VOTING --- //
-export const getIsVotingOpen = (): Promise<boolean> => {
-  return fetchFrom<boolean>(`${StatisticUrl}/cfp/votingOpen`);
+export const getSettings = (): Promise<Settings> => {
+  return fetchFrom<Settings>(SettingUrl);
 };
 
 export const getCfpVotes = (): Promise<CfpVotes> => {
@@ -122,7 +128,7 @@ export const postBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
 };
 
 export const putBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
-  return fetchFrom<BuyRouteDto>(BuyUrl, "PUT", toBuyRouteDto(route)).then(fromBuyRouteDto);
+  return fetchFrom<BuyRouteDto>(`${BuyUrl}/${route.id}`, "PUT", toBuyRouteDto(route)).then(fromBuyRouteDto);
 };
 
 export const getSellRoutes = (): Promise<SellRoute[]> => {
@@ -134,7 +140,7 @@ export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
 };
 
 export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
-  return fetchFrom<SellRouteDto>(SellUrl, "PUT", toSellRouteDto(route)).then(fromSellRouteDto);
+  return fetchFrom<SellRouteDto>(`${SellUrl}/${route.id}`, "PUT", toSellRouteDto(route)).then(fromSellRouteDto);
 };
 
 export const getStakingRoutes = (): Promise<StakingRoute[]> => {
@@ -146,7 +152,7 @@ export const postStakingRoute = (route: StakingRoute): Promise<StakingRoute> => 
 };
 
 export const putStakingRoute = (route: StakingRoute): Promise<StakingRoute> => {
-  return fetchFrom<StakingRoute>(StakingUrl, "PUT", route);
+  return fetchFrom<StakingRoute>(`${StakingUrl}/${route.id}`, "PUT", route);
 };
 
 export const getTransactions = (): Promise<Transaction[]> => {

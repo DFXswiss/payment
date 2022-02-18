@@ -41,7 +41,7 @@ export const toSellRouteDto = (route: SellRoute): SellRouteDto => ({
   id: route.id,
   fiat: route.fiat,
   deposit: route.deposit,
-  iban: route.iban,
+  iban: route.iban.split(" ").join(""),
   active: route.active,
   volume: route.volume,
   annualVolume: route.annualVolume,

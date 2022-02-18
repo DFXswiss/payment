@@ -117,9 +117,11 @@
     "model": {
       "user": {
         "edit": "Modificare i dati dell'utente",
-        "data_missing": "Si prega di compilare completamente i dati dell'utente prima!",
+        "settings": "Impostazioni utente",
         "your_data": "I tuoi dati utente",
         "data": "Dati utente",
+        "ident_data": "Dati di identificazione",
+        "contact_data": "Dati di contatto",
         "account_type": "Tipo di conto",
         "personal": "Conto privato",
         "business": "Conto commerciale",

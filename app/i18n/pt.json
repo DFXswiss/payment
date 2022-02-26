@@ -37,14 +37,16 @@
       "request_submitted": "Pedido apresentado!",
       "request_failed": "Erro com o pedido!",
       "copied": "Copiado!",
-      "check_mails": "Bem sucedido! Verifique os seus correios.",
-      "pop_up_blocked": "Erro ao abrir! Por favor permitir janelas pop-up nas definições do navegador."
+      "pop_up_blocked": "Erro ao abrir! Por favor permitir janelas pop-up nas definições do navegador.",
+      "bank_tx_required": "Para utilizar esta função, deve primeiro concluir com êxito uma transacção bancária (compra ou venda)!"
     },
     "validation": {
       "required": "Campo Obrigatório",
       "pattern_invalid": "Formato inválido",
       "iban_invalid": "IBAN inválido",
-      "code_and_number": "Por favor preencha o código de área e o número"
+      "iban_country_invalid": "Código de país IBAN não permitido",
+      "code_and_number": "Por favor preencha o código de área e o número",
+      "file_too_large": "O ficheiro é demasiado grande"
     },
     "session": {
       "instructions": "Guia de registo",
@@ -101,7 +103,9 @@
       "vote_turnout": "Participação nas votações",
       "current_result": "Resultado actual",
       "approved": "aprovado",
-      "not approved": "não aprovado"
+      "not approved": "não aprovado",
+      "read_proposal": "Ler proposta",
+      "your_vote": "O seu voto"
     },
     "admin": {
       "title": "Admin"
@@ -109,9 +113,11 @@
     "model": {
       "user": {
         "edit": "Editar dados do utilizador",
-        "data_missing": "Preencha por favor os seus dados de utilizador em primeiro lugar!",
+        "settings": "Configurações do utilizador",
         "your_data": "Os seus dados de utilizador",
         "data": "Dados do utilizador",
+        "ident_data": "Dados de identificação",
+        "contact_data": "Dados de contacto",
         "account_type": "Tipo de conta",
         "personal": "Conta privada",
         "business": "Conta comercial",
@@ -154,17 +160,39 @@
         "ref_commission_hint": "Tem a certeza de que quer reduzir a sua comissão para {{fee}}%? Este passo não pode ser desfeito."
       },
       "kyc":{
-        "request": "Precisamos de verificar primeiro a sua conta. Quer iniciar o processo de verificação?",
-        "invest_volume": "Quanto é que quer investir no total?",
-        "volume": "Volume de investimento",
+        "request": "A sua conta deve primeiro ser verificada com o chatbot e a identificação em linha.\nQuer começar com o chatbot?",
+        "request_business": "Por favor, carregue primeiro os estatutos da empresa, certificado de constituição, excerto do registo comercial ou estatutos da empresa.\nDepois disso, a sua conta deve ser verificada com o chatbot e identificação online.",
         "status": "KYC Status",
         "na": "Sem KYC",
         "chatbot": "Em curso (Chatbot onboarding)",
         "address": "Em curso (Carregamento de facturas)",
         "onlineid": "Em curso (Identificação online)",
         "videoid": "Em curso (Identificação vídeo)",
-        "manual": "KYC provisório",
-        "completed": "KYC completo"
+        "manual": "Verificação concluída",
+        "completed": "Verificação concluída",
+        "chatbot_not_finished": "Erro! Chatbot ainda não terminado.",
+        "finish_chatbot": "Chatbot completo",
+        "initiating": "A verificação está em preparação, pode demorar algum tempo. Pedimos a vossa paciência.",
+        "increase_limit": "Aumentar o limite",
+        "volume": "Volume de investimento",
+        "investment_date": "Tempo de investimento",
+        "now": "Activos correntes",
+        "future": "Bens futuros",
+        "fund_origin": "Fonte de fundos",
+        "savings": "Poupanças",
+        "businessprofits": "Lucros comerciais",
+        "stockgains": "Ganhos no preço das acções",
+        "cryptogains": "Ganhos de preços criptográficos",
+        "inheritance": "Herança",
+        "other": "Outros",
+        "savings_future": "Poupanças futuras",
+        "businessprofits_future": "Lucros comerciais futuros",
+        "stockgains_future": "Ganhos futuros no preço das acções",
+        "cryptogains_future": "Ganhos futuros de preços criptográficos",
+        "inheritance_future": "Herança futura",
+        "other_future": "Outros",
+        "fund_origin_text": "Origem dos fundos (texto livre)",
+        "document_proof": "Prova documental"
       },
       "route": {
         "routes": "Rotas de pagamento",
@@ -202,11 +230,14 @@
         "payback": "Retorno",
         "reinvest": "Reinvestir",
         "wallet": "Carteira",
-        "payout": "Pagamento",
+        "bankaccount": "Conta bancária",
         "reward_sell": "Rota de vendas de recompensas",
         "payback_sell": "Rota de vendas de retorno",
+        "reward_asset": "Bens de recompensa",
+        "payback_asset": "Bens de retorno",
         "payback_date": "Retorno em",
-        "balance": "Crédito"
+        "balance": "Crédito",
+        "type": "Tipo"
       },
       "payment": {
         "new": "Novos pagamentos",

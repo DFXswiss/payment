@@ -61,7 +61,6 @@ const GtcScreen = ({ session }: { session?: Session }) => {
 
   return (
     <AppLayout>
-      <SpacerV height={20} />
       <H1 style={AppStyles.center} text={t("gtc.title")} />
       <SpacerV height={20} />
 

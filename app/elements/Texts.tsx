@@ -13,6 +13,9 @@ export const H2 = ({ text, style }: { text: string; style?: TextStyle }) => (
 export const H3 = ({ text, style }: { text: string; style?: TextStyle }) => (
   <Title style={[AppStyles.h3, style]}>{text}</Title>
 );
+export const H4 = ({ text, style }: { text: string; style?: TextStyle }) => (
+  <Title style={[AppStyles.h4, style]}>{text}</Title>
+);
 
 export const Alert = ({ label }: { label: string }) => (
   <View style={AppStyles.error}>

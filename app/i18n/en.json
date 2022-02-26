@@ -36,14 +36,16 @@
       "request_submitted": "Request submitted!",
       "request_failed": "Request error!",
       "copied": "Copied!",
-      "check_mails": "Successful! Check your mails",
-      "pop_up_blocked": "Error while opening! Please allow pop-up windows in the browser settings."
+      "pop_up_blocked": "Error while opening! Please allow pop-up windows in the browser settings.",
+      "bank_tx_required": "To use this feature, you must first successfully complete a bank transaction (buy or sell)!"
     },
     "validation": {
       "required": "Mandatory field",
       "pattern_invalid": "Invalid format",
       "iban_invalid": "Invalid IBAN",
-      "code_and_number": "Please fill in area code and number"
+      "iban_country_invalid": "IBAN country code not allowed",
+      "code_and_number": "Please fill in area code and number",
+      "file_too_large": "File is too large"
     },
     "session": {
       "instructions": "Registration manual",
@@ -101,7 +103,9 @@
       "vote_turnout": "Vote turnout",
       "current_result": "Current result",
       "approved": "Approved",
-      "not approved": "Not approved"
+      "not approved": "Not approved",
+      "read_proposal": "Read proposal",
+      "your_vote": "Your vote"
     },
     "admin": {
       "title": "Admin"
@@ -109,9 +113,11 @@
     "model": {
       "user": {
         "edit": "Edit user data",
-        "data_missing": "Please fill out your user data completely first!",
+        "settings": "User settings",
         "your_data": "Your user data",
         "data": "User data",
+        "ident_data": "Identification data",
+        "contact_data": "Contact data",
         "account_type": "Account type",
         "personal": "Personal account",
         "business": "Business account",
@@ -154,16 +160,38 @@
         "ref_commission_hint": "Are you sure you want to reduce your commission to {{fee}}%? This step cannot be undone."
       },
       "kyc":{
-        "request": "We need to verify your account first. Do you want to start the verification process?",
-        "invest_volume": "How much do you approximately want to invest in total?",
-        "volume": "Investment volume",
+        "request": "Your account must first be verified with the chatbot and online identification.\nDo you want to start with the chatbot?",
+        "request_business": "Please first upload the company's articles of association, certificate of incorporation, excerpt from the commercial register or bylaws of the company.\nAfter that, your account must be verified with the chatbot and online identification.",
         "status": "KYC status",
         "chatbot": "In progress (Chatbot onboarding)",
         "address": "In progress (Invoice upload)",
         "onlineid": "In progress (Online identification)",
         "videoid": "In progress (Video identification)",
-        "manual": "Provisional KYC",
-        "completed": "Full KYC"
+        "manual": "Verification completed",
+        "completed": "Verification completed",
+        "chatbot_not_finished": "Error! Chatbot not yet finished.",
+        "finish_chatbot": "Chatbot finished",
+        "initiating": "Verification is in preparation, it may take a while. We ask for patience.",
+        "increase_limit": "Increase limit",
+        "volume": "Investment volume",
+        "investment_date": "Investment date",
+        "now": "Current assets",
+        "future": "Future assets",
+        "fund_origin": "Origin of funds",
+        "savings": "Savings",
+        "businessprofits": "Business profits",
+        "stockgains": "Stock price gains",
+        "cryptogains": "Crypto price gains",
+        "inheritance": "Inheritance",
+        "other": "Other",
+        "savings_future": "Future savings",
+        "businessprofits_future": "Future business profits",
+        "stockgains_future": "Future stock price gains",
+        "cryptogains_future": "Future crypto price gains",
+        "inheritance_future": "Future inheritance",
+        "other_future": "Other",
+        "fund_origin_text": "Origin of funds (free text)",
+        "document_proof": "Document proof"
       },
       "route": {
         "routes": "Payment Routes",
@@ -201,11 +229,14 @@
         "payback": "Repayment",
         "reinvest": "Reinvest",
         "wallet": "Wallet",
-        "payout": "Payout",
-        "reward_sell": "Reward sale route",
-        "payback_sell": "Payback sale route",
+        "bankaccount": "Bank account",
+        "reward_sell": "Reward sell route",
+        "payback_sell": "Payback sell route",
+        "reward_asset": "Reward asset",
+        "payback_asset": "Payback asset",
         "payback_date": "Payback on",
-        "balance": "Balance"
+        "balance": "Balance",
+        "type": "Type"
       },
       "payment": {
         "new": "New payments",

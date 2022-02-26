@@ -10,10 +10,12 @@ import StorageService from "./StorageService";
 const SettingsKey = "settings";
 const DefaultSettings: Partial<AppSettings> = {
   language: Environment.defaultLanguage,
+  isIframe: true,
 };
 
 export interface AppSettings {
   language: string;
+  isIframe: boolean;
 }
 
 class SettingsServiceClass {

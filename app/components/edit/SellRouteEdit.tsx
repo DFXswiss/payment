@@ -5,7 +5,7 @@ import { SpacerV } from "../../elements/Spacers";
 import { Alert } from "../../elements/Texts";
 import { Fiat } from "../../models/Fiat";
 import { SellRoute } from "../../models/SellRoute";
-import { getFiats, postSellRoute, putSellRoute } from "../../services/ApiService";
+import { getCountries, getFiats, postSellRoute, putSellRoute } from "../../services/ApiService";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
 import Input from "../form/Input";
@@ -16,6 +16,7 @@ import ButtonContainer from "../util/ButtonContainer";
 import { createRules } from "../../utils/Utils";
 import { ActivityIndicator } from "react-native-paper";
 import { ApiError } from "../../models/ApiDto";
+import { Country } from "../../models/Country";
 
 const SellRouteEdit = ({
   routes,
@@ -35,10 +36,14 @@ const SellRouteEdit = ({
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string>();
   const [fiats, setFiats] = useState<Fiat[]>([]);
+  const [countries, setCountries] = useState<Country[]>([]);
 
   useEffect(() => {
-    getFiats()
-      .then(setFiats)
+    Promise.all([getFiats(), getCountries()])
+      .then(([f, c]) => {
+        setFiats(f);
+        setCountries(c);
+      })
       .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));
   }, []);
@@ -59,7 +64,7 @@ const SellRouteEdit = ({
 
   const rules: any = createRules({
     fiat: Validations.Required,
-    iban: [Validations.Required, Validations.Iban],
+    iban: [Validations.Required, Validations.Iban(countries)],
   });
 
   return isLoading ? (

@@ -1,6 +1,6 @@
 import { getCountries, getCountryCallingCode } from "libphonenumber-js";
-import React, { useState } from "react";
-import { Controller } from "react-hook-form";
+import React, { useEffect, useState } from "react";
+import { Controller, useWatch } from "react-hook-form";
 import { View } from "react-native";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import AppStyles from "../../styles/AppStyles";
@@ -15,6 +15,7 @@ interface Props extends ControlProps {
   placeholder?: string;
   onSubmit?: () => void;
   wrap?: boolean;
+  country?: string;
 }
 
 interface PhoneNumber {
@@ -44,9 +45,12 @@ const PhoneNumber = ({
   disabled = false,
   onSubmit,
   wrap = false,
+  country,
 }: Props) => {
   const [showDropDown, setShowDropDown] = useState(false);
   const [phoneCode, setPhoneCode] = useState<PhoneCode>();
+
+  const value = useWatch({ control, name: "mobileNumber" });
 
   const parseNumber = (phoneNumber: string): PhoneNumber => {
     const code = phoneCode ?? phoneCodes.find((c) => phoneNumber?.startsWith(c.dialCode));
@@ -64,7 +68,12 @@ const PhoneNumber = ({
     return join([code?.dialCode, number], " ");
   };
 
-  // TODO: auto-select phone codes with selected country
+  useEffect(() => {
+    if (!value) {
+      setPhoneCode(phoneCodes.find((c) => c.code === country));
+    }
+  }, [country]);
+
   const updateRules = (rules?: any): any => ({
     ...rules,
     ...Validations.Phone,
@@ -90,7 +99,7 @@ const PhoneNumber = ({
                   )
                 }
                 list={(rules?.required ? [] : [{ label: " ", value: undefined as unknown as string }]).concat(
-                  phoneCodes?.map((code) => ({ label: `${code.country} ${code.dialCode}`, value: code.code }))
+                  phoneCodes?.map((code) => ({ label: `${code.dialCode} ${code.country}`, value: code.code }))
                 )}
                 visible={showDropDown}
                 showDropDown={() => setShowDropDown(!disabled)}

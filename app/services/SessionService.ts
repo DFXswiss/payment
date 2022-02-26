@@ -6,15 +6,14 @@ const DefaultWalletId = 2;
 
 class SessionServiceClass {
   public register(credentials: Credentials, ref?: string, walletId?: number): Promise<void> {
-      return signUp({
-        address: credentials?.address ?? "",
-        signature: credentials?.signature ?? "",
-        walletId: walletId ?? DefaultWalletId,
-        usedRef: ref,
-      })
+    return signUp({
+      address: credentials?.address ?? "",
+      signature: credentials?.signature ?? "",
+      walletId: walletId ?? DefaultWalletId,
+      usedRef: ref,
+    })
       .then(this.updateSession)
-      .then(() => SettingsService.Language)
-      .then((lang) => lang ? putUserLanguage(lang) : Promise.resolve())
+      .then(this.updateUserLanguage)
       .then();
   }
 
@@ -22,8 +21,8 @@ class SessionServiceClass {
     return AuthService.deleteSession()
       .then(() => signIn(credentials))
       .then(this.updateSession)
-      .then(getUser)
-      .then((user) => user.language ? SettingsService.updateSettings({language: user.language.symbol}) : undefined);
+      .then(() => SettingsService.Settings)
+      .then((s) => (s.isIframe ? this.updateUserLanguage() : this.updateLanguageSetting()));
   }
 
   public logout(): Promise<void> {
@@ -32,6 +31,16 @@ class SessionServiceClass {
 
   private updateSession(accessToken?: string): Promise<void> {
     return AuthService.updateSession({ accessToken: accessToken });
+  }
+
+  private updateLanguageSetting(): Promise<void> {
+    return getUser().then((u) =>
+      u.language ? SettingsService.updateSettings({ language: u.language.symbol }) : undefined
+    );
+  }
+
+  private updateUserLanguage(): Promise<void> {
+    return SettingsService.Language.then((lang) => (lang ? putUserLanguage(lang) : Promise.resolve()));
   }
 }
 

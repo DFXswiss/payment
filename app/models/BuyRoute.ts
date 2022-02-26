@@ -1,9 +1,16 @@
 import { Asset } from "./Asset";
+import { StakingRoute } from "./StakingRoute";
+
+export enum BuyType {
+  WALLET = "Wallet",
+  STAKING = "Staking",
+}
 
 export interface BuyRouteDto {
   id: string;
-  address: string;
-  asset: Asset;
+  type: BuyType;
+  asset?: Asset;
+  staking?: StakingRoute;
   bankUsage: string;
   iban: string;
   volume: number;
@@ -15,8 +22,9 @@ export interface BuyRouteDto {
 
 export interface BuyRoute {
   id: string;
-  address: string;
-  asset: Asset;
+  type: BuyType;
+  asset?: Asset;
+  staking?: StakingRoute;
   bankUsage: string;
   iban: string;
   volume: number;
@@ -28,8 +36,9 @@ export interface BuyRoute {
 
 export const fromBuyRouteDto = (route: BuyRouteDto): BuyRoute => ({
   id: route.id,
-  address: route.address,
+  type: route.type,
   asset: route.asset,
+  staking: route.staking,
   bankUsage: route.bankUsage,
   iban: route.iban.replace(/(.{4})/g, "$1 "),
   active: route.active,
@@ -41,8 +50,9 @@ export const fromBuyRouteDto = (route: BuyRouteDto): BuyRoute => ({
 
 export const toBuyRouteDto = (route: BuyRoute): BuyRouteDto => ({
   id: route.id,
-  address: route.address,
+  type: route.type,
   asset: route.asset,
+  staking: route.staking,
   bankUsage: route.bankUsage,
   iban: route.iban.split(" ").join(""),
   active: route.active,

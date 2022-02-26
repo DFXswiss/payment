@@ -32,18 +32,20 @@
         "save_failed": "¡Error mientras se guardaba!",
         "save_successful": "¡Se guardó con éxito!",
         "file_error": "¡Error al leer el documento!",
-        "mail_error": "¡El correo electrónico ya existe. Contáctanos en supportES@dfx.swiss",
+        "mail_error": "¡El correo electrónico ya existe. Contáctanos en supportES@dfx.swiss.",
         "request_submitted": "¡Propuesta presentada!",
         "request_failed": "¡Propuesta fallida!",
         "copied": "¡Copiada!",
-        "check_mails": "¡Exitoso! Comprueba tu correo electrónico",
-        "pop_up_blocked": "¡Error mientras se abría! Por favor permite las ventanas emergentes en los ajustes de tu buscador."
+        "pop_up_blocked": "¡Error mientras se abría! Por favor permite las ventanas emergentes en los ajustes de tu buscador.",
+        "bank_tx_required": "Para utilizar esta función, primero debe completar con éxito una transacción bancaria (compra o venta)."
       },
       "validation": {
         "required": "Campo obligatorio",
         "pattern_invalid": "Formato inválido",
         "iban_invalid": "IBAN inválido",
-        "code_and_number": "Por favor rellena el código de area y el número"
+        "iban_country_invalid": "Código de país IBAN no permitido",
+        "code_and_number": "Por favor rellena el código de area y el número",
+        "file_too_large": "El fichero es demasiado grande"
       },
       "session": {
         "instructions": "Registro manual",
@@ -97,7 +99,9 @@
         "vote_turnout": "Número de votos",
         "current_result": "Resultado actual",
         "approved": "Aprobado",
-        "not approved": "No aprobado"
+        "not approved": "No aprobado",
+        "read_proposal": "Leer propuesta",
+        "your_vote": "Su voto"
       },
       "admin": {
         "title": "Administrador"
@@ -105,9 +109,11 @@
       "model": {
         "user": {
           "edit": "Edita la información del usuario",
-          "data_missing": "¡Por favor rellena la información del usuario primero!",
+          "settings": "Configuración del usuario",
           "your_data": "Tu información de usuario",
           "data": "Nosotros",
+          "ident_data": "Datos de identificación",
+          "contact_data": "Datos de contacto",
           "account_type": "Tipo de cuenta",
           "personal": "Cuenta personal",
           "business": "Cuenta de negocios",
@@ -150,16 +156,38 @@
           "ref_commission_hint": "¿Estás seguro de que quieres reducir tu comisión a {{fee}}%? Este paso no se puede rehacer."
         },
         "kyc":{
-          "request": "Primero tenemos que verificar su cuenta. ¿Desea iniciar el proceso de verificación?",
-          "invest_volume": "¿Cúanto quieres invertir en total?",
-          "volume": "Volumen de inversión",
+          "request": "Su cuenta debe ser verificada primero con el chatbot y la identificación en línea.\n¿Desea comenzar con el chatbot?",
+          "request_business": "Por favor, cargue primero los estatutos de la empresa, el certificado de constitución, el extracto del registro mercantil o los estatutos de la empresa.\nDespués, su cuenta debe ser verificada con el chatbot y la identificación en línea.",
           "status": "Estado KYC (Identificación personal)",
           "chatbot": "En progreso (Conectando con el chatbot)",
           "address": "En progreso (Cargando recibo)",
           "onlineid": "En progreso (Identificación online)",
           "videoid": "En progreso (Identificación por video)",
-          "manual": "Provisional KYC (Identificación personal)",
-          "completed": "Completado KYC (Identificación personal)"
+          "manual": "Verificación completada",
+          "completed": "Verificación completada",
+          "chatbot_not_finished": "¡Error! El chatbot aún no está terminado.",
+          "finish_chatbot": "Completado chatbot",
+          "initiating": "La verificación está en preparación, puede llevar un tiempo. Le pedimos que tenga paciencia.",
+          "increase_limit": "Aumentar el límite",
+          "volume": "Volumen de inversión",
+          "investment_date": "Calendario de inversiones",
+          "now": "Activos corrientes",
+          "future": "Activos futuros",
+          "fund_origin": "Fuente de fondos",
+          "savings": "Ahorro",
+          "businessprofits": "Beneficios empresariales",
+          "stockgains": "Ganancias en la cotización de las acciones",
+          "cryptogains": "Ganancias en el precio de las criptomonedas",
+          "inheritance": "Herencia",
+          "other": "Otros",
+          "savings_future": "Ahorro futuro",
+          "businessprofits_future": "Futuros beneficios empresariales",
+          "stockgains_future": "Futuras ganancias en la cotización de las acciones",
+          "cryptogains_future": "Futuras ganancias en el precio de las criptomonedas",
+          "inheritance_future": "Herencia futura",
+          "other_future": "Otros",
+          "fund_origin_text": "Origen de los fondos (texto libre)",
+          "document_proof": "Pruebas documentales"
         },
         "route": {
           "routes": "Rutas de pago",
@@ -171,7 +199,7 @@
           "new_sell": "Nueva ruta de venta",
           "payment_info": "Información de pago",
           "details": "Detalles de la ruta",
-          "iban": "IBAN: Número de cuenta",
+          "iban": "IBAN (número de cuenta)",
           "your_iban": "Tu IBAN",
           "bank_usage": "Próposito del pago (o Referencia o Concepto)",
           "copy_bank_usage": "Copia propósito de pago",
@@ -196,11 +224,14 @@
           "payback": "Reembolso",
           "reinvest": "Reinvertir",
           "wallet": "Billetera",
-          "payout": "Desembolso",
+          "bankaccount": "Cuenta bancaria",
           "reward_sell": "Ruta para recompensar",
           "payback_sell": "Ruta de reembolso",
+          "reward_asset": "Activo de recompensa",
+          "payback_asset": "Activo de reembolso",
           "payback_date": "Reembolso activado",
-          "balance": "Crédito"
+          "balance": "Crédito",
+          "type": "Tipo"
         },
         "payment": {
           "new": "Nuevos pagos",

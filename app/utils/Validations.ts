@@ -1,6 +1,7 @@
 import i18n from "../i18n/i18n";
 import Regex from "./Regex";
 import * as IbanTools from "ibantools";
+import { Country } from "../models/Country";
 
 class ValidationsClass {
   public get Required() {
@@ -12,9 +13,13 @@ class ValidationsClass {
     };
   }
 
-  public get Iban() {
+  public Iban(countries: Country[]) {
     return this.Custom((iban: string) =>
-      IbanTools.validateIBAN(iban.split(" ").join("")).valid ? true : "validation.iban_invalid"
+      countries.find((c) => iban.toLowerCase().startsWith(c.symbol.toLowerCase()))?.enable
+        ? IbanTools.validateIBAN(iban.split(" ").join("")).valid
+          ? true
+          : "validation.iban_invalid"
+        : "validation.iban_country_invalid"
     );
   }
 
@@ -30,7 +35,7 @@ class ValidationsClass {
   public get Ref() {
     return {
       pattern: {
-        value: /^\d{3}-\d{3}$/,
+        value: /^\w{3}-\w{3}$/,
         message: i18n.t("validation.pattern_invalid"),
       },
     };
@@ -40,7 +45,7 @@ class ValidationsClass {
     return this.Custom((number: string) => {
       if (number && !number.match(/^\+\d+ .+$/)) {
         return "validation.code_and_number";
-      } else if (number && !number.match(/^[+\d ]*$/)) {
+      } else if (number && !number.match(/^\+[\d ]*$/)) {
         return "validation.pattern_invalid";
       }
 

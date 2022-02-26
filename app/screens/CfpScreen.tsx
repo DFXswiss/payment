@@ -4,33 +4,46 @@ import { StyleSheet, View } from "react-native";
 import { StackedBarChart } from "react-native-chart-kit";
 import { AbstractChartConfig } from "react-native-chart-kit/dist/AbstractChart";
 import { StackedBarChartData } from "react-native-chart-kit/dist/StackedBarChart";
-import { ActivityIndicator, DataTable, Paragraph, RadioButton, TouchableRipple } from "react-native-paper";
+import { ActivityIndicator, DataTable, Text } from "react-native-paper";
 import AppLayout from "../components/AppLayout";
 import Colors from "../config/Colors";
+import { DeFiButton } from "../elements/Buttons";
+import { RadioButton } from "../elements/RadioButton";
 import { SpacerV } from "../elements/Spacers";
 import { CompactRow, CompactCell } from "../elements/Tables";
 import { H1, H3 } from "../elements/Texts";
 import withSession from "../hocs/withSession";
 import useAuthGuard from "../hooks/useAuthGuard";
 import { CfpResult } from "../models/CfpResult";
-import { getCfpResults } from "../services/ApiService";
+import { CfpVote, CfpVotes } from "../models/User";
+import { getCfpResults, getCfpVotes, getSettings, getStakingRoutes, putCfpVotes } from "../services/ApiService";
 import { Session } from "../services/AuthService";
 import NotificationService from "../services/NotificationService";
 import AppStyles from "../styles/AppStyles";
+import { openUrl } from "../utils/Utils";
 
-const DfxCfpNumbers = [84, 85];
+const DfxCfpNumbers: number[] = [];
 
 const CfpScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
-  const [cfpFilter, setCfpFilter] = useState<"all" | "dfx">("dfx");
+  const [cfpFilter, setCfpFilter] = useState<"all" | "dfx">("all");
   const [cfpResults, setCfpResults] = useState<CfpResult[]>();
+  const [canVote, setCanVote] = useState(false);
+  const [isVotingOpen, setIsVotingOpen] = useState(false);
+  const [votes, setVotes] = useState<CfpVotes | undefined>();
+  const [isSaving, setIsSaving] = useState<{ number: Number; vote: CfpVote } | undefined>();
 
   useAuthGuard(session);
 
   useEffect(() => {
-    getCfpResults("2201")
-      .then(setCfpResults)
+    Promise.all([getCfpResults("2202"), getCfpVotes(), getStakingRoutes(), getSettings()])
+      .then(([results, votes, stakingRoutes, settings]) => {
+        setCfpResults(results);
+        setVotes(votes);
+        setCanVote(stakingRoutes.find((r) => r.balance >= 100) != null);
+        setIsVotingOpen(settings.cfpVotingOpen);
+      })
       .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));
   }, []);
@@ -47,6 +60,18 @@ const CfpScreen = ({ session }: { session?: Session }) => {
       barColors: [Colors.Success, Colors.LightGrey, Colors.Error],
     };
   };
+
+  const onVote = (number: number, vote: CfpVote) => {
+    setVotes((votes) => {
+      votes = { ...(votes ?? {}), [number]: vote };
+
+      setIsSaving({ number, vote });
+      putCfpVotes(votes).finally(() => setIsSaving(undefined));
+
+      return votes;
+    });
+  };
+
   const config: AbstractChartConfig = {
     backgroundColor: Colors.Blue,
     backgroundGradientFrom: Colors.Blue,
@@ -69,26 +94,19 @@ const CfpScreen = ({ session }: { session?: Session }) => {
           <ActivityIndicator size="large" />
         ) : (
           <>
-            <View style={AppStyles.containerHorizontalWrap}>
-              <TouchableRipple onPress={() => setCfpFilter("dfx")}>
-                <View style={styles.radioRow}>
-                  <View pointerEvents="none">
-                    <RadioButton value="dfx" status={cfpFilter === "dfx" ? "checked" : "unchecked"} />
-                  </View>
-                  <Paragraph>{t("cfp.dfx_only")}</Paragraph>
+            {DfxCfpNumbers.length > 0 && (
+              <>
+                <View style={AppStyles.containerHorizontalWrap}>
+                  <RadioButton
+                    label={t("cfp.dfx_only")}
+                    onPress={() => setCfpFilter("dfx")}
+                    checked={cfpFilter === "dfx"}
+                  />
+                  <RadioButton label={t("cfp.all")} onPress={() => setCfpFilter("all")} checked={cfpFilter === "all"} />
                 </View>
-              </TouchableRipple>
-              <TouchableRipple onPress={() => setCfpFilter("all")}>
-                <View style={styles.radioRow}>
-                  <View pointerEvents="none">
-                    <RadioButton value="all" status={cfpFilter === "all" ? "checked" : "unchecked"} />
-                  </View>
-                  <Paragraph>{t("cfp.all")}</Paragraph>
-                </View>
-              </TouchableRipple>
-            </View>
-
-            <SpacerV height={50} />
+                <SpacerV height={50} />
+              </>
+            )}
 
             {cfpResults
               ?.filter((r) => cfpFilter === "all" || DfxCfpNumbers.includes(r.number))
@@ -96,6 +114,11 @@ const CfpScreen = ({ session }: { session?: Session }) => {
               .map((result) => (
                 <View key={result.number} style={{ width: "100%" }}>
                   <H3 text={result.title} style={AppStyles.center} />
+
+                  <DeFiButton onPress={() => openUrl(result.htmlUrl)} compact>
+                    {t("cfp.read_proposal")}
+                  </DeFiButton>
+
                   <View style={styles.cfpContainer}>
                     <View>
                       <DataTable style={{ width: 300 }}>
@@ -137,6 +160,37 @@ const CfpScreen = ({ session }: { session?: Session }) => {
                       </View>
                     )}
                   </View>
+
+                  {canVote && (
+                    <>
+                      <SpacerV />
+                      <Text style={[AppStyles.center, AppStyles.b]}>{t("cfp.your_vote")}</Text>
+                      <View style={[AppStyles.containerHorizontalWrap, styles.voteContainer]}>
+                        <RadioButton
+                          label={t("cfp.yes")}
+                          onPress={() => onVote(result.number, CfpVote.YES)}
+                          checked={votes?.[result.number] === CfpVote.YES}
+                          disabled={!isVotingOpen}
+                          loading={isSaving?.number === result.number && isSaving.vote === CfpVote.YES}
+                        />
+                        <RadioButton
+                          label={t("cfp.no")}
+                          onPress={() => onVote(result.number, CfpVote.NO)}
+                          checked={votes?.[result.number] === CfpVote.NO}
+                          disabled={!isVotingOpen}
+                          loading={isSaving?.number === result.number && isSaving.vote === CfpVote.NO}
+                        />
+                        <RadioButton
+                          label={t("cfp.neutral")}
+                          onPress={() => onVote(result.number, CfpVote.NEUTRAL)}
+                          checked={(votes?.[result.number] ?? CfpVote.NEUTRAL) === CfpVote.NEUTRAL}
+                          disabled={!isVotingOpen}
+                          loading={isSaving?.number === result.number && isSaving.vote === CfpVote.NEUTRAL}
+                        />
+                      </View>
+                    </>
+                  )}
+
                   <SpacerV height={50} />
                 </View>
               ))}
@@ -165,6 +219,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 16,
+  },
+  voteContainer: {
+    justifyContent: "center",
   },
 });
 

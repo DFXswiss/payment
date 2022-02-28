@@ -52,9 +52,6 @@ const HeaderContent = ({ session, settings }: { session?: Session; settings?: Ap
     <View style={device.SM && [AppStyles.containerHorizontalWrap, styles.container]}>
       {session?.isLoggedIn && (
         <>
-          <DeFiButton onPress={logout} style={styles.button} compact>
-            {t("action.logout")}
-          </DeFiButton>
           <DeFiButton onPress={() => navigate(Routes.Home)} style={styles.button} compact>
             {t("general.overview")}
           </DeFiButton>
@@ -75,6 +72,12 @@ const HeaderContent = ({ session, settings }: { session?: Session; settings?: Ap
           {t(link.key)}
         </DeFiButton>
       ))}
+
+      {session?.isLoggedIn && (
+        <DeFiButton onPress={logout} style={styles.button} compact>
+          {t("action.logout")}
+        </DeFiButton>
+      )}
 
       {SettingsService.Languages?.length > 0 && (
         <DeFiDropdown

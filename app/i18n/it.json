@@ -158,7 +158,8 @@
         "ref_count": "Utenti referral",
         "ref_count_active": "Utenti attivi del referral",
         "ref_volume": "Volume del referral",
-        "ref_commission": "Commissione del refererral",
+        "ref_bonus": "Bonus del referral",
+        "ref_commission": "Commissione del referral",
         "ref_commission_edit": "Modificare la commissione del referral",
         "ref_commission_info": "Guadagna fino allo 0,5% di commissione su ogni acquisto della persona da te riferita. Basta condividere il tuo referral link con amici, familiari e sui social media. Hai anche la possibilità di ridurre la tua percentuale di commissione a favore dei clienti referenziati. Si prega di notare che la percentuale di commissione può essere modificata solo verso il basso, non verso l'alto.",
         "ref_commission_hint": "Sei sicuro di voler ridurre la tua commissione a {{fee}}%? Questo passo non può essere annullato."

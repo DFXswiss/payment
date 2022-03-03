@@ -239,12 +239,12 @@
         "balance": "Balance",
         "type": "Type"
       },
-      "payment": {
-        "new": "New payments",
-        "register": "Enter payments",
-        "amount": "Amount",
-        "value_date": "Value date",
-        "bank_transaction_id": "Transaction ID"
+      "history": {
+        "buy": "Buy transactions",
+        "sell": "Sell transactions",
+        "staking": "Staking transactions",
+        "ref": "Referral rewards",
+        "lm": "Liquidiy mining rewards"
       }
     }
   }

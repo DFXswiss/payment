@@ -241,12 +241,12 @@
         "balance": "Guthaben",
         "type": "Typ"
       },
-      "payment": {
-        "new": "Neue Zahlungen",
-        "register": "Zahlungen erfassen",
-        "amount": "Betrag",
-        "value_date": "Valutadatum",
-        "bank_transaction_id": "Transaktions-ID"
+      "history": {
+        "buy": "Kauf-Transaktionen",
+        "sell": "Verkauf-Transaktionen",
+        "staking": "Staking-Transaktionen",
+        "ref": "Referral-Rewards",
+        "lm": "Liquidiy-Mining-Rewards"
       }
     }
   }

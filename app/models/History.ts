@@ -1,9 +1,5 @@
-export enum TransactionType {
-    FIAT_TO_CRYPTO = 'FiatToCrypto',
-  }
-
-export interface Transaction {
-  type: TransactionType;
+export interface History {
+  type: string;
   inputId: string;
   inputDate: Date;
   inputAmount: number;
@@ -14,7 +10,7 @@ export interface Transaction {
   outputDate: Date;
   outputAmount: number;
   outputAsset: string;
-  outputAddress: string;    
+  outputAddress: string;
 
   name: string;
   fee: number;

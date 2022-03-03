@@ -240,12 +240,12 @@
         "balance": "Crédito",
         "type": "Tipo"
       },
-      "payment": {
-        "new": "Novos pagamentos",
-        "register": "Introduzir pagamentos",
-        "amount": "Valor",
-        "value_date": "Data Valor",
-        "bank_transaction_id": "Transaktions-ID"
+      "history": {
+        "buy": "Transacções de compra",
+        "sell": "Transacções de venda",
+        "staking": "Transacções de apostas",
+        "ref": "Recompensas de referência",
+        "lm": "Recompensas de liquidiy mining"
       }
     }
   }

@@ -154,6 +154,7 @@
         "ref_count": "Ref users",
         "ref_count_active": "Active ref users",
         "ref_volume": "Ref volume",
+        "ref_bonus": "Ref bonus",
         "ref_commission": "Ref commission",
         "ref_commission_edit": "Edit ref commission",
         "ref_commission_info": "Earn up to 0.5% commission on every purchase of your referred person. Simply share your referral link with your friends, family and on social media.\nYou also have the option to lower your commission percentage in favor of the referred customers. Please note that the commission percentage can only be changed downwards, not upwards.",

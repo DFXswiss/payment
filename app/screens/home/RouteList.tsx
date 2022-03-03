@@ -187,7 +187,7 @@ const RouteList = ({
           { condition: true, label: "model.route.iban", value: route.iban },
           { condition: true, label: "model.route.deposit_address", value: route.deposit?.address },
           { condition: true, label: "model.route.fee", value: `${route.fee}%` },
-          { condition: true, label: "model.route.min_deposit", value: "0.1 DFI" },
+          { condition: true, label: "model.route.min_deposit", value: "0.1 DFI / 1 USD" },
           { condition: true, label: "model.route.volume", value: `${route.volume} €` },
         ]
       : // staking route

@@ -105,6 +105,7 @@ export interface UserDetailDto extends UserDto {
   refFeePercent?: number;
   refVolume: number;
   refCredit: number;
+  paidRefCredit: number;
   refCount: number;
   refCountActive: number;
 }
@@ -114,6 +115,7 @@ export interface UserDetail extends User {
   refFeePercent?: number;
   refVolume: number;
   refCredit: number;
+  paidRefCredit: number;
   refCount: number;
   refCountActive: number;
 }
@@ -161,6 +163,7 @@ export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
   refFeePercent: dto.refFeePercent,
   refVolume: dto.refVolume,
   refCredit: dto.refCredit,
+  paidRefCredit: dto.paidRefCredit,
   refCount: dto.refCount,
   refCountActive: dto.refCountActive,
 });

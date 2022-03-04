@@ -232,6 +232,7 @@
           "payback_asset": "Activo de reembolso",
           "payback_date": "Reembolso activado",
           "balance": "Crédito",
+          "rewards": "Recompensas",
           "type": "Tipo"
         },
         "history": {

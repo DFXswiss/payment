@@ -239,6 +239,7 @@
         "payback_asset": "Rückzahlungs-Asset",
         "payback_date": "Rückzahlung am",
         "balance": "Guthaben",
+        "rewards": "Rewards",
         "type": "Typ"
       },
       "history": {

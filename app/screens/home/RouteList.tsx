@@ -215,6 +215,7 @@ const RouteList = ({
             value: route.paybackAsset?.name,
           },
           { condition: true, label: "model.route.balance", value: `${route.balance} DFI` },
+          { condition: true, label: "model.route.rewards", value: `${route.rewardVolume} EUR` },
         ];
 
   return (

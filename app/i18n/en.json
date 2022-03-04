@@ -237,6 +237,7 @@
         "payback_asset": "Payback asset",
         "payback_date": "Payback on",
         "balance": "Balance",
+        "rewards": "Rewards",
         "type": "Type"
       },
       "history": {

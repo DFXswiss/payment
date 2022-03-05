@@ -241,14 +241,15 @@
         "payback_asset": "Asset del rimborso",
         "payback_date": "Data di rimborso",
         "balance": "Saldo",
+        "rewards": "Ricompense",
         "type": "Digita"
       },
-      "payment": {
-        "new": "Nuovi pagamenti",
-        "register": "Inserire i pagamenti",
-        "amount": "Importo",
-        "value_date": "Data di valuta",
-        "bank_transaction_id": "ID della transazione"
+      "history": {
+        "buy": "Operazioni di acquisto",
+        "sell": "Operazioni di vendita",
+        "staking": "Operazioni di staking",
+        "ref": "Ricompense per i referral",
+        "lm": "Ricompense per i liquidiy mining"
       }
     }
   }

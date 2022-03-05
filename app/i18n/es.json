@@ -232,14 +232,15 @@
           "payback_asset": "Activo de reembolso",
           "payback_date": "Reembolso activado",
           "balance": "Crédito",
+          "rewards": "Recompensas",
           "type": "Tipo"
         },
-        "payment": {
-          "new": "Nuevos pagos",
-          "register": "Introduce pagos",
-          "amount": "Cantidad",
-          "value_date": "Fecha de valor",
-          "bank_transaction_id": "Identificador de la transacción"
+        "history": {
+          "buy": "Operaciones de compra",
+          "sell": "Operaciones de venta",
+          "staking": "Operaciones de staking",
+          "ref": "Recompensas por referidos",
+          "lm": "Recompensas de liquidiy mining"
         }
       }
     }

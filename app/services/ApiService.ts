@@ -1,4 +1,4 @@
-import { Transaction } from "../models/Transaction";
+import { History } from "../models/History";
 import { Environment } from "../env/Environment";
 import { ApiError, AuthResponse } from "../models/ApiDto";
 import { Asset } from "../models/Asset";
@@ -27,6 +27,7 @@ import { RoutesDto, fromRoutesDto, Routes } from "../models/Route";
 import { LimitRequest } from "../models/LimitRequest";
 import { IdentData, toIdentDataDto } from "../models/IdentData";
 import { Settings } from "../models/Settings";
+import { HistoryType } from "../models/HistoryType";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -37,7 +38,7 @@ const BuyUrl = "buy";
 const RouteUrl = "route";
 const SellUrl = "sell";
 const StakingUrl = "staking";
-const TransactionUrl = "transaction";
+const HistoryUrl = "history";
 const AssetUrl = "asset";
 const FiatUrl = "fiat";
 const CountryUrl = "country";
@@ -155,13 +156,15 @@ export const putStakingRoute = (route: StakingRoute): Promise<StakingRoute> => {
   return fetchFrom<StakingRoute>(`${StakingUrl}/${route.id}`, "PUT", route);
 };
 
-export const getTransactions = (): Promise<Transaction[]> => {
-  return fetchFrom<Transaction[]>(TransactionUrl);
+export const getHistory = (types?: HistoryType[]): Promise<History[]> => {
+  return fetchFrom<History[]>(`HistoryUrl${toHistoryQuery(types)}`);
 };
 
-export const createHistoryCsv = (): Promise<number> => {
-  return fetchFrom(`${TransactionUrl}/csv`, "POST");
+export const createHistoryCsv = (types?: HistoryType[]): Promise<number> => {
+  return fetchFrom(`${HistoryUrl}/csv${toHistoryQuery(types)}`, "POST");
 };
+
+const toHistoryQuery = (types?: HistoryType[]) => (types ? "?" + Object.values(types).join("&") : "");
 
 // --- PAYMENT --- //
 export const postSepaFiles = (files: File[]): Promise<void> => {

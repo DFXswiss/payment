@@ -14,13 +14,14 @@ class ValidationsClass {
   }
 
   public Iban(countries: Country[]) {
-    return this.Custom((iban: string) =>
-      countries.find((c) => iban.toLowerCase().startsWith(c.symbol.toLowerCase()))?.enable
-        ? IbanTools.validateIBAN(iban.split(" ").join("")).valid
+    return this.Custom((iban: string) => {
+      iban = iban.split(" ").join("");
+      return countries.find((c) => iban.toLowerCase().startsWith(c.symbol.toLowerCase()))?.enable
+        ? IbanTools.validateIBAN(iban).valid
           ? true
           : "validation.iban_invalid"
-        : "validation.iban_country_invalid"
-    );
+        : "validation.iban_country_invalid";
+    });
   }
 
   public get Mail() {

@@ -237,14 +237,15 @@
         "payback_asset": "Recevoir les fonds en",
         "payback_date": "Mise à dispo des fonds le",
         "balance": "Solde",
+        "rewards": "Récompenses",
         "type": "Type"
       },
-      "payment": {
-        "new": "Nouveaux paiements",
-        "register": "Entrer un paiement",
-        "amount": "Montant",
-        "value_date": "Date de la valorisation",
-        "bank_transaction_id": "ID de la transaction"
+      "history": {
+        "buy": "Transactions d'achat",
+        "sell": "Transactions de vente",
+        "staking": "Transactions de staking",
+        "ref": "Récompenses de parrainage",
+        "lm": "Récompenses de liquidity mining"
       }
     }
   }

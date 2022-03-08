@@ -199,7 +199,7 @@ const RouteList = ({
             label: "model.route.reward_asset",
             value: route.rewardAsset?.name,
           },
-          { condition: true, label: "model.route.reward_fee", value: "0%" },
+          { condition: true, label: "model.route.reward_fee", value: `${route.fee}%` },
           { condition: true, label: "model.route.payback_date", value: "31.03.2022" },
           {
             condition: true,

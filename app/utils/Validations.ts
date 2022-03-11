@@ -2,6 +2,7 @@ import i18n from "../i18n/i18n";
 import Regex from "./Regex";
 import * as IbanTools from "ibantools";
 import { Country } from "../models/Country";
+import libphonenumber from "google-libphonenumber";
 
 class ValidationsClass {
   public get Required() {
@@ -44,9 +45,13 @@ class ValidationsClass {
 
   public get Phone() {
     return this.Custom((number: string) => {
+      const phoneUtil = libphonenumber.PhoneNumberUtil.getInstance();
       if (number && !number.match(/^\+\d+ .+$/)) {
         return "validation.code_and_number";
-      } else if (number && !number.match(/^\+[\d ]*$/)) {
+      } else if (
+        (number && !number.match(/^\+[\d ]*$/)) ||
+        !phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(number))
+      ) {
         return "validation.pattern_invalid";
       }
 

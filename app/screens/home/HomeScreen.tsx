@@ -276,6 +276,11 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       label: "model.user.ref_volume",
       value: `${formatAmount(user.refVolume)} €`,
     },
+    {
+      condition: Boolean(user.refCredit),
+      label: "model.user.ref_bonus",
+      value: `${formatAmount(user.paidRefCredit)} €`,
+    },
   ];
 
   return (

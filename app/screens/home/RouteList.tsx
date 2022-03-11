@@ -28,6 +28,7 @@ import { ApiError } from "../../models/ApiDto";
 import { User } from "../../models/User";
 import { StakingRoute, StakingType } from "../../models/StakingRoute";
 import StakingRouteEdit from "../../components/edit/StakingRouteEdit";
+import HistorySelect from "./HistorySelect";
 
 interface Props {
   user?: User;
@@ -88,7 +89,7 @@ const RouteList = ({
   const [isBuyLoading, setIsBuyLoading] = useState<{ [id: string]: boolean }>({});
   const [isSellLoading, setIsSellLoading] = useState<{ [id: string]: boolean }>({});
   const [isStakingLoading, setIsStakingLoading] = useState<{ [id: string]: boolean }>({});
-  const [isHistoryLoading, setIsHistoryLoading] = useState(false);
+  const [isHistorySelect, setIsHistorySelect] = useState(false);
   const [detailRoute, setDetailRoute] = useState<BuyRoute | SellRoute | StakingRoute | undefined>(undefined);
 
   const activeBuyRoutes = buyRoutes?.filter((r) => r.active);
@@ -149,16 +150,6 @@ const RouteList = ({
       .finally(() => setIsStakingLoading((obj) => updateObject(obj, { [route.id]: false })));
   };
 
-  const onExportHistory = () => {
-    setIsHistoryLoading(true);
-    createHistoryCsv()
-      .then((fileKey) => openUrl(`${Environment.api.baseUrl}/transaction/csv?key=${fileKey}`))
-      .catch((error: ApiError) =>
-        NotificationService.error(t(error.statusCode === 404 ? "model.route.no_tx" : "feedback.load_failed"))
-      )
-      .finally(() => setIsHistoryLoading(false));
-  };
-
   const routeData = (route: BuyRoute | SellRoute | StakingRoute) =>
     "type" in route // buy route
       ? [
@@ -208,7 +199,7 @@ const RouteList = ({
             label: "model.route.reward_asset",
             value: route.rewardAsset?.name,
           },
-          { condition: true, label: "model.route.reward_fee", value: "0%" },
+          { condition: true, label: "model.route.reward_fee", value: `${route.fee}%` },
           { condition: true, label: "model.route.payback_date", value: "31.03.2022" },
           {
             condition: true,
@@ -224,6 +215,7 @@ const RouteList = ({
             value: route.paybackAsset?.name,
           },
           { condition: true, label: "model.route.balance", value: `${route.balance} DFI` },
+          { condition: true, label: "model.route.rewards", value: `${route.rewardVolume} EUR` },
         ];
 
   return (
@@ -330,6 +322,14 @@ const RouteList = ({
           session={session}
           stakingRoutes={activeStakingRoutes}
         />
+      </DeFiModal>
+
+      <DeFiModal
+        isVisible={isHistorySelect}
+        setIsVisible={setIsHistorySelect}
+        title={t("model.route.history")}
+      >
+        <HistorySelect onClose={() => setIsHistorySelect(false)} />
       </DeFiModal>
 
       <View style={AppStyles.containerHorizontal}>
@@ -514,7 +514,7 @@ const RouteList = ({
             <>
               <SpacerV height={20} />
               <ButtonContainer>
-                <DeFiButton mode="contained" onPress={onExportHistory} loading={isHistoryLoading}>
+                <DeFiButton mode="contained" onPress={() => setIsHistorySelect(true)}>
                   {t("model.route.history")}
                 </DeFiButton>
               </ButtonContainer>

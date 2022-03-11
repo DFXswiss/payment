@@ -154,6 +154,7 @@
         "ref_count": "Utilizador de código de referência",
         "ref_count_active": "Utilizador de código de referência activo",
         "ref_volume": "Volume de referência",
+        "ref_bonus": "Bónus de referência",
         "ref_commission": "Comissão de referência",
         "ref_commission_edit": "Editar a Comissão de Ref",
         "ref_commission_info": "Ganhe até 0,5% de comissão em cada compra feita por alguém que indicar. Basta partilhar o seu link de referência com os seus amigos, família e meios de comunicação social.\nTem também a opção de baixar a sua percentagem de comissão a favor dos clientes referidos. É favor notar que a percentagem de comissão só pode ser ajustada para baixo, e não para cima.",
@@ -237,14 +238,15 @@
         "payback_asset": "Bens de retorno",
         "payback_date": "Retorno em",
         "balance": "Crédito",
+        "rewards": "Recompensas",
         "type": "Tipo"
       },
-      "payment": {
-        "new": "Novos pagamentos",
-        "register": "Introduzir pagamentos",
-        "amount": "Valor",
-        "value_date": "Data Valor",
-        "bank_transaction_id": "Transaktions-ID"
+      "history": {
+        "buy": "Transacções de compra",
+        "sell": "Transacções de venda",
+        "staking": "Transacções de apostas",
+        "ref": "Recompensas de referência",
+        "lm": "Recompensas de liquidiy mining"
       }
     }
   }

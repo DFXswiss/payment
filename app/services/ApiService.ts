@@ -45,7 +45,7 @@ const CountryUrl = "country";
 const LanguageUrl = "language";
 const BankTxUrl = "bankTx";
 const StatisticUrl = "statistic";
-const SettingUrl = "setting";
+const SettingUrl = "setting/frontend";
 
 // --- AUTH --- //
 export const signIn = (credentials?: Credentials): Promise<string> => {

@@ -3,6 +3,7 @@
         "node_modules": true
     },
     "cSpell.words": [
+        "libphonenumber",
         "soleproprietorship"
     ],
     "prettier.printWidth": 120

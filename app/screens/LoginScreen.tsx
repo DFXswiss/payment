@@ -23,7 +23,6 @@ import { createRules, openUrl } from "../utils/Utils";
 import { ApiError } from "../models/ApiDto";
 import StorageService from "../services/StorageService";
 import Loading from "../components/util/Loading";
-import { getRefCode } from "../services/ApiService";
 
 interface LoginData {
   userName: string;
@@ -121,11 +120,6 @@ const LoginScreen = () => {
     // TODO: remove 0 -> 1 conversion (fix for DFX Wallet v0.10.5)
     setValue("walletId", params?.walletId == 0 ? 1 : +params?.walletId);
     setValue("refCode", params?.code);
-
-    // check for used ref link
-    getRefCode()
-      .then((ref) => StorageService.storeValue(StorageService.Keys.Ref, ref))
-      .catch(() => {});
 
     if (params?.address && params?.signature) {
       setValue("userName", params.address);

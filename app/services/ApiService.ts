@@ -7,7 +7,6 @@ import { CfpResult } from "../models/CfpResult";
 import { Country } from "../models/Country";
 import { Fiat } from "../models/Fiat";
 import { Language } from "../models/Language";
-import { Ref } from "../models/Ref";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import {
   CfpVotes,
@@ -33,7 +32,6 @@ const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
 const UserUrl = "user";
 const IdentUrl = "ident";
-const RefUrl = "ref";
 const BuyUrl = "buy";
 const RouteUrl = "route";
 const SellUrl = "sell";
@@ -71,10 +69,6 @@ export const putUser = (user: User): Promise<UserDetail> => {
 
 export const putUserLanguage = (language: Language): Promise<void> => {
   return AuthService.Session.then((session) => fetchFrom<void>(UserUrl, "PUT", { address: session.address, language }));
-};
-
-export const getRefCode = (): Promise<string> => {
-  return fetchFrom<Ref>(RefUrl).then((res) => res.ref);
 };
 
 export const updateRefFee = (fee: number): Promise<void> => {

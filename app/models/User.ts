@@ -19,6 +19,7 @@ export enum KycStatus {
   CHATBOT = "Chatbot",
   ONLINE_ID = "OnlineId",
   VIDEO_ID = "VideoId",
+  CHECK = "Check",
   MANUAL = "Manual",
   COMPLETED = "Completed",
 }
@@ -27,6 +28,7 @@ export enum KycState {
   NA = "NA",
   FAILED = "Failed",
   REMINDED = "Reminded",
+  REVIEW = 'Review',
 }
 
 export enum AccountType {

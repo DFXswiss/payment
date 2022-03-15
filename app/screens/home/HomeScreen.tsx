@@ -7,7 +7,16 @@ import UserEdit from "../../components/edit/UserEdit";
 import { SpacerV } from "../../elements/Spacers";
 import { H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
-import { AccountType, kycCompleted, kycInProgress, KycStatus, User, UserDetail, UserStatus } from "../../models/User";
+import {
+  AccountType,
+  kycCompleted,
+  kycInProgress,
+  KycState,
+  KycStatus,
+  User,
+  UserDetail,
+  UserStatus,
+} from "../../models/User";
 import { getRoutes, getSettings, getUserDetail, postFounderCertificate, postKyc } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
@@ -78,9 +87,10 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
         return user.status === UserStatus.ACTIVE
           ? onIncreaseLimit()
           : NotificationService.error(t("feedback.bank_tx_required"));
+      } else if (user?.kycStatus === KycStatus.CHECK || user?.kycState === KycState.REVIEW) {
+        return NotificationService.error(t("model.kyc.kyc_review"));
       } else if (kycInProgress(user?.kycStatus)) {
-        goToIdent();
-        return;
+        return goToIdent();
       }
     } else {
       // reload all routes after close (may impact sell routes)
@@ -214,6 +224,14 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const annualBuyVolume = () => (buyRoutes ?? []).reduce((prev, curr) => prev + curr.annualVolume, 0);
   const sellVolume = () => (sellRoutes ?? []).reduce((prev, curr) => prev + curr.volume, 0);
 
+  const getKycStatusString = (status: KycStatus, state: KycState): string => {
+    if (kycInProgress(status)) {
+      return `${t("model.kyc." + state.toLowerCase())} (${t("model.kyc." + status.toLowerCase())})`;
+    } else {
+      return t(`model.kyc.${status.toLowerCase()}`);
+    }
+  };
+
   const userData = (user: User) => [
     { condition: Boolean(user.address), label: "model.user.address", value: user.address },
     { condition: true, label: "model.user.mail", value: user.mail, emptyHint: t("model.user.add_mail") },
@@ -237,15 +255,15 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     {
       condition: user.kycStatus != KycStatus.NA,
       label: "model.kyc.status",
-      value: t(`model.kyc.${user.kycStatus.toLowerCase()}`),
-      icon: kycInProgress(user.kycStatus) ? "reload" : undefined,
+      value: getKycStatusString(user.kycStatus, user.kycState),
+      icon: kycInProgress(user.kycStatus) && user.kycState !== KycState.REVIEW ? "reload" : undefined,
       onPress: () => goToIdent(),
     },
     {
       condition: true,
       label: "model.user.limit",
       value: limit(user),
-      icon: !kycInProgress(user.kycStatus) ? "arrow-up" : undefined,
+      icon: user.kycStatus === KycStatus.NA || kycCompleted(user.kycStatus) ? "arrow-up" : undefined,
       onPress: onIncreaseLimit,
     },
   ];

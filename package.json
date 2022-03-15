@@ -17,6 +17,7 @@
     "expo-clipboard": "~1.0.2",
     "expo-document-picker": "~9.1.2",
     "expo-status-bar": "~1.0.4",
+    "google-libphonenumber": "^3.2.27",
     "i18next": "^20.3.1",
     "ibantools": "^3.3.1",
     "jwt-decode": "^3.1.2",
@@ -39,6 +40,7 @@
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",
+    "@types/google-libphonenumber": "^7.4.23",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
     "typescript": "~4.0.0"

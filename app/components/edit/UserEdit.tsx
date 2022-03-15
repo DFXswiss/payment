@@ -166,7 +166,7 @@ const UserEdit = ({ user, onUserChanged, identDataEdit }: Props) => {
       <PhoneNumber
         name="mobileNumber"
         label={t("model.user.mobile_number")}
-        placeholder="6912345678"
+        placeholder="1761212112"
         wrap={!device.SM}
         country={country?.symbol}
       />

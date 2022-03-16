@@ -6,6 +6,6 @@ export default {
   Gtc: `${PageTitle} - Legal`,
   Cfp: `${PageTitle} - CFPs`,
   Admin: `${PageTitle} - Admin`,
-  Ident: `${PageTitle} - Ident`,
+  Kyc: `${PageTitle} - KYC`,
   NotFound: `${PageTitle} - NotFound`,
 };

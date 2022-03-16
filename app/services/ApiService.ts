@@ -24,14 +24,14 @@ import AuthService, { Credentials, Session } from "./AuthService";
 import { StakingRoute } from "../models/StakingRoute";
 import { RoutesDto, fromRoutesDto, Routes } from "../models/Route";
 import { LimitRequest } from "../models/LimitRequest";
-import { IdentData, toIdentDataDto } from "../models/IdentData";
+import { KycData, toKycDataDto } from "../models/KycData";
 import { Settings } from "../models/Settings";
 import { HistoryType } from "../models/HistoryType";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
 const UserUrl = "user";
-const IdentUrl = "ident";
+const KycUrl = "kyc";
 const BuyUrl = "buy";
 const RouteUrl = "route";
 const SellUrl = "sell";
@@ -75,25 +75,25 @@ export const updateRefFee = (fee: number): Promise<void> => {
   return fetchFrom(UserUrl, "PUT", { refFeePercent: fee });
 };
 
-// --- IDENT --- //
-export const putIdentData = (data: IdentData): Promise<void> => {
-  return fetchFrom(`${IdentUrl}/data`, "POST", toIdentDataDto(data));
+// --- KYC --- //
+export const putKycData = (data: KycData): Promise<void> => {
+  return fetchFrom(`${KycUrl}/data`, "POST", toKycDataDto(data));
 };
 
 export const postKyc = (): Promise<string> => {
-  return fetchFrom<string>(IdentUrl, "POST");
+  return fetchFrom<string>(KycUrl, "POST");
 };
 
 export const getKyc = (code?: string): Promise<KycResult> => {
-  return fetchFrom<KycResult>(`${IdentUrl}?code=${code}`);
+  return fetchFrom<KycResult>(`${KycUrl}?code=${code}`);
 };
 
 export const postLimit = (request: LimitRequest): Promise<LimitRequest> => {
-  return fetchFrom<LimitRequest>(`${IdentUrl}/limit`, "POST", request);
+  return fetchFrom<LimitRequest>(`${KycUrl}/limit`, "POST", request);
 };
 
 export const postFounderCertificate = (files: File[]): Promise<void> => {
-  return postFiles(`${IdentUrl}/incorporationCertificate`, files);
+  return postFiles(`${KycUrl}/incorporationCertificate`, files);
 };
 
 // --- VOTING --- //

@@ -45,7 +45,7 @@ export enum CfpVote {
 
 export interface KycResult {
   status: KycStatus;
-  identUrl?: string;
+  sessionUrl?: string;
   setupUrl?: string;
 }
 
@@ -79,7 +79,7 @@ export interface UserDto {
   kycState: KycState;
   kycHash: string;
   depositLimit: number;
-  identDataComplete: boolean;
+  kycDataComplete: boolean;
 
   cfpVotes: CfpVotes;
 }
@@ -97,7 +97,7 @@ export interface User {
   kycState: KycState;
   kycHash: string;
   depositLimit: number;
-  identDataComplete: boolean;
+  kycDataComplete: boolean;
 
   cfpVotes: CfpVotes;
 }
@@ -135,7 +135,7 @@ export const fromUserDto = (user: UserDto): User => ({
   kycState: user.kycState,
   kycHash: user.kycHash,
   depositLimit: user.depositLimit,
-  identDataComplete: user.identDataComplete,
+  kycDataComplete: user.kycDataComplete,
 
   cfpVotes: user.cfpVotes,
 });
@@ -154,7 +154,7 @@ export const toUserDto = (user: User): UserDto => ({
   kycState: user.kycState,
   kycHash: user.kycHash,
   depositLimit: user.depositLimit,
-  identDataComplete: user.identDataComplete,
+  kycDataComplete: user.kycDataComplete,
 
   cfpVotes: user.cfpVotes,
 });

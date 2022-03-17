@@ -22,13 +22,14 @@ export enum KycStatus {
   CHECK = "Check",
   MANUAL = "Manual",
   COMPLETED = "Completed",
+  REJECTED = "Rejected",
 }
 
 export enum KycState {
   NA = "NA",
   FAILED = "Failed",
   REMINDED = "Reminded",
-  REVIEW = 'Review',
+  REVIEW = "Review",
 }
 
 export enum AccountType {

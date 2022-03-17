@@ -87,10 +87,12 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
         return user.status === UserStatus.ACTIVE
           ? onIncreaseLimit()
           : NotificationService.error(t("feedback.bank_tx_required"));
-      } else if (user?.kycStatus === KycStatus.CHECK || user?.kycState === KycState.REVIEW) {
-        return NotificationService.error(t("model.kyc.kyc_review"));
-      } else if (kycInProgress(user?.kycStatus)) {
-        return goToKycScreen();
+      } else if (
+        kycInProgress(user?.kycStatus) ||
+        user?.kycStatus === KycStatus.CHECK ||
+        user?.kycStatus === KycStatus.REJECTED
+      ) {
+        return NotificationService.error(t("model.kyc.kyc_not_complete"));
       }
     } else {
       // reload all routes after close (may impact sell routes)
@@ -216,7 +218,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     if (kycCompleted(user.kycStatus)) {
       return `${formatAmount(user.depositLimit)} € ${t("model.user.per_year")}`;
     } else {
-      return `${formatAmount(900)} € ${t("model.user.per_day")}`;
+      return `${formatAmount(user.kycStatus === KycStatus.REJECTED ? 0 : 900)} € ${t("model.user.per_day")}`;
     }
   };
 

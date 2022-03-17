@@ -1,7 +1,7 @@
 import { Country } from "./Country";
 import { AccountType } from "./User";
 
-export interface IdentData {
+export interface KycData {
   accountType: AccountType;
   firstName: string;
   lastName: string;
@@ -19,7 +19,7 @@ export interface IdentData {
   organizationCountry: Country;
 }
 
-export interface IdentDataDto {
+export interface KycDataDto {
   accountType: AccountType;
   firstname: string;
   surname: string;
@@ -37,7 +37,7 @@ export interface IdentDataDto {
   organizationCountry: Country;
 }
 
-export const toIdentDataDto = (data: IdentData): IdentDataDto => ({
+export const toKycDataDto = (data: KycData): KycDataDto => ({
   accountType: data.accountType,
   firstname: data.firstName,
   surname: data.lastName,

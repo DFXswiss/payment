@@ -73,7 +73,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const [votingImageWidth, setVotingImageWidth] = useState(0);
 
   const sellRouteEdit = (update: SetStateAction<boolean>) => {
-    if (resolve(update, isSellRouteEdit) && !user?.identDataComplete) {
+    if (resolve(update, isSellRouteEdit) && !user?.kycDataComplete) {
       setIsUserEdit(true);
     }
 
@@ -87,10 +87,12 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
         return user.status === UserStatus.ACTIVE
           ? onIncreaseLimit()
           : NotificationService.error(t("feedback.bank_tx_required"));
-      } else if (user?.kycStatus === KycStatus.CHECK || user?.kycState === KycState.REVIEW) {
-        return NotificationService.error(t("model.kyc.kyc_review"));
-      } else if (kycInProgress(user?.kycStatus)) {
-        return goToIdent();
+      } else if (
+        kycInProgress(user?.kycStatus) ||
+        user?.kycStatus === KycStatus.CHECK ||
+        user?.kycStatus === KycStatus.REJECTED
+      ) {
+        return NotificationService.error(t("model.kyc.kyc_not_complete"));
       }
     } else {
       // reload all routes after close (may impact sell routes)
@@ -119,7 +121,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const onIncreaseLimit = () => {
     if (user?.kycStatus === KycStatus.NA) {
       // start KYC
-      if (!user?.identDataComplete) {
+      if (!user?.kycDataComplete) {
         setIsUserEdit(true);
       }
       setIsKycRequest(true);
@@ -153,12 +155,12 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     setIsKycInit(true);
 
     return postKyc()
-      .then(goToIdent)
+      .then(goToKycScreen)
       .catch(() => NotificationService.error(t("feedback.request_failed")))
       .finally(() => setIsKycInit(false));
   };
 
-  const goToIdent = (code: string | undefined = user?.kycHash) => navigate(Routes.Ident, { code: code ?? "" });
+  const goToKycScreen = (code: string | undefined = user?.kycHash) => navigate(Routes.Kyc, { code: code ?? "" });
 
   const onRefFeeChanged = (fee: number): void => {
     if (user) user.refFeePercent = fee;
@@ -216,7 +218,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     if (kycCompleted(user.kycStatus)) {
       return `${formatAmount(user.depositLimit)} € ${t("model.user.per_year")}`;
     } else {
-      return `${formatAmount(900)} € ${t("model.user.per_day")}`;
+      return `${formatAmount(user.kycStatus === KycStatus.REJECTED ? 0 : 900)} € ${t("model.user.per_day")}`;
     }
   };
 
@@ -257,7 +259,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       label: "model.kyc.status",
       value: getKycStatusString(user.kycStatus, user.kycState),
       icon: kycInProgress(user.kycStatus) && user.kycState !== KycState.REVIEW ? "reload" : undefined,
-      onPress: () => goToIdent(),
+      onPress: () => goToKycScreen(),
     },
     {
       condition: true,
@@ -338,7 +340,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
         title={t(isSellRouteEdit || isKycRequest ? "model.user.edit" : "model.user.settings")}
         style={{ width: 500 }}
       >
-        <UserEdit user={user} onUserChanged={onUserChanged} identDataEdit={isSellRouteEdit || isKycRequest} />
+        <UserEdit user={user} onUserChanged={onUserChanged} kycDataEdit={isSellRouteEdit || isKycRequest} />
       </DeFiModal>
 
       <DeFiModal

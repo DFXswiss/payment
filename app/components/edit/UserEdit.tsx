@@ -5,7 +5,7 @@ import { View } from "react-native";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { Country } from "../../models/Country";
 import { AccountType, User, UserDetail } from "../../models/User";
-import { getCountries, putIdentData, putUser } from "../../services/ApiService";
+import { getCountries, putKycData, putUser } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
@@ -20,22 +20,22 @@ import ButtonContainer from "../util/ButtonContainer";
 import { createRules } from "../../utils/Utils";
 import { ActivityIndicator } from "react-native-paper";
 import { ApiError } from "../../models/ApiDto";
-import { IdentData } from "../../models/IdentData";
+import { KycData } from "../../models/KycData";
 
 interface Props {
   user?: UserDetail;
   onUserChanged: (user: UserDetail) => void;
-  identDataEdit: boolean;
+  kycDataEdit: boolean;
 }
 
-const UserEdit = ({ user, onUserChanged, identDataEdit }: Props) => {
+const UserEdit = ({ user, onUserChanged, kycDataEdit }: Props) => {
   const { t } = useTranslation();
   const device = useDevice();
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<User & IdentData>({ defaultValues: user });
+  } = useForm<User & KycData>({ defaultValues: user });
   const accountType = useWatch({ control, name: "accountType" });
   const country = useWatch({ control, name: "country" });
 
@@ -51,11 +51,11 @@ const UserEdit = ({ user, onUserChanged, identDataEdit }: Props) => {
       .finally(() => setIsLoading(false));
   }, []);
 
-  const onSubmit = (updatedUser: User & IdentData) => {
+  const onSubmit = (updatedUser: User & KycData) => {
     setIsSaving(true);
     setError(undefined);
 
-    (identDataEdit ? putIdentData(updatedUser) : Promise.resolve())
+    (kycDataEdit ? putKycData(updatedUser) : Promise.resolve())
       .then(() => putUser(updatedUser))
       .then(onUserChanged)
       .catch((error: ApiError) => setError(error.statusCode === 409 ? "feedback.mail_error" : ""))
@@ -63,35 +63,35 @@ const UserEdit = ({ user, onUserChanged, identDataEdit }: Props) => {
   };
 
   const rules: any = createRules({
-    mobileNumber: identDataEdit && Validations.Required,
-    mail: [Validations.Mail, identDataEdit && Validations.Required],
+    mobileNumber: kycDataEdit && Validations.Required,
+    mail: [Validations.Mail, kycDataEdit && Validations.Required],
     usedRef: Validations.Ref,
 
-    accountType: identDataEdit && Validations.Required,
-    firstName: identDataEdit && Validations.Required,
-    lastName: identDataEdit && Validations.Required,
-    street: identDataEdit && Validations.Required,
-    houseNumber: identDataEdit && Validations.Required,
-    zip: identDataEdit && Validations.Required,
-    location: identDataEdit && Validations.Required,
-    country: identDataEdit && Validations.Required,
+    accountType: kycDataEdit && Validations.Required,
+    firstName: kycDataEdit && Validations.Required,
+    lastName: kycDataEdit && Validations.Required,
+    street: kycDataEdit && Validations.Required,
+    houseNumber: kycDataEdit && Validations.Required,
+    zip: kycDataEdit && Validations.Required,
+    location: kycDataEdit && Validations.Required,
+    country: kycDataEdit && Validations.Required,
 
-    organizationName: identDataEdit && Validations.Required,
-    organizationStreet: identDataEdit && Validations.Required,
-    organizationHouseNumber: identDataEdit && Validations.Required,
-    organizationLocation: identDataEdit && Validations.Required,
-    organizationZip: identDataEdit && Validations.Required,
-    organizationCountry: identDataEdit && Validations.Required,
+    organizationName: kycDataEdit && Validations.Required,
+    organizationStreet: kycDataEdit && Validations.Required,
+    organizationHouseNumber: kycDataEdit && Validations.Required,
+    organizationLocation: kycDataEdit && Validations.Required,
+    organizationZip: kycDataEdit && Validations.Required,
+    organizationCountry: kycDataEdit && Validations.Required,
   });
 
   return isLoading ? (
     <ActivityIndicator size="large" />
   ) : (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
-      {identDataEdit && (
+      {kycDataEdit && (
         <>
           <SpacerV />
-          <H3 text={t("model.user.ident_data")} />
+          <H3 text={t("model.user.kyc_data")} />
           <DeFiPicker
             name="accountType"
             label={t("model.user.account_type")}
@@ -172,7 +172,7 @@ const UserEdit = ({ user, onUserChanged, identDataEdit }: Props) => {
       />
       <SpacerV />
 
-      {!identDataEdit && (
+      {!kycDataEdit && (
         <>
           <Input name="usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />
           <SpacerV />
@@ -188,7 +188,7 @@ const UserEdit = ({ user, onUserChanged, identDataEdit }: Props) => {
 
       <ButtonContainer>
         <DeFiButton mode="contained" loading={isSaving} onPress={handleSubmit(onSubmit)}>
-          {t(identDataEdit ? "action.next" : "action.save")}
+          {t(kycDataEdit ? "action.next" : "action.save")}
         </DeFiButton>
       </ButtonContainer>
     </Form>

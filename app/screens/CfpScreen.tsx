@@ -37,7 +37,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
   useAuthGuard(session);
 
   useEffect(() => {
-    Promise.all([getCfpResults("2202"), getCfpVotes(), getStakingRoutes(), getSettings()])
+    Promise.all([getCfpResults("latest"), getCfpVotes(), getStakingRoutes(), getSettings()])
       .then(([results, votes, stakingRoutes, settings]) => {
         setCfpResults(results);
         setVotes(votes);

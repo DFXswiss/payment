@@ -121,6 +121,23 @@ const LoginScreen = () => {
     setValue("walletId", params?.walletId == 0 ? 1 : +params?.walletId);
     setValue("refCode", params?.code);
 
+    // token login
+    if (params?.token) {
+      setIsAutoLogin(true);
+      setIsProcessing(true);
+
+      resetParams();
+
+      SessionService.tokenLogin(params?.token)
+        .then(() => nav.navigate(Routes.Home))
+        .catch(() => {})
+        .finally(() => {
+          setIsProcessing(false);
+          setIsAutoLogin(false);
+        });
+    }
+
+    // deprecated login with address & signature (TODO: remove)
     if (params?.address && params?.signature) {
       setValue("userName", params.address);
       setValue("password", params.signature);
@@ -135,7 +152,10 @@ const LoginScreen = () => {
       }
     }
 
-    // reset params
+    resetParams();
+  }, []);
+
+  const resetParams = () => {
     nav.navigate(Routes.Login, {
       lang: undefined,
       address: undefined,
@@ -143,8 +163,9 @@ const LoginScreen = () => {
       walletId: undefined,
       code: undefined,
       iframe: undefined,
+      token: undefined,
     });
-  }, []);
+  };
 
   const params = route.params as any;
   const rules: any = createRules({

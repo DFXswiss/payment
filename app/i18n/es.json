@@ -278,6 +278,7 @@
         "staking": "Hacer staking",
         "new_staking": "Nueva ruta para hacer staking",
         "edit_staking": "Editar la ruta de staking",
+        "edit_payback": "Este cambio sólo afectará a los lotes futuros!",
         "reward": "Recompensar",
         "payback": "Reembolso",
         "reinvest": "Reinvertir",

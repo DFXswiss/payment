@@ -292,6 +292,7 @@
         "staking": "Staking",
         "new_staking": "Nova rota de staking",
         "edit_staking": "Editar rota de staking",
+        "edit_payback": "Esta mudança só afectará os lotes futuros!",
         "reward": "Recompensa",
         "payback": "Retorno",
         "reinvest": "Reinvestir",

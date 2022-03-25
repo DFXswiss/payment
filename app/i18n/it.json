@@ -295,6 +295,7 @@
         "staking": "Staking",
         "new_staking": "Nuovo percorso di staking",
         "edit_staking": "Modifica il percorso di staking",
+        "edit_payback": "Questo cambiamento interesserà solo i lotti futuri!",
         "reward": "Ricompensa",
         "payback": "Rimborso",
         "reinvest": "Reinvesti",

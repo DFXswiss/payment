@@ -1,7 +1,7 @@
 import { Platform, StyleSheet, TextStyle } from "react-native";
 import Colors from "../config/Colors";
 
-export const DefaultCursor = (Platform.OS === "web" ? {cursor: "default"} : {}) as TextStyle;
+export const DefaultCursor = (Platform.OS === "web" ? { cursor: "default" } : {}) as TextStyle;
 
 export default StyleSheet.create({
   // layout
@@ -75,6 +75,9 @@ export default StyleSheet.create({
   },
   center: {
     textAlign: "center",
+  },
+  right: {
+    textAlign: "right",
   },
   // spaces
   mra: {

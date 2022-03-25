@@ -292,6 +292,7 @@
         "staking": "Staking",
         "new_staking": "New staking route",
         "edit_staking": "Edit staking route",
+        "edit_payback": "This change will only affect future batches!",
         "reward": "Reward",
         "payback": "Repayment",
         "reinvest": "Reinvest",

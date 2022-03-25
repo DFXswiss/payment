@@ -302,7 +302,8 @@
         "payback_sell": "Payback sell route",
         "reward_asset": "Reward asset",
         "payback_asset": "Payback asset",
-        "payback_date": "Payback on",
+        "payback_date": "Payback period",
+        "days": "Days",
         "balance": "Balance",
         "rewards": "Rewards",
         "type": "Type"

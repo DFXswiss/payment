@@ -22,4 +22,5 @@ export interface StakingRoute {
   rewardVolume: number;
   isInUse: boolean;
   fee: number;
+  period: number;
 }

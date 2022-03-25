@@ -306,7 +306,8 @@
         "payback_sell": "Rückzahlungs-Verkaufsroute",
         "reward_asset": "Reward-Asset",
         "payback_asset": "Rückzahlungs-Asset",
-        "payback_date": "Rückzahlung am",
+        "payback_date": "Rückzahlungs-Periode",
+        "days": "Tage",
         "balance": "Guthaben",
         "rewards": "Rewards",
         "type": "Typ"

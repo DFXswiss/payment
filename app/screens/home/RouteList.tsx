@@ -13,18 +13,16 @@ import { H2, H3 } from "../../elements/Texts";
 import { useDevice } from "../../hooks/useDevice";
 import { BuyRoute, BuyType } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import { createHistoryCsv, putBuyRoute, putSellRoute, putStakingRoute } from "../../services/ApiService";
+import {  putBuyRoute, putSellRoute, putStakingRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import AppStyles from "../../styles/AppStyles";
-import { openUrl, updateObject } from "../../utils/Utils";
+import {  updateObject } from "../../utils/Utils";
 import ClipboardService from "../../services/ClipboardService";
 import ButtonContainer from "../../components/util/ButtonContainer";
 import { DeviceClass } from "../../utils/Device";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Session } from "../../services/AuthService";
 import withSession from "../../hocs/withSession";
-import { Environment } from "../../env/Environment";
-import { ApiError } from "../../models/ApiDto";
 import { User } from "../../models/User";
 import { StakingRoute, StakingType } from "../../models/StakingRoute";
 import StakingRouteEdit from "../../components/edit/StakingRouteEdit";
@@ -200,7 +198,7 @@ const RouteList = ({
             value: route.rewardAsset?.name,
           },
           { condition: true, label: "model.route.reward_fee", value: `${route.fee}%` },
-          { condition: true, label: "model.route.payback_date", value: "31.03.2022" },
+          { condition: true, label: "model.route.payback_date", value: `${route.period} ${t('model.route.days')}` },
           {
             condition: true,
             label: "model.route.payback",

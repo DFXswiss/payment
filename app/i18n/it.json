@@ -305,7 +305,8 @@
         "payback_sell": "Percoso di rimborso",
         "reward_asset": "Asset delle ricompense",
         "payback_asset": "Asset del rimborso",
-        "payback_date": "Data di rimborso",
+        "payback_date": "Periodo di rimborso",
+        "days": "Giorni",
         "balance": "Saldo",
         "rewards": "Ricompense",
         "type": "Digita"

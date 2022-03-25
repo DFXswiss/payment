@@ -302,7 +302,8 @@
         "payback_sell": "Itinéraire de vente des fonds",
         "reward_asset": "Recevoir les récompenses en",
         "payback_asset": "Recevoir les fonds en",
-        "payback_date": "Mise à dispo des fonds le",
+        "payback_date": "Période de remboursement",
+        "days": "Jours",
         "balance": "Solde",
         "rewards": "Récompenses",
         "type": "Type"

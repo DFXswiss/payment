@@ -302,7 +302,8 @@
         "payback_sell": "Rota de vendas de retorno",
         "reward_asset": "Bens de recompensa",
         "payback_asset": "Bens de retorno",
-        "payback_date": "Retorno em",
+        "payback_date": "Período de reembolso",
+        "days": "Dias",
         "balance": "Crédito",
         "rewards": "Recompensas",
         "type": "Tipo"

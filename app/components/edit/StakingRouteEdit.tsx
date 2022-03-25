@@ -11,7 +11,7 @@ import Validations from "../../utils/Validations";
 import { DeFiButton } from "../../elements/Buttons";
 import ButtonContainer from "../util/ButtonContainer";
 import { createRules } from "../../utils/Utils";
-import { ActivityIndicator } from "react-native-paper";
+import { ActivityIndicator, HelperText } from "react-native-paper";
 import { ApiError } from "../../models/ApiDto";
 import { SellRoute } from "../../models/SellRoute";
 import { View } from "react-native";
@@ -170,6 +170,11 @@ const StakingRouteEdit = ({
         items={Object.values(StakingType)}
         labelFunc={(i) => t(`model.route.${i.toLowerCase()}`)}
       />
+      {route != null && route.paybackType !== paybackType && (
+        <HelperText type="info" style={AppStyles.right}>
+          {t("model.route.edit_payback")}
+        </HelperText>
+      )}
       <SpacerV />
 
       {paybackType === StakingType.BANK_ACCOUNT && (

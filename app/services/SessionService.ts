@@ -20,9 +20,17 @@ class SessionServiceClass {
   public login(credentials: Credentials): Promise<void> {
     return AuthService.deleteSession()
       .then(() => signIn(credentials))
-      .then(this.updateSession)
+      .then((t) => this.tokenLogin(t));
+  }
+
+  public tokenLogin(token: string): Promise<void> {
+    return this.updateSession(token)
       .then(() => SettingsService.Settings)
-      .then((s) => (s.isIframe ? this.updateUserLanguage() : this.updateLanguageSetting()));
+      .then((s) => (s.isIframe ? this.updateUserLanguage() : this.updateLanguageSetting()))
+      .catch((e) => {
+        AuthService.deleteSession();
+        throw e;
+      });
   }
 
   public logout(): Promise<void> {

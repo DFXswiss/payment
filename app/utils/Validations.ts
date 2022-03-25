@@ -50,7 +50,7 @@ class ValidationsClass {
         return "validation.code_and_number";
       } else if (
         (number && !number.match(/^\+[\d ]*$/)) ||
-        !phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(number))
+        (number && !phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(number)))
       ) {
         return "validation.pattern_invalid";
       }

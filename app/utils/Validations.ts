@@ -3,6 +3,7 @@ import Regex from "./Regex";
 import * as IbanTools from "ibantools";
 import { Country } from "../models/Country";
 import libphonenumber from "google-libphonenumber";
+import { Environment } from "../env/Environment";
 
 class ValidationsClass {
   public get Required() {
@@ -62,7 +63,7 @@ class ValidationsClass {
   public get Address() {
     return {
       pattern: {
-        value: /^(8\w{33}|d\w{33}|d\w{41})$/,
+        value: Environment.addressFormat,
         message: i18n.t("validation.pattern_invalid"),
       },
     };

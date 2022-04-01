@@ -1,4 +1,5 @@
 import { History } from "../models/History";
+import { Statistic } from "../models/Statistic";
 import { Environment } from "../env/Environment";
 import { ApiError, AuthResponse } from "../models/ApiDto";
 import { Asset } from "../models/Asset";
@@ -27,6 +28,7 @@ import { LimitRequest } from "../models/LimitRequest";
 import { KycData, toKycDataDto } from "../models/KycData";
 import { Settings } from "../models/Settings";
 import { HistoryType } from "../models/HistoryType";
+import { StakingBatch } from "../models/StakingBatch";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -140,6 +142,14 @@ export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
 
 export const getStakingRoutes = (): Promise<StakingRoute[]> => {
   return fetchFrom<StakingRoute[]>(StakingUrl);
+};
+
+export const getStatistic = (): Promise<Statistic> => {
+  return fetchFrom<Statistic>(StatisticUrl);
+};
+
+export const getStakingBatches = (route: StakingRoute): Promise<StakingBatch[]> => {
+  return fetchFrom<StakingBatch[]>(`${StakingUrl}/${route.id}/batches`, "GET");
 };
 
 export const postStakingRoute = (route: StakingRoute): Promise<StakingRoute> => {

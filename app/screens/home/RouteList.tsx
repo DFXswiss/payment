@@ -27,6 +27,7 @@ import { User } from "../../models/User";
 import { StakingRoute, StakingType } from "../../models/StakingRoute";
 import StakingRouteEdit from "../../components/edit/StakingRouteEdit";
 import HistorySelect from "./HistorySelect";
+import { StakingBatch } from "../../models/StakingBatch";
 
 interface Props {
   user?: User;
@@ -37,6 +38,8 @@ interface Props {
   setSellRoutes: Dispatch<SetStateAction<SellRoute[] | undefined>>;
   stakingRoutes?: StakingRoute[];
   setStakingRoutes: Dispatch<SetStateAction<StakingRoute[] | undefined>>;
+  stakingBatches?: StakingBatch[];
+  setStakingBatches: Dispatch<SetStateAction<StakingBatch[] | undefined>>;
   isBuyRouteEdit: boolean;
   setIsBuyRouteEdit: Dispatch<SetStateAction<boolean>>;
   isSellRouteEdit: boolean;

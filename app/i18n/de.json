@@ -274,6 +274,7 @@
         "new_sell": "Neue Verkaufsroute",
         "payment_info": "Zahlungsinformationen",
         "details": "Routendetails",
+        "batch_details": "Batchdetails",
         "iban": "IBAN",
         "your_iban": "Deine IBAN",
         "bank_usage": "Zahlungszweck",

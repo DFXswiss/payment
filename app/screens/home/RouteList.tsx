@@ -39,7 +39,7 @@ interface Props {
   stakingRoutes?: StakingRoute[];
   setStakingRoutes: Dispatch<SetStateAction<StakingRoute[] | undefined>>;
   stakingBatches?: StakingBatch[];
-  setStakingBatches: Dispatch<SetStateAction<StakingBatch[] | undefined>>;
+  setStakingBatches: Dispatch<SetStateAction<StakingBatch[]| undefined >>;
   isBuyRouteEdit: boolean;
   setIsBuyRouteEdit: Dispatch<SetStateAction<boolean>>;
   isSellRouteEdit: boolean;
@@ -67,11 +67,13 @@ const Placeholders = ({ device }: { device: DeviceClass }) => (
 const iban = "CH68 0857 3177 9752 0181 4";
 const swift = "MAEBCHZZ";
 
-const RouteList = ({
+const RouteList =  ({
   user,
   session,
   buyRoutes,
   setBuyRoutes,
+  stakingBatches,
+  setStakingBatches,
   sellRoutes,
   setSellRoutes,
   stakingRoutes,

@@ -311,7 +311,11 @@
         "days": "Tage",
         "balance": "Guthaben",
         "rewards": "Rewards",
-        "type": "Typ"
+        "type": "Typ",
+        "amount":"Menge",
+        "target":"Ziel",
+        "date":"Datum"
+
       },
       "history": {
         "buy": "Kauf-Transaktionen",

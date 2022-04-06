@@ -149,7 +149,7 @@ export const getStatistic = (): Promise<Statistic> => {
 };
 
 export const getStakingBatches = (route: StakingRoute): Promise<StakingBatch[]> => {
-  return fetchFrom<StakingBatch[]>(`${StakingUrl}/${route.id}/batches`, "GET");
+  return fetchFrom<StakingBatch[]>(`${StakingUrl}/${route?.id}/batches`, "GET");
 };
 
 export const postStakingRoute = (route: StakingRoute): Promise<StakingRoute> => {

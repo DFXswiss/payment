@@ -18,9 +18,9 @@ import { useDevice } from "../../hooks/useDevice";
 import { DeFiButton } from "../../elements/Buttons";
 import ButtonContainer from "../util/ButtonContainer";
 import { createRules } from "../../utils/Utils";
-import { ActivityIndicator } from "react-native-paper";
 import { ApiError } from "../../models/ApiDto";
 import { KycData } from "../../models/KycData";
+import Loading from "../util/Loading";
 
 interface Props {
   user?: UserDetail;
@@ -85,7 +85,7 @@ const UserEdit = ({ user, onUserChanged, kycDataEdit }: Props) => {
   });
 
   return isLoading ? (
-    <ActivityIndicator size="large" />
+    <Loading size="large" />
   ) : (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
       {kycDataEdit && (

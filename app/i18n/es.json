@@ -257,14 +257,13 @@
         "new_sell": "Nueva ruta de venta",
         "payment_info": "Información de pago",
         "details": "Detalles de la ruta",
+        "balance_details": "Datos del crédito",
         "iban": "IBAN (número de cuenta)",
         "your_iban": "Tu IBAN",
         "bank_usage": "Próposito del pago (o Referencia o Concepto)",
-        "copy_bank_usage": "Copia propósito de pago",
         "asset": "Activo",
         "fiat": "Moneda",
         "deposit_address": "Dirección de depósito",
-        "copy_deposit_address": "Copia la dirección de depósito",
         "conflict": "¡La ruta ya existe!",
         "exchange_rate_warning": "¡Atención, nosotros compramos este activo en el Exchange descentralizado y no podemos garantizar una tasa de cambio específica. Los precios en el Exchange pueden ser significativamente más altos o bajos que en otros exchanges, lo que pudiera tener un impacto negativo en la tasa de cambio.",
         "history": "Historial de transacciones",
@@ -292,7 +291,9 @@
         "days": "Días",
         "balance": "Crédito",
         "rewards": "Recompensas",
-        "type": "Tipo"
+        "type": "Tipo",
+        "amount": "Importe",
+        "output_date": "Fecha de terminación"
       },
       "history": {
         "buy": "Operaciones de compra",

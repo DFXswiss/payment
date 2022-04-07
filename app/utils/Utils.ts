@@ -53,3 +53,5 @@ export const toBase64 = (file: File): Promise<string | undefined> => {
     reader.onerror = (e) => reject(e);
   });
 };
+
+export const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";

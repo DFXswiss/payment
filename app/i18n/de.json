@@ -274,14 +274,13 @@
         "new_sell": "Neue Verkaufsroute",
         "payment_info": "Zahlungsinformationen",
         "details": "Routendetails",
+        "balance_details": "Guthabendetails",
         "iban": "IBAN",
         "your_iban": "Deine IBAN",
         "bank_usage": "Zahlungszweck",
-        "copy_bank_usage": "Zahlungszweck kopieren",
         "asset": "Asset",
         "fiat": "Währung",
         "deposit_address": "Deposit-Adresse",
-        "copy_deposit_address": "Deposit-Adresse kopieren",
         "conflict": "Die Route existiert bereits!",
         "exchange_rate_warning": "Achtung, wir kaufen dieses Asset auf der DEX und können keinen Wechselkurs garantieren! Die Preise auf der DEX können deutlich tiefer oder höher als auf anderen Exchanges sein, was sich auch negativ auf den Wechselkurs auswirken kann.",
         "history": "Transaktions-Historie",
@@ -310,7 +309,9 @@
         "days": "Tage",
         "balance": "Guthaben",
         "rewards": "Rewards",
-        "type": "Typ"
+        "type": "Typ",
+        "amount": "Betrag",
+        "output_date": "Enddatum"
       },
       "history": {
         "buy": "Kauf-Transaktionen",

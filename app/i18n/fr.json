@@ -270,14 +270,13 @@
         "new_sell": "Nouvel itinéraire de vente",
         "payment_info": "Informations sur le paiement",
         "details": "Détails de l'itinéraire",
+        "balance_details": "Détails du solde",
         "iban": "IBAN",
         "your_iban": "Votre IBAN",
         "bank_usage": "Motif du paiement",
-        "copy_bank_usage": "Copier le motif du paiement",
         "asset": "Actif",
         "fiat": "Monnaie",
         "deposit_address": "Adresse de dépôt",
-        "copy_deposit_address": "Copier l'adresse de dépôt",
         "conflict": "L'itinéraire existe déjà !",
         "exchange_rate_warning": "Attention, nous achetons cet actif sur le DEX et ne pouvons pas garantir le taux de change ! Les prix sur le DEX peuvent être sensiblement plus bas ou plus élevés que sur d'autres échanges, ce qui peut également avoir un impact négatif sur le taux de change.",
         "history": "Historique des transactions",
@@ -306,7 +305,9 @@
         "days": "Jours",
         "balance": "Solde",
         "rewards": "Récompenses",
-        "type": "Type"
+        "type": "Type",
+        "amount": "Montant",
+        "output_date": "Date de fin"
       },
       "history": {
         "buy": "Transactions d'achat",

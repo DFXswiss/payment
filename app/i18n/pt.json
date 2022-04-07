@@ -270,14 +270,13 @@
         "new_sell": "Nova rota de venda",
         "payment_info": "Informação sobre pagamento",
         "details": "Detalhes da rota",
+        "balance_details": "Detalhes do equilíbrio",
         "iban": "IBAN",
         "your_iban": "O seu IBAN",
         "bank_usage": "Finalidade do pagamento",
-        "copy_bank_usage": "Cópia Finalidade do pagamento",
         "asset": "Bens",
         "fiat": "Moeda",
         "deposit_address": "Endereço de depósito",
-        "copy_deposit_address": "Endereço para depósito de cópias",
         "conflict": "A rota já existe!",
         "exchange_rate_warning": "Atenção, compramos este bem no DEX e não podemos garantir uma taxa de câmbio! Os preços no DEX podem ser significativamente inferiores ou superiores aos de outras bolsas, o que também pode ter um impacto negativo sobre a taxa de câmbio.",
         "history": "Histórico das transacções",
@@ -306,7 +305,9 @@
         "days": "Dias",
         "balance": "Crédito",
         "rewards": "Recompensas",
-        "type": "Tipo"
+        "type": "Tipo",
+        "amount": "Montante",
+        "output_date": "Data de fim"
       },
       "history": {
         "buy": "Transacções de compra",

@@ -14,9 +14,9 @@ import NotificationService from "../../services/NotificationService";
 import { DeFiButton } from "../../elements/Buttons";
 import ButtonContainer from "../util/ButtonContainer";
 import { createRules } from "../../utils/Utils";
-import { ActivityIndicator } from "react-native-paper";
 import { ApiError } from "../../models/ApiDto";
 import { Country } from "../../models/Country";
+import Loading from "../util/Loading";
 
 const SellRouteEdit = ({
   routes,
@@ -68,7 +68,7 @@ const SellRouteEdit = ({
   });
 
   return isLoading ? (
-    <ActivityIndicator size="large" />
+    <Loading size="large" />
   ) : (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
       <DeFiPicker

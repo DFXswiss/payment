@@ -1,4 +1,5 @@
 import { History } from "../models/History";
+import { Statistic } from "../models/Statistic";
 import { Environment } from "../env/Environment";
 import { ApiError, AuthResponse } from "../models/ApiDto";
 import { Asset } from "../models/Asset";
@@ -27,6 +28,7 @@ import { LimitRequest } from "../models/LimitRequest";
 import { KycData, toKycDataDto } from "../models/KycData";
 import { Settings } from "../models/Settings";
 import { HistoryType } from "../models/HistoryType";
+import { fromStakingBatchDto, StakingBatch, StakingBatchDto } from "../models/StakingBatch";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -150,6 +152,12 @@ export const putStakingRoute = (route: StakingRoute): Promise<StakingRoute> => {
   return fetchFrom<StakingRoute>(`${StakingUrl}/${route.id}`, "PUT", route);
 };
 
+export const getStakingBatches = (route: StakingRoute): Promise<StakingBatch[]> => {
+  return fetchFrom<StakingBatchDto[]>(`${StakingUrl}/${route?.id}/batches`).then((dtoList) =>
+    dtoList.map((dto) => fromStakingBatchDto(dto))
+  );
+};
+
 export const getHistory = (types?: HistoryType[]): Promise<History[]> => {
   return fetchFrom<History[]>(`HistoryUrl${toHistoryQuery(types)}`);
 };
@@ -166,6 +174,10 @@ export const postSepaFiles = (files: File[]): Promise<void> => {
 };
 
 // --- STATISTIC --- //
+export const getStatistic = (): Promise<Statistic> => {
+  return fetchFrom<Statistic>(StatisticUrl);
+};
+
 export const getCfpResults = (voting: string): Promise<CfpResult[]> => {
   return fetchFrom(`${StatisticUrl}/cfp/${voting}`);
 };

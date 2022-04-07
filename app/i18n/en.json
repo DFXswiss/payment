@@ -270,14 +270,13 @@
         "new_sell": "New selling route",
         "payment_info": "Payment information",
         "details": "Route details",
+        "balance_details": "Balance details",
         "iban": "IBAN",
         "your_iban": "Your IBAN",
         "bank_usage": "Purpose of payment",
-        "copy_bank_usage": "Copy purpose of payment",
         "asset": "Asset",
         "fiat": "Currency",
         "deposit_address": "Deposit address",
-        "copy_deposit_address": "Copy deposit address",
         "conflict": "The route already exists!",
         "exchange_rate_warning": "Attention, we buy this asset on DEX and cannot guarantee an exchange rate! Prices on DEX can be significantly lower or higher than on other exchanges, which can also have a negative impact on the exchange rate.",
         "history": "Transaction history",
@@ -306,7 +305,9 @@
         "days": "Days",
         "balance": "Balance",
         "rewards": "Rewards",
-        "type": "Type"
+        "type": "Type",
+        "amount": "Amount",
+        "output_date": "End date"
       },
       "history": {
         "buy": "Buy transactions",

@@ -4,8 +4,9 @@ import { StyleSheet, View } from "react-native";
 import { StackedBarChart } from "react-native-chart-kit";
 import { AbstractChartConfig } from "react-native-chart-kit/dist/AbstractChart";
 import { StackedBarChartData } from "react-native-chart-kit/dist/StackedBarChart";
-import { ActivityIndicator, DataTable, Text } from "react-native-paper";
+import { DataTable, Text } from "react-native-paper";
 import AppLayout from "../components/AppLayout";
+import Loading from "../components/util/Loading";
 import Colors from "../config/Colors";
 import { DeFiButton } from "../elements/Buttons";
 import { RadioButton } from "../elements/RadioButton";
@@ -91,7 +92,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
         <SpacerV height={30} />
 
         {isLoading ? (
-          <ActivityIndicator size="large" />
+          <Loading size="large" />
         ) : (
           <>
             {DfxCfpNumbers.length > 0 && (

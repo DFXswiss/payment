@@ -333,14 +333,16 @@ const RouteList = ({
           <DataTable>
             <CompactHeader>
               <CompactTitle style={{ flex: 1 }}>{t("model.route.output_date")}</CompactTitle>
-              <CompactTitle style={{ flex: 1 }}>{t("model.route.amount")}</CompactTitle>
               <CompactTitle style={{ flex: 1 }}>{t("model.route.payback")}</CompactTitle>
+              <CompactTitle style={{ flex: 1, justifyContent: "flex-end" }}>{t("model.route.amount")}</CompactTitle>
             </CompactHeader>
             {stakingBatches?.map((batch, i) => (
               <CompactRow key={i}>
                 <CompactCell style={{ flex: 1 }}>{Moment(batch.outputDate).format("L")}</CompactCell>
-                <CompactCell style={{ flex: 1 }}>{`${formatAmount(batch.amount)} DFI`}</CompactCell>
                 <CompactCell style={{ flex: 1 }}>{t(`model.route.${batch.payoutType.toLowerCase()}`)}</CompactCell>
+                <CompactCell style={{ flex: 1, justifyContent: "flex-end" }}>
+                  {`${formatAmount(batch.amount)} DFI`}
+                </CompactCell>
               </CompactRow>
             ))}
           </DataTable>

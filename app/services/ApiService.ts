@@ -144,22 +144,18 @@ export const getStakingRoutes = (): Promise<StakingRoute[]> => {
   return fetchFrom<StakingRoute[]>(StakingUrl);
 };
 
-export const getStatistic = (): Promise<Statistic> => {
-  return fetchFrom<Statistic>(StatisticUrl);
-};
-
-export const getStakingBatches = (route: StakingRoute): Promise<StakingBatch[]> => {
-  return fetchFrom<StakingBatchDto[]>(`${StakingUrl}/${route?.id}/batches`).then((dtoList) =>
-    dtoList.map((dto) => fromStakingBatchDto(dto))
-  );
-};
-
 export const postStakingRoute = (route: StakingRoute): Promise<StakingRoute> => {
   return fetchFrom<StakingRoute>(StakingUrl, "POST", route);
 };
 
 export const putStakingRoute = (route: StakingRoute): Promise<StakingRoute> => {
   return fetchFrom<StakingRoute>(`${StakingUrl}/${route.id}`, "PUT", route);
+};
+
+export const getStakingBatches = (route: StakingRoute): Promise<StakingBatch[]> => {
+  return fetchFrom<StakingBatchDto[]>(`${StakingUrl}/${route?.id}/batches`).then((dtoList) =>
+    dtoList.map((dto) => fromStakingBatchDto(dto))
+  );
 };
 
 export const getHistory = (types?: HistoryType[]): Promise<History[]> => {
@@ -178,6 +174,10 @@ export const postSepaFiles = (files: File[]): Promise<void> => {
 };
 
 // --- STATISTIC --- //
+export const getStatistic = (): Promise<Statistic> => {
+  return fetchFrom<Statistic>(StatisticUrl);
+};
+
 export const getCfpResults = (voting: string): Promise<CfpResult[]> => {
   return fetchFrom(`${StatisticUrl}/cfp/${voting}`);
 };

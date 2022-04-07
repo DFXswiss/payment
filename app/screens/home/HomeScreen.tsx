@@ -30,7 +30,7 @@ import { DeFiButton } from "../../elements/Buttons";
 import useLoader from "../../hooks/useLoader";
 import { BuyRoute } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import { pickDocuments, resolve } from "../../utils/Utils";
+import { formatAmount, pickDocuments, resolve } from "../../utils/Utils";
 import useAuthGuard from "../../hooks/useAuthGuard";
 import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
@@ -41,14 +41,11 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import RefFeeEdit from "../../components/edit/RefFeeEdit";
 import { navigate } from "../../utils/NavigationHelper";
 import Routes from "../../config/Routes";
-import { StakingRoute, StakingType } from "../../models/StakingRoute";
+import { StakingRoute } from "../../models/StakingRoute";
 import withSettings from "../../hocs/withSettings";
 import { AppSettings } from "../../services/SettingsService";
 import KycInit from "../../components/KycInit";
 import LimitEdit from "../../components/edit/LimitEdit";
-import { StakingBatch } from "../../models/StakingBatch";
-
-const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
 const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSettings }) => {
   const { t } = useTranslation();
@@ -59,7 +56,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const [buyRoutes, setBuyRoutes] = useState<BuyRoute[]>();
   const [sellRoutes, setSellRoutes] = useState<SellRoute[]>();
   const [stakingRoutes, setStakingRoutes] = useState<StakingRoute[]>();
-  const [stakingBatches, setStakingBatches] = useState<StakingBatch[]>();
   const [isUserEdit, setIsUserEdit] = useState(false);
   const [isBuyRouteEdit, setIsBuyRouteEdit] = useState(false);
   const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
@@ -454,8 +450,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
               sellRoutes={sellRoutes}
               setSellRoutes={setSellRoutes}
               stakingRoutes={stakingRoutes}
-              setStakingBatches={setStakingBatches}
-              stakingBatches={stakingBatches}
               setStakingRoutes={setStakingRoutes}
               isBuyRouteEdit={isBuyRouteEdit}
               setIsBuyRouteEdit={setIsBuyRouteEdit}

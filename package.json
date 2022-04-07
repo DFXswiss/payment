@@ -22,6 +22,7 @@
     "ibantools": "^3.3.1",
     "jwt-decode": "^3.1.2",
     "libphonenumber-js": "^1.9.20",
+    "moment": "^2.29.2",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-hook-form": "^7.8.4",

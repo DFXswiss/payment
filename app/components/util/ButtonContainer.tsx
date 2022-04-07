@@ -4,14 +4,17 @@ import { Spacer } from "../../elements/Spacers";
 import { useDevice } from "../../hooks/useDevice";
 import AppStyles from "../../styles/AppStyles";
 
-const ButtonContainer = ({ children }: { children: ReactElement | ReactElement[] }) => {
+const ButtonContainer = ({ children }: { children: ReactElement | (false | ReactElement)[] }) => {
   const device = useDevice();
 
   if (!Array.isArray(children)) {
     children = [children];
   }
-  
-  children = children.reduce((prev: ReactElement[], curr, i) => prev.concat(<Spacer key={"spacer" + i} />, curr), []);
+
+  children = children
+    .filter((c) => c)
+    .map((c) => c as ReactElement)
+    .reduce((prev: ReactElement[], curr: ReactElement, i) => prev.concat(<Spacer key={"spacer" + i} />, curr), []);
   children.shift();
 
   if (children.length == 1) {

@@ -13,10 +13,10 @@ import { H2, H3 } from "../../elements/Texts";
 import { useDevice } from "../../hooks/useDevice";
 import { BuyRoute, BuyType } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import {  putBuyRoute, putSellRoute, putStakingRoute } from "../../services/ApiService";
+import { getStakingBatches, putBuyRoute, putSellRoute, putStakingRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import AppStyles from "../../styles/AppStyles";
-import {  updateObject } from "../../utils/Utils";
+import { formatAmount, updateObject } from "../../utils/Utils";
 import ClipboardService from "../../services/ClipboardService";
 import ButtonContainer from "../../components/util/ButtonContainer";
 import { DeviceClass } from "../../utils/Device";
@@ -24,10 +24,12 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Session } from "../../services/AuthService";
 import withSession from "../../hocs/withSession";
 import { User } from "../../models/User";
-import { StakingRoute, StakingType } from "../../models/StakingRoute";
+import { StakingRoute, PayoutType } from "../../models/StakingRoute";
 import StakingRouteEdit from "../../components/edit/StakingRouteEdit";
 import HistorySelect from "./HistorySelect";
 import { StakingBatch } from "../../models/StakingBatch";
+import Moment from "moment";
+import Loading from "../../components/util/Loading";
 
 interface Props {
   user?: User;
@@ -38,8 +40,6 @@ interface Props {
   setSellRoutes: Dispatch<SetStateAction<SellRoute[] | undefined>>;
   stakingRoutes?: StakingRoute[];
   setStakingRoutes: Dispatch<SetStateAction<StakingRoute[] | undefined>>;
-  stakingBatches?: StakingBatch[];
-  setStakingBatches: Dispatch<SetStateAction<StakingBatch[]| undefined >>;
   isBuyRouteEdit: boolean;
   setIsBuyRouteEdit: Dispatch<SetStateAction<boolean>>;
   isSellRouteEdit: boolean;
@@ -67,13 +67,11 @@ const Placeholders = ({ device }: { device: DeviceClass }) => (
 const iban = "CH68 0857 3177 9752 0181 4";
 const swift = "MAEBCHZZ";
 
-const RouteList =  ({
+const RouteList = ({
   user,
   session,
   buyRoutes,
   setBuyRoutes,
-  stakingBatches,
-  setStakingBatches,
   sellRoutes,
   setSellRoutes,
   stakingRoutes,
@@ -94,6 +92,8 @@ const RouteList =  ({
   const [isStakingLoading, setIsStakingLoading] = useState<{ [id: string]: boolean }>({});
   const [isHistorySelect, setIsHistorySelect] = useState(false);
   const [detailRoute, setDetailRoute] = useState<BuyRoute | SellRoute | StakingRoute | undefined>(undefined);
+  const [isBalanceDetail, setIsBalanceDetail] = useState(false);
+  const [stakingBatches, setStakingBatches] = useState<StakingBatch[]>();
 
   const activeBuyRoutes = buyRoutes?.filter((r) => r.active);
   const activeSellRoutes = sellRoutes?.filter((r) => r.active);
@@ -153,6 +153,17 @@ const RouteList =  ({
       .finally(() => setIsStakingLoading((obj) => updateObject(obj, { [route.id]: false })));
   };
 
+  const fetchStakingBatches = (route: StakingRoute) => {
+    setStakingBatches(undefined);
+    setIsBalanceDetail(true);
+    getStakingBatches(route)
+      .then(setStakingBatches)
+      .catch(() => {
+        setIsBalanceDetail(false);
+        NotificationService.error(t("feedback.load_failed"));
+      });
+  };
+
   const routeData = (route: BuyRoute | SellRoute | StakingRoute) =>
     "type" in route // buy route
       ? [
@@ -166,66 +177,90 @@ const RouteList =  ({
             )}`,
           },
           { condition: true, label: "model.route.iban", value: route.iban },
-          { condition: true, label: "model.route.bank_usage", value: route.bankUsage },
+          {
+            condition: true,
+            label: "model.route.bank_usage",
+            value: route.bankUsage,
+            icon: "content-copy",
+            onPress: () => ClipboardService.copy(route.bankUsage),
+          },
           {
             condition: true,
             label: "model.route.fee",
             value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
           },
-          { condition: true, label: "model.route.volume", value: `${route.volume} €` },
-          { condition: true, label: "model.route.annual_volume", value: `${route.annualVolume} €` },
+          { condition: true, label: "model.route.volume", value: `${formatAmount(route.volume)} €` },
+          { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
         ]
       : "fiat" in route // sell route
       ? [
           { condition: true, label: "model.route.fiat", value: route.fiat?.name },
           { condition: true, label: "model.route.iban", value: route.iban },
-          { condition: true, label: "model.route.deposit_address", value: route.deposit?.address },
+          {
+            condition: true,
+            label: "model.route.deposit_address",
+            value: route.deposit?.address,
+            icon: "content-copy",
+            onPress: () => ClipboardService.copy(route.deposit?.address),
+          },
           { condition: true, label: "model.route.fee", value: `${route.fee}%` },
           { condition: true, label: "model.route.min_deposit", value: "0.1 DFI / 1 USD" },
-          { condition: true, label: "model.route.volume", value: `${route.volume} €` },
+          { condition: true, label: "model.route.volume", value: `${formatAmount(route.volume)} €` },
         ]
       : // staking route
         [
-          { condition: true, label: "model.route.deposit_address", value: route.deposit?.address },
+          {
+            condition: true,
+            label: "model.route.deposit_address",
+            value: route.deposit?.address,
+            icon: "content-copy",
+            onPress: () => ClipboardService.copy(route.deposit?.address),
+          },
           { condition: true, label: "model.route.min_deposit", value: "0.1 DFI" },
           { condition: true, label: "model.route.min_invest", value: "100 DFI" },
           {
             condition: true,
             label: "model.route.reward",
             value:
-              route.rewardType === StakingType.BANK_ACCOUNT
+              route.rewardType === PayoutType.BANK_ACCOUNT
                 ? `${route.rewardSell?.fiat.name} - ${route.rewardSell?.iban}`
                 : t(`model.route.${route.rewardType.toLowerCase()}`),
           },
           {
-            condition: route.rewardType === StakingType.WALLET,
+            condition: route.rewardType === PayoutType.WALLET,
             label: "model.route.reward_asset",
             value: route.rewardAsset?.name,
           },
           { condition: true, label: "model.route.reward_fee", value: `${route.fee}%` },
-          { condition: true, label: "model.route.payback_date", value: `${route.period} ${t('model.route.days')}` },
+          { condition: true, label: "model.route.payback_date", value: `${route.period} ${t("model.route.days")}` },
           {
             condition: true,
             label: "model.route.payback",
             value:
-              route.paybackType === StakingType.BANK_ACCOUNT
+              route.paybackType === PayoutType.BANK_ACCOUNT
                 ? `${route.paybackSell?.fiat.name} - ${route.paybackSell?.iban}`
                 : t(`model.route.${route.paybackType.toLowerCase()}`),
           },
           {
-            condition: route.paybackType === StakingType.WALLET,
+            condition: route.paybackType === PayoutType.WALLET,
             label: "model.route.payback_asset",
             value: route.paybackAsset?.name,
           },
-          { condition: true, label: "model.route.balance", value: `${route.balance} DFI` },
-          { condition: true, label: "model.route.rewards", value: `${route.rewardVolume} EUR` },
+          {
+            condition: true,
+            label: "model.route.balance",
+            value: `${formatAmount(route.balance)} DFI`,
+            icon: route.balance > 0 ? "chevron-right" : undefined,
+            onPress: () => fetchStakingBatches(route),
+          },
+          { condition: true, label: "model.route.rewards", value: `${formatAmount(route.rewardVolume)} EUR` },
         ];
 
   return (
     <>
       <DeFiModal
         isVisible={Boolean(detailRoute)}
-        setIsVisible={() => setDetailRoute(undefined)}
+        setIsVisible={(visible) => (visible ? undefined : setDetailRoute(undefined))}
         title={t("model.route.details")}
         style={{ width: 600 }}
       >
@@ -234,15 +269,22 @@ const RouteList =  ({
             <DataTable>
               {routeData(detailRoute)
                 .filter((d) => d.condition)
-                .map((data) => (
-                  <CompactRow key={data.label}>
-                    <CompactCell multiLine style={{ flex: 1 }}>
-                      {t(data.label)}
-                    </CompactCell>
-                    <CompactCell multiLine style={{ flex: 2 }}>
-                      {data.value}
-                    </CompactCell>
-                  </CompactRow>
+                .map((d) => (
+                  <TouchableOpacity onPress={d.onPress} key={d.label} disabled={!d.icon || device.SM}>
+                    <CompactRow>
+                      <CompactCell multiLine style={{ flex: 1 }}>
+                        {t(d.label)}
+                      </CompactCell>
+                      <View style={{ flex: device.SM ? 2 : 1, flexDirection: "row" }}>
+                        <CompactCell multiLine>{d.value}</CompactCell>
+                        {d.icon && (
+                          <CompactCell style={{ flex: undefined }}>
+                            <IconButton icon={d.icon} onPress={device.SM ? d.onPress : undefined} />
+                          </CompactCell>
+                        )}
+                      </View>
+                    </CompactRow>
+                  </TouchableOpacity>
                 ))}
             </DataTable>
 
@@ -270,26 +312,43 @@ const RouteList =  ({
                 >
                   {t("action.delete")}
                 </DeFiButton>
-                <>
-                  {"rewardType" in detailRoute && (
-                    <DeFiButton onPress={() => setIsStakingRouteEdit(true)}>{t("action.edit")}</DeFiButton>
-                  )}
-                </>
-                <DeFiButton
-                  mode="contained"
-                  onPress={() =>
-                    "type" in detailRoute
-                      ? ClipboardService.copy(detailRoute.bankUsage)
-                      : ClipboardService.copy(detailRoute.deposit?.address)
-                  }
-                >
-                  {t("type" in detailRoute ? "model.route.copy_bank_usage" : "model.route.copy_deposit_address")}
-                </DeFiButton>
+                {"rewardType" in detailRoute && (
+                  <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)}>
+                    {t("action.edit")}
+                  </DeFiButton>
+                )}
               </ButtonContainer>
             </View>
           </>
         )}
       </DeFiModal>
+
+      <DeFiModal
+        isVisible={isBalanceDetail}
+        setIsVisible={() => setIsBalanceDetail(false)}
+        title={t("model.route.balance_details")}
+        style={{ width: 450 }}
+      >
+        {stakingBatches != null ? (
+          <DataTable>
+            <CompactHeader>
+              <CompactTitle style={{ flex: 1 }}>{t("model.route.output_date")}</CompactTitle>
+              <CompactTitle style={{ flex: 1 }}>{t("model.route.amount")}</CompactTitle>
+              <CompactTitle style={{ flex: 1 }}>{t("model.route.payback")}</CompactTitle>
+            </CompactHeader>
+            {stakingBatches?.map((batch, i) => (
+              <CompactRow key={i}>
+                <CompactCell style={{ flex: 1 }}>{Moment(batch.outputDate).format("L")}</CompactCell>
+                <CompactCell style={{ flex: 1 }}>{`${formatAmount(batch.amount)} DFI`}</CompactCell>
+                <CompactCell style={{ flex: 1 }}>{t(`model.route.${batch.payoutType.toLowerCase()}`)}</CompactCell>
+              </CompactRow>
+            ))}
+          </DataTable>
+        ) : (
+          <Loading size="large" />
+        )}
+      </DeFiModal>
+
       <DeFiModal
         isVisible={isStakingRouteEdit}
         setIsVisible={setIsStakingRouteEdit}
@@ -327,11 +386,7 @@ const RouteList =  ({
         />
       </DeFiModal>
 
-      <DeFiModal
-        isVisible={isHistorySelect}
-        setIsVisible={setIsHistorySelect}
-        title={t("model.route.history")}
-      >
+      <DeFiModal isVisible={isHistorySelect} setIsVisible={setIsHistorySelect} title={t("model.route.history")}>
         <HistorySelect onClose={() => setIsHistorySelect(false)} />
       </DeFiModal>
 

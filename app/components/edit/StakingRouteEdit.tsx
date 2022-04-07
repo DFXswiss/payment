@@ -3,7 +3,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { SpacerV } from "../../elements/Spacers";
 import { Alert } from "../../elements/Texts";
-import { StakingRoute, StakingType } from "../../models/StakingRoute";
+import { StakingRoute, PayoutType } from "../../models/StakingRoute";
 import { getAssets, postStakingRoute, putStakingRoute } from "../../services/ApiService";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
@@ -11,13 +11,14 @@ import Validations from "../../utils/Validations";
 import { DeFiButton } from "../../elements/Buttons";
 import ButtonContainer from "../util/ButtonContainer";
 import { createRules } from "../../utils/Utils";
-import { ActivityIndicator, HelperText } from "react-native-paper";
+import { HelperText } from "react-native-paper";
 import { ApiError } from "../../models/ApiDto";
 import { SellRoute } from "../../models/SellRoute";
 import { View } from "react-native";
 import AppStyles from "../../styles/AppStyles";
 import NotificationService from "../../services/NotificationService";
 import { Asset } from "../../models/Asset";
+import Loading from "../util/Loading";
 
 enum SellType {
   REWARD = "Reward",
@@ -88,11 +89,11 @@ const StakingRouteEdit = ({
         (r) =>
           !r.active &&
           r.rewardType === update.rewardType &&
-          (update.rewardType !== StakingType.BANK_ACCOUNT || r.rewardSell?.id === update.rewardSell?.id) &&
-          (update.rewardType !== StakingType.WALLET || r.rewardAsset?.id === update.rewardAsset?.id) &&
+          (update.rewardType !== PayoutType.BANK_ACCOUNT || r.rewardSell?.id === update.rewardSell?.id) &&
+          (update.rewardType !== PayoutType.WALLET || r.rewardAsset?.id === update.rewardAsset?.id) &&
           r.paybackType === update.paybackType &&
-          (update.paybackType !== StakingType.BANK_ACCOUNT || r.paybackSell?.id === update.paybackSell?.id) &&
-          (update.paybackType !== StakingType.WALLET || r.paybackAsset?.id === update.paybackAsset?.id)
+          (update.paybackType !== PayoutType.BANK_ACCOUNT || r.paybackSell?.id === update.paybackSell?.id) &&
+          (update.paybackType !== PayoutType.WALLET || r.paybackAsset?.id === update.paybackAsset?.id)
       );
       if (existingRoute) existingRoute.active = true;
 
@@ -105,11 +106,11 @@ const StakingRouteEdit = ({
 
   const rules: any = createRules({
     rewardType: Validations.Required,
-    rewardSell: rewardType === StakingType.BANK_ACCOUNT && Validations.Required,
-    rewardAsset: rewardType === StakingType.WALLET && Validations.Required,
+    rewardSell: rewardType === PayoutType.BANK_ACCOUNT && Validations.Required,
+    rewardAsset: rewardType === PayoutType.WALLET && Validations.Required,
     paybackType: Validations.Required,
-    paybackSell: paybackType === StakingType.BANK_ACCOUNT && Validations.Required,
-    paybackAsset: paybackType === StakingType.WALLET && Validations.Required,
+    paybackSell: paybackType === PayoutType.BANK_ACCOUNT && Validations.Required,
+    paybackAsset: paybackType === PayoutType.WALLET && Validations.Required,
   });
 
   const newSellRouteButton = (type: SellType) => (
@@ -126,18 +127,18 @@ const StakingRouteEdit = ({
     </View>
   );
   return isLoading ? (
-    <ActivityIndicator size="large" />
+    <Loading size="large" />
   ) : (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
       <DeFiPicker
         name="rewardType"
         label={t("model.route.reward")}
-        items={Object.values(StakingType)}
+        items={Object.values(PayoutType)}
         labelFunc={(i) => t(`model.route.${i.toLowerCase()}`)}
       />
       <SpacerV />
 
-      {rewardType === StakingType.BANK_ACCOUNT && (
+      {rewardType === PayoutType.BANK_ACCOUNT && (
         <>
           <DeFiPicker
             name="rewardSell"
@@ -151,7 +152,7 @@ const StakingRouteEdit = ({
         </>
       )}
 
-      {rewardType === StakingType.WALLET && (
+      {rewardType === PayoutType.WALLET && (
         <>
           <DeFiPicker
             name="rewardAsset"
@@ -167,7 +168,7 @@ const StakingRouteEdit = ({
       <DeFiPicker
         name="paybackType"
         label={t("model.route.payback")}
-        items={Object.values(StakingType)}
+        items={Object.values(PayoutType)}
         labelFunc={(i) => t(`model.route.${i.toLowerCase()}`)}
       />
       {route != null && route.paybackType !== paybackType && (
@@ -177,7 +178,7 @@ const StakingRouteEdit = ({
       )}
       <SpacerV />
 
-      {paybackType === StakingType.BANK_ACCOUNT && (
+      {paybackType === PayoutType.BANK_ACCOUNT && (
         <>
           <DeFiPicker
             name="paybackSell"
@@ -191,7 +192,7 @@ const StakingRouteEdit = ({
         </>
       )}
 
-      {paybackType === StakingType.WALLET && (
+      {paybackType === PayoutType.WALLET && (
         <>
           <DeFiPicker
             name="paybackAsset"

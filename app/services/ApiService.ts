@@ -28,7 +28,7 @@ import { LimitRequest } from "../models/LimitRequest";
 import { KycData, toKycDataDto } from "../models/KycData";
 import { Settings } from "../models/Settings";
 import { HistoryType } from "../models/HistoryType";
-import { StakingBatch } from "../models/StakingBatch";
+import { fromStakingBatchDto, StakingBatch, StakingBatchDto } from "../models/StakingBatch";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -149,7 +149,9 @@ export const getStatistic = (): Promise<Statistic> => {
 };
 
 export const getStakingBatches = (route: StakingRoute): Promise<StakingBatch[]> => {
-  return fetchFrom<StakingBatch[]>(`${StakingUrl}/${route?.id}/batches`, "GET");
+  return fetchFrom<StakingBatchDto[]>(`${StakingUrl}/${route?.id}/batches`).then((dtoList) =>
+    dtoList.map((dto) => fromStakingBatchDto(dto))
+  );
 };
 
 export const postStakingRoute = (route: StakingRoute): Promise<StakingRoute> => {

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { ActivityIndicator } from "react-native-paper";
 import { Session } from "../../services/AuthService";
 import { DeFiButton } from "../../elements/Buttons";
 import { SpacerV } from "../../elements/Spacers";
@@ -19,6 +18,7 @@ import Input from "../form/Input";
 import ButtonContainer from "../util/ButtonContainer";
 import { StakingRoute } from "../../models/StakingRoute";
 import { Country } from "../../models/Country";
+import Loading from "../util/Loading";
 
 const stockTokenChainIds = [15, 16, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 31, 34, 37];
 
@@ -88,7 +88,7 @@ const BuyRouteEdit = ({
   });
 
   return isLoading ? (
-    <ActivityIndicator size="large" />
+    <Loading size="large" />
   ) : (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
       <DeFiPicker

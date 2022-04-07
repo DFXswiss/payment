@@ -6,6 +6,7 @@ import { Language } from "../models/Language";
 import { getLanguages } from "./ApiService";
 import NotificationService from "./NotificationService";
 import StorageService from "./StorageService";
+import Moment from "moment";
 
 const SettingsKey = "settings";
 const DefaultSettings: Partial<AppSettings> = {
@@ -26,7 +27,7 @@ class SettingsServiceClass {
   constructor() {
     this.Settings.then((settings) => {
       this.settings$.next(settings);
-      i18n.changeLanguage(settings.language);
+      this.changeLanguage(settings.language);
     });
 
     getLanguages()
@@ -54,13 +55,18 @@ class SettingsServiceClass {
     // wait for init
     return lastValueFrom(this.settings$.pipe(first())).then(() => {
       if (update.language) {
-        i18n.changeLanguage(update.language);
+        this.changeLanguage(update.language);
       }
 
       return this.Settings.then((settings) => ({ ...settings, ...update }))
         .then((settings) => StorageService.storeValue(SettingsKey, settings))
         .then((settings) => this.settings$.next(settings));
     });
+  }
+
+  private changeLanguage(lang: string) {
+    i18n.changeLanguage(lang);
+    Moment.locale(lang);
   }
 }
 

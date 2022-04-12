@@ -222,7 +222,7 @@
       },
       "kyc": {
         "request": "A sua conta deve primeiro ser verificada com o chatbot e a identificação em linha.\nQuer começar com o chatbot?",
-        "request_business": "Por favor, carregue primeiro os estatutos da empresa, certificado de constituição, excerto do registo comercial ou estatutos da empresa.\nDepois disso, a sua conta deve ser verificada com o chatbot e identificação online.",
+        "request_business": "Por favor, carregue o extracto do registo comercial da sua organização.\nDepois disso, a sua conta deve ser verificada com o chatbot e identificação online.",
         "status": "KYC Status",
         "chatbot": "chatbot onboarding",
         "onlineid": "identificação online",

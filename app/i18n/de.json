@@ -226,7 +226,7 @@
       },
       "kyc": {
         "request": "Dein Konto muss zuerst mit dem Chatbot und Online Identifikation verifiziert werden.\nMöchtest du mit dem Chatbot starten?",
-        "request_business": "Bitte zurerst die Satzung der Firma, Gründungsurkunde, Handelsregisterauszug oder Statuten der Gesellschaft hochladen.\nDanach muss dein Konto mit dem Chatbot und Online Identifikation verifiziert werden.",
+        "request_business": "Bitte lade den Handelsregisterauszug deiner Organisation hoch.\nDanach muss dein Konto mit dem Chatbot und Online Identifikation verifiziert werden.",
         "status": "KYC Status",
         "chatbot": "Chatbot Onboarding",
         "onlineid": "Online Identifikation",

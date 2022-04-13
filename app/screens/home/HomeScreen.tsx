@@ -80,11 +80,12 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
 
   const stakingRouteEdit = (update: SetStateAction<boolean>) => {
     if (resolve(update, isStakingRouteEdit)) {
+      // bank TX required
+      if (user?.status !== UserStatus.ACTIVE) return NotificationService.error(t("feedback.bank_tx_required"));
+
       // check if user has KYC
       if (user?.kycStatus === KycStatus.NA) {
-        return user.status === UserStatus.ACTIVE
-          ? onIncreaseLimit()
-          : NotificationService.error(t("feedback.bank_tx_required"));
+        return onIncreaseLimit();
       } else if (
         kycInProgress(user?.kycStatus) ||
         user?.kycStatus === KycStatus.CHECK ||

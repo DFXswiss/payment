@@ -222,7 +222,7 @@
       },
       "kyc": {
         "request": "Votre compte doit d'abord être vérifié avec le chatbot et l'identification en ligne.\nVoulez-vous commencer avec le chatbot?",
-        "request_business": "Veuillez tout d'abord télécharger les statuts de la société, l'acte de fondation, l'extrait du registre du commerce ou les statuts de la société.\nEnsuite, votre compte devra être vérifié avec le chatbot et l'identification en ligne.",
+        "request_business": "Veuillez télécharger l'extrait du registre du commerce de votre organisation.\nEnsuite, votre compte devra être vérifié avec le chatbot et l'identification en ligne.",
         "status": "Statut KYC",
         "chatbot": "chatbot",
         "onlineid": "identification en ligne",

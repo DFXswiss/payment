@@ -222,7 +222,7 @@
       },
       "kyc": {
         "request": "Your account must first be verified with the chatbot and online identification.\nDo you want to start with the chatbot?",
-        "request_business": "Please first upload the company's articles of association, certificate of incorporation, excerpt from the commercial register or bylaws of the company.\nAfter that, your account must be verified with the chatbot and online identification.",
+        "request_business": "Please upload your organization's certificate of incorporation.\nAfter that, your account must be verified with the chatbot and online identification.",
         "status": "KYC status",
         "chatbot": "chatbot onboarding",
         "onlineid": "online identification",

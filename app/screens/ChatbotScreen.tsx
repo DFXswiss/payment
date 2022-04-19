@@ -3,14 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from "react-native";
 import { DataTable, IconButton, Text, TextInput } from 'react-native-paper';
-import AnswerText from '../components/chatbot/AnswerText';
+import AnswerTextbox from '../components/chatbot/AnswerTextbox';
+import DeFiDropdown from '../components/form/DeFiDropdown';
 import Loading from '../components/util/Loading';
 import Colors from '../config/Colors';
 import Routes from '../config/Routes';
 import { DeFiButton } from '../elements/Buttons';
 import { SpacerH, SpacerV } from '../elements/Spacers';
 import { H2, H3 } from '../elements/Texts';
-import { ChatbotAnswer, ChatbotAuthenticationInfo, ChatbotElement, ChatbotMessage, ChatbotMessageType } from '../models/ChatbotData';
+import { ChatbotAnswer, ChatbotAnswerData, ChatbotAuthenticationInfo, ChatbotElement, ChatbotMessage, ChatbotMessageType } from '../models/ChatbotData';
 import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotStart } from '../services/Chatbot';
 import { getAuthenticationInfo, nextStep, postSMSCode, requestSMSCode } from '../services/ChatbotService';
 import NotificationService from '../services/NotificationService';
@@ -30,7 +31,7 @@ const ChatbotScreen = ({
   const [isSMSCompleted, setSMSCompleted] = useState<Boolean>(false);
   const [authenticationInfo, setAuthenticationInfo] = useState<ChatbotAuthenticationInfo>();
   const [chatbotId, setChatbotId] = useState<string>();
-  const [messages, setMessages] = useState<[ChatbotMessage]>();
+  const [messages, setMessages] = useState<ChatbotMessage[]>();
 
   useEffect(() => {
     let id = extractSessionId(sessionUrl)
@@ -80,14 +81,14 @@ const ChatbotScreen = ({
     nextStep(sessionId ?? "", chatbotId ?? "", answer)
       .then((question) => {
         setLoading(false)
+        console.log(messages)
         setMessages(chatbotFeedQuestion(question, messages))
       })
-      // TODO maybe use a different catch to avoid getting thrown back to home screen all the time
-      .catch(onLoadFailed)
   }
 
   return (
     <View style={styles.container}>
+      { console.log("re-render chatbot screen") }
       {/* Loading */}
       {isLoading && <Loading size="large" />}
       {/* SMS screen */}
@@ -129,8 +130,30 @@ const ChatbotScreen = ({
                     </View>
                   )}
                   {/* ANSWER PART */}
+                  {message.type === ChatbotMessageType.ANSWER && message.element === ChatbotElement.TEXT && message.label && (
+                    <View style={styles.answerContainer}>
+                      <Text style={styles.answerText}>{message.label}</Text>
+                    </View>
+                  )}
                   {message.type === ChatbotMessageType.ANSWER && message.element === ChatbotElement.TEXTBOX && (
-                    <AnswerText onSubmit={value => { requestNextStep(chatbotCreateAnswer(value, messages), chatbotId) }} />
+                    <AnswerTextbox onSubmit={value => { requestNextStep(chatbotCreateAnswer(value, messages), chatbotId) }} />
+                  )}
+                  {message.type === ChatbotMessageType.ANSWER && message.element === ChatbotElement.DROPDOWN && message.answerData && (                    
+                    <DeFiDropdown
+                      value={message.answerData.find((value) => {
+                        return value.isSelected
+                      })}
+                      setValue={value => {
+                        message.answerData?.forEach((item) => item.isSelected = false)
+                        let answerData = value as ChatbotAnswerData
+                        answerData.isSelected = true
+                        // requestNextStep(chatbotCreateAnswer(answerData.chatbotElement, messages), chatbotId)
+                       }}
+                      items={message.answerData}
+                      idProp="key"
+                      labelProp="label"
+                      style={styles.answerDropdown}
+                    />
                   )}
                   {/* {message.element === ChatbotElement.TEXTBOX_BUTTON && typeof message.label === 'object' && (
                     <View style={AppStyles.containerHorizontal}>
@@ -167,6 +190,19 @@ const styles = StyleSheet.create({
   questionText: {
     padding: '10px',
   },
+  answerContainer: {
+    flexDirection: 'column',
+    alignItems: 'flex-end',
+  },
+  answerText: {
+    backgroundColor: Colors.LightBlue,
+    width: '66%',
+    padding: '10px',
+    textAlign: 'right',
+  },
+  answerDropdown: {
+    alignSelf: 'flex-end',
+  }
 });
 
 export default ChatbotScreen;

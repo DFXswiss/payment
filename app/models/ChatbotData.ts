@@ -23,6 +23,7 @@ export interface ChatbotMessage {
   label: string | undefined,
   element: ChatbotElement,
   answerItem: ChatbotAnswerItemType | undefined,
+  answerData: ChatbotAnswerData[] | undefined,
 }
 
 export enum ChatbotMessageType {
@@ -37,22 +38,23 @@ export interface ChatbotQuestion {
   error?: any,
 }
 
-export interface ChatbotQuestionItem {
+export interface ChatbotItem {
   data: string,
-  kind: ChatbotQuestionItemKind,
+  kind: ChatbotItemKind,
   sequence: number,
   time: number,
-  type: ChatbotQuestionItemType,
+  type: ChatbotItemType,
 }
 
-export enum ChatbotQuestionItemType {
+export enum ChatbotItemType {
   OUTPUT = "output:text:plain",
   PLAIN = "query:text:plain",
   DROPDOWN = "query:text:dropdown",
 }
 
-export enum ChatbotQuestionItemKind {
-  OUTPUT = "OUTPUT"
+export enum ChatbotItemKind {
+  OUTPUT = "OUTPUT",
+  INPUT = "INPUT",
 }
 
 export interface ChatbotAnswer {
@@ -67,5 +69,23 @@ export interface ChatbotAnswerItem {
 
 export enum ChatbotAnswerItemType {
   PLAIN = "query:answer:plain",
-  DROPDOWN = "query:answer:dropdown"
+  DROPDOWN = "query:answer:dropdown",
+}
+
+export interface ChatbotAnswerData {
+  key: string
+  label: string
+  isSelected: Boolean
+  chatbotElement: any
+}
+
+export interface ChatbotDropdownData {
+  text: ChatbotLanguageValues
+  selection: [ChatbotDropdownDataItem]
+  sort: Boolean
+}
+
+export interface ChatbotDropdownDataItem {
+  key: string,
+  text: ChatbotLanguageValues
 }

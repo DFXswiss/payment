@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { TextInput } from "react-native-paper";
 
-const AnswerText = ({
+const AnswerTextbox = ({
   onSubmit,
 }: {
   onSubmit: (value: string) => void;
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default AnswerText;
+export default AnswerTextbox;

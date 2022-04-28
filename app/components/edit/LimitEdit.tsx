@@ -27,7 +27,7 @@ const LimitLabels = {
   [Limit.INFINITY]: "> CHF 15'000'000",
 };
 
-const LimitEdit = ({ onSuccess }: { onSuccess: () => void }) => {
+const LimitEdit = ({ code, onSuccess }: { code?: string; onSuccess: () => void }) => {
   const { t } = useTranslation();
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string>();
@@ -52,7 +52,7 @@ const LimitEdit = ({ onSuccess }: { onSuccess: () => void }) => {
     setIsSaving(true);
     setError(undefined);
 
-    postLimit(request)
+    postLimit(request, code)
       .then(() => {
         NotificationService.success(t("feedback.request_submitted")); // TODO: info popup?
         onSuccess();

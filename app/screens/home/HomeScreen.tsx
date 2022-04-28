@@ -9,6 +9,8 @@ import { H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
 import {
   AccountType,
+  getKycStatusString,
+  getTradeLimit,
   kycCompleted,
   kycInProgress,
   KycState,
@@ -213,25 +215,9 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
 
   useAuthGuard(session);
 
-  const limit = (user: User): string => {
-    if (kycCompleted(user.kycStatus)) {
-      return `${formatAmount(user.depositLimit)} € ${t("model.user.per_year")}`;
-    } else {
-      return `${formatAmount(user.kycStatus === KycStatus.REJECTED ? 0 : 900)} € ${t("model.user.per_day")}`;
-    }
-  };
-
   const buyVolume = () => (buyRoutes ?? []).reduce((prev, curr) => prev + curr.volume, 0);
   const annualBuyVolume = () => (buyRoutes ?? []).reduce((prev, curr) => prev + curr.annualVolume, 0);
   const sellVolume = () => (sellRoutes ?? []).reduce((prev, curr) => prev + curr.volume, 0);
-
-  const getKycStatusString = (status: KycStatus, state: KycState): string => {
-    if (kycInProgress(status)) {
-      return `${t("model.kyc." + state.toLowerCase())} (${t("model.kyc." + status.toLowerCase())})`;
-    } else {
-      return t(`model.kyc.${status.toLowerCase()}`);
-    }
-  };
 
   const userData = (user: User) => [
     { condition: Boolean(user.address), label: "model.user.address", value: user.address },
@@ -256,14 +242,14 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     {
       condition: user.kycStatus != KycStatus.NA,
       label: "model.kyc.status",
-      value: getKycStatusString(user.kycStatus, user.kycState),
+      value: getKycStatusString(user),
       icon: kycInProgress(user.kycStatus) && user.kycState !== KycState.REVIEW ? "reload" : undefined,
       onPress: () => goToKycScreen(),
     },
     {
       condition: true,
       label: "model.user.limit",
-      value: limit(user),
+      value: getTradeLimit(user),
       icon: user.kycStatus === KycStatus.NA || kycCompleted(user.kycStatus) ? "arrow-up" : undefined,
       onPress: onIncreaseLimit,
     },
@@ -330,7 +316,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
         title={t("model.kyc.increase_limit")}
         style={{ width: 400 }}
       >
-        <LimitEdit onSuccess={() => setIsLimitRequest(false)} />
+        <LimitEdit code={user?.kycHash} onSuccess={() => setIsLimitRequest(false)} />
       </DeFiModal>
 
       <DeFiModal

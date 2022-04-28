@@ -11,7 +11,7 @@ import Moment from "moment";
 const SettingsKey = "settings";
 const DefaultSettings: Partial<AppSettings> = {
   language: Environment.defaultLanguage,
-  isIframe: true,
+  isIframe: false,
 };
 
 export interface AppSettings {

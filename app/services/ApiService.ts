@@ -90,8 +90,8 @@ export const getKyc = (code?: string): Promise<KycResult> => {
   return fetchFrom<KycResult>(`${KycUrl}?code=${code}`);
 };
 
-export const postLimit = (request: LimitRequest): Promise<LimitRequest> => {
-  return fetchFrom<LimitRequest>(`${KycUrl}/limit`, "POST", request);
+export const postLimit = (request: LimitRequest, code?: string): Promise<LimitRequest> => {
+  return fetchFrom<LimitRequest>(`${KycUrl}/limit?code=${code}`, "POST", request);
 };
 
 export const postFounderCertificate = (files: File[]): Promise<void> => {

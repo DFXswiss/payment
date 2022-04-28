@@ -1,3 +1,5 @@
+import i18n from "../i18n/i18n";
+import { formatAmount } from "../utils/Utils";
 import { Language } from "./Language";
 
 export enum UserRole {
@@ -44,8 +46,13 @@ export enum CfpVote {
   NEUTRAL = "Neutral",
 }
 
-export interface KycResult {
-  status: KycStatus;
+export interface KycUser {
+  kycStatus: KycStatus;
+  kycState: KycState;
+  depositLimit: number;
+}
+
+export interface KycResult extends KycUser {
   sessionUrl?: string;
   setupUrl?: string;
 }
@@ -67,7 +74,7 @@ export interface CfpVotes {
   [number: number]: CfpVote;
 }
 
-export interface UserDto {
+export interface UserDto extends KycUser {
   accountType: AccountType;
   address: string;
   mail: string | null;
@@ -76,16 +83,13 @@ export interface UserDto {
   usedRef: string | null;
   status: UserStatus;
 
-  kycStatus: KycStatus;
-  kycState: KycState;
   kycHash: string;
-  depositLimit: number;
   kycDataComplete: boolean;
 
   cfpVotes: CfpVotes;
 }
 
-export interface User {
+export interface User extends KycUser {
   accountType: AccountType;
   address: string;
   mail: string;
@@ -94,10 +98,7 @@ export interface User {
   usedRef: string;
   status: UserStatus;
 
-  kycStatus: KycStatus;
-  kycState: KycState;
   kycHash: string;
-  depositLimit: number;
   kycDataComplete: boolean;
 
   cfpVotes: CfpVotes;
@@ -178,3 +179,21 @@ export const kycCompleted = (kycStatus?: KycStatus) =>
 
 export const kycInProgress = (kycStatus?: KycStatus) =>
   [KycStatus.CHATBOT, KycStatus.ONLINE_ID, KycStatus.VIDEO_ID].includes(kycStatus ?? KycStatus.NA);
+
+export const getKycStatusString = (user: KycUser): string => {
+  if (kycInProgress(user.kycStatus)) {
+    return `${i18n.t("model.kyc." + user.kycState.toLowerCase())} (${i18n.t(
+      "model.kyc." + user.kycStatus.toLowerCase()
+    )})`;
+  } else {
+    return i18n.t(`model.kyc.${user.kycStatus.toLowerCase()}`);
+  }
+};
+
+export const getTradeLimit = (user: KycUser): string => {
+  if (kycCompleted(user.kycStatus)) {
+    return `${formatAmount(user.depositLimit)} € ${i18n.t("model.user.per_year")}`;
+  } else {
+    return `${formatAmount(user.kycStatus === KycStatus.REJECTED ? 0 : 900)} € ${i18n.t("model.user.per_day")}`;
+  }
+};

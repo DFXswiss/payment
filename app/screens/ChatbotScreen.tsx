@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from "react-native";
 import { DataTable, IconButton, Text, TextInput } from 'react-native-paper';
+import AnswerDropdown from '../components/chatbot/AnswerDropdown';
 import AnswerTextbox from '../components/chatbot/AnswerTextbox';
 import DeFiDropdown from '../components/form/DeFiDropdown';
 import Loading from '../components/util/Loading';
@@ -136,23 +137,14 @@ const ChatbotScreen = ({
                     </View>
                   )}
                   {message.type === ChatbotMessageType.ANSWER && message.element === ChatbotElement.TEXTBOX && (
-                    <AnswerTextbox onSubmit={value => { requestNextStep(chatbotCreateAnswer(value, messages), chatbotId) }} />
+                    <AnswerTextbox 
+                      onSubmit={value => { requestNextStep(chatbotCreateAnswer(value, messages), chatbotId) }} 
+                    />
                   )}
                   {message.type === ChatbotMessageType.ANSWER && message.element === ChatbotElement.DROPDOWN && message.answerData && (                    
-                    <DeFiDropdown
-                      value={message.answerData.find((value) => {
-                        return value.isSelected
-                      })}
-                      setValue={value => {
-                        message.answerData?.forEach((item) => item.isSelected = false)
-                        let answerData = value as ChatbotAnswerData
-                        answerData.isSelected = true
-                        // requestNextStep(chatbotCreateAnswer(answerData.chatbotElement, messages), chatbotId)
-                       }}
-                      items={message.answerData}
-                      idProp="key"
-                      labelProp="label"
-                      style={styles.answerDropdown}
+                    <AnswerDropdown 
+                      onSubmit={value => { requestNextStep(chatbotCreateAnswer(value, messages), chatbotId) }} 
+                      message={message} 
                     />
                   )}
                   {/* {message.element === ChatbotElement.TEXTBOX_BUTTON && typeof message.label === 'object' && (
@@ -200,9 +192,6 @@ const styles = StyleSheet.create({
     padding: '10px',
     textAlign: 'right',
   },
-  answerDropdown: {
-    alignSelf: 'flex-end',
-  }
 });
 
 export default ChatbotScreen;

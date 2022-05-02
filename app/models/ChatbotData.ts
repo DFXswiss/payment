@@ -22,7 +22,7 @@ export interface ChatbotMessage {
   type: ChatbotMessageType
   label: string | undefined,
   element: ChatbotElement,
-  answerItem: ChatbotAnswerItemType | undefined,
+  itemType: ChatbotItemType | undefined,
   answerData: ChatbotAnswerData[] | undefined,
 }
 
@@ -50,6 +50,9 @@ export enum ChatbotItemType {
   OUTPUT = "output:text:plain",
   PLAIN = "query:text:plain",
   DROPDOWN = "query:text:dropdown",
+  ANSWER_PLAIN = "query:answer:plain",
+  ANSWER_DROPDOWN = "query:answer:dropdown",
+  ANSWER_SELECTION = "query:answer:selection",
 }
 
 export enum ChatbotItemKind {
@@ -63,13 +66,8 @@ export interface ChatbotAnswer {
 }
 
 export interface ChatbotAnswerItem {
-  type: ChatbotAnswerItemType
+  type: ChatbotItemType
   data: string
-}
-
-export enum ChatbotAnswerItemType {
-  PLAIN = "query:answer:plain",
-  DROPDOWN = "query:answer:dropdown",
 }
 
 export interface ChatbotAnswerData {

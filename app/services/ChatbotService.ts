@@ -52,17 +52,24 @@ export const nextStep = (id: string, chatbotId: string, answer: ChatbotAnswer): 
 // Mock starts here
 import initialQuestion from "./mocks/next-step_1.json"
 import question2 from "./mocks/next-step_2.json"
+import question3 from "./mocks/next-step_3a.json"
+import question4 from "./mocks/next-step_4.json"
+import question5 from "./mocks/next-step_5.json"
 
 const chatbotInit = "{\"items\":[],\"attributes\":null}"
-const chatbotAnswer1 = "{\"items\":[{\"type\":\"query:answer:plain\",\"data\":\"01.01.1980\"}],\"attributes\":null}"
+const chatbotAnswer1 = "{\"items\":[{\"type\":\"query:answer:plain\",\"data\":\"\\\"01.01.1980\\\"\"}],\"attributes\":null}"
+const chatbotAnswer2 = "{\"items\":[{\"type\":\"query:answer:dropdown\",\"data\":\"{\\\"key\\\":\\\"AF\\\",\\\"text\\\":{\\\"de\\\":\\\"Afghanistan\\\",\\\"en\\\":\\\"Afghanistan\\\",\\\"fr\\\":\\\"Afghanistan\\\",\\\"it\\\":\\\"Afghanistan\\\"}}\"}],\"attributes\":null}"
+const chatbotAnswer3 = "{\"items\":[{\"type\":\"query:answer:dropdown\",\"data\":\"{\\\"key\\\":\\\"done\\\",\\\"text\\\":{\\\"en\\\":\\\"No further citizenship\\\",\\\"de\\\":\\\"Keine weitere Staatsbürgerschaft\\\",\\\"fr\\\":\\\"Pas d'autre nationalité\\\"},\\\"prefix\\\":\\\"000\\\"}\"}],\"attributes\":null}"
+const chatbotAnswer4 = "{\"items\":[{\"type\":\"query:answer:plain\",\"data\":\"\\\"Berlin\\\"\"}],\"attributes\":null}"
 
 const chatbotNextQuestionBaseOn = (answer: ChatbotAnswer): ChatbotQuestion => {
-  // console.log("checking against")
-  // console.log(JSON.stringify(answer))
-  // console.log(chatbotAnswer1)
+  console.log(JSON.stringify(answer))
   if (JSON.stringify(answer) === chatbotInit) return initialQuestion
-  if (JSON.stringify(answer) === chatbotAnswer1 ||
-    (JSON.stringify(answer).includes("01.01.1980") && JSON.stringify(answer).includes("query:answer:plain"))) return question2
+  if (JSON.stringify(answer) === chatbotAnswer1) return question2
+  if (JSON.stringify(answer) === chatbotAnswer2) return question3
+  if (JSON.stringify(answer) === chatbotAnswer3) return question4
+  if (JSON.stringify(answer) === chatbotAnswer4) return question5
+  console.warn("MOCK: not finding next question to answer above")
   return {}
 }
 // Mock ends here

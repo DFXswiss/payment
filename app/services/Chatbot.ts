@@ -1,4 +1,4 @@
-import { ChatbotAnswer, ChatbotAnswerItemType, ChatbotElement, ChatbotLanguageValues, ChatbotMessage, ChatbotMessageType, ChatbotQuestion, ChatbotItem, ChatbotItemType, ChatbotItemKind, ChatbotDropdownData, ChatbotAnswerData } from "../models/ChatbotData"
+import { ChatbotAnswer, ChatbotElement, ChatbotLanguageValues, ChatbotMessage, ChatbotMessageType, ChatbotQuestion, ChatbotItem, ChatbotItemType, ChatbotItemKind, ChatbotDropdownData, ChatbotAnswerData } from "../models/ChatbotData"
 
 // { id: 0, condition: Boolean(authenticationInfo?.secretTitle.en), label: authenticationInfo?.secretTitle.en, element: ChatbotElement.HEADER },
 // { id: 1, condition: Boolean(authenticationInfo?.secretLabel.en), label: authenticationInfo?.secretLabel.en, element: ChatbotElement.TEXT },
@@ -33,53 +33,62 @@ export const chatbotFeedQuestion = (question: ChatbotQuestion, messages?: Chatbo
 export const chatbotCreateAnswer = (value: string, messages: ChatbotMessage[]): ChatbotAnswer => {
   let lastMessage = messages.splice(-1)[0]
 
-  if (lastMessage.answerItem === undefined) {
+  if (lastMessage.itemType === undefined) {
     return { items: [], attributes: null }
   }
   
   let answerItem = {
-    type: lastMessage.answerItem,
-    data: value,
+    type: lastMessage.itemType,
+    data: JSON.stringify(value),
   }
   return { items: [answerItem], attributes: null }
 }
 
 const parseItem = (item: ChatbotItem, index: number): ChatbotMessage => {
-  let label = JSON.parse(item.data)
-  if (item.kind === ChatbotItemKind.OUTPUT) {
-    switch (item.type) {
-      case ChatbotItemType.OUTPUT: 
-      case ChatbotItemType.PLAIN:
-        let values = JSON.parse(item.data) as ChatbotLanguageValues
-        label = values.en
-        break
-      case ChatbotItemType.DROPDOWN:
-        let dropdownData = JSON.parse(item.data) as ChatbotDropdownData
-        label = dropdownData.text.en
-        break
-    }
+  let label = ""
+  switch (item.type) {
+    case ChatbotItemType.OUTPUT: 
+    case ChatbotItemType.PLAIN:
+      let values = JSON.parse(item.data) as ChatbotLanguageValues
+      label = values.en
+      break
+    case ChatbotItemType.ANSWER_PLAIN:
+      label = JSON.parse(item.data)
+      break
+    case ChatbotItemType.DROPDOWN:
+    case ChatbotItemType.ANSWER_DROPDOWN:
+    case ChatbotItemType.ANSWER_SELECTION:
+      let dropdownData = JSON.parse(item.data) as ChatbotDropdownData
+      label = dropdownData.text.en
+      break
+  }
+  if (label === "" || typeof(label) === "object") {
+    console.warn("kind: " + item.kind)
+    console.warn("type: " + item.type)
+    console.warn(item.data)
+    label = "Something on parsing is wrong"
   }
   return {
     id: index,
     type: item.kind === ChatbotItemKind.INPUT ? ChatbotMessageType.ANSWER : ChatbotMessageType.QUESTION,
     label: label,
     element: ChatbotElement.TEXT,
-    answerItem: undefined,
+    itemType: undefined,
     answerData: undefined,
   }
 }
 
 const answerBasedOn = (item: ChatbotItem, index: number): ChatbotMessage => {
   let answerData: ChatbotAnswerData[] = []
-  let answerItemType
+  let itemType
   let answerElement = ChatbotElement.TEXT
   switch (item.type) {
     case ChatbotItemType.PLAIN:
-      answerItemType = ChatbotAnswerItemType.PLAIN
+      itemType = ChatbotItemType.ANSWER_PLAIN
       answerElement = ChatbotElement.TEXTBOX
       break
     case ChatbotItemType.DROPDOWN:
-      answerItemType = ChatbotAnswerItemType.DROPDOWN
+      itemType = ChatbotItemType.ANSWER_DROPDOWN
       answerElement = ChatbotElement.DROPDOWN
       let dropdownData = JSON.parse(item.data) as ChatbotDropdownData
       answerData.push({key: "dfx_initial", label: "Choose", isSelected: true, chatbotElement: null})
@@ -98,7 +107,7 @@ const answerBasedOn = (item: ChatbotItem, index: number): ChatbotMessage => {
     type: ChatbotMessageType.ANSWER,
     label: undefined,
     element: answerElement,
-    answerItem: answerItemType,
+    itemType: itemType,
     answerData: answerData,
   }
 }

@@ -184,9 +184,6 @@ const LoginScreen = () => {
         ) : (
           <>
             <H1 text={t("session.sign_up")} />
-            <DeFiButton onPress={openInstructions} compact>
-              {t("session.instructions")}
-            </DeFiButton>
             <SpacerV />
             <View style={AppStyles.singleColFormContainer}>
               <Form

@@ -244,6 +244,7 @@
         "finish_chatbot": "Chatbot fertig",
         "initiating": "Die Verifizierung ist in Vorbereitung, es kann eine Weile dauern. Wir bitten um Geduld.",
         "increase_limit": "Limite erhöhen",
+        "limit_request_submitted": "Die Anfrage wurde erfolgreich abgesetzt. Du wirst von uns per E-Mail kontaktiert, sobald die Daten geprüft wurden.",
         "volume": "Investitionsvolumen",
         "investment_date": "Investitionszeitpunkt",
         "now": "Aktuelle Vermögenswerte",

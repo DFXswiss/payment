@@ -161,7 +161,8 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       .finally(() => setIsKycInit(false));
   };
 
-  const goToKycScreen = (code: string | undefined = user?.kycHash) => navigate(Routes.Kyc, { code: code ?? "" });
+  const goToKycScreen = (code: string | undefined = user?.kycHash) =>
+    navigate(Routes.Kyc, { code: code ?? "", autostart: "1" });
 
   const onRefFeeChanged = (fee: number): void => {
     if (user) user.refFeePercent = fee;

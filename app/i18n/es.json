@@ -227,6 +227,7 @@
         "finish_chatbot": "Completado chatbot",
         "initiating": "La verificación está en preparación, puede llevar un tiempo. Le pedimos que tenga paciencia.",
         "increase_limit": "Aumentar el límite",
+        "limit_request_submitted": "La solicitud ha sido enviada con éxito. Nos pondremos en contacto con usted por correo electrónico tan pronto como se hayan verificado los datos.",
         "volume": "Volumen de inversión",
         "investment_date": "Calendario de inversiones",
         "now": "Activos corrientes",

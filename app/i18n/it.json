@@ -243,6 +243,7 @@
         "finish_chatbot": "Chatbot terminato",
         "initiating": "La verifica è in preparazione, potrebbe volerci un po' di tempo. Ti chiediamo pazienza",
         "increase_limit": "Aumenta il limite",
+        "limit_request_submitted": "La richiesta è stata inviata con successo. Sarai contattato via e-mail non appena i dati saranno verificati.",
         "volume": "Volume degli investimenti",
         "investment_date": "Data dell'investimento",
         "now": "Attività correnti",

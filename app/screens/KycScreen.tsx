@@ -48,12 +48,15 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     setCode(params.code);
 
     // reset params
-    nav.navigate(Routes.Kyc, { code: undefined });
+    nav.navigate(Routes.Kyc, { code: undefined, autostart: undefined });
 
     // get KYC info
-    getKyc(params?.code).then(updateState).catch(onLoadFailed);
-
-    // TODO: autostart coming from home?
+    getKyc(params?.code)
+      .then((result) => {
+        updateState(result);
+        if (params?.autostart) onContinue(result);
+      })
+      .catch(onLoadFailed);
   }, []);
 
   const finishChatBot = (nthTry = 13): Promise<void> => {
@@ -87,13 +90,15 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     setIsLoading(false);
   };
 
-  const onContinue = () => {
-    if (kycInProgress(kycResult?.kycStatus)) {
+  const onContinue = (result: KycResult) => {
+    if (kycInProgress(result?.kycStatus)) {
+      if (!result?.sessionUrl) return NotificationService.error(t("feedback.load_failed"));
+
+      // load iframe
       setShowIframe(true);
       setIsLoading(true);
       setTimeout(() => setIsLoading(false), 2000);
-      // TODO: check if sessionUrl
-    } else if (kycCompleted(kycResult?.kycStatus)) {
+    } else if (kycCompleted(result?.kycStatus)) {
       setIsLimitRequest(true);
     }
   };
@@ -148,7 +153,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
             {((kycInProgress(kycResult.kycStatus) && kycResult.kycState !== KycState.REVIEW) ||
               kycCompleted(kycResult.kycStatus)) && (
               <ButtonContainer>
-                <DeFiButton mode="contained" onPress={onContinue}>
+                <DeFiButton mode="contained" onPress={() => onContinue(kycResult)}>
                   {t(kycCompleted(kycResult.kycStatus) ? "model.kyc.increase_limit" : "action.next")}
                 </DeFiButton>
               </ButtonContainer>

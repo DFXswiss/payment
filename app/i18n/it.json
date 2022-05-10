@@ -44,6 +44,7 @@
       "pattern_invalid": "Formato non valido",
       "iban_invalid": "IBAN non valido",
       "iban_country_invalid": "Codice paese IBAN non consentito",
+      "iban_blocked": "IBAN non consentito",
       "code_and_number": "Si prega di compilare il prefisso e il numero",
       "file_too_large": "Il file è troppo grande"
     },

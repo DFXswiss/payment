@@ -4,6 +4,7 @@ import * as IbanTools from "ibantools";
 import { Country } from "../models/Country";
 import libphonenumber from "google-libphonenumber";
 import { Environment } from "../env/Environment";
+import BlockedIbans from "../assets/blocked-iban.json";
 
 class ValidationsClass {
   public get Required() {
@@ -18,11 +19,20 @@ class ValidationsClass {
   public Iban(countries: Country[]) {
     return this.Custom((iban: string) => {
       iban = iban.split(" ").join("");
-      return countries.find((c) => iban.toLowerCase().startsWith(c.symbol.toLowerCase()))?.enable
-        ? IbanTools.validateIBAN(iban).valid
-          ? true
-          : "validation.iban_invalid"
-        : "validation.iban_country_invalid";
+
+      // check country
+      const allowedCountries = countries.filter((c) => c.enable).map((c) => c.symbol.toLowerCase());
+      if (iban.length >= 2 && !allowedCountries.find((c) => iban.toLowerCase().startsWith(c))) {
+        return "validation.iban_country_invalid";
+      }
+
+      // check blocked IBANs
+      const blockedIbans = BlockedIbans.map((i) => i.split(" ").join("").toLowerCase());
+      if (blockedIbans.some((i) => iban.toLowerCase().startsWith(i))) {
+        return "validation.iban_blocked";
+      }
+
+      return IbanTools.validateIBAN(iban).valid ? true : "validation.iban_invalid";
     });
   }
 

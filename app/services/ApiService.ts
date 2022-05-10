@@ -90,8 +90,8 @@ export const getKyc = (code?: string): Promise<KycResult> => {
   return fetchFrom<KycResult>(`${KycUrl}?code=${code}`);
 };
 
-export const postLimit = (request: LimitRequest): Promise<LimitRequest> => {
-  return fetchFrom<LimitRequest>(`${KycUrl}/limit`, "POST", request);
+export const postLimit = (request: LimitRequest, code?: string): Promise<LimitRequest> => {
+  return fetchFrom<LimitRequest>(`${KycUrl}/limit?code=${code}`, "POST", request);
 };
 
 export const postFounderCertificate = (files: File[]): Promise<void> => {
@@ -159,7 +159,7 @@ export const getStakingBatches = (route: StakingRoute): Promise<StakingBatch[]> 
 };
 
 export const getHistory = (types?: HistoryType[]): Promise<History[]> => {
-  return fetchFrom<History[]>(`HistoryUrl${toHistoryQuery(types)}`);
+  return fetchFrom<History[]>(`${HistoryUrl}${toHistoryQuery(types)}`);
 };
 
 export const createHistoryCsv = (types?: HistoryType[]): Promise<number> => {
@@ -210,7 +210,7 @@ const postFiles = (url: string, files: File[]): Promise<void> => {
 
 const fetchFrom = <T>(
   url: string,
-  method: "GET" | "PUT" | "POST" = "GET",
+  method: "GET" | "PUT" | "POST" | "DELETE" = "GET",
   data?: any,
   noJson?: boolean
 ): Promise<T> => {
@@ -219,7 +219,7 @@ const fetchFrom = <T>(
       .then((init) => fetch(`${BaseUrl}/${url}`, init))
       .then((response) => {
         if (response.ok) {
-          return response.json();
+          return response.json().catch(() => undefined);
         }
         return response.json().then((body) => {
           throw body;
@@ -236,7 +236,12 @@ const fetchFrom = <T>(
   );
 };
 
-const buildInit = (method: "GET" | "PUT" | "POST", session: Session, data?: any, noJson?: boolean): RequestInit => ({
+const buildInit = (
+  method: "GET" | "PUT" | "POST" | "DELETE",
+  session: Session,
+  data?: any,
+  noJson?: boolean
+): RequestInit => ({
   method: method,
   headers: {
     ...(noJson ? undefined : { "Content-Type": "application/json" }),

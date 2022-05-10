@@ -44,6 +44,7 @@
       "pattern_invalid": "Invalid format",
       "iban_invalid": "Invalid IBAN",
       "iban_country_invalid": "IBAN country code not allowed",
+      "iban_blocked": "IBAN not allowed",
       "code_and_number": "Please fill in area code and number",
       "file_too_large": "File is too large"
     },
@@ -240,6 +241,7 @@
         "finish_chatbot": "Chatbot finished",
         "initiating": "Verification is in preparation, it may take a while. We ask for patience.",
         "increase_limit": "Increase limit",
+        "limit_request_submitted": "The request has been successfully submitted. You will be contacted by email as soon as the data has been verified.",
         "volume": "Investment volume",
         "investment_date": "Investment date",
         "now": "Current assets",

@@ -15,8 +15,7 @@ import AppStyles from "../../styles/AppStyles";
 import { View } from "react-native";
 import IconButton from "../util/IconButton";
 import { postLimit } from "../../services/ApiService";
-import NotificationService from "../../services/NotificationService";
-import { ApiError } from "../../models/ApiDto";
+import { Paragraph } from "react-native-paper";
 
 const LimitLabels = {
   [Limit.K_500]: "CHF 100'000 - 500'000",
@@ -27,9 +26,10 @@ const LimitLabels = {
   [Limit.INFINITY]: "> CHF 15'000'000",
 };
 
-const LimitEdit = ({ onSuccess }: { onSuccess: () => void }) => {
+const LimitEdit = ({ code, onSuccess }: { code?: string; onSuccess: () => void }) => {
   const { t } = useTranslation();
   const [isSaving, setIsSaving] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState<string>();
   const [fileSize, setFileSize] = useState<number>(0);
 
@@ -52,12 +52,9 @@ const LimitEdit = ({ onSuccess }: { onSuccess: () => void }) => {
     setIsSaving(true);
     setError(undefined);
 
-    postLimit(request)
-      .then(() => {
-        NotificationService.success(t("feedback.request_submitted")); // TODO: info popup?
-        onSuccess();
-      })
-      .catch((error: ApiError) => setError(""))
+    postLimit(request, code)
+      .then(() => setIsSubmitted(true))
+      .catch(() => setError(""))
       .finally(() => setIsSaving(false));
   };
 
@@ -71,7 +68,17 @@ const LimitEdit = ({ onSuccess }: { onSuccess: () => void }) => {
     });
   };
 
-  return (
+  return isSubmitted ? (
+    <>
+      <Paragraph>{t("model.kyc.limit_request_submitted")}</Paragraph>
+      <SpacerV />
+      <ButtonContainer>
+        <DeFiButton mode="contained" onPress={onSuccess}>
+          {t("action.ok")}
+        </DeFiButton>
+      </ButtonContainer>
+    </>
+  ) : (
     <Form control={control} rules={rules} errors={errors} onSubmit={handleSubmit(onSubmit)}>
       <DeFiPicker
         name="limit"

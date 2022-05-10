@@ -8,20 +8,37 @@ import { StyleSheet, View } from "react-native";
 import { DeFiButton } from "../elements/Buttons";
 import { getKyc } from "../services/ApiService";
 import NotificationService from "../services/NotificationService";
-import { KycResult, KycStatus } from "../models/User";
+import {
+  getKycStatusString,
+  getTradeLimit,
+  kycCompleted,
+  kycInProgress,
+  KycResult,
+  KycState,
+  KycStatus,
+} from "../models/User";
 import { sleep } from "../utils/Utils";
 import KycInit from "../components/KycInit";
+import { SpacerV } from "../elements/Spacers";
+import { H2 } from "../elements/Texts";
+import { AppSettings } from "../services/SettingsService";
+import withSettings from "../hocs/withSettings";
+import { DataTable } from "react-native-paper";
+import { CompactRow, CompactCell } from "../elements/Tables";
+import ButtonContainer from "../components/util/ButtonContainer";
+import LimitEdit from "../components/edit/LimitEdit";
+import DeFiModal from "../components/util/DeFiModal";
 
-const KycScreen = () => {
+const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const { t } = useTranslation();
   const nav = useNavigation();
   const route = useRoute();
 
   const [isLoading, setIsLoading] = useState(true);
+  const [showIframe, setShowIframe] = useState(false);
+  const [isLimitRequest, setIsLimitRequest] = useState(false);
   const [code, setCode] = useState<string | undefined>();
-  const [sessionUrl, setSessionUrl] = useState<string | undefined>();
-  const [setupUrl, setSetupUrl] = useState<string | undefined>();
-  const [kycStatus, setKycStatus] = useState<KycStatus>();
+  const [kycResult, setKycResult] = useState<KycResult | undefined>();
 
   useEffect(() => {
     // get params
@@ -31,17 +48,22 @@ const KycScreen = () => {
     setCode(params.code);
 
     // reset params
-    nav.navigate(Routes.Kyc, { code: undefined });
+    nav.navigate(Routes.Kyc, { code: undefined, autostart: undefined });
 
     // get KYC info
-    getKyc(params?.code).then(updateState).catch(onLoadFailed);
+    getKyc(params?.code)
+      .then((result) => {
+        updateState(result);
+        if (params?.autostart) onContinue(result);
+      })
+      .catch(onLoadFailed);
   }, []);
 
   const finishChatBot = (nthTry = 13): Promise<void> => {
     setIsLoading(true);
     return getKyc(code)
       .then((result: KycResult) => {
-        if (result.status === KycStatus.CHATBOT || !result.sessionUrl) {
+        if (result.kycStatus === KycStatus.CHATBOT || !result.sessionUrl) {
           // retry
           if (nthTry > 1) {
             return sleep(5).then(() => finishChatBot(nthTry - 1));
@@ -64,36 +86,80 @@ const KycScreen = () => {
   };
 
   const updateState = (result: KycResult) => {
-    setSessionUrl(result.sessionUrl);
-    setSetupUrl(result.setupUrl);
+    setKycResult(result);
+    setIsLoading(false);
+  };
 
-    // wait for new page to load
-    setTimeout(() => {
-      setKycStatus(result.status);
-      setIsLoading(false);
-    }, 1000);
+  const onContinue = (result: KycResult) => {
+    if (kycInProgress(result?.kycStatus)) {
+      if (!result?.sessionUrl) return NotificationService.error(t("feedback.load_failed"));
+
+      // load iframe
+      setShowIframe(true);
+      setIsLoading(true);
+      setTimeout(() => setIsLoading(false), 2000);
+    } else if (kycCompleted(result?.kycStatus)) {
+      setIsLimitRequest(true);
+    }
   };
 
   return (
     <AppLayout>
       <KycInit isVisible={isLoading} setIsVisible={setIsLoading} />
 
-      {sessionUrl && (
-        <View style={styles.container}>
-          {setupUrl && (
-            <View style={styles.hiddenIframe}>
-              <Iframe src={setupUrl} />
-            </View>
-          )}
-          <Iframe src={sessionUrl} />
+      <DeFiModal
+        isVisible={isLimitRequest}
+        setIsVisible={setIsLimitRequest}
+        title={t("model.kyc.increase_limit")}
+        style={{ width: 400 }}
+      >
+        <LimitEdit code={code} onSuccess={() => setIsLimitRequest(false)} />
+      </DeFiModal>
 
-          {kycStatus === KycStatus.CHATBOT && (
-            <DeFiButton onPress={() => finishChatBot()} loading={isLoading} labelStyle={styles.chatbotButton}>
-              {t("model.kyc.finish_chatbot")}
-            </DeFiButton>
-          )}
-        </View>
-      )}
+      {kycResult &&
+        (showIframe && kycResult.sessionUrl ? (
+          <View style={styles.container}>
+            {kycResult.setupUrl && (
+              <View style={styles.hiddenIframe}>
+                <Iframe src={kycResult.setupUrl} />
+              </View>
+            )}
+            <Iframe src={kycResult.sessionUrl} />
+
+            {kycResult.kycStatus === KycStatus.CHATBOT && (
+              <DeFiButton onPress={() => finishChatBot()} loading={isLoading} labelStyle={styles.chatbotButton}>
+                {t("model.kyc.finish_chatbot")}
+              </DeFiButton>
+            )}
+          </View>
+        ) : (
+          <View>
+            {!settings?.isIframe && <SpacerV height={30} />}
+
+            <H2 text={t("model.kyc.status")} />
+            <SpacerV />
+            <DataTable>
+              <CompactRow>
+                <CompactCell>{t("model.kyc.status")}</CompactCell>
+                <CompactCell multiLine>{getKycStatusString(kycResult)}</CompactCell>
+              </CompactRow>
+              <CompactRow>
+                <CompactCell>{t("model.user.limit")}</CompactCell>
+                <CompactCell>{getTradeLimit(kycResult)}</CompactCell>
+              </CompactRow>
+            </DataTable>
+            <SpacerV />
+            {/* TODO: integrate initial limit increase */}
+            {((kycInProgress(kycResult.kycStatus) && kycResult.kycState !== KycState.REVIEW) ||
+              kycCompleted(kycResult.kycStatus)) && (
+              <ButtonContainer>
+                <DeFiButton mode="contained" onPress={() => onContinue(kycResult)}>
+                  {t(kycCompleted(kycResult.kycStatus) ? "model.kyc.increase_limit" : "action.next")}
+                </DeFiButton>
+              </ButtonContainer>
+            )}
+          </View>
+        ))}
     </AppLayout>
   );
 };
@@ -113,4 +179,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default KycScreen;
+export default withSettings(KycScreen);

@@ -45,6 +45,7 @@
       "pattern_invalid": "Formato inválido",
       "iban_invalid": "IBAN inválido",
       "iban_country_invalid": "Código de país IBAN não permitido",
+      "iban_blocked": "IBAN não permitido",
       "code_and_number": "Por favor preencha o código de área e o número",
       "file_too_large": "O ficheiro é demasiado grande"
     },
@@ -240,6 +241,7 @@
         "finish_chatbot": "Chatbot completo",
         "initiating": "A verificação está em preparação, pode demorar algum tempo. Pedimos a vossa paciência.",
         "increase_limit": "Aumentar o limite",
+        "limit_request_submitted": "O pedido foi apresentado com sucesso. Será contactado por correio electrónico assim que os dados tiverem sido verificados.",
         "volume": "Volume de investimento",
         "investment_date": "Tempo de investimento",
         "now": "Activos correntes",

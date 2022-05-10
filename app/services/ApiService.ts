@@ -29,6 +29,7 @@ import { KycData, toKycDataDto } from "../models/KycData";
 import { Settings } from "../models/Settings";
 import { HistoryType } from "../models/HistoryType";
 import { fromStakingBatchDto, StakingBatch, StakingBatchDto } from "../models/StakingBatch";
+import { ApiKey } from "../models/ApiKey";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -75,6 +76,14 @@ export const putUserLanguage = (language: Language): Promise<void> => {
 
 export const updateRefFee = (fee: number): Promise<void> => {
   return fetchFrom(UserUrl, "PUT", { refFeePercent: fee });
+};
+
+export const generateApiKey = (): Promise<ApiKey> => {
+  return fetchFrom<ApiKey>(`${UserUrl}/apiKey/CT`, "POST");
+};
+
+export const deleteApiKey = (): Promise<void> => {
+  return fetchFrom<void>(`${UserUrl}/apiKey/CT`, "DELETE");
 };
 
 // --- KYC --- //

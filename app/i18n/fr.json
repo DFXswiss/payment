@@ -316,7 +316,12 @@
         "sell": "Transactions de vente",
         "staking": "Transactions de staking",
         "ref": "Récompenses de parrainage",
-        "lm": "Récompenses de liquidity mining"
+        "lm": "Récompenses de liquidity mining",
+        "ct_link": "Lien avec Cointracking",
+        "ct_text": "Vous pouvez lier votre compte DFX à votre compte Cointracking.",
+        "create_api_key": "Générer une clé API",
+        "delete_api_key": "Supprimer la clé API",
+        "csv_export": "Exportation CSV"
       }
     }
   }

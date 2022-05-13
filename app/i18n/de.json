@@ -322,6 +322,7 @@
         "ref": "Referral-Rewards",
         "lm": "Liquidity-Mining-Rewards",
         "ct_link": "Cointracking-Verknüpfung",
+        "ct_website": "Cointracking Homepage",
         "ct_text": "Du kannst dein DFX-Konto mit deinem Cointracking-Konto verknüpfen.",
         "create_api_key": "API-Key generieren",
         "delete_api_key": "API-Key löschen",

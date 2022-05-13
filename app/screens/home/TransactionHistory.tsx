@@ -10,18 +10,22 @@ import { SpacerV } from "../../elements/Spacers";
 import { CompactRow, CompactCell } from "../../elements/Tables";
 import { H3 } from "../../elements/Texts";
 import { Environment } from "../../env/Environment";
+import withSettings from "../../hocs/withSettings";
 import { ApiError } from "../../models/ApiDto";
 import { HistoryType } from "../../models/HistoryType";
 import { createHistoryCsv, deleteApiKey, generateApiKey } from "../../services/ApiService";
 import ClipboardService from "../../services/ClipboardService";
 import NotificationService from "../../services/NotificationService";
+import { AppSettings } from "../../services/SettingsService";
 import { openUrl } from "../../utils/Utils";
 
 const TransactionHistory = ({
+  settings,
   onClose,
   apiKey,
   setApiKey,
 }: {
+  settings?: AppSettings;
   onClose: () => void;
   apiKey?: string;
   setApiKey: (key: string | undefined) => void;
@@ -33,6 +37,12 @@ const TransactionHistory = ({
   const [types, setTypes] = useState<{ [type: string]: boolean }>(
     Object.values(HistoryType).reduce((prev, curr) => ({ ...prev, [curr]: true }), {})
   );
+
+  const onOpenCt = () => {
+    let url = "https://cointracking.info/?ref=D270827";
+    url += settings?.language ? `&language=${settings.language.toLowerCase()}` : "";
+    openUrl(url);
+  };
 
   const onGenerateKey = () => {
     setIsKeyLoading(true);
@@ -66,6 +76,11 @@ const TransactionHistory = ({
   return (
     <>
       <H3 text={t("model.history.ct_link")} />
+      <DeFiButton mode="contained" onPress={onOpenCt}>
+        {t("model.history.ct_website")}
+      </DeFiButton>
+      <SpacerV />
+
       {apiKey == null ? (
         <>
           <Paragraph>{t("model.history.ct_text")}</Paragraph>
@@ -98,15 +113,16 @@ const TransactionHistory = ({
               </CompactRow>
             )}
           </DataTable>
-          <SpacerV />
 
-          <DeFiButton mode="contained" loading={isKeyLoading} onPress={onDeleteKey}>
-            {t("model.history.delete_api_key")}
-          </DeFiButton>
+          <ButtonContainer>
+            <DeFiButton loading={isKeyLoading} onPress={onDeleteKey}>
+              {t("model.history.delete_api_key")}
+            </DeFiButton>
+          </ButtonContainer>
         </>
       )}
 
-      <SpacerV height={30} />
+      <SpacerV height={20} />
       <Divider style={{ backgroundColor: Colors.LightGrey }} />
       <SpacerV height={20} />
 
@@ -135,4 +151,4 @@ const TransactionHistory = ({
   );
 };
 
-export default TransactionHistory;
+export default withSettings(TransactionHistory);

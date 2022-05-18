@@ -50,6 +50,7 @@ export enum ChatbotItemType {
   OUTPUT = "output:text:plain",
   PLAIN = "query:text:plain",
   DROPDOWN = "query:text:dropdown",
+  SELECTION = "query:text:selection",
   ANSWER_PLAIN = "query:answer:plain",
   ANSWER_DROPDOWN = "query:answer:dropdown",
   ANSWER_SELECTION = "query:answer:selection",
@@ -84,6 +85,7 @@ export interface ChatbotDropdownData {
 }
 
 export interface ChatbotDropdownDataItem {
-  key: string,
+  key: string
   text: ChatbotLanguageValues
+  prefix: string | undefined
 }

@@ -5,7 +5,6 @@ import { StyleSheet, View } from "react-native";
 import { DataTable, IconButton, Text, TextInput } from 'react-native-paper';
 import AnswerDropdown from '../components/chatbot/AnswerDropdown';
 import AnswerTextbox from '../components/chatbot/AnswerTextbox';
-import DeFiDropdown from '../components/form/DeFiDropdown';
 import Loading from '../components/util/Loading';
 import Colors from '../config/Colors';
 import Routes from '../config/Routes';
@@ -16,6 +15,7 @@ import { ChatbotAnswer, ChatbotAnswerData, ChatbotAuthenticationInfo, ChatbotEle
 import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotStart } from '../services/Chatbot';
 import { getAuthenticationInfo, nextStep, postSMSCode, requestSMSCode } from '../services/ChatbotService';
 import NotificationService from '../services/NotificationService';
+import SettingsService from '../services/SettingsService';
 import AppStyles from '../styles/AppStyles';
 
 const ChatbotScreen = ({
@@ -26,6 +26,7 @@ const ChatbotScreen = ({
   const { t } = useTranslation();
   const nav = useNavigation();
 
+  const [languageSymbol, setLanguageSymbol] = useState<string | undefined>();
   const [sessionId, setSessionId] = useState<string | undefined>();
   const [isLoading, setLoading] = useState<Boolean>(false);
   const [smsCode, setSMSCode] = useState<string>("");
@@ -35,6 +36,7 @@ const ChatbotScreen = ({
   const [messages, setMessages] = useState<ChatbotMessage[]>();
 
   useEffect(() => {
+    SettingsService.Language.then(l => { setLanguageSymbol(l?.symbol) })
     let id = extractSessionId(sessionUrl)
     setSessionId(id)
     getAuthenticationInfo(id)
@@ -57,6 +59,13 @@ const ChatbotScreen = ({
 
   const onSMSChallengeFailed = () => {
     console.log("TODO show error message")
+  }
+
+  const onFinished = () => {
+    console.log("we are finished, what we do now? Auto nav back after x seconds?")
+    setTimeout(() => {
+      nav.navigate(Routes.Home)
+    }, 3000);
   }
 
   const requestSMS = (id: string | undefined) => {
@@ -83,13 +92,17 @@ const ChatbotScreen = ({
       .then((question) => {
         setLoading(false)
         console.log(messages)
-        setMessages(chatbotFeedQuestion(question, messages))
+        let [newMessages, isFinished] = chatbotFeedQuestion(question, messages)
+        setMessages(newMessages)
+        if (isFinished) {
+          onFinished()
+        }
       })
   }
 
   return (
     <View style={styles.container}>
-      { console.log("re-render chatbot screen") }
+      {console.log("re-render chatbot screen with language " + languageSymbol)}
       {/* Loading */}
       {isLoading && <Loading size="large" />}
       {/* SMS screen */}
@@ -107,10 +120,11 @@ const ChatbotScreen = ({
             <SpacerV />
             <Text style={{ color: Colors.Grey }}>{"If you did not receive an SMS Code, please contact "}</Text>
             {/* TODO link to support@kyc.ch */}
+            <SpacerV height={20} />
+            <DeFiButton mode="contained" onPress={() => { submitSMSCode() }}>
+              {"Submit" /* TODO localize this */}
+            </DeFiButton>
           </View>
-          <DeFiButton mode="contained" onPress={() => { submitSMSCode() }}>
-            {"Submit"}
-          </DeFiButton>
         </View>
       )}
       {/* Chatbot messages screen */}
@@ -137,14 +151,14 @@ const ChatbotScreen = ({
                     </View>
                   )}
                   {message.type === ChatbotMessageType.ANSWER && message.element === ChatbotElement.TEXTBOX && (
-                    <AnswerTextbox 
-                      onSubmit={value => { requestNextStep(chatbotCreateAnswer(value, messages), chatbotId) }} 
+                    <AnswerTextbox
+                      onSubmit={value => { requestNextStep(chatbotCreateAnswer(value, messages), chatbotId) }}
                     />
                   )}
-                  {message.type === ChatbotMessageType.ANSWER && message.element === ChatbotElement.DROPDOWN && message.answerData && (                    
-                    <AnswerDropdown 
-                      onSubmit={value => { requestNextStep(chatbotCreateAnswer(value, messages), chatbotId) }} 
-                      message={message} 
+                  {message.type === ChatbotMessageType.ANSWER && message.element === ChatbotElement.DROPDOWN && message.answerData && (
+                    <AnswerDropdown
+                      onSubmit={value => { requestNextStep(chatbotCreateAnswer(value, messages), chatbotId) }}
+                      message={message}
                     />
                   )}
                   {/* {message.element === ChatbotElement.TEXTBOX_BUTTON && typeof message.label === 'object' && (

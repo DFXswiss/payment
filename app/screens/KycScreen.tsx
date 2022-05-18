@@ -28,6 +28,7 @@ import { CompactRow, CompactCell } from "../elements/Tables";
 import ButtonContainer from "../components/util/ButtonContainer";
 import LimitEdit from "../components/edit/LimitEdit";
 import DeFiModal from "../components/util/DeFiModal";
+import ChatbotScreen from "./ChatbotScreen";
 
 const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const { t } = useTranslation();
@@ -35,7 +36,6 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const route = useRoute();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [showIframe, setShowIframe] = useState(false);
   const [isLimitRequest, setIsLimitRequest] = useState(false);
   const [code, setCode] = useState<string | undefined>();
   const [kycResult, setKycResult] = useState<KycResult | undefined>();
@@ -86,6 +86,9 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   };
 
   const updateState = (result: KycResult) => {
+    // result.kycStatus = KycStatus.CHATBOT
+    // result.sessionUrl = "https://services.eurospider.com/chatbot-ui/program/kyc-onboarding/qv1FFwanO1urFE5NuNu2DajVvkfzcVPCLZoyKQPVJkg8pMuMAOCOmg9iGHhMNtj7?st=tan&l=en&key=XpBxQHYZ&nc=true"
+    // "https://services.eurospider.com/chatbot-service/rest/session/qv1FFwanO1urFE5NuNu2DajVvkfzcVPCLZoyKQPVJkg8pMuMAOCOmg9iGHhMNtj7/authentication-info?nc=true"
     setKycResult(result);
     setIsLoading(false);
   };
@@ -95,7 +98,6 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
       if (!result?.sessionUrl) return NotificationService.error(t("feedback.load_failed"));
 
       // load iframe
-      setShowIframe(true);
       setIsLoading(true);
       setTimeout(() => setIsLoading(false), 2000);
     } else if (kycCompleted(result?.kycStatus)) {
@@ -117,19 +119,19 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
       </DeFiModal>
 
       {kycResult &&
-        (showIframe && kycResult.sessionUrl ? (
+        (kycResult.sessionUrl ? (
           <View style={styles.container}>
             {kycResult.setupUrl && (
               <View style={styles.hiddenIframe}>
                 <Iframe src={kycResult.setupUrl} />
               </View>
             )}
-            <Iframe src={kycResult.sessionUrl} />
-
-            {kycResult.kycStatus === KycStatus.CHATBOT && (
-              <DeFiButton onPress={() => finishChatBot()} loading={isLoading} labelStyle={styles.chatbotButton}>
-                {t("model.kyc.finish_chatbot")}
-              </DeFiButton>
+            {kycResult.kycStatus === KycStatus.CHATBOT ? (
+              <View style={styles.container}>
+                <ChatbotScreen sessionUrl={kycResult.sessionUrl} />
+              </View>
+            ) : (
+              <Iframe src={kycResult.sessionUrl} />
             )}
           </View>
         ) : (
@@ -152,12 +154,12 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
             {/* TODO: integrate initial limit increase */}
             {((kycInProgress(kycResult.kycStatus) && kycResult.kycState !== KycState.REVIEW) ||
               kycCompleted(kycResult.kycStatus)) && (
-              <ButtonContainer>
-                <DeFiButton mode="contained" onPress={() => onContinue(kycResult)}>
-                  {t(kycCompleted(kycResult.kycStatus) ? "model.kyc.increase_limit" : "action.next")}
-                </DeFiButton>
-              </ButtonContainer>
-            )}
+                <ButtonContainer>
+                  <DeFiButton mode="contained" onPress={() => onContinue(kycResult)}>
+                    {t(kycCompleted(kycResult.kycStatus) ? "model.kyc.increase_limit" : "action.next")}
+                  </DeFiButton>
+                </ButtonContainer>
+              )}
           </View>
         ))}
     </AppLayout>

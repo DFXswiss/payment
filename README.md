@@ -1,4 +1,4 @@
-# payment.fiat2defi.ch
+# DFX Payment Page
 
 ## Deployment
 * npx expo-optimize

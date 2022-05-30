@@ -525,9 +525,6 @@ const RouteList = ({
               <SpacerV height={20} />
               <View style={AppStyles.containerHorizontal}>
                 <H3 text={t("model.route.staking")} />
-                <View style={styles.betaContainer}>
-                  <Text style={styles.beta}> Beta</Text>
-                </View>
               </View>
 
               <DataTable>

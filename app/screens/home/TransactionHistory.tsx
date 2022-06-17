@@ -10,21 +10,25 @@ import { SpacerV } from "../../elements/Spacers";
 import { CompactRow, CompactCell } from "../../elements/Tables";
 import { H3 } from "../../elements/Texts";
 import { Environment } from "../../env/Environment";
+import withSession from "../../hocs/withSession";
 import withSettings from "../../hocs/withSettings";
 import { ApiError } from "../../models/ApiDto";
 import { HistoryType } from "../../models/HistoryType";
 import { createHistoryCsv, deleteApiKey, generateApiKey } from "../../services/ApiService";
+import { Session } from "../../services/AuthService";
 import ClipboardService from "../../services/ClipboardService";
 import NotificationService from "../../services/NotificationService";
 import { AppSettings } from "../../services/SettingsService";
 import { openUrl } from "../../utils/Utils";
 
 const TransactionHistory = ({
+  session,
   settings,
   onClose,
   apiKey,
   setApiKey,
 }: {
+  session?: Session;
   settings?: AppSettings;
   onClose: () => void;
   apiKey?: string;
@@ -75,56 +79,60 @@ const TransactionHistory = ({
 
   return (
     <>
-      <H3 text={t("model.history.ct_link")} />
-      <DeFiButton mode="contained" onPress={onOpenCt}>
-        {t("model.history.ct_website")}
-      </DeFiButton>
-      <SpacerV />
-
-      {apiKey == null ? (
+      {session?.isBetaUser && (
         <>
-          <Paragraph>{t("model.history.ct_text")}</Paragraph>
-          <SpacerV />
-          <DeFiButton mode="contained" loading={isKeyLoading} onPress={onGenerateKey}>
-            {t("model.history.create_api_key")}
+          <H3 text={t("model.history.ct_link")} />
+          <DeFiButton mode="contained" onPress={onOpenCt}>
+            {t("model.history.ct_website")}
           </DeFiButton>
-        </>
-      ) : (
-        <>
-          <DataTable>
-            <CompactRow>
-              <CompactCell>API-Key</CompactCell>
-              <CompactCell style={{ flex: 2 }} multiLine>
-                {apiKey}
-              </CompactCell>
-              <CompactCell style={{ flex: undefined }}>
-                <IconButton icon="content-copy" onPress={() => ClipboardService.copy(apiKey)} />
-              </CompactCell>
-            </CompactRow>
-            {apiSecret && (
-              <CompactRow>
-                <CompactCell>API-Secret</CompactCell>
-                <CompactCell style={{ flex: 2 }} multiLine>
-                  {apiSecret}
-                </CompactCell>
-                <CompactCell style={{ flex: undefined }}>
-                  <IconButton icon="content-copy" onPress={() => ClipboardService.copy(apiSecret)} />
-                </CompactCell>
-              </CompactRow>
-            )}
-          </DataTable>
+          <SpacerV />
 
-          <ButtonContainer>
-            <DeFiButton loading={isKeyLoading} onPress={onDeleteKey}>
-              {t("model.history.delete_api_key")}
-            </DeFiButton>
-          </ButtonContainer>
+          {apiKey == null ? (
+            <>
+              <Paragraph>{t("model.history.ct_text")}</Paragraph>
+              <SpacerV />
+              <DeFiButton mode="contained" loading={isKeyLoading} onPress={onGenerateKey}>
+                {t("model.history.create_api_key")}
+              </DeFiButton>
+            </>
+          ) : (
+            <>
+              <DataTable>
+                <CompactRow>
+                  <CompactCell>API-Key</CompactCell>
+                  <CompactCell style={{ flex: 2 }} multiLine>
+                    {apiKey}
+                  </CompactCell>
+                  <CompactCell style={{ flex: undefined }}>
+                    <IconButton icon="content-copy" onPress={() => ClipboardService.copy(apiKey)} />
+                  </CompactCell>
+                </CompactRow>
+                {apiSecret && (
+                  <CompactRow>
+                    <CompactCell>API-Secret</CompactCell>
+                    <CompactCell style={{ flex: 2 }} multiLine>
+                      {apiSecret}
+                    </CompactCell>
+                    <CompactCell style={{ flex: undefined }}>
+                      <IconButton icon="content-copy" onPress={() => ClipboardService.copy(apiSecret)} />
+                    </CompactCell>
+                  </CompactRow>
+                )}
+              </DataTable>
+
+              <ButtonContainer>
+                <DeFiButton loading={isKeyLoading} onPress={onDeleteKey}>
+                  {t("model.history.delete_api_key")}
+                </DeFiButton>
+              </ButtonContainer>
+            </>
+          )}
+
+          <SpacerV height={20} />
+          <Divider style={{ backgroundColor: Colors.LightGrey }} />
+          <SpacerV height={20} />
         </>
       )}
-
-      <SpacerV height={20} />
-      <Divider style={{ backgroundColor: Colors.LightGrey }} />
-      <SpacerV height={20} />
 
       <H3 text={t("model.history.csv_export")} />
       {Object.values(HistoryType).map((type) => (
@@ -151,4 +159,4 @@ const TransactionHistory = ({
   );
 };
 
-export default withSettings(TransactionHistory);
+export default withSession(withSettings(TransactionHistory));

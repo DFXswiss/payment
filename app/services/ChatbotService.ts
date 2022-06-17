@@ -1,4 +1,4 @@
-import { ChatbotAnswer, ChatbotAuthenticationInfo, ChatbotQuestion } from "../models/ChatbotData"
+import { ChatbotAPIAnswer, ChatbotAuthenticationInfo, ChatbotAPIQuestion } from "../models/ChatbotData"
 import { sleep } from "../utils/Utils"
 
 const BaseUrl = "https://services.eurospider.com/chatbot-service/rest/session"
@@ -43,11 +43,11 @@ export const postSMSCode = (id: string): Promise<string> => {
   return fetchFrom(id, Authenticate, "POST")
 }
 
-export const nextStep = (id: string, chatbotId: string, answer: ChatbotAnswer): Promise<ChatbotQuestion> => {
+export const nextStep = (id: string, chatbotId: string, answer: ChatbotAPIAnswer): Promise<ChatbotAPIQuestion> => {
   console.log(`nextStep\nid: ${id}\nchatbotId: ${chatbotId}\nanswer:\n`)
   console.log(answer)
   if (shouldMock) {
-    return new Promise<ChatbotQuestion>(resolve => { 
+    return new Promise<ChatbotAPIQuestion>(resolve => { 
       sleep(1).then(() => resolve(chatbotNextQuestionBaseOn(answer)))
     })
   }
@@ -102,7 +102,7 @@ const chatbotAnswer19 = "{\"items\":[{\"type\":\"query:answer:selection\",\"data
 const chatbotAnswer20 = "{\"items\":[{\"type\":\"query:answer:selection\",\"data\":\"{\\\"key\\\":\\\"YES\\\",\\\"text\\\":{\\\"en\\\":\\\"All answers are correct.\\\",\\\"de\\\":\\\"Alle Angaben sind korrekt.\\\",\\\"fr\\\":\\\"Toutes les indications sont correctes.\\\"}}\"}],\"attributes\":null}"
 const chatbotAnswer21 = "{\"items\":[{\"type\":\"query:answer:selection\",\"data\":\"{\\\"key\\\":\\\"YES\\\",\\\"text\\\":{\\\"en\\\":\\\"I confirm.\\\",\\\"de\\\":\\\"Ich bestätige.\\\",\\\"fr\\\":\\\"Je confirme.\\\"}}\"}],\"attributes\":null}"
 
-const chatbotNextQuestionBaseOn = (answer: ChatbotAnswer): ChatbotQuestion => {
+const chatbotNextQuestionBaseOn = (answer: ChatbotAPIAnswer): ChatbotAPIQuestion => {
   console.log(JSON.stringify(answer))
   if (JSON.stringify(answer) === chatbotInit) return initialQuestion
   if (JSON.stringify(answer) === chatbotAnswer1) return question2

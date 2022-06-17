@@ -1,68 +1,71 @@
-import { ChatbotAnswer, ChatbotElement, ChatbotLanguageValues, ChatbotMessage, ChatbotMessageType, ChatbotQuestion, ChatbotItem, ChatbotItemType, ChatbotItemKind, ChatbotDropdownData, ChatbotAnswerData } from "../models/ChatbotData"
+import { ChatbotAPIAnswer, ChatbotElement, ChatbotLanguageValues, ChatbotAPIQuestion, ChatbotAPIItem, ChatbotAPIItemType, ChatbotList, ChatbotAnswerData, ChatbotPage, ChatbotAnswer, ChatbotQuestion, ChatbotInfo } from "../models/ChatbotData"
 
 function replaceAll(str: string, find: string, replace: string) {
   return str.replace(new RegExp(find, 'g'), replace);
 }
 
-export const chatbotStart = (): ChatbotAnswer => {
+export const chatbotStart = (): ChatbotAPIAnswer => {
   return { items: [], attributes: null }
 }
 
-export const chatbotFeedQuestion = (question: ChatbotQuestion, messages?: ChatbotMessage[]): [ChatbotMessage[], boolean] => {
-  let outputMessages: ChatbotMessage[] = []
-  if (messages !== undefined) {
-    outputMessages.push(...messages)
+export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion): [ChatbotPage[], boolean] => {
+  let items: ChatbotQuestion[] = []
+  let apiItems = apiQuestion.items as ChatbotAPIItem[]
+  if (apiItems === undefined) {
+    return [[], false]
   }
-  console.log("question:")
-  console.log(question)
-  let items = question.items as ChatbotItem[]
-  items.filter(item => !item.type.startsWith("query:answer"))
-  items.forEach((item) => {
-    let message = parseItem(item, outputMessages.length)
-    outputMessages.push(message)
+  apiItems = apiItems.filter(item => !item.type.startsWith("query:answer"))
+  apiItems.forEach((item) => {
+    items.push(parseQuestion(item, items.length))
   })
-  let lastItem = items.slice(-1)[0]
-  if (lastItem.type === ChatbotItemType.OUTPUT) {
-    return [outputMessages, true]
+  let question = items.pop()
+  if (question !== undefined && !(question as ChatbotQuestion).hasAnswer) {
+    return [[{header: question.label, body: "", answer: undefined}], true]
   }
-  let answer = answerBasedOn(lastItem, outputMessages.length)
-  console.log("answerElement:")
-  console.log(answer)
-  if (answer !== undefined) outputMessages.push(answer)
-  console.log(outputMessages)
-  return [outputMessages, false]
+  let answer = answerBasedOn(apiItems.slice(-1)[0])
+  let pages: ChatbotPage[] = []
+  if (items.length > 0) {
+    let header = items[0].label
+    let body = items.slice(1).map((item) => {return item.label}).join('\n')
+    pages.push({header: header, body: body, answer: undefined})
+  }
+  let multilineHeader = question?.label.split('\n')
+  if (multilineHeader !== undefined && multilineHeader.length > 1) {
+    pages.push({header: multilineHeader[0], body: multilineHeader.slice(1).join('\n'), answer: answer})
+  } else {
+    pages.push({header: question?.label, body: undefined, answer: answer})
+  }
+  return [pages, false]
 }
 
-export const chatbotCreateAnswer = (value: string, messages: ChatbotMessage[]): ChatbotAnswer => {
-  let lastMessage = messages.splice(-1)[0]
-
-  if (lastMessage.itemType === undefined) {
+export const chatbotCreateAnswer = (value: string, answer: ChatbotAnswer): ChatbotAPIAnswer => {
+  if (answer.apiType === undefined) {
     return { items: [], attributes: null }
   }
 
   let answerItem = {
-    type: lastMessage.itemType,
+    type: answer.apiType,
     data: JSON.stringify(value),
   }
   return { items: [answerItem], attributes: null }
 }
 
 /// Parses each item and generates data and assign label
-const parseItem = (item: ChatbotItem, index: number): ChatbotMessage => {
+const parseQuestion = (item: ChatbotAPIItem, index: number): ChatbotQuestion => {
   let label = ""
   switch (item.type) {
-    case ChatbotItemType.OUTPUT:
-    case ChatbotItemType.PLAIN:
+    case ChatbotAPIItemType.OUTPUT:
+    case ChatbotAPIItemType.PLAIN:
       let values = JSON.parse(item.data) as ChatbotLanguageValues
       label = values.en // TODO: localize this
       break
-    case ChatbotItemType.ANSWER_PLAIN:
+    case ChatbotAPIItemType.ANSWER_PLAIN:
       label = JSON.parse(item.data)
       break
-    case ChatbotItemType.DROPDOWN:
-    case ChatbotItemType.SELECTION:
-    case ChatbotItemType.ANSWER_SELECTION:
-      let dropdownData = JSON.parse(item.data) as ChatbotDropdownData
+    case ChatbotAPIItemType.DROPDOWN:
+    case ChatbotAPIItemType.SELECTION:
+    case ChatbotAPIItemType.ANSWER_SELECTION:
+      let dropdownData = JSON.parse(item.data) as ChatbotList
       label = dropdownData.text.en // TODO: localize this
       break
   }
@@ -74,49 +77,42 @@ const parseItem = (item: ChatbotItem, index: number): ChatbotMessage => {
     label = "Something on parsing is wrong"
   }
   return {
-    id: index,
-    type: item.kind === ChatbotItemKind.INPUT ? ChatbotMessageType.ANSWER : ChatbotMessageType.QUESTION,
+    key: index,
     label: replaceAll(label, "<br>", "\n"),
-    element: ChatbotElement.TEXT,
-    itemType: undefined,
-    answerData: undefined,
+    hasAnswer: true, // TODO build decision if answers are there or not
   }
 }
 
 /// Actually creates the answer element which is shown based on given item
-const answerBasedOn = (item: ChatbotItem, index: number): ChatbotMessage => {
-  let answerData: ChatbotAnswerData[] = []
-  let itemType
-  let answerElement = ChatbotElement.TEXT
+const answerBasedOn = (item: ChatbotAPIItem): ChatbotAnswer => {
+  let data: ChatbotAnswerData[] = []
+  let apiType
+  let element = ChatbotElement.TEXT
   switch (item.type) {
-    case ChatbotItemType.PLAIN:
-      itemType = ChatbotItemType.ANSWER_PLAIN
-      answerElement = ChatbotElement.TEXTBOX
+    case ChatbotAPIItemType.PLAIN:
+      apiType = ChatbotAPIItemType.ANSWER_PLAIN
+      element = ChatbotElement.TEXTBOX
       break
-    case ChatbotItemType.DROPDOWN:
-    case ChatbotItemType.SELECTION:
-      itemType = ChatbotItemType.ANSWER_SELECTION
-      answerElement = ChatbotElement.DROPDOWN
-      let dropdownData = JSON.parse(item.data) as ChatbotDropdownData
-      // TODO: localize this
-      answerData.push({ key: "dfx_initial", label: "Choose", isSelected: true, chatbotElement: null })
-      answerData.push(...dropdownData.selection.map((item) => {
+    case ChatbotAPIItemType.DROPDOWN:
+    case ChatbotAPIItemType.SELECTION:
+      apiType = ChatbotAPIItemType.ANSWER_SELECTION
+      element = ChatbotElement.LIST
+      let dropdownData = JSON.parse(item.data) as ChatbotList
+      data.push(...dropdownData.selection.map((item) => {
         delete item.prefix
         return {
           key: item.key,
           label: item.text.en, // TODO: localize this
           isSelected: false,
-          chatbotElement: item,
+          apiElement: item,
         }
       }))
       break
   }
   return {
-    id: index,
-    type: ChatbotMessageType.ANSWER,
-    label: undefined,
-    element: answerElement,
-    itemType: itemType,
-    answerData: answerData,
+    apiType: apiType ?? ChatbotAPIItemType.PLAIN,
+    element: element,
+    data: data,
+    value: "",
   }
 }

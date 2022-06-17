@@ -316,7 +316,13 @@
         "sell": "Sell transactions",
         "staking": "Staking transactions",
         "ref": "Referral rewards",
-        "lm": "Liquidiy mining rewards"
+        "lm": "Liquidity mining rewards",
+        "ct_link": "Cointracking Link",
+        "ct_website": "Cointracking homepage",
+        "ct_text": "You can link your DFX account to your Cointracking account.",
+        "create_api_key": "Generate API key",
+        "delete_api_key": "Delete API key",
+        "csv_export": "CSV Export"
       }
     }
   }

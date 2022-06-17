@@ -433,6 +433,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
           {(buyRoutes || sellRoutes) && (
             <RouteList
               user={user}
+              setUser={setUser}
               buyRoutes={buyRoutes}
               setBuyRoutes={setBuyRoutes}
               sellRoutes={sellRoutes}
@@ -454,4 +455,3 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
 };
 
 export default withSettings(withSession(HomeScreen));
- 

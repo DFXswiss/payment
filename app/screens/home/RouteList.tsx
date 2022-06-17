@@ -23,16 +23,17 @@ import { DeviceClass } from "../../utils/Device";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Session } from "../../services/AuthService";
 import withSession from "../../hocs/withSession";
-import { User } from "../../models/User";
+import { User, UserDetail } from "../../models/User";
 import { StakingRoute, PayoutType } from "../../models/StakingRoute";
 import StakingRouteEdit from "../../components/edit/StakingRouteEdit";
-import HistorySelect from "./HistorySelect";
+import TransactionHistory from "./TransactionHistory";
 import { StakingBatch } from "../../models/StakingBatch";
 import Moment from "moment";
 import Loading from "../../components/util/Loading";
 
 interface Props {
   user?: User;
+  setUser: Dispatch<SetStateAction<UserDetail | undefined>>;
   session?: Session;
   buyRoutes?: BuyRoute[];
   setBuyRoutes: Dispatch<SetStateAction<BuyRoute[] | undefined>>;
@@ -69,6 +70,7 @@ const swift = "MAEBCHZZ";
 
 const RouteList = ({
   user,
+  setUser,
   session,
   buyRoutes,
   setBuyRoutes,
@@ -90,7 +92,7 @@ const RouteList = ({
   const [isBuyLoading, setIsBuyLoading] = useState<{ [id: string]: boolean }>({});
   const [isSellLoading, setIsSellLoading] = useState<{ [id: string]: boolean }>({});
   const [isStakingLoading, setIsStakingLoading] = useState<{ [id: string]: boolean }>({});
-  const [isHistorySelect, setIsHistorySelect] = useState(false);
+  const [isHistoryVisible, setIsHistoryVisible] = useState(false);
   const [detailRoute, setDetailRoute] = useState<BuyRoute | SellRoute | StakingRoute | undefined>(undefined);
   const [isBalanceDetail, setIsBalanceDetail] = useState(false);
   const [stakingBatches, setStakingBatches] = useState<StakingBatch[]>();
@@ -388,8 +390,17 @@ const RouteList = ({
         />
       </DeFiModal>
 
-      <DeFiModal isVisible={isHistorySelect} setIsVisible={setIsHistorySelect} title={t("model.route.history")}>
-        <HistorySelect onClose={() => setIsHistorySelect(false)} />
+      <DeFiModal
+        isVisible={isHistoryVisible}
+        setIsVisible={setIsHistoryVisible}
+        title={t("model.route.history")}
+        style={{ width: 400 }}
+      >
+        <TransactionHistory
+          onClose={() => setIsHistoryVisible(false)}
+          apiKey={user?.apiKeyCT}
+          setApiKey={(key) => setUser((u) => ({ ...u, apiKeyCT: key } as UserDetail))}
+        />
       </DeFiModal>
 
       <View style={AppStyles.containerHorizontal}>
@@ -571,7 +582,7 @@ const RouteList = ({
             <>
               <SpacerV height={20} />
               <ButtonContainer>
-                <DeFiButton mode="contained" onPress={() => setIsHistorySelect(true)}>
+                <DeFiButton mode="contained" onPress={() => setIsHistoryVisible(true)}>
                   {t("model.route.history")}
                 </DeFiButton>
               </ButtonContainer>

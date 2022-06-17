@@ -86,7 +86,7 @@ export interface UserDto extends KycUser {
   kycHash: string;
   kycDataComplete: boolean;
 
-  cfpVotes: CfpVotes;
+  apiKeyCT: string;
 }
 
 export interface User extends KycUser {
@@ -101,7 +101,7 @@ export interface User extends KycUser {
   kycHash: string;
   kycDataComplete: boolean;
 
-  cfpVotes: CfpVotes;
+  apiKeyCT: string;
 }
 
 export interface UserDetailDto extends UserDto {
@@ -139,7 +139,7 @@ export const fromUserDto = (user: UserDto): User => ({
   depositLimit: user.depositLimit,
   kycDataComplete: user.kycDataComplete,
 
-  cfpVotes: user.cfpVotes,
+  apiKeyCT: user.apiKeyCT,
 });
 
 export const toUserDto = (user: User): UserDto => ({
@@ -158,7 +158,7 @@ export const toUserDto = (user: User): UserDto => ({
   depositLimit: user.depositLimit,
   kycDataComplete: user.kycDataComplete,
 
-  cfpVotes: user.cfpVotes,
+  apiKeyCT: user.apiKeyCT,
 });
 
 export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({

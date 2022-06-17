@@ -10,43 +10,53 @@ export interface ChatbotLanguageValues {
   fr: string;
 }
 
+export interface ChatbotPage {
+  header?: string,
+  body?: string,
+  answer?: ChatbotAnswer,
+}
+
 export enum ChatbotElement {
   TEXT = "Text",
   TEXTBOX = "Textbox",
-  DROPDOWN = "Dropdown",
+  LIST = "List",
   LOADING = "Loading",
 }
 
-export interface ChatbotMessage {
-  id: number,
-  type: ChatbotMessageType
-  label: string | undefined,
-  element: ChatbotElement,
-  itemType: ChatbotItemType | undefined,
-  answerData: ChatbotAnswerData[] | undefined,
-}
-
-export enum ChatbotMessageType {
-  QUESTION = "question",
-  ANSWER = "answer",
+export interface ChatbotInfo {
+  key: number,
+  label: string,
 }
 
 export interface ChatbotQuestion {
+  key: number,
+  label: string,
+  hasAnswer: boolean,
+}
+
+export interface ChatbotAnswer {
+  apiType: ChatbotAPIItemType,
+  element: ChatbotElement,
+  data: ChatbotAnswerData[],
+  value: string,
+}
+
+export interface ChatbotAPIQuestion {
   items?: object,
   attributes?: object,
   chatState?: string,
   error?: any,
 }
 
-export interface ChatbotItem {
+export interface ChatbotAPIItem {
   data: string,
-  kind: ChatbotItemKind,
+  kind: ChatbotAPIItemKind,
   sequence: number,
   time: number,
-  type: ChatbotItemType,
+  type: ChatbotAPIItemType,
 }
 
-export enum ChatbotItemType {
+export enum ChatbotAPIItemType {
   OUTPUT = "output:text:plain",
   PLAIN = "query:text:plain",
   DROPDOWN = "query:text:dropdown",
@@ -55,18 +65,18 @@ export enum ChatbotItemType {
   ANSWER_SELECTION = "query:answer:selection",
 }
 
-export enum ChatbotItemKind {
+export enum ChatbotAPIItemKind {
   OUTPUT = "OUTPUT",
   INPUT = "INPUT",
 }
 
-export interface ChatbotAnswer {
-  items: [ChatbotAnswerItem] | []
+export interface ChatbotAPIAnswer {
+  items: ChatbotAPIAnswerItem[]
   attributes: null
 }
 
-export interface ChatbotAnswerItem {
-  type: ChatbotItemType
+export interface ChatbotAPIAnswerItem {
+  type: ChatbotAPIItemType
   data: string
 }
 
@@ -74,17 +84,17 @@ export interface ChatbotAnswerData {
   key: string
   label: string
   isSelected: Boolean
-  chatbotElement: any
+  apiElement: any
 }
 
-export interface ChatbotDropdownData {
+export interface ChatbotList {
   text: ChatbotLanguageValues
-  selection: [ChatbotDropdownDataItem]
+  selection: ChatbotListItem[]
   sort: Boolean
 }
 
-export interface ChatbotDropdownDataItem {
+export interface ChatbotListItem {
   key: string
   text: ChatbotLanguageValues
-  prefix: string | undefined
+  prefix?: string
 }

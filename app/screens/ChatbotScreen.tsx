@@ -2,16 +2,16 @@ import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from "react-native";
-import { DataTable, IconButton, Text, TextInput } from 'react-native-paper';
-import AnswerDropdown from '../components/chatbot/AnswerDropdown';
+import { IconButton, Paragraph, Text, TextInput } from 'react-native-paper';
+import AnswerList from '../components/chatbot/AnswerList';
 import AnswerTextbox from '../components/chatbot/AnswerTextbox';
 import Loading from '../components/util/Loading';
 import Colors from '../config/Colors';
 import Routes from '../config/Routes';
 import { DeFiButton } from '../elements/Buttons';
-import { SpacerH, SpacerV } from '../elements/Spacers';
+import { SpacerV } from '../elements/Spacers';
 import { H2, H3 } from '../elements/Texts';
-import { ChatbotAnswer, ChatbotAnswerData, ChatbotAuthenticationInfo, ChatbotElement, ChatbotMessage, ChatbotMessageType } from '../models/ChatbotData';
+import { ChatbotAnswer, ChatbotAPIAnswer, ChatbotAuthenticationInfo, ChatbotElement, ChatbotPage } from '../models/ChatbotData';
 import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotStart } from '../services/Chatbot';
 import { getAuthenticationInfo, nextStep, postSMSCode, requestSMSCode } from '../services/ChatbotService';
 import NotificationService from '../services/NotificationService';
@@ -33,7 +33,9 @@ const ChatbotScreen = ({
   const [isSMSCompleted, setSMSCompleted] = useState<Boolean>(false);
   const [authenticationInfo, setAuthenticationInfo] = useState<ChatbotAuthenticationInfo>();
   const [chatbotId, setChatbotId] = useState<string>();
-  const [messages, setMessages] = useState<ChatbotMessage[]>();
+  const [pages, setPages] = useState<ChatbotPage[]>([]);
+  const [pageIndex, setPageIndex] = useState<number>(-1); // intentionally start with -1 to use increase in the same way every time
+  const [answer, setAnswer] = useState<ChatbotAnswer|undefined>();
 
   useEffect(() => {
     SettingsService.Language.then(l => { setLanguageSymbol(l?.symbol) })
@@ -61,11 +63,30 @@ const ChatbotScreen = ({
     console.log("TODO show error message")
   }
 
-  const onFinished = () => {
-    console.log("we are finished, what we do now? Auto nav back after x seconds?")
-    setTimeout(() => {
+  const onBack = () => {
+    console.log("onBack")
+    // cancel
+    if (pageIndex === 0) {
       nav.navigate(Routes.Home)
-    }, 3000);
+    }
+    // back
+    else {
+      setPageIndex(pageIndex - 1)
+    }
+  }
+
+  const onNext = (pages: ChatbotPage[], isFinished: boolean, shouldTriggerNextStep: boolean = false) => {
+    if (isFinished) {
+      nav.navigate(Routes.Home)
+    } else {
+      // check if we need to request next step
+      if (pageIndex + 1 < pages.length) {
+        setAnswer(undefined)
+        setPageIndex(pageIndex + 1)
+      } else if (shouldTriggerNextStep && answer !== undefined) {
+        requestNextStep(chatbotCreateAnswer(answer.value, answer), chatbotId)
+      }
+    }
   }
 
   const requestSMS = (id: string | undefined) => {
@@ -87,16 +108,14 @@ const ChatbotScreen = ({
       })
   }
 
-  const requestNextStep = (answer: ChatbotAnswer, chatbotId: string | undefined) => {
+  const requestNextStep = (answer: ChatbotAPIAnswer, chatbotId: string | undefined) => {
     nextStep(sessionId ?? "", chatbotId ?? "", answer)
       .then((question) => {
         setLoading(false)
-        console.log(messages)
-        let [newMessages, isFinished] = chatbotFeedQuestion(question, messages)
-        setMessages(newMessages)
-        if (isFinished) {
-          onFinished()
-        }
+        let [newPages, isFinished] = chatbotFeedQuestion(question)
+        let combinedPages = pages.concat(newPages)
+        setPages(combinedPages)
+        onNext(combinedPages, isFinished)
       })
   }
 
@@ -127,53 +146,49 @@ const ChatbotScreen = ({
           </View>
         </View>
       )}
-      {/* Chatbot messages screen */}
-      {!isLoading && messages && (
-        <View>
-          <DataTable>
-            {messages.map(
-              (message) =>
-                <View key={message.id} >
-                  {/* GENERAL PART */}
-                  {message.element === ChatbotElement.LOADING && (
-                    <Loading size="small" />
-                  )}
-                  {/* QUESTION PART */}
-                  {message.type === ChatbotMessageType.QUESTION && message.element === ChatbotElement.TEXT && message.label && (
-                    <View style={styles.questionContainer}>
-                      <Text style={styles.questionText}>{message.label}</Text>
-                    </View>
-                  )}
-                  {/* ANSWER PART */}
-                  {message.type === ChatbotMessageType.ANSWER && message.element === ChatbotElement.TEXT && message.label && (
-                    <View style={styles.answerContainer}>
-                      <Text style={styles.answerText}>{message.label}</Text>
-                    </View>
-                  )}
-                  {message.type === ChatbotMessageType.ANSWER && message.element === ChatbotElement.TEXTBOX && (
-                    <AnswerTextbox
-                      onSubmit={value => { requestNextStep(chatbotCreateAnswer(value, messages), chatbotId) }}
-                    />
-                  )}
-                  {message.type === ChatbotMessageType.ANSWER && message.element === ChatbotElement.DROPDOWN && message.answerData && (
-                    <AnswerDropdown
-                      onSubmit={value => { requestNextStep(chatbotCreateAnswer(value, messages), chatbotId) }}
-                      message={message}
-                    />
-                  )}
-                  {/* {message.element === ChatbotElement.TEXTBOX_BUTTON && typeof message.label === 'object' && (
-                    <View style={AppStyles.containerHorizontal}>
-                      <TextInput style={{ height: 50 }} placeholder={message.label[0]} keyboardType="numeric" />
-                      <SpacerH />
-                      <DeFiButton mode="contained" onPress={() => { console.log("button onPress todo") }}>
-                        {message.label[1]}
-                      </DeFiButton>
-                    </View>
-                  )} */}
-                  <SpacerV height={5} />
-                </View>
+      {/* Chatbot pages screen */}
+      {!isLoading && pages && pageIndex >= 0 && pageIndex < pages.length && (
+        <View style={styles.container}>
+            <View>
+            {/* HEADER */}
+            {pages[pageIndex].header !== undefined && (
+              <H2 text={pages[pageIndex].header ?? ""} />
             )}
-          </DataTable>
+            <SpacerV />
+            {/* BODY */}
+            {pages[pageIndex].body !== undefined && (
+              <Text>{pages[pageIndex].body ?? ""}</Text>
+            )}
+          </View>
+          {/* ANSWER PART */}
+          {pages[pageIndex].answer !== undefined && (
+            <View>
+              {/* TEXT INPUT */}
+              {pages[pageIndex].answer?.element === ChatbotElement.TEXTBOX && (
+                <AnswerTextbox
+                  answer={pages[pageIndex].answer}
+                  onSubmit={answer => { setAnswer(answer) }}
+                />
+              )}
+              {/* LIST SELECTION */}
+              {pages[pageIndex].answer?.element === ChatbotElement.LIST && (
+                <AnswerList
+                  answer={pages[pageIndex].answer}
+                  onSubmit={answer => { setAnswer(answer) }}
+                />
+              )}
+            </View>
+          )}
+          {/* BUTTON NAVIGATION */}
+          <View>
+              <DeFiButton mode="contained" onPress={() => { onBack() }}>
+                {pageIndex === 0 ? "Cancel" : "Back" /* TODO localize this */}
+              </DeFiButton>
+              <SpacerV />
+              <DeFiButton mode="contained" onPress={() => { onNext(pages, false, true) }}>
+                {pageIndex === 0 ? "Start" : "Next" /* TODO localize this */}
+              </DeFiButton>
+            </View>
         </View>
       )}
     </View>
@@ -188,23 +203,6 @@ const styles = StyleSheet.create({
   },
   header: {
     justifyContent: 'space-between',
-  },
-  questionContainer: {
-    width: '66%',
-    backgroundColor: Colors.LightBlue,
-  },
-  questionText: {
-    padding: '10px',
-  },
-  answerContainer: {
-    flexDirection: 'column',
-    alignItems: 'flex-end',
-  },
-  answerText: {
-    backgroundColor: Colors.LightBlue,
-    width: '66%',
-    padding: '10px',
-    textAlign: 'right',
   },
 });
 

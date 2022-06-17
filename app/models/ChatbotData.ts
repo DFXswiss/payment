@@ -52,7 +52,6 @@ export enum ChatbotItemType {
   DROPDOWN = "query:text:dropdown",
   SELECTION = "query:text:selection",
   ANSWER_PLAIN = "query:answer:plain",
-  ANSWER_DROPDOWN = "query:answer:dropdown",
   ANSWER_SELECTION = "query:answer:selection",
 }
 

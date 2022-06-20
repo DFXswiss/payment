@@ -8,6 +8,7 @@ export interface ChatbotLanguageValues {
   en: string;
   de: string;
   fr: string;
+  it: string;
 }
 
 export interface ChatbotPage {

@@ -8,7 +8,7 @@ export const chatbotStart = (): ChatbotAPIAnswer => {
   return { items: [], attributes: null }
 }
 
-export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion): [ChatbotPage[], boolean] => {
+export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: string): [ChatbotPage[], boolean] => {
   let items: ChatbotQuestion[] = []
   let apiItems = apiQuestion.items as ChatbotAPIItem[]
   if (apiItems === undefined) {
@@ -16,13 +16,13 @@ export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion): [ChatbotPa
   }
   apiItems = apiItems.filter(item => !item.type.startsWith("query:answer"))
   apiItems.forEach((item) => {
-    items.push(parseQuestion(item, items.length))
+    items.push(parseQuestion(item, items.length, language))
   })
   let question = items.pop()
   if (question !== undefined && !(question as ChatbotQuestion).hasAnswer) {
     return [[{header: question.label, body: "", answer: undefined}], true]
   }
-  let answer = answerBasedOn(apiItems.slice(-1)[0])
+  let answer = answerBasedOn(apiItems.slice(-1)[0], language)
   let pages: ChatbotPage[] = []
   if (items.length > 0) {
     let header = items[0].label
@@ -50,14 +50,25 @@ export const chatbotCreateAnswer = (value: string, answer: ChatbotAnswer): Chatb
   return { items: [answerItem], attributes: null }
 }
 
+const getLocalizedValueFrom = (values: ChatbotLanguageValues, language?: string): string => {
+  console.log("language: " + language)
+  switch (language?.toUpperCase()) {
+    case "EN": return values.en
+    case "DE": return values.de
+    case "FR": return values.fr
+    case "IT": return values.it
+    default: return values.en
+  }
+}
+
 /// Parses each item and generates data and assign label
-const parseQuestion = (item: ChatbotAPIItem, index: number): ChatbotQuestion => {
+const parseQuestion = (item: ChatbotAPIItem, index: number, language?: string): ChatbotQuestion => {
   let label = ""
   switch (item.type) {
     case ChatbotAPIItemType.OUTPUT:
     case ChatbotAPIItemType.PLAIN:
       let values = JSON.parse(item.data) as ChatbotLanguageValues
-      label = values.en // TODO: localize this
+      label = getLocalizedValueFrom(values, language)
       break
     case ChatbotAPIItemType.ANSWER_PLAIN:
       label = JSON.parse(item.data)
@@ -66,7 +77,7 @@ const parseQuestion = (item: ChatbotAPIItem, index: number): ChatbotQuestion => 
     case ChatbotAPIItemType.SELECTION:
     case ChatbotAPIItemType.ANSWER_SELECTION:
       let dropdownData = JSON.parse(item.data) as ChatbotList
-      label = dropdownData.text.en // TODO: localize this
+      label = getLocalizedValueFrom(dropdownData.text, language)
       break
   }
   // Krysh: only here for debugging, should be deleted
@@ -84,7 +95,7 @@ const parseQuestion = (item: ChatbotAPIItem, index: number): ChatbotQuestion => 
 }
 
 /// Actually creates the answer element which is shown based on given item
-const answerBasedOn = (item: ChatbotAPIItem): ChatbotAnswer => {
+const answerBasedOn = (item: ChatbotAPIItem, language?: string): ChatbotAnswer => {
   let data: ChatbotAnswerData[] = []
   let apiType
   let element = ChatbotElement.TEXT
@@ -102,7 +113,7 @@ const answerBasedOn = (item: ChatbotAPIItem): ChatbotAnswer => {
         delete item.prefix
         return {
           key: item.key,
-          label: item.text.en, // TODO: localize this
+          label: getLocalizedValueFrom(item.text, language),
           isSelected: false,
           apiElement: item,
         }

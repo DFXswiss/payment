@@ -1,8 +1,9 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from "react-native";
-import { IconButton, Paragraph, Text, TextInput } from 'react-native-paper';
+import { Linking, StyleSheet, View } from "react-native";
+import { TouchableHighlight } from 'react-native-gesture-handler';
+import { IconButton, Text, TextInput } from 'react-native-paper';
 import AnswerList from '../components/chatbot/AnswerList';
 import AnswerTextbox from '../components/chatbot/AnswerTextbox';
 import Loading from '../components/util/Loading';
@@ -11,22 +12,24 @@ import Routes from '../config/Routes';
 import { DeFiButton } from '../elements/Buttons';
 import { SpacerV } from '../elements/Spacers';
 import { H2, H3 } from '../elements/Texts';
+import withSettings from '../hocs/withSettings';
 import { ChatbotAnswer, ChatbotAPIAnswer, ChatbotAuthenticationInfo, ChatbotElement, ChatbotPage } from '../models/ChatbotData';
 import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotStart } from '../services/Chatbot';
 import { getAuthenticationInfo, nextStep, postSMSCode, requestSMSCode } from '../services/ChatbotService';
 import NotificationService from '../services/NotificationService';
-import SettingsService from '../services/SettingsService';
+import { AppSettings } from '../services/SettingsService';
 import AppStyles from '../styles/AppStyles';
 
 const ChatbotScreen = ({
-  sessionUrl
+  settings,
+  sessionUrl,
 }: {
+  settings?: AppSettings;
   sessionUrl: string;
 }) => {
   const { t } = useTranslation();
   const nav = useNavigation();
 
-  const [languageSymbol, setLanguageSymbol] = useState<string | undefined>();
   const [sessionId, setSessionId] = useState<string | undefined>();
   const [isLoading, setLoading] = useState<Boolean>(false);
   const [smsCode, setSMSCode] = useState<string>("");
@@ -38,7 +41,6 @@ const ChatbotScreen = ({
   const [answer, setAnswer] = useState<ChatbotAnswer|undefined>();
 
   useEffect(() => {
-    SettingsService.Language.then(l => { setLanguageSymbol(l?.symbol) })
     let id = extractSessionId(sessionUrl)
     setSessionId(id)
     getAuthenticationInfo(id)
@@ -64,7 +66,6 @@ const ChatbotScreen = ({
   }
 
   const onBack = () => {
-    console.log("onBack")
     // cancel
     if (pageIndex === 0) {
       nav.navigate(Routes.Home)
@@ -112,7 +113,7 @@ const ChatbotScreen = ({
     nextStep(sessionId ?? "", chatbotId ?? "", answer)
       .then((question) => {
         setLoading(false)
-        let [newPages, isFinished] = chatbotFeedQuestion(question)
+        let [newPages, isFinished] = chatbotFeedQuestion(question, settings?.language)
         let combinedPages = pages.concat(newPages)
         setPages(combinedPages)
         onNext(combinedPages, isFinished)
@@ -121,27 +122,28 @@ const ChatbotScreen = ({
 
   return (
     <View style={styles.container}>
-      {console.log("re-render chatbot screen with language " + languageSymbol)}
       {/* Loading */}
       {isLoading && <Loading size="large" />}
       {/* SMS screen */}
       {!isLoading && !isSMSCompleted && (
         <View style={styles.container}>
           <View>
-            <H2 text="Please enter the SMS code from KYC:" />
+            <H2 text={t("kyc.bot.sms_header")} />
             <SpacerV />
             <View style={[AppStyles.containerHorizontal, styles.header]}>
-              <H3 text="Enter SMS code" />
+              <H3 text={t("kyc.bot.sms_code")} />
               <IconButton color={Colors.Primary} icon="reload" onPress={() => { requestSMS(sessionId) }} />
             </View>
             <SpacerV />
-            <TextInput value={smsCode} onChangeText={setSMSCode} placeholder="Your SMS code" keyboardType="numeric" />
+            <TextInput value={smsCode} onChangeText={setSMSCode} placeholder={t("kyc.bot.sms_placeholder")} keyboardType="numeric" />
             <SpacerV />
-            <Text style={{ color: Colors.Grey }}>{"If you did not receive an SMS Code, please contact "}</Text>
-            {/* TODO link to support@kyc.ch */}
+            <Text style={{ color: Colors.Grey }}>{t("kyc.bot.sms_help")}</Text>
+            <TouchableHighlight onPress={() => Linking.openURL('mailto:support@kyc.ch')}>
+              <Text>support@kyc.ch</Text>
+            </TouchableHighlight>
             <SpacerV height={20} />
             <DeFiButton mode="contained" onPress={() => { submitSMSCode() }}>
-              {"Submit" /* TODO localize this */}
+              {t("kyc.bot.submit")}
             </DeFiButton>
           </View>
         </View>
@@ -182,11 +184,11 @@ const ChatbotScreen = ({
           {/* BUTTON NAVIGATION */}
           <View>
               <DeFiButton mode="contained" onPress={() => { onBack() }}>
-                {pageIndex === 0 ? "Cancel" : "Back" /* TODO localize this */}
+                {pageIndex === 0 ? t("kyc.bot.cancel") : t("kyc.bot.back")}
               </DeFiButton>
               <SpacerV />
               <DeFiButton mode="contained" onPress={() => { onNext(pages, false, true) }}>
-                {pageIndex === 0 ? "Start" : "Next" /* TODO localize this */}
+                {pageIndex === 0 ? t("kyc.bot.start") : t("kyc.bot.next")}
               </DeFiButton>
             </View>
         </View>
@@ -206,4 +208,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ChatbotScreen;
+export default withSettings(ChatbotScreen);

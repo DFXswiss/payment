@@ -38,7 +38,15 @@ export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: 
   return [pages, false]
 }
 
+export const chatbotUpdateAnswer = (value: string, answer?: ChatbotAnswer) => {
+  if (answer !== undefined) {
+    answer.value = value
+    answer.shouldTrigger = true
+  }
+}
+
 export const chatbotCreateAnswer = (value: string, answer: ChatbotAnswer): ChatbotAPIAnswer => {
+  answer.shouldTrigger = false
   if (answer.apiType === undefined) {
     return { items: [], attributes: null }
   }
@@ -125,5 +133,6 @@ const answerBasedOn = (item: ChatbotAPIItem, language?: string): ChatbotAnswer =
     element: element,
     data: data,
     value: "",
+    shouldTrigger: false,
   }
 }

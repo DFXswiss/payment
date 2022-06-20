@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, ScrollView, View } from "react-native";
 import { RadioButton, Text, TouchableRipple } from "react-native-paper";
 import { ChatbotAnswer, ChatbotAnswerData } from "../../models/ChatbotData";
+import { chatbotUpdateAnswer } from "../../services/Chatbot";
 
 interface Props {
   onSubmit: (answer: ChatbotAnswer) => void;
@@ -20,14 +21,13 @@ const AnswerList = ({
     })
     setValue(item.key)
     if (answer !== undefined) {
-      answer.value = item.apiElement
+      chatbotUpdateAnswer(item.apiElement, answer)
       onSubmit(answer)
     }
   }
 
   return (
     <View>
-      {console.log("re-render list")}
       <ScrollView>
         {answer?.data.map((item) => (
           <TouchableRipple key={item.key} onPress={() => itemSelected(item)}>

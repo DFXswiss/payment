@@ -40,6 +40,7 @@ export interface ChatbotAnswer {
   element: ChatbotElement,
   data: ChatbotAnswerData[],
   value: string,
+  shouldTrigger: boolean,
 }
 
 export interface ChatbotAPIQuestion {

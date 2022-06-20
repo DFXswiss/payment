@@ -178,9 +178,7 @@
         "sms_placeholder": "Your SMS code",
         "sms_help": "If you did not receive an SMS code, please contact ",
         "submit": "Submit",
-        "cancel": "Cancel",
         "start": "Start",
-        "back": "Back",
         "next": "Next"
       }
     },

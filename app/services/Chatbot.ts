@@ -1,4 +1,4 @@
-import { ChatbotAPIAnswer, ChatbotElement, ChatbotLanguageValues, ChatbotAPIQuestion, ChatbotAPIItem, ChatbotAPIItemType, ChatbotList, ChatbotAnswerData, ChatbotPage, ChatbotAnswer, ChatbotQuestion, ChatbotInfo } from "../models/ChatbotData"
+import { ChatbotAPIAnswer, ChatbotElement, ChatbotLanguageValues, ChatbotAPIQuestion, ChatbotAPIItem, ChatbotAPIItemType, ChatbotList, ChatbotAnswerData, ChatbotPage, ChatbotAnswer, ChatbotQuestion, ChatbotAPIState } from "../models/ChatbotData"
 
 function replaceAll(str: string, find: string, replace: string) {
   return str.replace(new RegExp(find, 'g'), replace);
@@ -18,9 +18,10 @@ export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: 
   apiItems.forEach((item) => {
     items.push(parseQuestion(item, items.length, language))
   })
-  let question = items.pop()
-  if (question !== undefined && !(question as ChatbotQuestion).hasAnswer) {
-    return [[{header: question.label, body: "", answer: undefined}], true]
+  let shouldFinish = apiQuestion.chatState === ChatbotAPIState.FINISH
+  let question
+  if (!shouldFinish) {
+    question = items.pop()
   }
   let answer = answerBasedOn(apiItems.slice(-1)[0], language)
   let pages: ChatbotPage[] = []
@@ -29,13 +30,15 @@ export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: 
     let body = items.slice(1).map((item) => {return item.label}).join('\n')
     pages.push({header: header, body: body, answer: undefined})
   }
-  let multilineHeader = question?.label.split('\n')
-  if (multilineHeader !== undefined && multilineHeader.length > 1) {
-    pages.push({header: multilineHeader[0], body: multilineHeader.slice(1).join('\n'), answer: answer})
-  } else {
-    pages.push({header: question?.label, body: undefined, answer: answer})
+  if (!shouldFinish) {
+    let multilineHeader = question?.label.split('\n')
+    if (multilineHeader !== undefined && multilineHeader.length > 1) {
+      pages.push({header: multilineHeader[0], body: multilineHeader.slice(1).join('\n'), answer: answer})
+    } else {
+      pages.push({header: question?.label, body: undefined, answer: answer})
+    }
   }
-  return [pages, false]
+  return [pages, shouldFinish]
 }
 
 export const chatbotUpdateAnswer = (value: string, answer?: ChatbotAnswer) => {
@@ -62,7 +65,7 @@ const getLocalizedValueFrom = (values: ChatbotLanguageValues, language?: string)
   if (language === undefined) {
     language = "en"
   }
-  return values[language.toLowerCase()]
+  return values[language.toLowerCase()] ?? values["en"]
 }
 
 /// Parses each item and generates data and assign label
@@ -94,7 +97,6 @@ const parseQuestion = (item: ChatbotAPIItem, index: number, language?: string): 
   return {
     key: index,
     label: replaceAll(label, "<br>", "\n"),
-    hasAnswer: true, // TODO build decision if answers are there or not
   }
 }
 

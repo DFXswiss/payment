@@ -27,7 +27,6 @@ export interface ChatbotInfo {
 export interface ChatbotQuestion {
   key: number,
   label: string,
-  hasAnswer: boolean,
 }
 
 export interface ChatbotAnswer {
@@ -43,6 +42,11 @@ export interface ChatbotAPIQuestion {
   attributes?: object,
   chatState?: string,
   error?: any,
+}
+
+export enum ChatbotAPIState {
+  CONTINUE = "TEXT",
+  FINISH = "DONE"
 }
 
 export interface ChatbotAPIItem {

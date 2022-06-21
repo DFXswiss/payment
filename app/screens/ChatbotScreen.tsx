@@ -40,6 +40,7 @@ const ChatbotScreen = ({
   const [pageIndex, setPageIndex] = useState<number>(-1); // intentionally start with -1 to use increase in the same way every time
   const [answer, setAnswer] = useState<ChatbotAnswer|undefined>();
   const [progress, setProgress] = useState<number>(0);
+  const [isFinished, setFinished] = useState<Boolean>(false);
 
   useEffect(() => {
     let id = extractSessionId(sessionUrl)
@@ -81,7 +82,12 @@ const ChatbotScreen = ({
 
   const onNext = (pages: ChatbotPage[], isFinished: boolean) => {
     if (isFinished) {
-      nav.navigate(Routes.Home)
+      setFinished(true)
+      setTimeout(() => {
+        nav.navigate(Routes.Home)
+      }, 2000);
+      setPageIndex(pageIndex + 1)
+      setProgress(1)
     } else {
       // check if we need to request next step
       if (answer !== undefined && answer.shouldTrigger) {
@@ -187,35 +193,43 @@ const ChatbotScreen = ({
             {pages[pageIndex].header !== undefined && (
               <H2 text={pages[pageIndex].header ?? ""} />
             )}
-            <SpacerV />
+            <SpacerV height={20} />
             {/* BODY */}
             {pages[pageIndex].body !== undefined && (
-              <Text>{pages[pageIndex].body ?? ""}</Text>
+              <View>
+                <Text>{pages[pageIndex].body ?? ""}</Text>
+                <SpacerV />
+              </View>
+            )}
+            {/* ANSWER PART */}
+            {pages[pageIndex].answer !== undefined && (
+              <View>
+                {/* TEXT INPUT */}
+                {pages[pageIndex].answer?.element === ChatbotElement.TEXTBOX && (
+                  <AnswerTextbox
+                    answer={pages[pageIndex].answer}
+                    onSubmit={answer => { setAnswer(answer) }}
+                  />
+                )}
+                {/* LIST SELECTION */}
+                {pages[pageIndex].answer?.element === ChatbotElement.LIST && (
+                  <AnswerList
+                    answer={pages[pageIndex].answer}
+                    onSubmit={answer => { setAnswer(answer) }}
+                  />
+                )}
+              </View>
             )}
           </View>
-          {/* ANSWER PART */}
-          {pages[pageIndex].answer !== undefined && (
+          {/* BUTTON NAVIGATION */}
+          {!isFinished && (
             <View>
-              {/* TEXT INPUT */}
-              {pages[pageIndex].answer?.element === ChatbotElement.TEXTBOX && (
-                <AnswerTextbox
-                  answer={pages[pageIndex].answer}
-                  onSubmit={answer => { setAnswer(answer) }}
-                />
-              )}
-              {/* LIST SELECTION */}
-              {pages[pageIndex].answer?.element === ChatbotElement.LIST && (
-                <AnswerList
-                  answer={pages[pageIndex].answer}
-                  onSubmit={answer => { setAnswer(answer) }}
-                />
-              )}
+              <SpacerV height={20} />
+              <DeFiButton mode="contained" onPress={() => { onNext(pages, false) }}>
+                {pageIndex === 0 ? t("kyc.bot.start") : t("kyc.bot.next")}
+              </DeFiButton>
             </View>
           )}
-          {/* BUTTON NAVIGATION */}
-          <DeFiButton mode="contained" onPress={() => { onNext(pages, false) }}>
-                {pageIndex === 0 ? t("kyc.bot.start") : t("kyc.bot.next")}
-          </DeFiButton>
         </View>
       )}
     </View>

@@ -157,6 +157,17 @@
     },
     "admin": {
       "title": "Administrador"
+    },    
+    "kyc": {
+      "bot": {
+        "sms_header": "Por favor, introduzca el código SMS de KYC:",
+        "sms_code": "Introduzca el código SMS",
+        "sms_placeholder": "Su código SMS",
+        "sms_help": "Si no ha recibido un código SMS, póngase en contacto con ",
+        "submit": "Submit",
+        "start": "Inicio",
+        "next": "Siguiente"
+      }
     },
     "model": {
       "user": {

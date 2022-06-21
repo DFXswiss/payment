@@ -59,14 +59,10 @@ export const chatbotCreateAnswer = (value: string, answer: ChatbotAnswer): Chatb
 }
 
 const getLocalizedValueFrom = (values: ChatbotLanguageValues, language?: string): string => {
-  console.log("language: " + language)
-  switch (language?.toUpperCase()) {
-    case "EN": return values.en
-    case "DE": return values.de
-    case "FR": return values.fr
-    case "IT": return values.it
-    default: return values.en
+  if (language === undefined) {
+    language = "en"
   }
+  return values[language.toLowerCase()]
 }
 
 /// Parses each item and generates data and assign label

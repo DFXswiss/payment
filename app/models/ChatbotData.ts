@@ -4,12 +4,7 @@ export interface ChatbotAuthenticationInfo {
   secretIncorrect: ChatbotLanguageValues;
 }
 
-export interface ChatbotLanguageValues {
-  en: string;
-  de: string;
-  fr: string;
-  it: string;
-}
+export type ChatbotLanguageValues = {[language: string] : string}
 
 export interface ChatbotPage {
   header?: string,

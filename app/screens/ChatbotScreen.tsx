@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Linking, StyleSheet, View } from "react-native";
 import { TouchableHighlight } from 'react-native-gesture-handler';
 import { IconButton, ProgressBar, Text, TextInput } from 'react-native-paper';
+import AnswerDatePicker from '../components/chatbot/AnswerDatePicker';
 import AnswerList from '../components/chatbot/AnswerList';
 import AnswerTextbox from '../components/chatbot/AnswerTextbox';
 import Loading from '../components/util/Loading';
@@ -31,16 +32,16 @@ const ChatbotScreen = ({
   const nav = useNavigation();
 
   const [sessionId, setSessionId] = useState<string | undefined>();
-  const [isLoading, setLoading] = useState<Boolean>(false);
+  const [isLoading, setLoading] = useState<boolean>(false);
   const [smsCode, setSMSCode] = useState<string>("");
-  const [isSMSCompleted, setSMSCompleted] = useState<Boolean>(false);
+  const [isSMSCompleted, setSMSCompleted] = useState<boolean>(false);
   const [authenticationInfo, setAuthenticationInfo] = useState<ChatbotAuthenticationInfo>();
   const [chatbotId, setChatbotId] = useState<string>();
   const [pages, setPages] = useState<ChatbotPage[]>([]);
   const [pageIndex, setPageIndex] = useState<number>(-1); // intentionally start with -1 to use increase in the same way every time
   const [answer, setAnswer] = useState<ChatbotAnswer|undefined>();
   const [progress, setProgress] = useState<number>(0);
-  const [isFinished, setFinished] = useState<Boolean>(false);
+  const [isFinished, setFinished] = useState<boolean>(false);
 
   useEffect(() => {
     let id = extractSessionId(sessionUrl)
@@ -216,6 +217,13 @@ const ChatbotScreen = ({
                   <AnswerList
                     answer={pages[pageIndex].answer}
                     onSubmit={answer => { setAnswer(answer) }}
+                  />
+                )}
+                {/* DATE PICKER */}
+                {pages[pageIndex].answer?.element === ChatbotElement.DATE && (
+                  <AnswerDatePicker
+                    answer={pages[pageIndex].answer}
+                    onSubmit={answer => { setAnswer(answer)} }
                   />
                 )}
               </View>

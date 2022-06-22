@@ -1,4 +1,4 @@
-import { ChatbotAPIAnswer, ChatbotElement, ChatbotLanguageValues, ChatbotAPIQuestion, ChatbotAPIItem, ChatbotAPIItemType, ChatbotList, ChatbotAnswerData, ChatbotPage, ChatbotAnswer, ChatbotQuestion, ChatbotAPIState } from "../models/ChatbotData"
+import { ChatbotAPIAnswer, ChatbotElement, ChatbotLanguageValues, ChatbotAPIQuestion, ChatbotAPIItem, ChatbotAPIItemType, ChatbotList, ChatbotAnswerData, ChatbotPage, ChatbotAnswer, ChatbotQuestion, ChatbotAPIState, ChatbotDateFormat } from "../models/ChatbotData"
 
 function replaceAll(str: string, find: string, replace: string) {
   return str.replace(new RegExp(find, 'g'), replace);
@@ -23,7 +23,7 @@ export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: 
   if (!shouldFinish) {
     question = items.pop()
   }
-  let answer = answerBasedOn(apiItems.slice(-1)[0], language)
+  let answer = answerBasedOn(apiItems.slice(-1)[0], language, question)
   let pages: ChatbotPage[] = []
   if (items.length > 0) {
     let header = items[0].label
@@ -101,14 +101,24 @@ const parseQuestion = (item: ChatbotAPIItem, index: number, language?: string): 
 }
 
 /// Actually creates the answer element which is shown based on given item
-const answerBasedOn = (item: ChatbotAPIItem, language?: string): ChatbotAnswer => {
+const answerBasedOn = (item: ChatbotAPIItem, language?: string, question?: ChatbotQuestion): ChatbotAnswer => {
   let data: ChatbotAnswerData[] = []
+  let dateFormat
   let apiType
   let element = ChatbotElement.TEXT
   switch (item.type) {
     case ChatbotAPIItemType.PLAIN:
       apiType = ChatbotAPIItemType.ANSWER_PLAIN
       element = ChatbotElement.TEXTBOX
+      let [isDate, foundDateFormat] = findDateFormat(question?.label)
+      if (isDate && question !== undefined && foundDateFormat !== undefined) {
+        question.label = question.label.replace(foundDateFormat, "")
+          .replace("(", "")
+          .replace(")", "")
+          .trim()
+        element = ChatbotElement.DATE
+        dateFormat = foundDateFormat
+      }
       break
     case ChatbotAPIItemType.DROPDOWN:
     case ChatbotAPIItemType.SELECTION:
@@ -130,7 +140,24 @@ const answerBasedOn = (item: ChatbotAPIItem, language?: string): ChatbotAnswer =
     apiType: apiType ?? ChatbotAPIItemType.PLAIN,
     element: element,
     data: data,
+    dateFormat: dateFormat,
     value: "",
     shouldTrigger: false,
   }
+}
+
+const dateformats = [ChatbotDateFormat.STANDARD, ChatbotDateFormat.US, ChatbotDateFormat.REVERSE]
+
+const findDateFormat = (label?: string): [boolean, ChatbotDateFormat?] => {
+  if (label === undefined) { return [false, undefined] }
+  let result = false
+  let format
+  dateformats.forEach((dateFormat) => {
+    let foundFormat = label?.includes(dateFormat)
+    result = result || foundFormat
+    if (foundFormat) {
+      format = dateFormat
+    }
+  })
+  return [result, format]
 }

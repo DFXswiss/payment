@@ -17,6 +17,7 @@ export enum ChatbotElement {
   TEXTBOX = "Textbox",
   LIST = "List",
   LOADING = "Loading",
+  DATE = "DatePicker",
 }
 
 export interface ChatbotInfo {
@@ -33,8 +34,15 @@ export interface ChatbotAnswer {
   apiType: ChatbotAPIItemType,
   element: ChatbotElement,
   data: ChatbotAnswerData[],
+  dateFormat?: ChatbotDateFormat,
   value: string,
   shouldTrigger: boolean,
+}
+
+export enum ChatbotDateFormat {
+  STANDARD = "DD.MM.YYYY",
+  US = "MM.DD.YYYY",
+  REVERSE = "YYYY.MM.DD",
 }
 
 export interface ChatbotAPIQuestion {
@@ -84,14 +92,14 @@ export interface ChatbotAPIAnswerItem {
 export interface ChatbotAnswerData {
   key: string
   label: string
-  isSelected: Boolean
+  isSelected: boolean
   apiElement: any
 }
 
 export interface ChatbotList {
   text: ChatbotLanguageValues
   selection: ChatbotListItem[]
-  sort: Boolean
+  sort: boolean
 }
 
 export interface ChatbotListItem {

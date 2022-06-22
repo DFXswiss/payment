@@ -8,14 +8,16 @@ const Challenge = "challenge"
 const Authenticate = "authenticate"
 const NextStep = "next-step"
 
-// TODO: remove mocks
-const shouldMock = true
+// TODO: remove mocks - temporarily disabled - need to be removed completely
+const shouldMock = false
+/*
 let sentQuestion7 = false
 let sentQuestion9 = false
 let sentQuestion10 = false
 let sentQuestion11 = false
 let sentQuestion12 = false
 let sentQuestion13 = false
+*/
 
 export const getStatus = (id: string): Promise<void> => {
   return fetchFrom(id, Status, "GET")
@@ -26,36 +28,38 @@ export const getAuthenticationInfo = (id: string): Promise<ChatbotAuthentication
 }
 
 export const requestSMSCode = (id: string): Promise<boolean> => {
-  console.log(`requestSMSCode: ${id}`)
-  if (shouldMock) {
-    return new Promise<boolean>(resolve => { resolve(true) })
-  }
+  // console.log(`requestSMSCode: ${id}`)
+  // if (shouldMock) {
+  //   return new Promise<boolean>(resolve => { resolve(true) })
+  // }
   return fetchFrom(id, Challenge, "GET")
 }
 
-export const postSMSCode = (id: string): Promise<string> => {
-  console.log(`postSMSCode: ${id}`)
-  if (shouldMock) {
-    return new Promise<string>(resolve => { 
-      sleep(1).then(() => resolve("10laBhOhGM8Yx2EcKmINKndyMW5DPa5pnaFIlmtYZQTj2LlRvnSxHvLvfNiMB4uY"))
-    })
-  }
-  return fetchFrom(id, Authenticate, "POST")
+export const postSMSCode = (id: string, code: string): Promise<string> => {
+  // console.log(`postSMSCode: ${id} ${code}`)
+  // if (shouldMock) {
+  //   return new Promise<string>(resolve => { 
+  //     sleep(1).then(() => resolve("10laBhOhGM8Yx2EcKmINKndyMW5DPa5pnaFIlmtYZQTj2LlRvnSxHvLvfNiMB4uY"))
+  //   })
+  // }
+  return fetchFrom(id, Authenticate, "POST", undefined, code, "TEXT")
 }
 
-export const nextStep = (id: string, chatbotId: string, answer: ChatbotAPIAnswer): Promise<ChatbotAPIQuestion> => {
-  console.log(`nextStep\nid: ${id}\nchatbotId: ${chatbotId}\nanswer:\n`)
-  console.log(answer)
-  if (shouldMock) {
-    return new Promise<ChatbotAPIQuestion>(resolve => { 
-      sleep(1).then(() => resolve(chatbotNextQuestionBaseOn(answer)))
-    })
+export const nextStep = (id?: string, chatbotId?: string, answer?: ChatbotAPIAnswer): Promise<ChatbotAPIQuestion> => {
+  if (id === undefined || chatbotId === undefined || answer === undefined) {
+    return new Promise(() => {})
   }
-  return fetchFrom(id, NextStep, "POST", `sak=${chatbotId}`)
+  // if (shouldMock) {
+  //   return new Promise<ChatbotAPIQuestion>(resolve => { 
+  //     sleep(1).then(() => resolve(chatbotNextQuestionBaseOn(answer)))
+  //   })
+  // }
+  return fetchFrom(id, NextStep, "POST", "sak=" + chatbotId, answer, "JSON")
 }
 
 // Mock import data need to be removed
 // Mock starts here
+/*
 import initialQuestion from "./mocks/next-step_1.json"
 import question2 from "./mocks/next-step_2.json"
 import question3 from "./mocks/next-step_3a.json"
@@ -147,6 +151,7 @@ const chatbotNextQuestionBaseOn = (answer: ChatbotAPIAnswer): ChatbotAPIQuestion
   console.warn("MOCK: not finding next question to answer above")
   return {}
 }
+*/
 // Mock ends here
 
 const fetchFrom = <T>(
@@ -155,24 +160,32 @@ const fetchFrom = <T>(
   method: "GET" | "POST",
   parameters?: string,
   data?: any,
+  type?: "JSON" | "TEXT",
 ): Promise<T> => {
   return (
     fetch(buildUrl(id, command, parameters), {
       method: method,
-      body: JSON.stringify(data)
+      body: type === "JSON" ? JSON.stringify(data) : data,
+      headers: {
+        'Content-Type': type === "JSON" ? 'application/json;charset=UTF-8' : 'text/plain'
+      },
     })
     .then((response) => {
       if (response.ok) {
-        return response.json();
+        if (type === "TEXT") {
+          return response.text()
+        }
+        return response.json()
       }
       return response.json().then((body) => {
-        throw body;
-      });
+        throw body
+      })
     })
-  );
+  )
 }
 
 const buildUrl = (id: string, command: string, parameters: string | undefined): string => {
+  console.log(parameters)
   if (parameters !== undefined) {
     return `${BaseUrl}/${id}/${command}?nc=true&${parameters}`
   }

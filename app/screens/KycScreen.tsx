@@ -86,9 +86,6 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   };
 
   const updateState = (result: KycResult) => {
-    // result.kycStatus = KycStatus.CHATBOT
-    // result.sessionUrl = "https://services.eurospider.com/chatbot-ui/program/kyc-onboarding/qv1FFwanO1urFE5NuNu2DajVvkfzcVPCLZoyKQPVJkg8pMuMAOCOmg9iGHhMNtj7?st=tan&l=en&key=XpBxQHYZ&nc=true"
-    // "https://services.eurospider.com/chatbot-service/rest/session/qv1FFwanO1urFE5NuNu2DajVvkfzcVPCLZoyKQPVJkg8pMuMAOCOmg9iGHhMNtj7/authentication-info?nc=true"
     setKycResult(result);
     setIsLoading(false);
   };
@@ -128,7 +125,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
             )}
             {kycResult.kycStatus === KycStatus.CHATBOT ? (
               <View style={styles.container}>
-                <ChatbotScreen sessionUrl={kycResult.sessionUrl} />
+                <ChatbotScreen sessionUrl={kycResult.sessionUrl} onFinish={() => { finishChatBot() }} />
               </View>
             ) : (
               <Iframe src={kycResult.sessionUrl} />

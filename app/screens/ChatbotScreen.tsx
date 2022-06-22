@@ -24,9 +24,11 @@ import AppStyles from '../styles/AppStyles';
 const ChatbotScreen = ({
   settings,
   sessionUrl,
+  onFinish
 }: {
   settings?: AppSettings;
   sessionUrl: string;
+  onFinish: () => void;
 }) => {
   const { t } = useTranslation();
   const nav = useNavigation();
@@ -84,6 +86,7 @@ const ChatbotScreen = ({
   const onNext = (pages: ChatbotPage[], isFinished: boolean) => {
     if (isFinished) {
       setFinished(true)
+      onFinish()
       setTimeout(() => {
         nav.navigate(Routes.Home)
       }, 2000);
@@ -102,27 +105,34 @@ const ChatbotScreen = ({
     }
   }
 
-  const requestSMS = (id: string | undefined) => {
+  const requestSMS = (id?: string) => {
     if (id !== undefined) {
       requestSMSCode(id)
-        .then(() => { console.log("requested SMS code") })
     } else {
       console.error("sessionId not set")
     }
   }
 
-  const submitSMSCode = () => {
-    setLoading(true)
-    postSMSCode(smsCode)
-      .then((id) => {
-        setChatbotId(id)
-        setSMSCompleted(true)
-        requestNextStep(chatbotStart(), id)
-      })
+  const submitSMSCode = (id?: string) => {
+    if (id !== undefined) {
+      setLoading(true)
+      postSMSCode(id, smsCode)
+        .then((id) => {
+          if (id === "false") {
+            nav.navigate(Routes.Home)
+          } else {
+            setChatbotId(id)
+            setSMSCompleted(true)
+            requestNextStep(chatbotStart(), id)
+          }
+        })
+    } else {
+      console.error("sessionId not set")
+    }
   }
 
-  const requestNextStep = (answer: ChatbotAPIAnswer, chatbotId: string | undefined) => {
-    nextStep(sessionId ?? "", chatbotId ?? "", answer)
+  const requestNextStep = (answer: ChatbotAPIAnswer, chatbotId?: string) => {
+    nextStep(sessionId, chatbotId, answer)
       .then((question) => {
         setLoading(false)
         let [newPages, isFinished] = chatbotFeedQuestion(question, settings?.language)
@@ -171,7 +181,7 @@ const ChatbotScreen = ({
               <Text style={AppStyles.link}>support@kyc.ch</Text>
             </TouchableHighlight>
             <SpacerV height={20} />
-            <DeFiButton mode="contained" onPress={() => { submitSMSCode() }}>
+            <DeFiButton mode="contained" onPress={() => { submitSMSCode(sessionId) }}>
               {t("kyc.bot.submit")}
             </DeFiButton>
           </View>

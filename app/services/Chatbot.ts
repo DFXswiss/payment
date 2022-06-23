@@ -8,28 +8,41 @@ export const chatbotStart = (): ChatbotAPIAnswer => {
   return { items: [], attributes: null }
 }
 
-export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: string): [ChatbotPage[], boolean] => {
+export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: string): [ChatbotPage[], boolean, string?] => {
   let items: ChatbotQuestion[] = []
   let apiItems = apiQuestion.items as ChatbotAPIItem[]
+  // if there are no items to parse just return no pages
   if (apiItems === undefined || apiItems === null || apiItems.length === 0) {
     return [[], false]
   }
+  // remove all answers
   apiItems = apiItems.filter(item => !item.type.startsWith("query:answer"))
+  // parse each item left as question
   apiItems.forEach((item) => {
     items.push(parseQuestion(item, items.length, language))
   })
+  // check chat state if we should finish
   let shouldFinish = apiQuestion.chatState === ChatbotAPIState.FINISH
   let question: ChatbotQuestion|undefined
+  // if we aren't able to finish, pop last item and save it as question, this will be needed later on
   if (!shouldFinish) {
     question = items.pop()
   }
+  // check chat state if help got returned
+  if (apiQuestion.chatState === ChatbotAPIState.HELP) {
+    // return empty pages, but localized text as string
+    return [[], false, question?.label]
+  }
+  // create an answer based on last question
   let answer = answerBasedOn(apiItems.slice(-1)[0], language, question)
   let pages: ChatbotPage[] = []
+  // each question should represent a single page
   if (items.length > 0) {
     let header = items[0].label
     let body = items.slice(1).map((item) => {return item.label}).join('\n')
     pages.push({header: header, body: body, answer: undefined})
   }
+  // if we aren't able to finish, check if we have a multiline header
   if (!shouldFinish) {
     let multilineHeader = question?.label.split('\n')
     if (multilineHeader !== undefined && multilineHeader.length > 1) {
@@ -72,6 +85,7 @@ const getLocalizedValueFrom = (values: ChatbotLanguageValues, language?: string)
 const parseQuestion = (item: ChatbotAPIItem, index: number, language?: string): ChatbotQuestion => {
   let label = ""
   switch (item.type) {
+    case ChatbotAPIItemType.HELP:
     case ChatbotAPIItemType.OUTPUT:
     case ChatbotAPIItemType.PLAIN:
       let values = JSON.parse(item.data) as ChatbotLanguageValues

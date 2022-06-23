@@ -129,13 +129,17 @@ const ChatbotScreen = ({
     nextStep(sessionId, chatbotId, answer)
       .then((question) => {
         setLoading(false)
-        let [newPages, isFinished] = chatbotFeedQuestion(question, settings?.language)
-        if (newPages.length > 0) {
-          let combinedPages = pages.concat(newPages)
-          setPages(combinedPages)
-          onNext(combinedPages, isFinished)
+        let [newPages, isFinished, help] = chatbotFeedQuestion(question, settings?.language)
+        if (help !== undefined) {
+          NotificationService.error(help)
         } else {
-          NotificationService.error(t("kyc.bot.error.validation"))
+          if (newPages.length > 0) {
+            let combinedPages = pages.concat(newPages)
+            setPages(combinedPages)
+            onNext(combinedPages, isFinished)
+          } else {
+            NotificationService.error(t("kyc.bot.error.validation"))
+          }
         }
       })
   }
@@ -192,10 +196,10 @@ const ChatbotScreen = ({
             {/* BACK & PROGRESS */}
             <View style={styles.progressHeader}>
               <IconButton color={Colors.Primary} icon="arrow-left" onPress={() => { onBack() }} />
-              <SpacerH />
+              {/* <SpacerH />
               <View style={styles.progressBar}>
                 <ProgressBar color={Colors.Primary} progress={progress} />
-              </View>
+              </View> */}
             </View>
             <SpacerV />
             {/* HEADER */}

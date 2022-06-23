@@ -180,6 +180,7 @@
         "submit": "Submit",
         "start": "Start",
         "next": "Next",
+        "search": "Search",
         "error": {
           "missing_session_id": "Error: Please try again later.",
           "validation": "Error: Please check your answer."

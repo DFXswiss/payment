@@ -183,6 +183,7 @@
         "submit": "Invia",
         "start": "Inizia",
         "next": "Prossimo",
+        "search": "Ricerca",
         "error": {
           "missing_session_id": "Errore: Si prega di riprovare più tardi",
           "validation": "Errore: Si prega di controllare la risposta"

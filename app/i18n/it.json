@@ -182,7 +182,11 @@
         "sms_help": "Se non avete ricevuto un codice SMS, contattate ",
         "submit": "Invia",
         "start": "Inizia",
-        "next": "Prossimo"
+        "next": "Prossimo",
+        "error": {
+          "missing_session_id": "Errore: Si prega di riprovare più tardi",
+          "validation": "Errore: Si prega di controllare la risposta"
+        }
       }
     },
     "model": {

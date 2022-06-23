@@ -1,9 +1,3 @@
-export interface ChatbotAuthenticationInfo {
-  secretTitle: ChatbotLanguageValues;
-  secretLabel: ChatbotLanguageValues;
-  secretIncorrect: ChatbotLanguageValues;
-}
-
 export type ChatbotLanguageValues = {[language: string] : string}
 
 export interface ChatbotPage {
@@ -34,15 +28,9 @@ export interface ChatbotAnswer {
   apiType: ChatbotAPIItemType,
   element: ChatbotElement,
   data: ChatbotAnswerData[],
-  dateFormat?: ChatbotDateFormat,
+  dateFormat?: string,
   value: string,
   shouldTrigger: boolean,
-}
-
-export enum ChatbotDateFormat {
-  STANDARD = "DD.MM.YYYY",
-  US = "MM.DD.YYYY",
-  REVERSE = "YYYY.MM.DD",
 }
 
 export interface ChatbotAPIQuestion {

@@ -35,6 +35,7 @@ const ChatbotScreen = ({
 
   const [sessionId, setSessionId] = useState<string | undefined>();
   const [isLoading, setLoading] = useState<boolean>(false);
+  const [isRequestNextStep, setRequestingNextStep] = useState<boolean>(false);
   const [smsCode, setSMSCode] = useState<string>("");
   const [isSMSCompleted, setSMSCompleted] = useState<boolean>(false);
   const [chatbotId, setChatbotId] = useState<string>();
@@ -126,9 +127,11 @@ const ChatbotScreen = ({
   }
 
   const requestNextStep = (answer: ChatbotAPIAnswer, chatbotId?: string) => {
+    setRequestingNextStep(true)
     nextStep(sessionId, chatbotId, answer)
       .then((question) => {
         setLoading(false)
+        setRequestingNextStep(false)
         let [newPages, isFinished, help] = chatbotFeedQuestion(question, settings?.language)
         if (help !== undefined) {
           NotificationService.error(help)
@@ -176,7 +179,7 @@ const ChatbotScreen = ({
               <IconButton color={Colors.Primary} icon="reload" onPress={() => { requestSMS(sessionId) }} />
             </View>
             <SpacerV />
-            <TextInput value={smsCode} onChangeText={setSMSCode} placeholder={t("kyc.bot.sms_placeholder")} keyboardType="numeric" />
+            <TextInput value={smsCode} onChangeText={setSMSCode} onSubmitEditing={() => { submitSMSCode(sessionId) }} placeholder={t("kyc.bot.sms_placeholder")} keyboardType="numeric" />
             <SpacerV />
             <Text style={{ color: Colors.Grey }}>{t("kyc.bot.sms_help")}</Text>
             <TouchableHighlight onPress={() => Linking.openURL('mailto:support@kyc.ch')}>
@@ -221,7 +224,12 @@ const ChatbotScreen = ({
                 {pages[pageIndex].answer?.element === ChatbotElement.TEXTBOX && (
                   <AnswerTextbox
                     answer={pages[pageIndex].answer}
-                    onSubmit={answer => { setAnswer(answer) }}
+                    onSubmit={(answer, shouldTriggerNext) => { 
+                      setAnswer(answer) 
+                      if (shouldTriggerNext) {
+                        onNext(pages, false)
+                      }
+                    }}
                   />
                 )}
                 {/* LIST SELECTION */}
@@ -235,7 +243,12 @@ const ChatbotScreen = ({
                 {pages[pageIndex].answer?.element === ChatbotElement.DATE && (
                   <AnswerDatePicker
                     answer={pages[pageIndex].answer}
-                    onSubmit={answer => { setAnswer(answer)} }
+                    onSubmit={(answer, shouldTriggerNext) => { 
+                      setAnswer(answer) 
+                      if (shouldTriggerNext) {
+                        onNext(pages, false)
+                      }
+                    }}
                   />
                 )}
               </View>
@@ -245,7 +258,7 @@ const ChatbotScreen = ({
           {!isFinished && (
             <View>
               <SpacerV height={20} />
-              <DeFiButton mode="contained" onPress={() => { onNext(pages, false) }}>
+              <DeFiButton mode="contained" loading={isRequestNextStep} onPress={() => { onNext(pages, false) }}>
                 {pageIndex === 0 ? t("kyc.bot.start") : t("kyc.bot.next")}
               </DeFiButton>
             </View>

@@ -41,6 +41,7 @@ export interface ChatbotAPIQuestion {
 }
 
 export enum ChatbotAPIState {
+  HELP = "HELP",
   CONTINUE = "TEXT",
   FINISH = "DONE"
 }
@@ -56,6 +57,7 @@ export interface ChatbotAPIItem {
 export enum ChatbotAPIItemType {
   OUTPUT = "output:text:plain",
   PLAIN = "query:text:plain",
+  HELP = "query:help:plain",
   DROPDOWN = "query:text:dropdown",
   SELECTION = "query:text:selection",
   ANSWER_PLAIN = "query:answer:plain",

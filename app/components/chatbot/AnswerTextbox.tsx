@@ -5,7 +5,7 @@ import { ChatbotAnswer } from "../../models/ChatbotData";
 import { chatbotUpdateAnswer } from "../../services/Chatbot";
 
 interface Props {
-  onSubmit: (answer: ChatbotAnswer) => void;
+  onSubmit: (answer: ChatbotAnswer, shouldTriggerNext: boolean) => void;
   answer?: ChatbotAnswer;
 }
 
@@ -14,10 +14,10 @@ const AnswerTextbox = ({
   answer,
 }: Props) => {
   const [value, setValue] = useState<string>("")
-  const callSubmit = (value: string) => {
+  const callSubmit = (value: string, shouldTriggerNext: boolean) => {
     if (answer !== undefined) {
       chatbotUpdateAnswer(value, answer)
-      onSubmit(answer)
+      onSubmit(answer, shouldTriggerNext)
     }
   }
 
@@ -33,10 +33,10 @@ const AnswerTextbox = ({
         value={value}
         onChangeText={(input) => {
           setValue(input)
-          callSubmit(input)
+          callSubmit(input, false)
         }}
         onSubmitEditing={() => { 
-          callSubmit(value)
+          callSubmit(value, true)
         }}
       />
     </View>

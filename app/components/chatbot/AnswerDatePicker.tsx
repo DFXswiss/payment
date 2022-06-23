@@ -5,7 +5,7 @@ import { ChatbotAnswer } from "../../models/ChatbotData";
 import { chatbotUpdateAnswer } from "../../services/Chatbot";
 
 interface Props {
-  onSubmit: (answer: ChatbotAnswer) => void;
+  onSubmit: (answer: ChatbotAnswer, shouldTriggerNext: boolean) => void;
   answer?: ChatbotAnswer;
 }
 
@@ -15,10 +15,10 @@ const AnswerDatePicker = ({
 }: Props) => {
   const [date, setDate] = useState<string>('')
   const [dateFormat, setDateFormat] = useState<string>('')
-  const callSubmit = (value: string) => {
+  const callSubmit = (value: string, shouldTriggerNext: boolean) => {
     if (answer !== undefined) {
       chatbotUpdateAnswer(value, answer)
-      onSubmit(answer)
+      onSubmit(answer, shouldTriggerNext)
     }
   }
 
@@ -38,10 +38,10 @@ const AnswerDatePicker = ({
           placeholder={dateFormat}
           onChangeText={(input) => {
             setDate(input)
-            callSubmit(input)
+            callSubmit(input, false)
           }}
           onSubmitEditing={() => { 
-            callSubmit(date)
+            callSubmit(date, true)
           }}
       />
     </View>

@@ -14,7 +14,7 @@ import { DeFiButton } from '../elements/Buttons';
 import { SpacerH, SpacerV } from '../elements/Spacers';
 import { H2, H3 } from '../elements/Texts';
 import withSettings from '../hocs/withSettings';
-import { ChatbotAnswer, ChatbotAPIAnswer, ChatbotAuthenticationInfo, ChatbotElement, ChatbotPage } from '../models/ChatbotData';
+import { ChatbotAnswer, ChatbotAPIAnswer, ChatbotElement, ChatbotPage } from '../models/ChatbotData';
 import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotStart } from '../services/Chatbot';
 import { getAuthenticationInfo, nextStep, postSMSCode, requestSMSCode } from '../services/ChatbotService';
 import NotificationService from '../services/NotificationService';
@@ -37,7 +37,6 @@ const ChatbotScreen = ({
   const [isLoading, setLoading] = useState<boolean>(false);
   const [smsCode, setSMSCode] = useState<string>("");
   const [isSMSCompleted, setSMSCompleted] = useState<boolean>(false);
-  const [authenticationInfo, setAuthenticationInfo] = useState<ChatbotAuthenticationInfo>();
   const [chatbotId, setChatbotId] = useState<string>();
   const [pages, setPages] = useState<ChatbotPage[]>([]);
   const [pageIndex, setPageIndex] = useState<number>(-1); // intentionally start with -1 to use increase in the same way every time
@@ -49,25 +48,20 @@ const ChatbotScreen = ({
     let id = extractSessionId(sessionUrl)
     setSessionId(id)
     getAuthenticationInfo(id)
-      .then(setAuthenticationInfo)
       .then(() => {
         requestSMS(id)
       })
       .catch(onLoadFailed)
-  }, []);
+  }, [])
 
   const extractSessionId = (sessionUrl: string): string => {
     let sessionId = sessionUrl.replace("https://services.eurospider.com/chatbot-ui/program/kyc-onboarding/", "")
     return sessionId.split("?")[0]
-  };
+  }
 
   const onLoadFailed = () => {
     NotificationService.error(t("feedback.load_failed"));
     nav.navigate(Routes.Home);
-  };
-
-  const onSMSChallengeFailed = () => {
-    console.log("TODO show error message")
   }
 
   const onBack = () => {
@@ -109,7 +103,7 @@ const ChatbotScreen = ({
     if (id !== undefined) {
       requestSMSCode(id)
     } else {
-      console.error("sessionId not set")
+      NotificationService.error(t("kyc.bot.error.missing_session_id"))
     }
   }
 
@@ -127,7 +121,7 @@ const ChatbotScreen = ({
           }
         })
     } else {
-      console.error("sessionId not set")
+      NotificationService.error(t("kyc.bot.error.missing_session_id"))
     }
   }
 
@@ -136,9 +130,13 @@ const ChatbotScreen = ({
       .then((question) => {
         setLoading(false)
         let [newPages, isFinished] = chatbotFeedQuestion(question, settings?.language)
-        let combinedPages = pages.concat(newPages)
-        setPages(combinedPages)
-        onNext(combinedPages, isFinished)
+        if (newPages.length > 0) {
+          let combinedPages = pages.concat(newPages)
+          setPages(combinedPages)
+          onNext(combinedPages, isFinished)
+        } else {
+          NotificationService.error(t("kyc.bot.error.validation"))
+        }
       })
   }
 

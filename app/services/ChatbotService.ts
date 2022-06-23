@@ -1,4 +1,4 @@
-import { ChatbotAPIAnswer, ChatbotAuthenticationInfo, ChatbotAPIQuestion } from "../models/ChatbotData"
+import { ChatbotAPIAnswer, ChatbotAPIQuestion } from "../models/ChatbotData"
 import { sleep } from "../utils/Utils"
 
 const BaseUrl = "https://services.eurospider.com/chatbot-service/rest/session"
@@ -23,7 +23,7 @@ export const getStatus = (id: string): Promise<void> => {
   return fetchFrom(id, Status, "GET")
 }
 
-export const getAuthenticationInfo = (id: string): Promise<ChatbotAuthenticationInfo> => {
+export const getAuthenticationInfo = (id: string): Promise<unknown> => {
   return fetchFrom(id, AuthenticationInfo, "GET")
 }
 

@@ -171,15 +171,19 @@
     "admin": {
       "title": "Admin"
     },    
-    "kyc" : {
-      "bot" : {
-        "sms_header" : "Veuillez entrer le code SMS de KYC :",
-        "sms_code" : "Entrez le code SMS",
-        "sms_placeholder" : "Votre code SMS",
-        "sms_help" : "Si vous n'avez pas reçu de code SMS, veuillez contacter",
-        "submit" : "Submit",
-        "start" : "Start",
-        "next" : "Suivant"
+    "kyc": {
+      "bot": {
+        "sms_header": "Veuillez entrer le code SMS de KYC :",
+        "sms_code": "Entrez le code SMS",
+        "sms_placeholder": "Votre code SMS",
+        "sms_help": "Si vous n'avez pas reçu de code SMS, veuillez contacter",
+        "submit": "Submit",
+        "start": "Start",
+        "next": "Suivant",
+        "error": {
+          "missing_session_id": "Erreur : Please try again later.",
+          "validation": "Erreur : Veuillez vérifier votre réponse."
+        }
       }
     },
     "model": {

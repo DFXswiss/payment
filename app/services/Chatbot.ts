@@ -1,4 +1,4 @@
-import { ChatbotAPIAnswer, ChatbotElement, ChatbotLanguageValues, ChatbotAPIQuestion, ChatbotAPIItem, ChatbotAPIItemType, ChatbotList, ChatbotAnswerData, ChatbotPage, ChatbotAnswer, ChatbotQuestion, ChatbotAPIState, ChatbotDateFormat } from "../models/ChatbotData"
+import { ChatbotAPIAnswer, ChatbotElement, ChatbotLanguageValues, ChatbotAPIQuestion, ChatbotAPIItem, ChatbotAPIItemType, ChatbotList, ChatbotAnswerData, ChatbotPage, ChatbotAnswer, ChatbotQuestion, ChatbotAPIState } from "../models/ChatbotData"
 
 function replaceAll(str: string, find: string, replace: string) {
   return str.replace(new RegExp(find, 'g'), replace);
@@ -11,7 +11,7 @@ export const chatbotStart = (): ChatbotAPIAnswer => {
 export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: string): [ChatbotPage[], boolean] => {
   let items: ChatbotQuestion[] = []
   let apiItems = apiQuestion.items as ChatbotAPIItem[]
-  if (apiItems === undefined) {
+  if (apiItems === undefined || apiItems === null || apiItems.length === 0) {
     return [[], false]
   }
   apiItems = apiItems.filter(item => !item.type.startsWith("query:answer"))
@@ -19,7 +19,7 @@ export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: 
     items.push(parseQuestion(item, items.length, language))
   })
   let shouldFinish = apiQuestion.chatState === ChatbotAPIState.FINISH
-  let question
+  let question: ChatbotQuestion|undefined
   if (!shouldFinish) {
     question = items.pop()
   }
@@ -87,7 +87,7 @@ const parseQuestion = (item: ChatbotAPIItem, index: number, language?: string): 
       label = getLocalizedValueFrom(dropdownData.text, language)
       break
   }
-  // Krysh: only here for debugging, should be deleted
+  // TODO Krysh: only here for debugging, should be deleted
   if (label === "" || typeof (label) === "object" || label === undefined) {
     console.warn("kind: " + item.kind)
     console.warn("type: " + item.type)
@@ -146,18 +146,16 @@ const answerBasedOn = (item: ChatbotAPIItem, language?: string, question?: Chatb
   }
 }
 
-const dateformats = [ChatbotDateFormat.STANDARD, ChatbotDateFormat.US, ChatbotDateFormat.REVERSE]
-
-const findDateFormat = (label?: string): [boolean, ChatbotDateFormat?] => {
+const findDateFormat = (label?: string): [boolean, string?] => {
   if (label === undefined) { return [false, undefined] }
   let result = false
-  let format
-  dateformats.forEach((dateFormat) => {
-    let foundFormat = label?.includes(dateFormat)
-    result = result || foundFormat
-    if (foundFormat) {
-      format = dateFormat
-    }
-  })
-  return [result, format]
+  let dateFormat
+  let start = label?.indexOf('(')
+  let end = label?.indexOf(')')
+  // (DD.MM.YYYY) gap between index of ( and ) is 11
+  if (end - start === 11) {
+    dateFormat = label?.substring(start + 1, end)
+    result = true
+  }
+  return [result, dateFormat]
 }

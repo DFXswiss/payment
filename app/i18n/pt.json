@@ -179,7 +179,11 @@
         "sms_help": "Se não recebeu um código SMS, por favor contacte",
         "submit": "Submeter",
         "start": "Início",
-        "next": "Próximo"
+        "next": "Próximo",
+        "error": {
+          "missing_session_id": "Por favor, tente novamente mais tarde",
+          "validation": "Por favor, verifique a sua resposta"
+        }
       }
     },
     "model": {

@@ -184,6 +184,7 @@
         "submit": "Abschicken",
         "start": "Start",
         "next": "Weiter",
+        "search": "Suche",
         "error": {
           "missing_session_id": "Fehler: Bitte versuchen Sie es später noch einmal.",
           "validation": "Fehler: Bitte überprüfen Sie Ihre Antwort."

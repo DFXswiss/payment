@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Linking, StyleSheet, View } from "react-native";
 import { TouchableHighlight } from 'react-native-gesture-handler';
-import { IconButton, ProgressBar, Text, TextInput } from 'react-native-paper';
+import { IconButton, Text, TextInput } from 'react-native-paper';
 import AnswerDatePicker from '../components/chatbot/AnswerDatePicker';
 import AnswerList from '../components/chatbot/AnswerList';
 import AnswerTextbox from '../components/chatbot/AnswerTextbox';

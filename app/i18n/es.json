@@ -167,6 +167,7 @@
         "submit": "Submit",
         "start": "Inicio",
         "next": "Siguiente",
+        "search": "Busque en",
         "error": {
           "missing_session_id": "Error: Por favor, inténtelo de nuevo más tarde",
           "validation": "Error: Por favor, compruebe su respuesta."

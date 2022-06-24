@@ -8,7 +8,7 @@ import { AppSettings } from "../services/SettingsService";
 import AppStyles from "../styles/AppStyles";
 import Header from "./Header";
 
-const AppLayout = ({ settings, children }: { settings?: AppSettings; children: ReactNode }) => {
+const AppLayout = ({ settings, preventScrolling, children }: { settings?: AppSettings; preventScrolling?: boolean; children: ReactNode }) => {
   const dimensions = useWindowDimensions();
   const [contentSize, setContentSize] = useState(0);
   const [contentOffset, setContentOffset] = useState(0);
@@ -20,7 +20,7 @@ const AppLayout = ({ settings, children }: { settings?: AppSettings; children: R
     <View style={{ height: dimensions.height }}>
       <Portal.Host>
         <ScrollView
-          contentContainerStyle={styles.scrollContainer}
+          contentContainerStyle={preventScrolling ? styles.scrollContainerPreventScrolling : styles.scrollContainer}
           ref={scrollRef}
           onContentSizeChange={(_, height) => setContentSize(height)}
           onScroll={(scrollEvent) => setContentOffset(scrollEvent.nativeEvent.contentOffset.y)}
@@ -54,6 +54,10 @@ const AppLayout = ({ settings, children }: { settings?: AppSettings; children: R
 const styles = StyleSheet.create({
   scrollContainer: {
     minHeight: "100%",
+  },
+  scrollContainerPreventScrolling: {
+    minHeight: "100%",
+    maxHeight: "100%",
   },
   container: {
     alignItems: "center",

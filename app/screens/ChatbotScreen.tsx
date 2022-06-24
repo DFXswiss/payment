@@ -195,7 +195,7 @@ const ChatbotScreen = ({
       {/* Chatbot pages screen */}
       {!isLoading && pages && pageIndex >= 0 && pageIndex < pages.length && (
         <View style={styles.container}>
-          <View>
+          <View style={{flex: 1}}>
             {/* BACK & PROGRESS */}
             <View style={styles.progressHeader}>
               <IconButton color={Colors.Primary} icon="arrow-left" onPress={() => { onBack() }} />
@@ -219,7 +219,7 @@ const ChatbotScreen = ({
             )}
             {/* ANSWER PART */}
             {pages[pageIndex].answer !== undefined && (
-              <View>
+              <View style={{flex: 1}}>
                 {/* TEXT INPUT */}
                 {pages[pageIndex].answer?.element === ChatbotElement.TEXTBOX && (
                   <AnswerTextbox
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   progressHeader: {
-    flex: 1,
+    flexGrow: 0,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

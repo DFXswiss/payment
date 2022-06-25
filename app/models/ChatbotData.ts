@@ -1,5 +1,10 @@
 export type ChatbotLanguageValues = {[language: string] : string}
 
+export enum ChatbotStatus {
+  INITIAL = "INITIAL",
+  STARTED = "STARTED",
+}
+
 export interface ChatbotPage {
   header?: string,
   body?: string,

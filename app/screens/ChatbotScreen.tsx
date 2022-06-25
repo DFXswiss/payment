@@ -14,9 +14,9 @@ import { DeFiButton } from '../elements/Buttons';
 import { SpacerH, SpacerV } from '../elements/Spacers';
 import { H2, H3 } from '../elements/Texts';
 import withSettings from '../hocs/withSettings';
-import { ChatbotAnswer, ChatbotAPIAnswer, ChatbotElement, ChatbotPage } from '../models/ChatbotData';
-import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotStart } from '../services/Chatbot';
-import { getAuthenticationInfo, nextStep, postSMSCode, requestSMSCode } from '../services/ChatbotService';
+import { ChatbotAnswer, ChatbotAPIAnswer, ChatbotElement, ChatbotPage, ChatbotStatus } from '../models/ChatbotData';
+import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotRestorePages, chatbotStart } from '../services/Chatbot';
+import { getAuthenticationInfo, getStatus, getUpdate, nextStep, postSMSCode, requestSMSCode } from '../services/ChatbotService';
 import NotificationService from '../services/NotificationService';
 import { AppSettings } from '../services/SettingsService';
 import AppStyles from '../styles/AppStyles';
@@ -75,6 +75,7 @@ const ChatbotScreen = ({
       let newPageIndex = pageIndex - 1
       setPageIndex(newPageIndex)
       updateProgress(pages, newPageIndex, true)
+      setAnswer(pages[newPageIndex].answer)
     }
   }
 
@@ -89,12 +90,12 @@ const ChatbotScreen = ({
       setProgress(1)
     } else {
       // check if we need to request next step
-      if (answer !== undefined && answer.shouldTrigger) {
+      if (answer !== undefined && answer.shouldTrigger === true) {
         requestNextStep(chatbotCreateAnswer(answer.value, answer), chatbotId)
       } else if (pageIndex + 1 < pages.length) {
-        setAnswer(undefined)
         let newPageIndex = pageIndex + 1
         setPageIndex(newPageIndex)
+        setAnswer(pages[newPageIndex].answer)
         updateProgress(pages, newPageIndex)
       }
     }
@@ -118,12 +119,41 @@ const ChatbotScreen = ({
           } else {
             setChatbotId(id)
             setSMSCompleted(true)
-            requestNextStep(chatbotStart(), id)
+            requestStatus(sessionId, id)
           }
         })
     } else {
       NotificationService.error(t("kyc.bot.error.missing_session_id"))
     }
+  }
+
+  const requestStatus = (id?: string, chatbotId?: string) => {
+    getStatus(id, chatbotId)
+      .then((status) => {
+        switch (status) {
+          case ChatbotStatus.INITIAL:
+            // fresh start we need to trigger first question
+            requestNextStep(chatbotStart(), id)
+            break
+          case ChatbotStatus.STARTED:
+            // already started, need to call update and parse existing pages
+            requestUpdate(id, chatbotId)
+            break
+        }
+      })
+  }
+
+  const requestUpdate = (id?: string, chatbotId?: string) => {
+    getUpdate(id, chatbotId)
+      .then((question) => {
+        setLoading(false)
+        let restoredPages = chatbotRestorePages(question, settings?.language)
+        let combinedPages = pages.concat(restoredPages)
+        setPages(combinedPages)
+        setAnswer(restoredPages.slice(-1)[0].answer)
+        // jump to last index
+        setPageIndex(combinedPages.length - 1)
+      })
   }
 
   const requestNextStep = (answer: ChatbotAPIAnswer, chatbotId?: string) => {

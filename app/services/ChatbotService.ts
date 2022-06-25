@@ -1,4 +1,4 @@
-import { ChatbotAPIAnswer, ChatbotAPIQuestion } from "../models/ChatbotData"
+import { ChatbotAPIAnswer, ChatbotAPIQuestion, ChatbotStatus } from "../models/ChatbotData"
 import { sleep } from "../utils/Utils"
 
 const BaseUrl = "https://services.eurospider.com/chatbot-service/rest/session"
@@ -7,10 +7,12 @@ const AuthenticationInfo = "authentication-info"
 const Challenge = "challenge"
 const Authenticate = "authenticate"
 const NextStep = "next-step"
+const Update = "update"
 
 // TODO: remove mocks - temporarily disabled - need to be removed completely
-const shouldMock = false
 /*
+const shouldMock = false
+
 let sentQuestion7 = false
 let sentQuestion9 = false
 let sentQuestion10 = false
@@ -18,12 +20,22 @@ let sentQuestion11 = false
 let sentQuestion12 = false
 let sentQuestion13 = false
 */
-
-export const getStatus = (id: string): Promise<void> => {
-  return fetchFrom(id, Status, "GET")
+export const getStatus = (id?: string, chatbotId?: string): Promise<ChatbotStatus> => {
+  if (id === undefined || chatbotId === undefined) {
+    return new Promise(() => {})
+  }
+  // if (shouldMock) {
+  //   return new Promise<ChatbotStatus>(resolve => {
+  //     resolve(ChatbotStatus.STARTED)
+  //   })
+  // }
+  return fetchFrom(id, Status, "GET", "sak=" + chatbotId, undefined, "TEXT")
 }
 
 export const getAuthenticationInfo = (id: string): Promise<unknown> => {
+  // if (shouldMock) {
+  //   return new Promise<unknown>(resolve => { resolve({}) })
+  // }
   return fetchFrom(id, AuthenticationInfo, "GET")
 }
 
@@ -45,6 +57,18 @@ export const postSMSCode = (id: string, code: string): Promise<string> => {
   return fetchFrom(id, Authenticate, "POST", undefined, code, "TEXT")
 }
 
+export const getUpdate = (id?: string, chatbotId?: string): Promise<ChatbotAPIQuestion> => {
+  if (id === undefined || chatbotId === undefined) {
+    return new Promise(() => {})
+  }
+  // if (shouldMock) {
+  //   return new Promise<ChatbotAPIQuestion>(resolve => {
+  //     sleep(1).then(() => { resolve(update) })
+  //   })
+  // }
+  return fetchFrom(id, Update, "GET", "sak=" + chatbotId, undefined, "JSON")
+}
+
 export const nextStep = (id?: string, chatbotId?: string, answer?: ChatbotAPIAnswer): Promise<ChatbotAPIQuestion> => {
   if (id === undefined || chatbotId === undefined || answer === undefined) {
     return new Promise(() => {})
@@ -61,6 +85,7 @@ export const nextStep = (id?: string, chatbotId?: string, answer?: ChatbotAPIAns
 // Mock starts here
 /*
 import initialQuestion from "./mocks/next-step_1.json"
+import help from "./mocks/next-step_1_help.json"
 import question2 from "./mocks/next-step_2.json"
 import question3 from "./mocks/next-step_3a.json"
 import question4 from "./mocks/next-step_4.json"
@@ -82,8 +107,11 @@ import question19 from "./mocks/next-step_19.json"
 import question20 from "./mocks/next-step_20.json"
 import question21 from "./mocks/next-step_21.json"
 import question22 from "./mocks/next-step_22.json"
+import update from "./mocks/update.json"
+import updateSmall from "./mocks/update_small.json"
 
 const chatbotInit = "{\"items\":[],\"attributes\":null}"
+const chatbotHelp = "{\"items\":[{\"type\":\"query:answer:plain\",\"data\":\"\\\"01\\\"\"}],\"attributes\":null}"
 const chatbotAnswer1 = "{\"items\":[{\"type\":\"query:answer:plain\",\"data\":\"\\\"01.01.1980\\\"\"}],\"attributes\":null}"
 const chatbotAnswer2 = "{\"items\":[{\"type\":\"query:answer:selection\",\"data\":\"{\\\"key\\\":\\\"AF\\\",\\\"text\\\":{\\\"de\\\":\\\"Afghanistan\\\",\\\"en\\\":\\\"Afghanistan\\\",\\\"fr\\\":\\\"Afghanistan\\\",\\\"it\\\":\\\"Afghanistan\\\"}}\"}],\"attributes\":null}"
 const chatbotAnswer3 = "{\"items\":[{\"type\":\"query:answer:selection\",\"data\":\"{\\\"key\\\":\\\"done\\\",\\\"text\\\":{\\\"en\\\":\\\"No further citizenship\\\",\\\"de\\\":\\\"Keine weitere Staatsbürgerschaft\\\",\\\"fr\\\":\\\"Pas d'autre nationalité\\\"}}\"}],\"attributes\":null}"
@@ -109,6 +137,7 @@ const chatbotAnswer21 = "{\"items\":[{\"type\":\"query:answer:selection\",\"data
 const chatbotNextQuestionBaseOn = (answer: ChatbotAPIAnswer): ChatbotAPIQuestion => {
   console.log(JSON.stringify(answer))
   if (JSON.stringify(answer) === chatbotInit) return initialQuestion
+  if (JSON.stringify(answer) === chatbotHelp) return help
   if (JSON.stringify(answer) === chatbotAnswer1) return question2
   if (JSON.stringify(answer) === chatbotAnswer2) return question3
   if (JSON.stringify(answer) === chatbotAnswer3) return question4

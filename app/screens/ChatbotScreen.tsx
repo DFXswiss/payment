@@ -133,7 +133,7 @@ const ChatbotScreen = ({
         switch (status) {
           case ChatbotStatus.INITIAL:
             // fresh start we need to trigger first question
-            requestNextStep(chatbotStart(), id)
+            requestNextStep(chatbotStart(), chatbotId)
             break
           case ChatbotStatus.STARTED:
             // already started, need to call update and parse existing pages

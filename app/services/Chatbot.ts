@@ -1,4 +1,4 @@
-import { ChatbotAPIAnswer, ChatbotElement, ChatbotLanguageValues, ChatbotAPIQuestion, ChatbotAPIItem, ChatbotAPIItemType, ChatbotList, ChatbotAnswerData, ChatbotPage, ChatbotAnswer, ChatbotQuestion, ChatbotAPIState } from "../models/ChatbotData"
+import { ChatbotAPIAnswer, ChatbotElement, ChatbotLanguageValues, ChatbotAPIQuestion, ChatbotAPIItem, ChatbotAPIItemType, ChatbotList, ChatbotAnswerData, ChatbotPage, ChatbotAnswer, ChatbotQuestion, ChatbotAPIState, ChatbotAPIItemKind } from "../models/ChatbotData"
 
 function replaceAll(str: string, find: string, replace: string) {
   return str.replace(new RegExp(find, 'g'), replace);
@@ -52,6 +52,46 @@ export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: 
     }
   }
   return [pages, shouldFinish]
+}
+
+export const chatbotRestorePages = (apiQuestion: ChatbotAPIQuestion, language?: string): ChatbotPage[] => {
+  let apiItems = apiQuestion.items as ChatbotAPIItem[]
+  let pages: ChatbotPage[] = []
+  let itemsToFeed: ChatbotAPIItem[] = []
+  apiItems.forEach((item) => {
+    if (item.sequence === 0 && itemsToFeed.length > 0) {
+      let newPages = restorePages(itemsToFeed, item, language)
+      pages = pages.concat(newPages)
+      itemsToFeed = []
+    } else {
+      itemsToFeed.push(item)
+    }
+  })
+  // check if items to feed is empty, if not there is still a page to be restored
+  if (itemsToFeed.length > 0) {
+    let newPages = restorePages(itemsToFeed, undefined, language)
+    pages = pages.concat(newPages)
+  }
+  return pages
+}
+
+const restorePages = (items: ChatbotAPIItem[], item?: ChatbotAPIItem, language?: string): ChatbotPage[] => {
+  let [newPages] = chatbotFeedQuestion({items: items, chatState: "TEXT"}, language)
+  if (item !== undefined && item.kind === ChatbotAPIItemKind.INPUT) {
+    let lastPage = newPages.slice(-1)[0]
+    if (lastPage.answer !== undefined) {
+      // Krysh: there are two different types of answers
+      // 1) only strings, should be parse to correctly display
+      // 2) objects, should not get parsed
+      let parsedData = JSON.parse(item.data)
+      if (typeof(parsedData) === 'string') {
+        lastPage.answer.value = parsedData
+      } else {
+        lastPage.answer.value = item.data
+      }
+    }
+  }
+  return newPages
 }
 
 export const chatbotUpdateAnswer = (value: string, answer?: ChatbotAnswer) => {

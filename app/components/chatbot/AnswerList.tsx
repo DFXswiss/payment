@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View, ScrollView, FlatList } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { TextInput } from "react-native-paper";
 import { RadioButton, Text, TouchableRipple } from "react-native-paper";
 import { SpacerV } from "../../elements/Spacers";
@@ -25,15 +24,18 @@ const AnswerList = ({
   useEffect(() => {
     if (answer !== undefined) {
       setItems(answer.data)
+      if (answer.value !== undefined && answer.value.length > 0) {
+        itemSelected(JSON.parse(answer.value) as ChatbotAnswerData)
+      }
     }
-  }, [])
+  }, [answer])
 
   const itemSelected = (item: ChatbotAnswerData) => {
     answer?.data.forEach((data) => {
       data.isSelected = data.key === item.key
     })
     setValue(item.key)
-    if (answer !== undefined) {
+    if (answer !== undefined && item.apiElement !== undefined) {
       chatbotUpdateAnswer(item.apiElement, answer)
       onSubmit(answer)
     }

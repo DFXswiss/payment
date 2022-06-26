@@ -22,6 +22,7 @@ const AnswerList = ({
   const [items, setItems] = useState<ChatbotAnswerData[]>([])
 
   useEffect(() => {
+    setValue("")
     if (answer !== undefined) {
       setItems(answer.data)
       if (answer.value !== undefined && answer.value.length > 0) {

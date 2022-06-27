@@ -14,9 +14,9 @@ import { DeFiButton } from '../elements/Buttons';
 import { SpacerH, SpacerV } from '../elements/Spacers';
 import { H2, H3 } from '../elements/Texts';
 import withSettings from '../hocs/withSettings';
-import { ChatbotAnswer, ChatbotAPIAnswer, ChatbotElement, ChatbotPage, ChatbotStatus } from '../models/ChatbotData';
-import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotRestorePages, chatbotStart } from '../services/Chatbot';
-import { getAuthenticationInfo, getStatus, getUpdate, nextStep, postSMSCode, requestSMSCode } from '../services/ChatbotService';
+import { ChatbotAnswer, ChatbotAPIAnswer, ChatbotAPIQuestion, ChatbotElement, ChatbotPage, ChatbotStatus } from '../models/ChatbotData';
+import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotFillAnswerWithData, chatbotIsEdit, chatbotRestorePages, chatbotShouldSendAnswer, chatbotStart } from '../services/Chatbot';
+import { getAuthenticationInfo, getStatus, getUpdate, nextStep, postSMSCode, requestSkip, requestSMSCode } from '../services/ChatbotService';
 import NotificationService from '../services/NotificationService';
 import { AppSettings } from '../services/SettingsService';
 import AppStyles from '../styles/AppStyles';
@@ -35,7 +35,7 @@ const ChatbotScreen = ({
 
   const [sessionId, setSessionId] = useState<string | undefined>();
   const [isLoading, setLoading] = useState<boolean>(false);
-  const [isRequestNextStep, setRequestingNextStep] = useState<boolean>(false);
+  const [isRequestNextStep, setRequestingNextStep] = useState<boolean>(false);
   const [smsCode, setSMSCode] = useState<string>("");
   const [isSMSCompleted, setSMSCompleted] = useState<boolean>(false);
   const [chatbotId, setChatbotId] = useState<string>();
@@ -83,15 +83,16 @@ const ChatbotScreen = ({
     if (isFinished) {
       setFinished(true)
       onFinish()
-      setTimeout(() => {
-        nav.navigate(Routes.Home)
-      }, 2000);
       setPageIndex(pageIndex + 1)
       setProgress(1)
     } else {
       // check if we need to request next step
-      if (answer !== undefined && answer.shouldTrigger === true) {
-        requestNextStep(chatbotCreateAnswer(answer.value, answer), chatbotId)
+      if (answer !== undefined && chatbotShouldSendAnswer(answer)) {
+        if (chatbotIsEdit(answer)) {
+          requestEditAnswer(answer, chatbotId)
+        } else {
+          requestNextStep(chatbotCreateAnswer(answer.value, answer), answer, chatbotId)
+        }
       } else if (pageIndex + 1 < pages.length) {
         let newPageIndex = pageIndex + 1
         setPageIndex(newPageIndex)
@@ -133,7 +134,7 @@ const ChatbotScreen = ({
         switch (status) {
           case ChatbotStatus.INITIAL:
             // fresh start we need to trigger first question
-            requestNextStep(chatbotStart(), chatbotId)
+            requestNextStep(chatbotStart(), undefined, chatbotId)
             break
           case ChatbotStatus.STARTED:
             // already started, need to call update and parse existing pages
@@ -143,26 +144,49 @@ const ChatbotScreen = ({
       })
   }
 
-  const requestUpdate = (id?: string, chatbotId?: string) => {
-    getUpdate(id, chatbotId)
+  const requestUpdate = (id?: string, chatbotId?: string): Promise<ChatbotAPIQuestion> => {
+    return getUpdate(id, chatbotId)
       .then((question) => {
-        setLoading(false)
         let restoredPages = chatbotRestorePages(question, settings?.language)
-        let combinedPages = pages.concat(restoredPages)
+        let combinedPages = pages?.concat(restoredPages) ?? restoredPages
         setPages(combinedPages)
         setAnswer(restoredPages.slice(-1)[0].answer)
         // jump to last index
         setPageIndex(combinedPages.length - 1)
+        setLoading(false)
+        return question
       })
   }
 
-  const requestNextStep = (answer: ChatbotAPIAnswer, chatbotId?: string) => {
+  const requestEditAnswer = (answer: ChatbotAnswer, chatbotId?: string) => {
     setRequestingNextStep(true)
-    nextStep(sessionId, chatbotId, answer)
+    setLoading(true)
+    let newAPIAnswer = chatbotCreateAnswer(answer.value, answer)
+    requestSkip(answer.timestamp, sessionId, chatbotId)
+      .then(() => {
+        // reset pages, index and answer
+        setPages([])
+        setPageIndex(-1)
+        setAnswer(undefined)
+        // request update to restore all pages from KYC spider
+        requestUpdate(sessionId, chatbotId)
+          .then(() => {
+            requestNextStep(newAPIAnswer, answer, chatbotId)
+          })
+      })
+  }
+
+  const requestNextStep = (apiAnswer: ChatbotAPIAnswer, answer?: ChatbotAnswer, chatbotId?: string) => {
+    setRequestingNextStep(true)
+    nextStep(sessionId, chatbotId, apiAnswer)
       .then((question) => {
-        setLoading(false)
         setRequestingNextStep(false)
+        if (answer !== undefined) {
+          chatbotFillAnswerWithData(question, answer)
+        }
         let [newPages, isFinished, help] = chatbotFeedQuestion(question, settings?.language)
+        console.log("new pages")
+        console.log(newPages)
         if (help !== undefined) {
           NotificationService.error(help)
         } else {
@@ -174,6 +198,7 @@ const ChatbotScreen = ({
             NotificationService.error(t("kyc.bot.error.validation"))
           }
         }
+        setLoading(false)
       })
   }
 
@@ -236,6 +261,15 @@ const ChatbotScreen = ({
             </View>
             <SpacerV />
             {/* HEADER */}
+            {
+              console.log(
+                "---------------------" + "\n" +
+                "number of pages: " + pages.length + "\n" +
+                "page index: " + pageIndex + "\n" +
+                "header: " + pages[pageIndex].header + "\n" +
+                "---------------------"
+              )
+            }
             {pages[pageIndex].header !== undefined && (
               <H2 text={pages[pageIndex].header ?? ""} />
             )}

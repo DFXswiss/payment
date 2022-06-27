@@ -60,10 +60,12 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   }, []);
 
   const finishChatBot = (nthTry = 13): Promise<void> => {
+    console.log("finishChatBot " + nthTry)
     setIsLoading(true);
     return getKyc(code)
       .then((result: KycResult) => {
         if (result.kycStatus === KycStatus.CHATBOT || !result.sessionUrl) {
+          console.log("finishChatBot retrying")
           // retry
           if (nthTry > 1) {
             return sleep(5).then(() => finishChatBot(nthTry - 1));
@@ -71,6 +73,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
 
           throw Error();
         } else {
+          console.log("finishChatBot updating")
           updateState(result);
         }
       })

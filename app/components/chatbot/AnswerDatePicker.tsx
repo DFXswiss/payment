@@ -25,8 +25,8 @@ const AnswerDatePicker = ({
   useEffect(() => {
     if (answer !== undefined) {
       setDateFormat(answer.dateFormat as string)
-      if (answer.value !== undefined) {
-        setDate(answer.value)
+      if (answer.previousSentValue !== undefined) {
+        setDate(answer.previousSentValue)
       }
     }
   }, [])

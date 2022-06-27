@@ -25,8 +25,8 @@ const AnswerList = ({
     setValue("")
     if (answer !== undefined) {
       setItems(answer.data)
-      if (answer.value !== undefined && answer.value.length > 0) {
-        itemSelected(JSON.parse(answer.value) as ChatbotAnswerData)
+      if (answer.previousSentValue !== undefined && answer.previousSentValue.length > 0) {
+        itemSelected(JSON.parse(answer.previousSentValue) as ChatbotAnswerData)
       }
     }
   }, [answer])

@@ -8,6 +8,7 @@ const Challenge = "challenge"
 const Authenticate = "authenticate"
 const NextStep = "next-step"
 const Update = "update"
+const Skip = "skip"
 
 // TODO: remove mocks - temporarily disabled - need to be removed completely
 /*
@@ -67,6 +68,18 @@ export const getUpdate = (id?: string, chatbotId?: string): Promise<ChatbotAPIQu
   //   })
   // }
   return fetchFrom(id, Update, "GET", "sak=" + chatbotId, undefined, "JSON")
+}
+
+export const requestSkip = (timestamp: number, id?: string, chatbotId?: string): Promise<string> => {
+  if (id === undefined || chatbotId === undefined) {
+    return new Promise(() => {})
+  }
+  // if (shouldMock) {
+  //   return new Promise<string>(resolve =>  {
+  //     sleep(1).then(() => {resolve("done")})
+  //   })
+  // }
+  return fetchFrom(id, Skip, "POST", "sak=" + chatbotId, timestamp, "JSON", "TEXT")
 }
 
 export const nextStep = (id?: string, chatbotId?: string, answer?: ChatbotAPIAnswer): Promise<ChatbotAPIQuestion> => {
@@ -190,6 +203,7 @@ const fetchFrom = <T>(
   parameters?: string,
   data?: any,
   type?: "JSON" | "TEXT",
+  overrideReturnType?: "JSON" | "TEXT",
 ): Promise<T> => {
   return (
     fetch(buildUrl(id, command, parameters), {
@@ -201,7 +215,7 @@ const fetchFrom = <T>(
     })
     .then((response) => {
       if (response.ok) {
-        if (type === "TEXT") {
+        if (type === "TEXT" || overrideReturnType === "TEXT") {
           return response.text()
         }
         return response.json()

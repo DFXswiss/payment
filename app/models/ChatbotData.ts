@@ -35,7 +35,8 @@ export interface ChatbotAnswer {
   data: ChatbotAnswerData[],
   dateFormat?: string,
   value: string,
-  shouldTrigger: boolean,
+  previousSentValue: string,
+  timestamp: number,
 }
 
 export interface ChatbotAPIQuestion {

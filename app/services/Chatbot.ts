@@ -8,6 +8,20 @@ export const chatbotStart = (): ChatbotAPIAnswer => {
   return { items: [], attributes: null }
 }
 
+export const chatbotFillAnswerWithData = (apiQuestion: ChatbotAPIQuestion, answer: ChatbotAnswer) => {
+  let apiItems = apiQuestion.items as ChatbotAPIItem[]
+  // if there are no items to parse just return no pages
+  if (apiItems === undefined || apiItems === null || apiItems.length === 0) {
+    return
+  }
+  // filter for answers
+  apiItems = apiItems.filter(item => item.type.startsWith("query:answer"))
+  let lastAnswer = apiItems.splice(-1)[0]
+  if (lastAnswer !== undefined) {
+    restoreAnswerValues(lastAnswer, answer)
+  }
+}
+
 export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: string): [ChatbotPage[], boolean, string?] => {
   let items: ChatbotQuestion[] = []
   let apiItems = apiQuestion.items as ChatbotAPIItem[]
@@ -72,37 +86,66 @@ export const chatbotRestorePages = (apiQuestion: ChatbotAPIQuestion, language?: 
     let newPages = restorePages(itemsToFeed, undefined, language)
     pages = pages.concat(newPages)
   }
+  console.log("restored pages")
+  console.log(pages)
   return pages
 }
 
 const restorePages = (items: ChatbotAPIItem[], item?: ChatbotAPIItem, language?: string): ChatbotPage[] => {
-  let [newPages] = chatbotFeedQuestion({items: items, chatState: "TEXT"}, language)
+  let question = {items: items, chatState: "TEXT"}
+  let [newPages] = chatbotFeedQuestion(question, language)
   if (item !== undefined && item.kind === ChatbotAPIItemKind.INPUT) {
     let lastPage = newPages.slice(-1)[0]
-    if (lastPage.answer !== undefined) {
-      // Krysh: there are two different types of answers
-      // 1) only strings, should be parse to correctly display
-      // 2) objects, should not get parsed
-      let parsedData = JSON.parse(item.data)
-      if (typeof(parsedData) === 'string') {
-        lastPage.answer.value = parsedData
-      } else {
-        lastPage.answer.value = item.data
-      }
-    }
+    restoreAnswerValues(item, lastPage.answer)
   }
   return newPages
 }
 
+const restoreAnswerValues = (item: ChatbotAPIItem, answer?: ChatbotAnswer) => {
+  if (answer === undefined) {
+      return
+  }
+  // Krysh: there are two different types of answers
+  // 1) only strings, should be parse to correctly display
+  // 2) objects, should not get parsed
+  let parsedData = JSON.parse(item.data)
+  if (typeof(parsedData) === 'string') {
+    console.log("restoring string")
+    answer.previousSentValue = parsedData
+  } else {
+    console.log("restoring object")
+    answer.previousSentValue = item.data
+  }
+  answer.timestamp = item.time
+}
+
 export const chatbotUpdateAnswer = (value: string, answer?: ChatbotAnswer) => {
   if (answer !== undefined) {
+    console.log("updating answer ")
+    console.log(value)
     answer.value = value
-    answer.shouldTrigger = true
   }
 }
 
+export const chatbotShouldSendAnswer = (answer: ChatbotAnswer): boolean => {
+  let value = answer.value
+  if (typeof(value) === 'object') {
+    value = JSON.stringify(value)
+  }
+  let previousSentValue = answer.previousSentValue
+  if (typeof(previousSentValue) === 'object') {
+    previousSentValue = JSON.stringify(previousSentValue)
+  }
+  console.log("value: " + value + " (type: " + typeof(value) + ")")
+  console.log("previousSentValue: " + previousSentValue + " (type: " + typeof(previousSentValue) + ")")
+  return value.length > 0 && value !== previousSentValue
+}
+
+export const chatbotIsEdit = (answer: ChatbotAnswer): boolean => {
+  return answer.previousSentValue.length > 0 && answer.timestamp > 0
+}
+
 export const chatbotCreateAnswer = (value: string, answer: ChatbotAnswer): ChatbotAPIAnswer => {
-  answer.shouldTrigger = false
   if (answer.apiType === undefined) {
     return { items: [], attributes: null }
   }
@@ -196,7 +239,8 @@ const answerBasedOn = (item: ChatbotAPIItem, language?: string, question?: Chatb
     data: data,
     dateFormat: dateFormat,
     value: "",
-    shouldTrigger: false,
+    previousSentValue: "",
+    timestamp: 0,
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { createRef, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View, ScrollView } from "react-native";
 import { TextInput } from "react-native-paper";
@@ -16,7 +16,8 @@ const AnswerList = ({
   onSubmit,
   answer,
 }: Props) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation()
+  const scrollViewRef = createRef<ScrollView>()
   const [value, setValue] = useState("")
   const [search, setSearch] = useState("")
   const [items, setItems] = useState<ChatbotAnswerData[]>([])
@@ -29,6 +30,7 @@ const AnswerList = ({
         itemSelected(JSON.parse(answer.previousSentValue) as ChatbotAnswerData)
       }
     }
+    scrollViewRef.current?.scrollTo({x: 0, y: 0, animated: false})
   }, [answer])
 
   const itemSelected = (item: ChatbotAnswerData) => {
@@ -70,7 +72,7 @@ const AnswerList = ({
           <SpacerV />
         </View>
       )}
-      <ScrollView>
+      <ScrollView ref={scrollViewRef}>
         {items.map((item) => (
           <TouchableRipple key={item.key} onPress={() => itemSelected(item)}>
             <View style={styles.row}>

@@ -79,7 +79,10 @@ const ChatbotScreen = ({
     }
   }
 
-  const onNext = (pages: ChatbotPage[], isFinished: boolean) => {
+  const onNext = (pages: ChatbotPage[], isFinished: boolean, inputAnswer?: ChatbotAnswer) => {
+    if (inputAnswer === undefined) {
+      inputAnswer = answer
+    }
     if (isFinished) {
       setFinished(true)
       onFinish()
@@ -87,11 +90,11 @@ const ChatbotScreen = ({
       setProgress(1)
     } else {
       // check if we need to request next step
-      if (answer !== undefined && chatbotShouldSendAnswer(answer)) {
-        if (chatbotIsEdit(answer)) {
-          requestEditAnswer(answer, chatbotId)
+      if (inputAnswer !== undefined && chatbotShouldSendAnswer(inputAnswer)) {
+        if (chatbotIsEdit(inputAnswer)) {
+          requestEditAnswer(inputAnswer.value, inputAnswer.timestamp, chatbotId)
         } else {
-          requestNextStep(chatbotCreateAnswer(answer.value, answer), answer, chatbotId)
+          requestNextStep(chatbotCreateAnswer(inputAnswer.value, inputAnswer), answer, chatbotId)
         }
       } else if (pageIndex + 1 < pages.length) {
         let newPageIndex = pageIndex + 1
@@ -144,61 +147,77 @@ const ChatbotScreen = ({
       })
   }
 
-  const requestUpdate = (id?: string, chatbotId?: string): Promise<ChatbotAPIQuestion> => {
+  const requestUpdate = (id?: string, chatbotId?: string, inputPages?: ChatbotPage[], shouldDoUpdates: boolean = true): Promise<ChatbotPage[]> => {
+    console.log("requestUpdate: inputPages")
+    console.log(inputPages)
+    if (inputPages === undefined) {
+      inputPages = pages
+    }
     return getUpdate(id, chatbotId)
       .then((question) => {
         let restoredPages = chatbotRestorePages(question, settings?.language)
-        let combinedPages = pages?.concat(restoredPages) ?? restoredPages
-        setPages(combinedPages)
-        setAnswer(restoredPages.slice(-1)[0].answer)
-        // jump to last index
-        setPageIndex(combinedPages.length - 1)
-        setLoading(false)
-        return question
+        let combinedPages = inputPages?.concat(restoredPages) ?? restoredPages
+        if (shouldDoUpdates) {
+          setPages(combinedPages)
+          setAnswer(combinedPages.slice(-1)[0].answer)
+          // jump to last index
+          setPageIndex(combinedPages.length - 1)
+          setLoading(false)
+        }
+        return combinedPages
       })
   }
 
-  const requestEditAnswer = (answer: ChatbotAnswer, chatbotId?: string) => {
+  const requestEditAnswer = (newValue: string, timestamp: number, chatbotId?: string) => {
     setRequestingNextStep(true)
     setLoading(true)
-    let newAPIAnswer = chatbotCreateAnswer(answer.value, answer)
-    requestSkip(answer.timestamp, sessionId, chatbotId)
+    requestSkip(timestamp, sessionId, chatbotId)
       .then(() => {
-        // reset pages, index and answer
-        setPages([])
-        setPageIndex(-1)
-        setAnswer(undefined)
         // request update to restore all pages from KYC spider
-        requestUpdate(sessionId, chatbotId)
-          .then(() => {
-            requestNextStep(newAPIAnswer, answer, chatbotId)
+        requestUpdate(sessionId, chatbotId, [], false)
+          .then((newPages) => {
+            // given answer is not attached to any page anymore, because of recreation of all pages
+            // therefore get recreated pages' last page answer object and fill that with correct values via requestNextStep
+            let recreatedAnswer = newPages[newPages.length-1].answer
+            if (recreatedAnswer !== undefined) {
+              requestNextStep(chatbotCreateAnswer(newValue, recreatedAnswer), recreatedAnswer, chatbotId, newPages)
+            }
           })
       })
   }
 
-  const requestNextStep = (apiAnswer: ChatbotAPIAnswer, answer?: ChatbotAnswer, chatbotId?: string) => {
+  const requestNextStep = (apiAnswer: ChatbotAPIAnswer, answer?: ChatbotAnswer, chatbotId?: string, inputPages?: ChatbotPage[]): Promise<ChatbotPage[]> => {
     setRequestingNextStep(true)
-    nextStep(sessionId, chatbotId, apiAnswer)
+    console.log("requestNextStep: inputPages")
+    console.log(inputPages)
+    if (inputPages === undefined) {
+      inputPages = pages
+    }
+    return nextStep(sessionId, chatbotId, apiAnswer)
       .then((question) => {
         setRequestingNextStep(false)
         if (answer !== undefined) {
+          console.log("chatbotFillAnswerWithData ")
+          console.log(question.items)
           chatbotFillAnswerWithData(question, answer)
         }
         let [newPages, isFinished, help] = chatbotFeedQuestion(question, settings?.language)
-        console.log("new pages")
+        console.log("newPages")
         console.log(newPages)
+        let combinedPages: ChatbotPage[] = []
         if (help !== undefined) {
           NotificationService.error(help)
         } else {
           if (newPages.length > 0) {
-            let combinedPages = pages.concat(newPages)
+            let combinedPages = inputPages?.concat(newPages) ?? newPages
             setPages(combinedPages)
-            onNext(combinedPages, isFinished)
+            onNext(combinedPages, isFinished, answer)
           } else {
             NotificationService.error(t("kyc.bot.error.validation"))
           }
         }
         setLoading(false)
+        return combinedPages
       })
   }
 
@@ -267,6 +286,7 @@ const ChatbotScreen = ({
                 "number of pages: " + pages.length + "\n" +
                 "page index: " + pageIndex + "\n" +
                 "header: " + pages[pageIndex].header + "\n" +
+                "answer: " + pages[pageIndex].answer?.previousSentValue + "\n" +
                 "---------------------"
               )
             }

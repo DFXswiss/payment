@@ -148,8 +148,6 @@ const ChatbotScreen = ({
   }
 
   const requestUpdate = (id?: string, chatbotId?: string, inputPages?: ChatbotPage[], shouldDoUpdates: boolean = true): Promise<ChatbotPage[]> => {
-    console.log("requestUpdate: inputPages")
-    console.log(inputPages)
     if (inputPages === undefined) {
       inputPages = pages
     }
@@ -188,8 +186,6 @@ const ChatbotScreen = ({
 
   const requestNextStep = (apiAnswer: ChatbotAPIAnswer, answer?: ChatbotAnswer, chatbotId?: string, inputPages?: ChatbotPage[]): Promise<ChatbotPage[]> => {
     setRequestingNextStep(true)
-    console.log("requestNextStep: inputPages")
-    console.log(inputPages)
     if (inputPages === undefined) {
       inputPages = pages
     }
@@ -197,13 +193,9 @@ const ChatbotScreen = ({
       .then((question) => {
         setRequestingNextStep(false)
         if (answer !== undefined) {
-          console.log("chatbotFillAnswerWithData ")
-          console.log(question.items)
           chatbotFillAnswerWithData(question, answer)
         }
         let [newPages, isFinished, help] = chatbotFeedQuestion(question, settings?.language)
-        console.log("newPages")
-        console.log(newPages)
         let combinedPages: ChatbotPage[] = []
         if (help !== undefined) {
           NotificationService.error(help)
@@ -280,16 +272,6 @@ const ChatbotScreen = ({
             </View>
             <SpacerV />
             {/* HEADER */}
-            {
-              console.log(
-                "---------------------" + "\n" +
-                "number of pages: " + pages.length + "\n" +
-                "page index: " + pageIndex + "\n" +
-                "header: " + pages[pageIndex].header + "\n" +
-                "answer: " + pages[pageIndex].answer?.previousSentValue + "\n" +
-                "---------------------"
-              )
-            }
             {pages[pageIndex].header !== undefined && (
               <H2 text={pages[pageIndex].header ?? ""} />
             )}

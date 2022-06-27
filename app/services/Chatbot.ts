@@ -86,8 +86,6 @@ export const chatbotRestorePages = (apiQuestion: ChatbotAPIQuestion, language?: 
     let newPages = restorePages(itemsToFeed, undefined, language)
     pages = pages.concat(newPages)
   }
-  console.log("restored pages")
-  console.log(pages)
   return pages
 }
 
@@ -110,10 +108,8 @@ const restoreAnswerValues = (item: ChatbotAPIItem, answer?: ChatbotAnswer) => {
   // 2) objects, should not get parsed
   let parsedData = JSON.parse(item.data)
   if (typeof(parsedData) === 'string') {
-    console.log("restoring string")
     answer.previousSentValue = parsedData
   } else {
-    console.log("restoring object")
     answer.previousSentValue = item.data
   }
   answer.timestamp = item.time
@@ -121,8 +117,6 @@ const restoreAnswerValues = (item: ChatbotAPIItem, answer?: ChatbotAnswer) => {
 
 export const chatbotUpdateAnswer = (value: string, answer?: ChatbotAnswer) => {
   if (answer !== undefined) {
-    console.log("updating answer ")
-    console.log(value)
     answer.value = value
   }
 }
@@ -136,8 +130,6 @@ export const chatbotShouldSendAnswer = (answer: ChatbotAnswer): boolean => {
   if (typeof(previousSentValue) === 'object') {
     previousSentValue = JSON.stringify(previousSentValue)
   }
-  console.log("value: " + value + " (type: " + typeof(value) + ")")
-  console.log("previousSentValue: " + previousSentValue + " (type: " + typeof(previousSentValue) + ")")
   return value.length > 0 && value !== previousSentValue
 }
 

@@ -23,13 +23,15 @@ const AnswerDatePicker = ({
   }
 
   useEffect(() => {
+    setDate("")
+    setDateFormat("")
     if (answer !== undefined) {
       setDateFormat(answer.dateFormat as string)
       if (answer.previousSentValue !== undefined) {
         setDate(answer.previousSentValue)
       }
     }
-  }, [])
+  }, [answer])
 
   return (
     <View style={styles.container}>

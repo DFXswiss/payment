@@ -22,10 +22,11 @@ const AnswerTextbox = ({
   }
 
   useEffect(() => {
+    setValue("")
     if (answer !== undefined && answer.previousSentValue !== undefined) {
       setValue(answer.previousSentValue)
     }
-  }, [])
+  }, [answer])
 
   return (
     <View style={styles.container}>

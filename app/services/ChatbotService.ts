@@ -82,7 +82,6 @@ const fetchFrom = <T>(
 }
 
 const buildUrl = (id: string, command: string, parameters: string | undefined): string => {
-  console.log(parameters)
   if (parameters !== undefined) {
     return `${BaseUrl}/${id}/${command}?nc=true&${parameters}`
   }

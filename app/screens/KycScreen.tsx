@@ -39,6 +39,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const [isLimitRequest, setIsLimitRequest] = useState(false);
   const [code, setCode] = useState<string | undefined>();
   const [kycResult, setKycResult] = useState<KycResult | undefined>();
+  const [startProcess, setStartProcess] = useState<boolean>(false);
 
   useEffect(() => {
     // get params
@@ -96,6 +97,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
 
       // load iframe
       setIsLoading(true);
+      setStartProcess(true)
       setTimeout(() => setIsLoading(false), 2000);
     } else if (kycCompleted(result?.kycStatus)) {
       setIsLimitRequest(true);
@@ -116,7 +118,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
       </DeFiModal>
 
       {kycResult &&
-        (kycResult.sessionUrl ? (
+        (startProcess && kycResult.sessionUrl ? (
           <View style={styles.container}>
             {kycResult.setupUrl && (
               <View style={styles.hiddenIframe}>

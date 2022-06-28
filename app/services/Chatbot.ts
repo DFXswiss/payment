@@ -176,13 +176,6 @@ const parseQuestion = (item: ChatbotAPIItem, index: number, language?: string): 
       label = getLocalizedValueFrom(dropdownData.text, language)
       break
   }
-  // TODO Krysh: only here for debugging, should be deleted
-  if (label === "" || typeof (label) === "object" || label === undefined) {
-    console.warn("kind: " + item.kind)
-    console.warn("type: " + item.type)
-    console.warn(item.data)
-    label = "Something on parsing is wrong"
-  }
   return {
     key: index,
     label: replaceAll(label, "<br>", "\n"),

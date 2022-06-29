@@ -1,8 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Linking, StyleSheet, View } from "react-native";
-import { TouchableHighlight } from 'react-native-gesture-handler';
+import { Linking, StyleSheet, TouchableOpacity, View } from "react-native";
 import { IconButton, Text, TextInput } from 'react-native-paper';
 import AnswerDatePicker from '../components/chatbot/AnswerDatePicker';
 import AnswerList from '../components/chatbot/AnswerList';
@@ -33,7 +32,7 @@ const ChatbotScreen = ({
   const { t } = useTranslation();
   const nav = useNavigation();
 
-  const [sessionId, setSessionId] = useState<string | undefined>();
+  const [sessionId, setSessionId] = useState<string>();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isRequestNextStep, setRequestingNextStep] = useState<boolean>(false);
   const [smsCode, setSMSCode] = useState<string>("");
@@ -41,12 +40,12 @@ const ChatbotScreen = ({
   const [chatbotId, setChatbotId] = useState<string>();
   const [pages, setPages] = useState<ChatbotPage[]>([]);
   const [pageIndex, setPageIndex] = useState<number>(-1); // intentionally start with -1 to use increase in the same way every time
-  const [answer, setAnswer] = useState<ChatbotAnswer|undefined>();
+  const [answer, setAnswer] = useState<ChatbotAnswer>();
   const [progress, setProgress] = useState<number>(0);
   const [isFinished, setFinished] = useState<boolean>(false);
 
   useEffect(() => {
-    let id = extractSessionId(sessionUrl)
+    const id = extractSessionId(sessionUrl)
     setSessionId(id)
     getAuthenticationInfo(id)
       .then(() => {
@@ -56,7 +55,7 @@ const ChatbotScreen = ({
   }, [])
 
   const extractSessionId = (sessionUrl: string): string => {
-    let sessionId = sessionUrl.replace("https://services.eurospider.com/chatbot-ui/program/kyc-onboarding/", "")
+    const sessionId = sessionUrl.replace("https://services.eurospider.com/chatbot-ui/program/kyc-onboarding/", "")
     return sessionId.split("?")[0]
   }
 
@@ -72,7 +71,7 @@ const ChatbotScreen = ({
     }
     // back
     else {
-      let newPageIndex = pageIndex - 1
+      const newPageIndex = pageIndex - 1
       setPageIndex(newPageIndex)
       updateProgress(pages, newPageIndex, true)
       setAnswer(pages[newPageIndex].answer)
@@ -97,7 +96,7 @@ const ChatbotScreen = ({
           requestNextStep(chatbotCreateAnswer(inputAnswer.value, inputAnswer), answer, chatbotId)
         }
       } else if (pageIndex + 1 < pages.length) {
-        let newPageIndex = pageIndex + 1
+        const newPageIndex = pageIndex + 1
         setPageIndex(newPageIndex)
         setAnswer(pages[newPageIndex].answer)
         updateProgress(pages, newPageIndex)
@@ -145,6 +144,9 @@ const ChatbotScreen = ({
             // already started, need to call update and parse existing pages
             restoreSession(id, chatbotId)
             break
+          default:
+            requestNextStep(chatbotStart(), undefined, chatbotId)
+            break
         }
       })
   }
@@ -155,8 +157,8 @@ const ChatbotScreen = ({
     }
     return getUpdate(id, chatbotId)
       .then((question) => {
-        let restoredPages = chatbotRestorePages(question, settings?.language)
-        let combinedPages = inputPages?.concat(restoredPages) ?? restoredPages
+        const restoredPages = chatbotRestorePages(question, settings?.language)
+        const combinedPages = inputPages?.concat(restoredPages) ?? restoredPages
         if (shouldDoUpdates) {
           setPages(combinedPages)
           setAnswer(combinedPages.slice(-1)[0].answer)
@@ -180,31 +182,31 @@ const ChatbotScreen = ({
       .then((newPages) => {
         // given answer is not attached to any page anymore, because of recreation of all pages
         // therefore get recreated pages' last page answer object and fill that with correct values via requestNextStep
-        let recreatedAnswer = newPages[newPages.length-1].answer
+        const recreatedAnswer = newPages[newPages.length-1].answer
         if (recreatedAnswer !== undefined) {
           requestNextStep(chatbotCreateAnswer(newValue, recreatedAnswer), recreatedAnswer, chatbotId, newPages)
         }
       })
   }
 
-  const requestNextStep = (apiAnswer: ChatbotAPIAnswer, answer?: ChatbotAnswer, chatbotId?: string, inputPages?: ChatbotPage[]): Promise<ChatbotPage[]> => {
+  const requestNextStep = (apiAnswer: ChatbotAPIAnswer, answer?: ChatbotAnswer, chatbotId?: string, inputPages?: ChatbotPage[]) => {
     setRequestingNextStep(true)
     if (inputPages === undefined) {
       inputPages = pages
     }
-    return nextStep(sessionId, chatbotId, apiAnswer)
+    nextStep(sessionId, chatbotId, apiAnswer)
       .then((question) => {
         setRequestingNextStep(false)
         if (answer !== undefined) {
           chatbotFillAnswerWithData(question, answer)
         }
-        let [newPages, isFinished, help] = chatbotFeedQuestion(question, settings?.language)
-        let combinedPages: ChatbotPage[] = []
+        const [newPages, isFinished, help] = chatbotFeedQuestion(question, settings?.language)
+        const combinedPages: ChatbotPage[] = []
         if (help !== undefined) {
           NotificationService.error(help)
         } else {
           if (newPages.length > 0) {
-            let combinedPages = inputPages?.concat(newPages) ?? newPages
+            const combinedPages = inputPages?.concat(newPages) ?? newPages
             setPages(combinedPages)
             onNext(combinedPages, isFinished, answer)
           } else {
@@ -222,7 +224,7 @@ const ChatbotScreen = ({
     }
     // Krysh: there are always around 20 questions. might be more in some cases.
     // current page / max pages
-    let newProgress = Math.max(pageIndex, 1) / Math.max(pages.length, 20)
+    const newProgress = Math.max(pageIndex, 1) / Math.max(pages.length, 20)
     // on back allow lower progress to previous one
     if (isBack) {
       setProgress(newProgress)
@@ -251,9 +253,9 @@ const ChatbotScreen = ({
             <TextInput value={smsCode} onChangeText={setSMSCode} onSubmitEditing={() => { submitSMSCode(sessionId) }} placeholder={t("kyc.bot.sms_placeholder")} keyboardType="numeric" />
             <SpacerV />
             <Text style={{ color: Colors.Grey }}>{t("kyc.bot.sms_help")}</Text>
-            <TouchableHighlight onPress={() => Linking.openURL('mailto:support@kyc.ch')}>
+            <TouchableOpacity onPress={() => Linking.openURL('mailto:support@kyc.ch')}>
               <Text style={AppStyles.link}>support@kyc.ch</Text>
-            </TouchableHighlight>
+            </TouchableOpacity>
             <SpacerV height={20} />
             <DeFiButton mode="contained" onPress={() => { submitSMSCode(sessionId) }}>
               {t("action.next")}

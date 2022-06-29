@@ -16,14 +16,14 @@ export const chatbotFillAnswerWithData = (apiQuestion: ChatbotAPIQuestion, answe
   }
   // filter for answers
   apiItems = apiItems.filter(item => item.type.startsWith("query:answer"))
-  let lastAnswer = apiItems.splice(-1)[0]
+  const lastAnswer = apiItems.splice(-1)[0]
   if (lastAnswer !== undefined) {
     restoreAnswerValues(lastAnswer, answer)
   }
 }
 
 export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: string): [ChatbotPage[], boolean, string?] => {
-  let items: ChatbotQuestion[] = []
+  const items: ChatbotQuestion[] = []
   let apiItems = apiQuestion.items as ChatbotAPIItem[]
   // if there are no items to parse just return no pages
   if (apiItems === undefined || apiItems === null || apiItems.length === 0) {
@@ -36,7 +36,7 @@ export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: 
     items.push(parseQuestion(item, items.length, language))
   })
   // check chat state if we should finish
-  let shouldFinish = apiQuestion.chatState === ChatbotAPIState.FINISH
+  const shouldFinish = apiQuestion.chatState === ChatbotAPIState.FINISH
   let question: ChatbotQuestion|undefined
   // if we aren't able to finish, pop last item and save it as question, this will be needed later on
   if (!shouldFinish) {
@@ -48,17 +48,17 @@ export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: 
     return [[], false, question?.label]
   }
   // create an answer based on last question
-  let answer = answerBasedOn(apiItems.slice(-1)[0], language, question)
-  let pages: ChatbotPage[] = []
+  const answer = answerBasedOn(apiItems.slice(-1)[0], language, question)
+  const pages: ChatbotPage[] = []
   // each question should represent a single page
   if (items.length > 0) {
-    let header = items[0].label
-    let body = items.slice(1).map((item) => {return item.label}).join('\n')
+    const header = items[0].label
+    const body = items.slice(1).map((item) => {return item.label}).join('\n')
     pages.push({header: header, body: body, answer: undefined})
   }
   // if we aren't able to finish, check if we have a multiline header
   if (!shouldFinish) {
-    let multilineHeader = question?.label.split('\n')
+    const multilineHeader = question?.label.split('\n')
     if (multilineHeader !== undefined && multilineHeader.length > 1) {
       pages.push({header: multilineHeader[0], body: multilineHeader.slice(1).join('\n'), answer: answer})
     } else {
@@ -69,12 +69,12 @@ export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: 
 }
 
 export const chatbotRestorePages = (apiQuestion: ChatbotAPIQuestion, language?: string): ChatbotPage[] => {
-  let apiItems = apiQuestion.items as ChatbotAPIItem[]
+  const apiItems = apiQuestion.items as ChatbotAPIItem[]
   let pages: ChatbotPage[] = []
   let itemsToFeed: ChatbotAPIItem[] = []
   apiItems.forEach((item) => {
     if (item.sequence === 0 && itemsToFeed.length > 0) {
-      let newPages = restorePages(itemsToFeed, item, language)
+      const newPages = restorePages(itemsToFeed, item, language)
       pages = pages.concat(newPages)
       itemsToFeed = []
     } else {
@@ -83,17 +83,17 @@ export const chatbotRestorePages = (apiQuestion: ChatbotAPIQuestion, language?: 
   })
   // check if items to feed is empty, if not there is still a page to be restored
   if (itemsToFeed.length > 0) {
-    let newPages = restorePages(itemsToFeed, undefined, language)
+    const newPages = restorePages(itemsToFeed, undefined, language)
     pages = pages.concat(newPages)
   }
   return pages
 }
 
 const restorePages = (items: ChatbotAPIItem[], item?: ChatbotAPIItem, language?: string): ChatbotPage[] => {
-  let question = {items: items, chatState: "TEXT"}
-  let [newPages] = chatbotFeedQuestion(question, language)
+  const question = {items: items, chatState: "TEXT"}
+  const [newPages] = chatbotFeedQuestion(question, language)
   if (item !== undefined && item.kind === ChatbotAPIItemKind.INPUT) {
-    let lastPage = newPages.slice(-1)[0]
+    const lastPage = newPages.slice(-1)[0]
     restoreAnswerValues(item, lastPage.answer)
   }
   return newPages
@@ -106,7 +106,7 @@ const restoreAnswerValues = (item: ChatbotAPIItem, answer?: ChatbotAnswer) => {
   // Krysh: there are two different types of answers
   // 1) only strings, should be parse to correctly display
   // 2) objects, should not get parsed
-  let parsedData = JSON.parse(item.data)
+  const parsedData = JSON.parse(item.data)
   if (typeof(parsedData) === 'string') {
     answer.previousSentValue = parsedData
   } else {
@@ -142,7 +142,7 @@ export const chatbotCreateAnswer = (value: string, answer: ChatbotAnswer): Chatb
     return { items: [], attributes: null }
   }
 
-  let answerItem = {
+  const answerItem = {
     type: answer.apiType,
     data: JSON.stringify(value),
   }
@@ -163,7 +163,7 @@ const parseQuestion = (item: ChatbotAPIItem, index: number, language?: string): 
     case ChatbotAPIItemType.HELP:
     case ChatbotAPIItemType.OUTPUT:
     case ChatbotAPIItemType.PLAIN:
-      let values = JSON.parse(item.data) as ChatbotLanguageValues
+      const values = JSON.parse(item.data) as ChatbotLanguageValues
       label = getLocalizedValueFrom(values, language)
       break
     case ChatbotAPIItemType.ANSWER_PLAIN:
@@ -172,7 +172,7 @@ const parseQuestion = (item: ChatbotAPIItem, index: number, language?: string): 
     case ChatbotAPIItemType.DROPDOWN:
     case ChatbotAPIItemType.SELECTION:
     case ChatbotAPIItemType.ANSWER_SELECTION:
-      let dropdownData = JSON.parse(item.data) as ChatbotList
+      const dropdownData = JSON.parse(item.data) as ChatbotList
       label = getLocalizedValueFrom(dropdownData.text, language)
       break
   }
@@ -184,7 +184,7 @@ const parseQuestion = (item: ChatbotAPIItem, index: number, language?: string): 
 
 /// Actually creates the answer element which is shown based on given item
 const answerBasedOn = (item: ChatbotAPIItem, language?: string, question?: ChatbotQuestion): ChatbotAnswer => {
-  let data: ChatbotAnswerData[] = []
+  const data: ChatbotAnswerData[] = []
   let dateFormat
   let apiType
   let element = ChatbotElement.TEXT
@@ -192,7 +192,7 @@ const answerBasedOn = (item: ChatbotAPIItem, language?: string, question?: Chatb
     case ChatbotAPIItemType.PLAIN:
       apiType = ChatbotAPIItemType.ANSWER_PLAIN
       element = ChatbotElement.TEXTBOX
-      let [isDate, foundDateFormat] = findDateFormat(question?.label)
+      const [isDate, foundDateFormat] = findDateFormat(question?.label)
       if (isDate && question !== undefined && foundDateFormat !== undefined) {
         question.label = question.label.replace(foundDateFormat, "")
           .replace("(", "")
@@ -206,7 +206,7 @@ const answerBasedOn = (item: ChatbotAPIItem, language?: string, question?: Chatb
     case ChatbotAPIItemType.SELECTION:
       apiType = ChatbotAPIItemType.ANSWER_SELECTION
       element = ChatbotElement.LIST
-      let dropdownData = JSON.parse(item.data) as ChatbotList
+      const dropdownData = JSON.parse(item.data) as ChatbotList
       data.push(...dropdownData.selection.map((item) => {
         delete item.prefix
         return {
@@ -233,8 +233,8 @@ const findDateFormat = (label?: string): [boolean, string?] => {
   if (label === undefined) { return [false, undefined] }
   let result = false
   let dateFormat
-  let start = label?.indexOf('(')
-  let end = label?.indexOf(')')
+  const start = label?.indexOf('(')
+  const end = label?.indexOf(')')
   // (DD.MM.YYYY) gap between index of ( and ) is 11
   if (end - start === 11) {
     dateFormat = label?.substring(start + 1, end)

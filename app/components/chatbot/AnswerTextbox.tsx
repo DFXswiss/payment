@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { TextInput } from "react-native-paper";
 import { ChatbotAnswer } from "../../models/ChatbotData";
-import { chatbotUpdateAnswer } from "../../services/Chatbot";
+import { chatbotUpdateAnswer } from "../../services/ChatbotUtils";
 
 interface Props {
   onSubmit: (answer: ChatbotAnswer, shouldTriggerNext: boolean) => void;

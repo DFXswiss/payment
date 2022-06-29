@@ -5,7 +5,7 @@ import { TextInput } from "react-native-paper";
 import { RadioButton, Text, TouchableRipple } from "react-native-paper";
 import { SpacerV } from "../../elements/Spacers";
 import { ChatbotAnswer, ChatbotAnswerData } from "../../models/ChatbotData";
-import { chatbotUpdateAnswer } from "../../services/Chatbot";
+import { chatbotUpdateAnswer } from "../../services/ChatbotUtils";
 
 interface Props {
   onSubmit: (answer: ChatbotAnswer) => void;
@@ -50,9 +50,7 @@ const AnswerList = ({
       if (search.length === 0) {
         setItems(answer.data)
       } else {
-        setItems(answer.data.filter((item) => { 
-          return item.label.toLowerCase().includes(search.toLocaleLowerCase()) || item.isSelected
-        }))
+        setItems(answer.data.filter((item) => item.label.toLowerCase().includes(search.toLocaleLowerCase()) || item.isSelected))
       }
     }
   }
@@ -63,7 +61,7 @@ const AnswerList = ({
         <View>
           <TextInput
             inlineImageLeft="search"
-            placeholder={t("kyc.bot.search")}
+            placeholder={t("action.search")}
             onChangeText={(text) => { 
               update(text)
             }}

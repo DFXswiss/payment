@@ -22,7 +22,9 @@
       "yes": "Sí",
       "delete": "Eliminar",
       "upload": "Subir",
-      "send": "Enviar"
+      "send": "Enviar",
+      "start": "Inicio",
+      "search": "Busque en"
     },
     "feedback": {
       "page_not_found": "¡Página no encontrada!",
@@ -164,10 +166,6 @@
         "sms_code": "Introduzca el código SMS",
         "sms_placeholder": "Su código SMS",
         "sms_help": "Si no ha recibido un código SMS, póngase en contacto con ",
-        "submit": "Submit",
-        "start": "Inicio",
-        "next": "Siguiente",
-        "search": "Busque en",
         "error": {
           "missing_session_id": "Error: Por favor, inténtelo de nuevo más tarde",
           "validation": "Error: Por favor, compruebe su respuesta."

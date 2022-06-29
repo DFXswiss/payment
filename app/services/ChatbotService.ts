@@ -12,7 +12,7 @@ const Skip = "skip"
 
 export const getStatus = (id?: string, chatbotId?: string): Promise<ChatbotStatus> => {
   if (id === undefined || chatbotId === undefined) {
-    return new Promise(() => {})
+    return Promise.reject()
   }
   return fetchFrom(id, Status, "GET", "sak=" + chatbotId, undefined, "TEXT")
 }
@@ -31,21 +31,21 @@ export const postSMSCode = (id: string, code: string): Promise<string> => {
 
 export const getUpdate = (id?: string, chatbotId?: string): Promise<ChatbotAPIQuestion> => {
   if (id === undefined || chatbotId === undefined) {
-    return new Promise(() => {})
+    return Promise.reject()
   }
   return fetchFrom(id, Update, "GET", "sak=" + chatbotId, undefined, "JSON")
 }
 
 export const requestSkip = (timestamp: number, id?: string, chatbotId?: string): Promise<string> => {
   if (id === undefined || chatbotId === undefined) {
-    return new Promise(() => {})
+    return Promise.reject()
   }
   return fetchFrom(id, Skip, "POST", "sak=" + chatbotId, timestamp, "JSON", "TEXT")
 }
 
 export const nextStep = (id?: string, chatbotId?: string, answer?: ChatbotAPIAnswer): Promise<ChatbotAPIQuestion> => {
   if (id === undefined || chatbotId === undefined || answer === undefined) {
-    return new Promise(() => {})
+    return Promise.reject()
   }
   return fetchFrom(id, NextStep, "POST", "sak=" + chatbotId, answer, "JSON")
 }
@@ -82,8 +82,5 @@ const fetchFrom = <T>(
 }
 
 const buildUrl = (id: string, command: string, parameters: string | undefined): string => {
-  if (parameters !== undefined) {
-    return `${BaseUrl}/${id}/${command}?nc=true&${parameters}`
-  }
-  return `${BaseUrl}/${id}/${command}?nc=true`
+  return `${BaseUrl}/${id}/${command}?nc=true` + (parameters ? `&${parameters}` : '')
 }

@@ -15,7 +15,7 @@ import { SpacerH, SpacerV } from '../elements/Spacers';
 import { H2, H3 } from '../elements/Texts';
 import withSettings from '../hocs/withSettings';
 import { ChatbotAnswer, ChatbotAPIAnswer, ChatbotAPIQuestion, ChatbotElement, ChatbotPage, ChatbotStatus } from '../models/ChatbotData';
-import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotFillAnswerWithData, chatbotIsEdit, chatbotRestorePages, chatbotShouldSendAnswer, chatbotStart } from '../services/Chatbot';
+import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotFillAnswerWithData, chatbotIsEdit, chatbotRestorePages, chatbotShouldSendAnswer, chatbotStart } from '../services/ChatbotUtils';
 import { getAuthenticationInfo, getStatus, getUpdate, nextStep, postSMSCode, requestSkip, requestSMSCode } from '../services/ChatbotService';
 import NotificationService from '../services/NotificationService';
 import { AppSettings } from '../services/SettingsService';
@@ -123,7 +123,7 @@ const ChatbotScreen = ({
           } else {
             setChatbotId(id)
             setSMSCompleted(true)
-            requestStatus(sessionId, id)
+            requestStart(sessionId, id)
           }
         })
     } else {
@@ -131,7 +131,7 @@ const ChatbotScreen = ({
     }
   }
 
-  const requestStatus = (id?: string, chatbotId?: string) => {
+  const requestStart = (id?: string, chatbotId?: string) => {
     getStatus(id, chatbotId)
       .then((status) => {
         switch (status) {
@@ -141,13 +141,13 @@ const ChatbotScreen = ({
             break
           case ChatbotStatus.STARTED:
             // already started, need to call update and parse existing pages
-            requestUpdate(id, chatbotId)
+            restoreSession(id, chatbotId)
             break
         }
       })
   }
 
-  const requestUpdate = (id?: string, chatbotId?: string, inputPages?: ChatbotPage[], shouldDoUpdates: boolean = true): Promise<ChatbotPage[]> => {
+  const restoreSession = (id?: string, chatbotId?: string, inputPages?: ChatbotPage[], shouldDoUpdates: boolean = true): Promise<ChatbotPage[]> => {
     if (inputPages === undefined) {
       inputPages = pages
     }
@@ -172,15 +172,16 @@ const ChatbotScreen = ({
     requestSkip(timestamp, sessionId, chatbotId)
       .then(() => {
         // request update to restore all pages from KYC spider
-        requestUpdate(sessionId, chatbotId, [], false)
-          .then((newPages) => {
-            // given answer is not attached to any page anymore, because of recreation of all pages
-            // therefore get recreated pages' last page answer object and fill that with correct values via requestNextStep
-            let recreatedAnswer = newPages[newPages.length-1].answer
-            if (recreatedAnswer !== undefined) {
-              requestNextStep(chatbotCreateAnswer(newValue, recreatedAnswer), recreatedAnswer, chatbotId, newPages)
-            }
-          })
+        return restoreSession(sessionId, chatbotId, [], false)
+          
+      })
+      .then((newPages) => {
+        // given answer is not attached to any page anymore, because of recreation of all pages
+        // therefore get recreated pages' last page answer object and fill that with correct values via requestNextStep
+        let recreatedAnswer = newPages[newPages.length-1].answer
+        if (recreatedAnswer !== undefined) {
+          requestNextStep(chatbotCreateAnswer(newValue, recreatedAnswer), recreatedAnswer, chatbotId, newPages)
+        }
       })
   }
 
@@ -253,7 +254,7 @@ const ChatbotScreen = ({
             </TouchableHighlight>
             <SpacerV height={20} />
             <DeFiButton mode="contained" onPress={() => { submitSMSCode(sessionId) }}>
-              {t("kyc.bot.submit")}
+              {t("action.next")}
             </DeFiButton>
           </View>
         </View>
@@ -325,7 +326,7 @@ const ChatbotScreen = ({
             <View>
               <SpacerV height={20} />
               <DeFiButton mode="contained" loading={isRequestNextStep} onPress={() => { onNext(pages, false) }}>
-                {pageIndex === 0 ? t("kyc.bot.start") : t("kyc.bot.next")}
+                {pageIndex === 0 ? t("action.start") : t("action.next")}
               </DeFiButton>
             </View>
           )}

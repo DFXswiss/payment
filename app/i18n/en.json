@@ -22,7 +22,9 @@
       "yes": "Yes",
       "delete": "Delete",
       "upload": "Upload",
-      "send": "Send"
+      "send": "Send",
+      "start": "Start",
+      "search": "Search"
     },
     "feedback": {
       "page_not_found": "Page not found!",
@@ -177,10 +179,6 @@
         "sms_code": "Enter SMS code",
         "sms_placeholder": "Your SMS code",
         "sms_help": "If you did not receive an SMS code, please contact ",
-        "submit": "Submit",
-        "start": "Start",
-        "next": "Next",
-        "search": "Search",
         "error": {
           "missing_session_id": "Error: Please try again later.",
           "validation": "Error: Please check your answer."

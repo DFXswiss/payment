@@ -20,7 +20,7 @@ const AppLayout = ({ settings, preventScrolling, children }: { settings?: AppSet
     <View style={{ height: dimensions.height }}>
       <Portal.Host>
         <ScrollView
-          contentContainerStyle={preventScrolling ? styles.scrollContainerPreventScrolling : styles.scrollContainer}
+          contentContainerStyle={preventScrolling ? styles.scrollContainerPage : styles.scrollContainer}
           ref={scrollRef}
           onContentSizeChange={(_, height) => setContentSize(height)}
           onScroll={(scrollEvent) => setContentOffset(scrollEvent.nativeEvent.contentOffset.y)}
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
   scrollContainer: {
     minHeight: "100%",
   },
-  scrollContainerPreventScrolling: {
+  scrollContainerPage: {
     minHeight: "100%",
     maxHeight: "100%",
   },

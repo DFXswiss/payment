@@ -23,7 +23,9 @@
       "yes": "Sim",
       "delete": "Eliminar",
       "upload": "Carregar",
-      "send": "Enviar"
+      "send": "Enviar",
+      "start": "Início",
+      "search": "Pesquisa"
     },
     "feedback": {
       "page_not_found": "Página não encontrada!",
@@ -177,10 +179,6 @@
         "sms_code": "Introduzir o código SMS",
         "sms_placeholder": "O seu código SMS",
         "sms_help": "Se não recebeu um código SMS, por favor contacte",
-        "submit": "Submeter",
-        "start": "Início",
-        "next": "Próximo",
-        "search": "Pesquisa",
         "error": {
           "missing_session_id": "Por favor, tente novamente mais tarde",
           "validation": "Por favor, verifique a sua resposta"

@@ -28,6 +28,7 @@ import { CompactRow, CompactCell } from "../elements/Tables";
 import ButtonContainer from "../components/util/ButtonContainer";
 import LimitEdit from "../components/edit/LimitEdit";
 import DeFiModal from "../components/util/DeFiModal";
+import ChatbotScreen from "./ChatbotScreen";
 
 const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const { t } = useTranslation();
@@ -35,10 +36,10 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const route = useRoute();
 
   const [isLoading, setIsLoading] = useState(true);
-  const [showIframe, setShowIframe] = useState(false);
   const [isLimitRequest, setIsLimitRequest] = useState(false);
   const [code, setCode] = useState<string | undefined>();
   const [kycResult, setKycResult] = useState<KycResult | undefined>();
+  const [startProcess, setStartProcess] = useState<boolean>(false);
 
   useEffect(() => {
     // get params
@@ -95,8 +96,8 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
       if (!result?.sessionUrl) return NotificationService.error(t("feedback.load_failed"));
 
       // load iframe
-      setShowIframe(true);
       setIsLoading(true);
+      setStartProcess(true)
       setTimeout(() => setIsLoading(false), 2000);
     } else if (kycCompleted(result?.kycStatus)) {
       setIsLimitRequest(true);
@@ -104,7 +105,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   };
 
   return (
-    <AppLayout>
+    <AppLayout preventScrolling={kycResult?.kycStatus === KycStatus.CHATBOT}>
       <KycInit isVisible={isLoading} setIsVisible={setIsLoading} />
 
       <DeFiModal
@@ -117,19 +118,19 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
       </DeFiModal>
 
       {kycResult &&
-        (showIframe && kycResult.sessionUrl ? (
+        (startProcess && kycResult.sessionUrl ? (
           <View style={styles.container}>
             {kycResult.setupUrl && (
               <View style={styles.hiddenIframe}>
                 <Iframe src={kycResult.setupUrl} />
               </View>
             )}
-            <Iframe src={kycResult.sessionUrl} />
-
-            {kycResult.kycStatus === KycStatus.CHATBOT && (
-              <DeFiButton onPress={() => finishChatBot()} loading={isLoading} labelStyle={styles.chatbotButton}>
-                {t("model.kyc.finish_chatbot")}
-              </DeFiButton>
+            {kycResult.kycStatus === KycStatus.CHATBOT ? (
+              <View style={styles.container}>
+                <ChatbotScreen sessionUrl={kycResult.sessionUrl} onFinish={() => { finishChatBot() }} />
+              </View>
+            ) : (
+              <Iframe src={kycResult.sessionUrl} />
             )}
           </View>
         ) : (
@@ -152,12 +153,12 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
             {/* TODO: integrate initial limit increase */}
             {((kycInProgress(kycResult.kycStatus) && kycResult.kycState !== KycState.REVIEW) ||
               kycCompleted(kycResult.kycStatus)) && (
-              <ButtonContainer>
-                <DeFiButton mode="contained" onPress={() => onContinue(kycResult)}>
-                  {t(kycCompleted(kycResult.kycStatus) ? "model.kyc.increase_limit" : "action.next")}
-                </DeFiButton>
-              </ButtonContainer>
-            )}
+                <ButtonContainer>
+                  <DeFiButton mode="contained" onPress={() => onContinue(kycResult)}>
+                    {t(kycCompleted(kycResult.kycStatus) ? "model.kyc.increase_limit" : "action.next")}
+                  </DeFiButton>
+                </ButtonContainer>
+              )}
           </View>
         ))}
     </AppLayout>

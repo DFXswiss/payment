@@ -23,7 +23,9 @@
       "yes": "Sim",
       "delete": "Eliminar",
       "upload": "Carregar",
-      "send": "Enviar"
+      "send": "Enviar",
+      "start": "Início",
+      "search": "Pesquisa"
     },
     "feedback": {
       "page_not_found": "Página não encontrada!",
@@ -170,6 +172,19 @@
     },
     "admin": {
       "title": "Admin"
+    },
+    "kyc": {
+      "bot": {
+        "sms_header": "Por favor introduza o código SMS da KYC:",
+        "sms_code": "Introduzir o código SMS",
+        "sms_placeholder": "O seu código SMS",
+        "sms_help": "Se não recebeu um código SMS, por favor contacte",
+        "error": {
+          "missing_session_id": "Erro: Por favor, tente novamente mais tarde",
+          "validation": "Erro: Por favor, verifique a sua resposta",
+          "wrong_sms": "Erro: Código SMS errado."
+        }
+      }
     },
     "model": {
       "user": {

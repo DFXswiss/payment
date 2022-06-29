@@ -22,7 +22,9 @@
       "yes": "Yes",
       "delete": "Delete",
       "upload": "Upload",
-      "send": "Send"
+      "send": "Send",
+      "start": "Start",
+      "search": "Search"
     },
     "feedback": {
       "page_not_found": "Page not found!",
@@ -170,6 +172,19 @@
     },
     "admin": {
       "title": "Admin"
+    },
+    "kyc": {
+      "bot": {
+        "sms_header": "Please enter the SMS code from KYC:",
+        "sms_code": "Enter SMS code",
+        "sms_placeholder": "Your SMS code",
+        "sms_help": "If you did not receive an SMS code, please contact ",
+        "error": {
+          "missing_session_id": "Error: Please try again later.",
+          "validation": "Error: Please check your answer.",
+          "wrong_sms": "Error: Wrong SMS code."
+        }
+      }
     },
     "model": {
       "user": {

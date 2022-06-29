@@ -23,7 +23,9 @@
       "yes": "Ja",
       "delete": "Löschen",
       "upload": "Hochladen",
-      "send": "Absenden"
+      "send": "Absenden",
+      "start": "Start",
+      "search": "Suche"
     },
     "feedback": {
       "page_not_found": "Seite nicht gefunden!",
@@ -174,6 +176,19 @@
     },
     "admin": {
       "title": "Admin"
+    },    
+    "kyc": {
+      "bot": {
+        "sms_header": "Bitte geben Sie den SMS-Code von KYC ein:",
+        "sms_code": "SMS-Code eingeben",
+        "sms_placeholder": "Ihr SMS-Code",
+        "sms_help": "Wenn Sie keinen SMS-Code erhalten haben, wenden Sie sich bitte an ",
+        "error": {
+          "missing_session_id": "Fehler: Bitte versuchen Sie es später noch einmal.",
+          "validation": "Fehler: Bitte überprüfen Sie Ihre Antwort.",
+          "wrong_sms": "Fehler: Falscher SMS-Code."
+        }
+      }
     },
     "model": {
       "user": {

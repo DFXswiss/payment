@@ -184,7 +184,8 @@
         "sms_help": "Se non avete ricevuto un codice SMS, contattate ",
         "error": {
           "missing_session_id": "Errore: Si prega di riprovare più tardi",
-          "validation": "Errore: Si prega di controllare la risposta"
+          "validation": "Errore: Si prega di controllare la risposta",
+          "wrong_sms": "Errore: Codice SMS errato."
         }
       }
     },

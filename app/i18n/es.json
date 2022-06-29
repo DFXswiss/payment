@@ -168,7 +168,8 @@
         "sms_help": "Si no ha recibido un código SMS, póngase en contacto con ",
         "error": {
           "missing_session_id": "Error: Por favor, inténtelo de nuevo más tarde",
-          "validation": "Error: Por favor, compruebe su respuesta."
+          "validation": "Error: Por favor, compruebe su respuesta.",
+          "wrong_sms": "Error: Código SMS erróneo."
         }
       }
     },

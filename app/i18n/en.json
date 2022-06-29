@@ -181,7 +181,8 @@
         "sms_help": "If you did not receive an SMS code, please contact ",
         "error": {
           "missing_session_id": "Error: Please try again later.",
-          "validation": "Error: Please check your answer."
+          "validation": "Error: Please check your answer.",
+          "wrong_sms": "Error: Wrong SMS code."
         }
       }
     },

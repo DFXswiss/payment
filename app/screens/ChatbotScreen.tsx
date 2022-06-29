@@ -119,7 +119,9 @@ const ChatbotScreen = ({
       postSMSCode(id, smsCode)
         .then((id) => {
           if (id === "false") {
-            nav.navigate(Routes.Home)
+            NotificationService.error(t("kyc.bot.error.wrong_sms"))
+            // wait a short amount of time to avoid screen flickering due to fast network request
+            setTimeout(() => setLoading(false), 1000)
           } else {
             setChatbotId(id)
             setSMSCompleted(true)

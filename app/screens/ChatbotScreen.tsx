@@ -14,7 +14,7 @@ import { SpacerV } from '../elements/Spacers';
 import { H2, H3 } from '../elements/Texts';
 import withSettings from '../hocs/withSettings';
 import { ChatbotAnswer, ChatbotAPIAnswer, ChatbotElement, ChatbotPage, ChatbotStatus } from '../models/ChatbotData';
-import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotFillAnswerWithData, chatbotIsEdit, chatbotRestorePages, chatbotShouldSendAnswer, chatbotStart } from '../services/ChatbotUtils';
+import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotFillAnswerWithData, chatbotIsEdit, chatbotLocalize, chatbotRestorePages, chatbotShouldSendAnswer, chatbotStart } from '../services/ChatbotUtils';
 import { getAuthenticationInfo, getStatus, getUpdate, nextStep, postSMSCode, requestSkip, requestSMSCode } from '../services/ChatbotService';
 import NotificationService from '../services/NotificationService';
 import { AppSettings } from '../services/SettingsService';
@@ -55,7 +55,7 @@ const ChatbotScreen = ({
         requestSMS(id)
       })
       .catch(onLoadFailed)
-  }, [])
+  }, [settings])
 
   const extractSessionId = (sessionUrl: string): string => {
     const sessionId = sessionUrl.replace("https://services.eurospider.com/chatbot-ui/program/kyc-onboarding/", "")
@@ -289,9 +289,9 @@ const ChatbotScreen = ({
             {pages[pageIndex].header !== undefined && (
               <>
                 {height > 667 ? (
-                  <H2 text={pages[pageIndex].header ?? ""} />
+                  <H2 text={ chatbotLocalize(pages[pageIndex].header, settings?.language, pages[pageIndex].answer) } />
                 ) : (
-                  <H3 text={pages[pageIndex].header ?? ""} />
+                  <H3 text={ chatbotLocalize(pages[pageIndex].header, settings?.language, pages[pageIndex].answer) } />
                 )}
               </>
             )}
@@ -299,7 +299,7 @@ const ChatbotScreen = ({
             {/* BODY */}
             {pages[pageIndex].body !== undefined && (
               <View>
-                <Text>{pages[pageIndex].body ?? ""}</Text>
+                <Text>{ chatbotLocalize(pages[pageIndex].body, settings?.language) }</Text>
                 <SpacerV />
               </View>
             )}
@@ -323,6 +323,7 @@ const ChatbotScreen = ({
                   <AnswerList
                     answer={pages[pageIndex].answer}
                     onSubmit={answer => { setAnswer(answer) }}
+                    language={settings?.language}
                   />
                 )}
                 {/* DATE PICKER */}

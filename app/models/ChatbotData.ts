@@ -6,8 +6,8 @@ export enum ChatbotStatus {
 }
 
 export interface ChatbotPage {
-  header?: string,
-  body?: string,
+  header?: ChatbotLanguageValues,
+  body?: ChatbotLanguageValues,
   answer?: ChatbotAnswer,
 }
 
@@ -26,7 +26,7 @@ export interface ChatbotInfo {
 
 export interface ChatbotQuestion {
   key: number,
-  label: string,
+  label: ChatbotLanguageValues,
 }
 
 export interface ChatbotAnswer {
@@ -37,6 +37,7 @@ export interface ChatbotAnswer {
   value: string,
   previousSentValue: string,
   timestamp: number,
+  hasChanged: boolean,
 }
 
 export interface ChatbotAPIQuestion {
@@ -87,7 +88,7 @@ export interface ChatbotAPIAnswerItem {
 
 export interface ChatbotAnswerData {
   key: string
-  label: string
+  label: ChatbotLanguageValues
   isSelected: boolean
   apiElement: any
 }

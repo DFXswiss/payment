@@ -31,7 +31,7 @@ const AnswerDatePicker = ({
         setDate(answer.previousSentValue)
       }
     }
-  }, [answer])
+  }, [answer, answer?.dateFormat])
 
   return (
     <View style={styles.container}>

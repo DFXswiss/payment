@@ -45,25 +45,18 @@ export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: 
   // check chat state if help got returned
   if (apiQuestion.chatState === ChatbotAPIState.HELP) {
     // return empty pages, but localized text as string
-    return [[], false, question?.label]
+    return [[], false, chatbotLocalize(question?.label, language)]
   }
   // create an answer based on last question
   const answer = answerBasedOn(apiItems.slice(-1)[0], language, question)
   const pages: ChatbotPage[] = []
   // each question should represent a single page
   if (items.length > 0) {
-    const header = items[0].label
-    const body = items.slice(1).map((item) => {return item.label}).join('\n')
-    pages.push({header: header, body: body, answer: undefined})
+    pages.push(createPage(items[0], items.slice(1)))
   }
   // if we aren't able to finish, check if we have a multiline header
   if (!shouldFinish) {
-    const multilineHeader = question?.label.split('\n')
-    if (multilineHeader !== undefined && multilineHeader.length > 1) {
-      pages.push({header: multilineHeader[0], body: multilineHeader.slice(1).join('\n'), answer: answer})
-    } else {
-      pages.push({header: question?.label, body: undefined, answer: answer})
-    }
+    pages.push(createPage(question, undefined, answer))
   }
   return [pages, shouldFinish]
 }
@@ -89,39 +82,18 @@ export const chatbotRestorePages = (apiQuestion: ChatbotAPIQuestion, language?: 
   return pages
 }
 
-const restorePages = (items: ChatbotAPIItem[], item?: ChatbotAPIItem, language?: string): ChatbotPage[] => {
-  const question = {items: items, chatState: "TEXT"}
-  const [newPages] = chatbotFeedQuestion(question, language)
-  if (item !== undefined && item.kind === ChatbotAPIItemKind.INPUT) {
-    const lastPage = newPages.slice(-1)[0]
-    restoreAnswerValues(item, lastPage.answer)
-  }
-  return newPages
-}
-
-const restoreAnswerValues = (item: ChatbotAPIItem, answer?: ChatbotAnswer) => {
-  if (answer === undefined) {
-      return
-  }
-  // Krysh: there are two different types of answers
-  // 1) only strings, should be parse to correctly display
-  // 2) objects, should not get parsed
-  const parsedData = JSON.parse(item.data)
-  if (typeof(parsedData) === 'string') {
-    answer.previousSentValue = parsedData
-  } else {
-    answer.previousSentValue = item.data
-  }
-  answer.timestamp = item.time
-}
-
 export const chatbotUpdateAnswer = (value: string, answer?: ChatbotAnswer) => {
   if (answer !== undefined) {
     answer.value = value
+    answer.hasChanged = true
   }
 }
 
 export const chatbotShouldSendAnswer = (answer: ChatbotAnswer): boolean => {
+  // directly return if there is no change done by the user
+  if (!answer.hasChanged) {
+    return false
+  }
   let value = answer.value
   if (typeof(value) === 'object') {
     value = JSON.stringify(value)
@@ -149,36 +121,45 @@ export const chatbotCreateAnswer = (value: string, answer: ChatbotAnswer): Chatb
   return { items: [answerItem], attributes: null }
 }
 
-const getLocalizedValueFrom = (values: ChatbotLanguageValues, language?: string): string => {
+export const chatbotLocalize = (values?: ChatbotLanguageValues, language?: string, answer?: ChatbotAnswer): string => {
+  if (values === undefined) {
+    return ""
+  }
   if (language === undefined) {
     language = "en"
   }
-  return values[language.toLowerCase()] ?? values["en"]
+  let localizedValue = values[language.toLowerCase()] ?? values["en"]
+  if (answer !== undefined && answer.element === ChatbotElement.DATE) {
+    const [isDate, dateFormat] = findDateFormat(localizedValue)
+    if (isDate && dateFormat !== undefined) {
+      answer.dateFormat = dateFormat
+      localizedValue = localizedValue.replace(dateFormat, "")
+        .replace("(", "")
+        .replace(")", "")
+        .trim()
+    }
+  }
+  return localizedValue
 }
 
 /// Parses each item and generates data and assign label
 const parseQuestion = (item: ChatbotAPIItem, index: number, language?: string): ChatbotQuestion => {
-  let label = ""
+  let values: ChatbotLanguageValues = {}
   switch (item.type) {
     case ChatbotAPIItemType.HELP:
     case ChatbotAPIItemType.OUTPUT:
     case ChatbotAPIItemType.PLAIN:
-      const values = JSON.parse(item.data) as ChatbotLanguageValues
-      label = getLocalizedValueFrom(values, language)
-      break
-    case ChatbotAPIItemType.ANSWER_PLAIN:
-      label = JSON.parse(item.data)
+      values = JSON.parse(item.data) as ChatbotLanguageValues
       break
     case ChatbotAPIItemType.DROPDOWN:
     case ChatbotAPIItemType.SELECTION:
-    case ChatbotAPIItemType.ANSWER_SELECTION:
       const dropdownData = JSON.parse(item.data) as ChatbotList
-      label = getLocalizedValueFrom(dropdownData.text, language)
+      values = dropdownData.text
       break
   }
   return {
     key: index,
-    label: replaceAll(label, "<br>", "\n"),
+    label: values,
   }
 }
 
@@ -192,12 +173,13 @@ const answerBasedOn = (item: ChatbotAPIItem, language?: string, question?: Chatb
     case ChatbotAPIItemType.PLAIN:
       apiType = ChatbotAPIItemType.ANSWER_PLAIN
       element = ChatbotElement.TEXTBOX
-      const [isDate, foundDateFormat] = findDateFormat(question?.label)
+      // chatbotLocalize does also call findDateFormat, but only if answers' element is DATE
+      // means on first chatbotLocalize it will no try to search for a date,
+      // but afterwards on language changes it needs to re-parse the question and try to find
+      // a new date format.
+      // YES date formats shouldn't be localized, but sadly they are
+      const [isDate, foundDateFormat] = findDateFormat(chatbotLocalize(question?.label, language))
       if (isDate && question !== undefined && foundDateFormat !== undefined) {
-        question.label = question.label.replace(foundDateFormat, "")
-          .replace("(", "")
-          .replace(")", "")
-          .trim()
         element = ChatbotElement.DATE
         dateFormat = foundDateFormat
       }
@@ -211,7 +193,7 @@ const answerBasedOn = (item: ChatbotAPIItem, language?: string, question?: Chatb
         delete item.prefix
         return {
           key: item.key,
-          label: getLocalizedValueFrom(item.text, language),
+          label: item.text,
           isSelected: false,
           apiElement: item,
         }
@@ -226,6 +208,7 @@ const answerBasedOn = (item: ChatbotAPIItem, language?: string, question?: Chatb
     value: "",
     previousSentValue: "",
     timestamp: 0,
+    hasChanged: false,
   }
 }
 
@@ -241,4 +224,91 @@ const findDateFormat = (label?: string): [boolean, string?] => {
     result = true
   }
   return [result, dateFormat]
+}
+
+const languageValuesSplit = (languageValues: ChatbotLanguageValues, split: string): ChatbotLanguageValues[] => {
+  let newValue: ChatbotLanguageValues[] = []
+  for (const key in languageValues) {
+    const values = replaceAll(languageValues[key], "<br>", split)
+      .split(split)
+      .filter((value) => value.length > 0)
+    if (newValue.length === 0) {
+      newValue = values.map((value) => {
+        let object: ChatbotLanguageValues = {}
+        object[key] = value
+        return object
+      })
+    } else {
+      for (const [index, item] of values.entries()) {
+        if (index < newValue.length) {
+          newValue[index][key] = item
+        }
+      }
+    }
+  }
+  return newValue
+}
+
+const languageValuesJoin = (languageValues: ChatbotLanguageValues[], join: string): ChatbotLanguageValues => {
+  const newValue: ChatbotLanguageValues = {}
+  languageValues.forEach(languageValue => {
+    for (let key in languageValue) {
+      const value = languageValue[key]
+      const currentValue = newValue[key]
+      newValue[key] = currentValue === undefined ? value : currentValue + join + value
+    }
+  })
+  return newValue
+}
+
+const createPage = (header?: ChatbotQuestion, multipleBodies?: ChatbotQuestion[], answer?: ChatbotAnswer): ChatbotPage => {
+  if (header?.label !== undefined && needsSplit(header.label)) {
+    const multilineHeader = languageValuesSplit(header.label, '\n')
+    if (multilineHeader !== undefined && multilineHeader.length > 1) {
+      return {
+        header: multilineHeader[0], 
+        body: languageValuesJoin(multilineHeader.slice(1), '\n'), 
+        answer: answer
+      }
+    }
+  }
+  return {
+    header: header?.label,
+    body: multipleBodies !== undefined ? languageValuesJoin(multipleBodies.map((question) => question.label), '\n') : undefined,
+    answer: answer
+  }
+}
+
+const restorePages = (items: ChatbotAPIItem[], item?: ChatbotAPIItem, language?: string): ChatbotPage[] => {
+  const question = {items: items, chatState: "TEXT"}
+  const [newPages] = chatbotFeedQuestion(question, language)
+  if (item !== undefined && item.kind === ChatbotAPIItemKind.INPUT) {
+    const lastPage = newPages.slice(-1)[0]
+    restoreAnswerValues(item, lastPage.answer)
+  }
+  return newPages
+}
+
+const restoreAnswerValues = (item: ChatbotAPIItem, answer?: ChatbotAnswer) => {
+  if (answer === undefined) {
+      return
+  }
+  // Krysh: there are two different types of answers
+  // 1) only strings, should be parse to correctly display
+  // 2) objects, should not get parsed
+  const parsedData = JSON.parse(item.data)
+  if (typeof(parsedData) === 'string') {
+    answer.previousSentValue = parsedData
+  } else {
+    answer.previousSentValue = item.data
+  }
+  answer.timestamp = item.time
+  answer.hasChanged = false
+}
+
+const needsSplit = (values: ChatbotLanguageValues): boolean => {
+  // get first property of values, as only language values are stored.
+  // it doesn't matter which language is accessed
+  const value = values[Object.keys(values)[0]]
+  return value !== undefined ? value.indexOf('\n') > 0 || value.indexOf('<br>') > 0 : false
 }

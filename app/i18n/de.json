@@ -180,7 +180,7 @@
     "kyc": {
       "bot": {
         "sms_header": "Unser Verifikationspartner (KYC Spider) hat dir soeben einen SMS Code zugesendet.",
-        "sms_code": "Bitte geben diesen hier ein:",
+        "sms_code": "Bitte gebe diesen hier ein:",
         "sms_placeholder": "Ihr SMS-Code",
         "sms_help": "Solltest du den SMS Code nicht erhalten haben, wende dich bitte an ",
         "error": {

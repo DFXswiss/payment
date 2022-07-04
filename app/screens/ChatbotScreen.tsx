@@ -276,7 +276,7 @@ const ChatbotScreen = ({
               keyboardType="numeric" />
             <SpacerV />
             <Text style={{ color: Colors.Grey }}>{t("kyc.bot.sms_help")}</Text>
-            <TouchableOpacity onPress={() => Linking.openURL('mailto:' + supportEmail)}>
+            <TouchableOpacity onPress={async () => await Linking.openURL('mailto:' + supportEmail)}>
               <Text style={AppStyles.link}>{supportEmail}</Text>
             </TouchableOpacity>
             <SpacerV height={20} />
@@ -315,7 +315,7 @@ const ChatbotScreen = ({
               <View>
                 <Text>{ chatbotLocalize(pages[pageIndex].body, settings?.language) }</Text>
                 {pages[pageIndex].bodyHasSupportLink && (
-                  <TouchableOpacity onPress={() => Linking.openURL('mailto:' + supportEmail)}>
+                  <TouchableOpacity onPress={async () => await Linking.openURL('mailto:' + supportEmail)}>
                     <Text style={AppStyles.link}>{supportEmail}</Text>
                   </TouchableOpacity>
                 )}

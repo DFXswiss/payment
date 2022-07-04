@@ -1,4 +1,5 @@
-import { ChatbotAPIAnswer, ChatbotElement, ChatbotLanguageValues, ChatbotAPIQuestion, ChatbotAPIItem, ChatbotAPIItemType, ChatbotList, ChatbotAnswerData, ChatbotPage, ChatbotAnswer, ChatbotQuestion, ChatbotAPIState, ChatbotAPIItemKind } from "../models/ChatbotData"
+import { ChatbotAPIAnswer, ChatbotElement, ChatbotLanguageValues, ChatbotAPIQuestion, ChatbotAPIItem, ChatbotAPIItemType, ChatbotList, ChatbotAnswerData, ChatbotPage, ChatbotAnswer, ChatbotQuestion, ChatbotAPIState, ChatbotAPIItemKind, ChatbotAPIConfirmations } from "../models/ChatbotData"
+import { createStaticPage, shouldExchangeWithStaticPage } from "./ChatbotStaticPage";
 
 function replaceAll(str: string, find: string, replace: string) {
   return str.replace(new RegExp(find, 'g'), replace);
@@ -22,8 +23,17 @@ export const chatbotFillAnswerWithData = (apiQuestion: ChatbotAPIQuestion, answe
   }
 }
 
-export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: string): [ChatbotPage[], boolean, string?] => {
+export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, previousPages?: ChatbotPage[], language?: string): [ChatbotPage[], boolean, string?] => {
   const items: ChatbotQuestion[] = []
+  let confirmations: ChatbotAPIConfirmations|undefined = undefined
+  // check if confirmations is already attached to conversation partner attributes
+  // this information will be used to decide to exchange with a static page
+  if (apiQuestion.attributes !== undefined) {
+    const conversationPartner = JSON.parse(apiQuestion.attributes["conversationPartner"])
+    if (conversationPartner !== undefined) {
+      confirmations = conversationPartner["confirmations"]
+    }
+  }
   let apiItems = apiQuestion.items as ChatbotAPIItem[]
   // if there are no items to parse just return no pages
   if (apiItems === undefined || apiItems === null || apiItems.length === 0) {
@@ -49,25 +59,27 @@ export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, language?: 
   }
   // create an answer based on last question
   const answer = answerBasedOn(apiItems.slice(-1)[0], language, question)
-  const pages: ChatbotPage[] = []
+  // we need to know now, how many and which pages already got created on previous feeds and
+  // on the concurrent one to decide, if we would need to exchange a page for a static one
+  const pages: ChatbotPage[] = previousPages ?? []
   // each question should represent a single page
   if (items.length > 0) {
-    pages.push(createPage(items[0], items.slice(1)))
+    pages.push(createPage(previousPages, confirmations, items[0], items.slice(1)))
   }
   // if we aren't able to finish, check if we have a multiline header
   if (!shouldFinish) {
-    pages.push(createPage(question, undefined, answer))
+    pages.push(createPage(previousPages, confirmations, question, undefined, answer))
   }
   return [pages, shouldFinish]
 }
 
-export const chatbotRestorePages = (apiQuestion: ChatbotAPIQuestion, language?: string): ChatbotPage[] => {
+export const chatbotRestorePages = (apiQuestion: ChatbotAPIQuestion, previousPages?: ChatbotPage[], language?: string): ChatbotPage[] => {
   const apiItems = apiQuestion.items as ChatbotAPIItem[]
   let pages: ChatbotPage[] = []
   let itemsToFeed: ChatbotAPIItem[] = []
   apiItems.forEach((item) => {
     if (item.sequence === 0 && itemsToFeed.length > 0) {
-      const newPages = restorePages(itemsToFeed, item, language)
+      const newPages = restorePages(itemsToFeed, previousPages, item, language)
       pages = pages.concat(newPages)
       itemsToFeed = []
     } else {
@@ -76,7 +88,7 @@ export const chatbotRestorePages = (apiQuestion: ChatbotAPIQuestion, language?: 
   })
   // check if items to feed is empty, if not there is still a page to be restored
   if (itemsToFeed.length > 0) {
-    const newPages = restorePages(itemsToFeed, undefined, language)
+    const newPages = restorePages(itemsToFeed, previousPages, undefined, language)
     pages = pages.concat(newPages)
   }
   return pages
@@ -261,27 +273,33 @@ const languageValuesJoin = (languageValues: ChatbotLanguageValues[], join: strin
   return newValue
 }
 
-const createPage = (header?: ChatbotQuestion, multipleBodies?: ChatbotQuestion[], answer?: ChatbotAnswer): ChatbotPage => {
+const createPage = (previousPages?: ChatbotPage[], confirmations?: ChatbotAPIConfirmations, header?: ChatbotQuestion, multipleBodies?: ChatbotQuestion[], answer?: ChatbotAnswer): ChatbotPage => {
+  const staticPage = shouldExchangeWithStaticPage(previousPages, confirmations, answer)
+  if (staticPage !== undefined) {
+    return createStaticPage(staticPage, answer)
+  }
   if (header?.label !== undefined && needsSplit(header.label)) {
     const multilineHeader = languageValuesSplit(header.label, '\n')
     if (multilineHeader !== undefined && multilineHeader.length > 1) {
       return {
         header: multilineHeader[0], 
         body: languageValuesJoin(multilineHeader.slice(1), '\n'), 
-        answer: answer
+        bodyHasSupportLink: false,
+        answer: answer,
       }
     }
   }
   return {
     header: header?.label,
     body: multipleBodies !== undefined ? languageValuesJoin(multipleBodies.map((question) => question.label), '\n') : undefined,
-    answer: answer
+    bodyHasSupportLink: false,
+    answer: answer,
   }
 }
 
-const restorePages = (items: ChatbotAPIItem[], item?: ChatbotAPIItem, language?: string): ChatbotPage[] => {
+const restorePages = (items: ChatbotAPIItem[], previousPages?: ChatbotPage[], item?: ChatbotAPIItem, language?: string): ChatbotPage[] => {
   const question = {items: items, chatState: "TEXT"}
-  const [newPages] = chatbotFeedQuestion(question, language)
+  const [newPages] = chatbotFeedQuestion(question, previousPages, language)
   if (item !== undefined && item.kind === ChatbotAPIItemKind.INPUT) {
     const lastPage = newPages.slice(-1)[0]
     restoreAnswerValues(item, lastPage.answer)

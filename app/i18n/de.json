@@ -179,10 +179,10 @@
     },    
     "kyc": {
       "bot": {
-        "sms_header": "Bitte geben Sie den SMS-Code von KYC ein:",
-        "sms_code": "SMS-Code eingeben",
+        "sms_header": "Unser Verifikationspartner (KYC Spider) hat dir soeben einen SMS Code zugesendet.",
+        "sms_code": "Bitte geben diesen hier ein:",
         "sms_placeholder": "Ihr SMS-Code",
-        "sms_help": "Wenn Sie keinen SMS-Code erhalten haben, wenden Sie sich bitte an ",
+        "sms_help": "Solltest du den SMS Code nicht erhalten haben, wende dich bitte an ",
         "error": {
           "missing_session_id": "Fehler: Bitte versuchen Sie es später noch einmal.",
           "validation": "Fehler: Bitte überprüfen Sie Ihre Antwort.",

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Linking, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Keyboard, Linking, StyleSheet, TouchableOpacity, View } from "react-native";
 import { IconButton, Text, TextInput } from 'react-native-paper';
 import AnswerDatePicker from '../components/chatbot/AnswerDatePicker';
 import AnswerList from '../components/chatbot/AnswerList';
@@ -112,15 +112,23 @@ const ChatbotScreen = ({
     }
   }
 
+  const updateSMSCode = (code: string) => {
+    setSMSCode(code)
+    if (code.length === 4) {
+      submitSMSCode(code)
+      Keyboard.dismiss()
+    }
+  }
+
   const submitSMSCode = (id?: string) => {
     if (id !== undefined) {
-      setLoading(true)
+      setRequestingNextStep(true)
       postSMSCode(id, smsCode)
         .then((id) => {
           if (id === "false") {
             NotificationService.error(t("kyc.bot.error.wrong_sms"))
             // wait a short amount of time to avoid screen flickering due to fast network request
-            setTimeout(() => setLoading(false), 1000)
+            setTimeout(() => setRequestingNextStep(false), 1000)
           } else {
             setChatbotId(id)
             setSMSCompleted(true)
@@ -133,6 +141,7 @@ const ChatbotScreen = ({
   }
 
   const requestStart = (id?: string, chatbotId?: string) => {
+    setLoading(true)
     getStatus(id, chatbotId)
       .then((status) => {
         switch (status) {
@@ -165,6 +174,7 @@ const ChatbotScreen = ({
           // jump to last index
           setPageIndex(combinedPages.length - 1)
           setLoading(false)
+          setRequestingNextStep(false)
         }
         return combinedPages
       })
@@ -250,14 +260,19 @@ const ChatbotScreen = ({
               <IconButton color={Colors.Primary} icon="reload" onPress={() => { requestSMS(sessionId) }} />
             </View>
             <SpacerV />
-            <TextInput value={smsCode} onChangeText={setSMSCode} onSubmitEditing={() => { submitSMSCode(sessionId) }} placeholder={t("kyc.bot.sms_placeholder")} keyboardType="numeric" />
+            <TextInput 
+              value={smsCode} 
+              onChangeText={(value) => updateSMSCode(value)} 
+              onSubmitEditing={() => submitSMSCode(sessionId)} 
+              placeholder={t("kyc.bot.sms_placeholder")} 
+              keyboardType="numeric" />
             <SpacerV />
             <Text style={{ color: Colors.Grey }}>{t("kyc.bot.sms_help")}</Text>
             <TouchableOpacity onPress={() => Linking.openURL('mailto:support@kyc.ch')}>
               <Text style={AppStyles.link}>support@kyc.ch</Text>
             </TouchableOpacity>
             <SpacerV height={20} />
-            <DeFiButton mode="contained" onPress={() => { submitSMSCode(sessionId) }}>
+            <DeFiButton mode="contained" loading={isRequestNextStep} onPress={() => { submitSMSCode(sessionId) }}>
               {t("action.next")}
             </DeFiButton>
           </View>

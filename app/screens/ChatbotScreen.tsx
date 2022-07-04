@@ -262,7 +262,7 @@ const ChatbotScreen = ({
             <SpacerV />
             <TextInput 
               value={smsCode} 
-              onChangeText={(value) => updateSMSCode(value)} 
+              onChangeText={updateSMSCode} 
               onSubmitEditing={() => submitSMSCode(sessionId)} 
               placeholder={t("kyc.bot.sms_placeholder")} 
               keyboardType="numeric" />

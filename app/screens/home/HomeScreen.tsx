@@ -349,8 +349,8 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
               style={{ width: votingImageWidth, height: votingImageWidth / 3 }}
               source={
                 settings?.language === "DE"
-                  ? require("../../assets/voting_2206_de.svg")
-                  : require("../../assets/voting_2206_en.svg")
+                  ? require("../../assets/voting_2207_de.svg")
+                  : require("../../assets/voting_2207_en.svg")
               }
             />
           </TouchableOpacity>

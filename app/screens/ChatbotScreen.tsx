@@ -44,6 +44,8 @@ const ChatbotScreen = ({
   const [progress, setProgress] = useState<number>(0);
   const [isFinished, setFinished] = useState<boolean>(false);
 
+  const supportEmail = "support@dfx.swiss"
+
   useEffect(() => {
     const id = extractSessionId(sessionUrl)
     setSessionId(id)
@@ -166,18 +168,17 @@ const ChatbotScreen = ({
     }
     return getUpdate(id, chatbotId)
       .then((question) => {
-        const restoredPages = chatbotRestorePages(question, settings?.language)
-        const combinedPages = inputPages?.concat(restoredPages) ?? restoredPages
+        const restoredPages = chatbotRestorePages(question, inputPages, settings?.language)
 
-        setPages(combinedPages)
-        setAnswer(combinedPages[combinedPages.length - 1].answer)
+        setPages(restoredPages)
+        setAnswer(restoredPages[restoredPages.length - 1].answer)
         // jump to last index
-        setPageIndex(combinedPages.length - 1)
+        setPageIndex(restoredPages.length - 1)
         if (shouldDeactivateLoading) {
           setLoading(false)
           setRequestingNextStep(false)
         }
-        return combinedPages
+        return restoredPages
       })
   }
 
@@ -211,21 +212,19 @@ const ChatbotScreen = ({
         if (answer !== undefined) {
           chatbotFillAnswerWithData(question, answer)
         }
-        const [newPages, isFinished, help] = chatbotFeedQuestion(question, settings?.language)
-        const combinedPages: ChatbotPage[] = []
+        const [newPages, isFinished, help] = chatbotFeedQuestion(question, inputPages, settings?.language)
         if (help !== undefined) {
           NotificationService.error(help)
         } else {
           if (newPages.length > 0) {
-            const combinedPages = inputPages?.concat(newPages) ?? newPages
-            setPages(combinedPages)
-            onNext(combinedPages, isFinished, answer)
+            setPages(newPages)
+            onNext(newPages, isFinished, answer)
           } else {
             NotificationService.error(t("kyc.bot.error.validation"))
           }
         }
         setLoading(false)
-        return combinedPages
+        return newPages
       })
   }
 
@@ -269,8 +268,8 @@ const ChatbotScreen = ({
               keyboardType="numeric" />
             <SpacerV />
             <Text style={{ color: Colors.Grey }}>{t("kyc.bot.sms_help")}</Text>
-            <TouchableOpacity onPress={() => Linking.openURL('mailto:support@kyc.ch')}>
-              <Text style={AppStyles.link}>support@kyc.ch</Text>
+            <TouchableOpacity onPress={() => Linking.openURL('mailto:' + supportEmail)}>
+              <Text style={AppStyles.link}>{supportEmail}</Text>
             </TouchableOpacity>
             <SpacerV height={20} />
             <DeFiButton mode="contained" loading={isRequestNextStep} onPress={() => { submitSMSCode(sessionId) }}>
@@ -301,6 +300,11 @@ const ChatbotScreen = ({
             {pages[pageIndex].body !== undefined && (
               <View>
                 <Text>{ chatbotLocalize(pages[pageIndex].body, settings?.language) }</Text>
+                {pages[pageIndex].bodyHasSupportLink && (
+                  <TouchableOpacity onPress={() => Linking.openURL('mailto:' + supportEmail)}>
+                    <Text style={AppStyles.link}>{supportEmail}</Text>
+                  </TouchableOpacity>
+                )}
                 <SpacerV />
               </View>
             )}

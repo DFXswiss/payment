@@ -160,7 +160,7 @@ const ChatbotScreen = ({
       })
   }
 
-  const restoreSession = (id?: string, chatbotId?: string, inputPages?: ChatbotPage[], shouldDoUpdates: boolean = true): Promise<ChatbotPage[]> => {
+  const restoreSession = (id?: string, chatbotId?: string, inputPages?: ChatbotPage[], shouldDeactivateLoading: boolean = true): Promise<ChatbotPage[]> => {
     if (inputPages === undefined) {
       inputPages = pages
     }
@@ -168,11 +168,12 @@ const ChatbotScreen = ({
       .then((question) => {
         const restoredPages = chatbotRestorePages(question, settings?.language)
         const combinedPages = inputPages?.concat(restoredPages) ?? restoredPages
-        if (shouldDoUpdates) {
-          setPages(combinedPages)
-          setAnswer(combinedPages.slice(-1)[0].answer)
-          // jump to last index
-          setPageIndex(combinedPages.length - 1)
+
+        setPages(combinedPages)
+        setAnswer(combinedPages[combinedPages.length - 1].answer)
+        // jump to last index
+        setPageIndex(combinedPages.length - 1)
+        if (shouldDeactivateLoading) {
           setLoading(false)
           setRequestingNextStep(false)
         }

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dimensions, Linking, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Dimensions, Linking, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
 import { IconButton, Text, TextInput } from 'react-native-paper';
 import AnswerDatePicker from '../components/chatbot/AnswerDatePicker';
 import AnswerList from '../components/chatbot/AnswerList';
@@ -269,7 +269,7 @@ const ChatbotScreen = ({
       {/* Chatbot pages screen */}
       {!isLoading && pages && pageIndex >= 0 && pageIndex < pages.length && (
         <View style={styles.container}>
-          <View style={{flex: 1}}>
+          <ScrollView contentContainerStyle={{flex: 1}}>
             {/* BACK & PROGRESS */}
             <View style={styles.progressHeader}>
               <IconButton color={Colors.Primary} icon="arrow-left" onPress={() => { onBack() }} />
@@ -333,7 +333,7 @@ const ChatbotScreen = ({
                 )}
               </View>
             )}
-          </View>
+          </ScrollView>
           {/* BUTTON NAVIGATION */}
           {!isFinished && (
             <View>

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Linking, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Dimensions, Linking, StyleSheet, TouchableOpacity, View } from "react-native";
 import { IconButton, Text, TextInput } from 'react-native-paper';
 import AnswerDatePicker from '../components/chatbot/AnswerDatePicker';
 import AnswerList from '../components/chatbot/AnswerList';
@@ -43,6 +43,8 @@ const ChatbotScreen = ({
   const [answer, setAnswer] = useState<ChatbotAnswer>();
   const [progress, setProgress] = useState<number>(0);
   const [isFinished, setFinished] = useState<boolean>(false);
+
+  const {height, width} = Dimensions.get('window')
 
   useEffect(() => {
     const id = extractSessionId(sessionUrl)
@@ -278,7 +280,13 @@ const ChatbotScreen = ({
             <SpacerV />
             {/* HEADER */}
             {pages[pageIndex].header !== undefined && (
-              <H2 text={pages[pageIndex].header ?? ""} />
+              <>
+                {height > 667 ? (
+                  <H2 text={pages[pageIndex].header ?? ""} />
+                ) : (
+                  <H3 text={pages[pageIndex].header ?? ""} />
+                )}
+              </>
             )}
             <SpacerV height={20} />
             {/* BODY */}

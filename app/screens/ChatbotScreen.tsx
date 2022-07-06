@@ -44,7 +44,7 @@ const ChatbotScreen = ({
   const [progress, setProgress] = useState<number>(0);
   const [isFinished, setFinished] = useState<boolean>(false);
 
-  const {height, width} = Dimensions.get('window')
+  const {height} = Dimensions.get('window')
 
   useEffect(() => {
     const id = extractSessionId(sessionUrl)
@@ -245,6 +245,7 @@ const ChatbotScreen = ({
       {!isLoading && !isSMSCompleted && (
         <View style={styles.container}>
           <View>
+            <SpacerV height={20} />
             <H2 text={t("kyc.bot.sms_header")} />
             <SpacerV />
             <View style={[AppStyles.containerHorizontal, styles.header]}>

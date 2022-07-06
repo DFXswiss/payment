@@ -105,7 +105,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   };
 
   return (
-    <AppLayout preventScrolling={kycResult?.kycStatus === KycStatus.CHATBOT}>
+    <AppLayout preventScrolling={kycResult?.kycStatus === KycStatus.CHATBOT} removeHeaderSpace={kycResult?.kycStatus === KycStatus.CHATBOT}>
       <KycInit isVisible={isLoading} setIsVisible={setIsLoading} />
 
       <DeFiModal

@@ -8,7 +8,7 @@ import { AppSettings } from "../services/SettingsService";
 import AppStyles from "../styles/AppStyles";
 import Header from "./Header";
 
-const AppLayout = ({ settings, preventScrolling, children }: { settings?: AppSettings; preventScrolling?: boolean; children: ReactNode }) => {
+const AppLayout = ({ settings, preventScrolling, removeHeaderSpace, children }: { settings?: AppSettings; preventScrolling?: boolean; removeHeaderSpace?: boolean, children: ReactNode }) => {
   const dimensions = useWindowDimensions();
   const [contentSize, setContentSize] = useState(0);
   const [contentOffset, setContentOffset] = useState(0);
@@ -31,7 +31,9 @@ const AppLayout = ({ settings, preventScrolling, children }: { settings?: AppSet
               {!settings?.isIframe && (
                 <>
                   <Header></Header>
-                  <SpacerV height={20} />
+                  {!removeHeaderSpace && (
+                    <SpacerV height={20} />
+                  )}
                 </>
               )}
               {children}

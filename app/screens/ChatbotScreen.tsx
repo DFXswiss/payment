@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dimensions, Linking, ScrollView, StyleSheet, TouchableOpacity, View } from "react-native";
+import { Linking, ScrollView, StyleSheet, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import { IconButton, Text, TextInput } from 'react-native-paper';
 import AnswerDatePicker from '../components/chatbot/AnswerDatePicker';
 import AnswerList from '../components/chatbot/AnswerList';
@@ -13,7 +13,7 @@ import { DeFiButton } from '../elements/Buttons';
 import { SpacerH, SpacerV } from '../elements/Spacers';
 import { H2, H3 } from '../elements/Texts';
 import withSettings from '../hocs/withSettings';
-import { ChatbotAnswer, ChatbotAPIAnswer, ChatbotAPIQuestion, ChatbotElement, ChatbotPage, ChatbotStatus } from '../models/ChatbotData';
+import { ChatbotAnswer, ChatbotAPIAnswer, ChatbotElement, ChatbotPage, ChatbotStatus } from '../models/ChatbotData';
 import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotFillAnswerWithData, chatbotIsEdit, chatbotRestorePages, chatbotShouldSendAnswer, chatbotStart } from '../services/ChatbotUtils';
 import { getAuthenticationInfo, getStatus, getUpdate, nextStep, postSMSCode, requestSkip, requestSMSCode } from '../services/ChatbotService';
 import NotificationService from '../services/NotificationService';
@@ -44,7 +44,7 @@ const ChatbotScreen = ({
   const [progress, setProgress] = useState<number>(0);
   const [isFinished, setFinished] = useState<boolean>(false);
 
-  const {height} = Dimensions.get('window')
+  const {height} = useWindowDimensions()
 
   useEffect(() => {
     const id = extractSessionId(sessionUrl)

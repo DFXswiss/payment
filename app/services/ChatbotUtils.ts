@@ -25,7 +25,7 @@ export const chatbotFillAnswerWithData = (apiQuestion: ChatbotAPIQuestion, answe
 
 export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, previousPages?: ChatbotPage[], language?: string): [ChatbotPage[], boolean, string?] => {
   const items: ChatbotQuestion[] = []
-  let confirmations: ChatbotAPIConfirmations|undefined = undefined
+  let confirmations: ChatbotAPIConfirmations|undefined
   // check if confirmations is already attached to conversation partner attributes
   // this information will be used to decide to exchange with a static page
   if (apiQuestion.attributes !== undefined) {

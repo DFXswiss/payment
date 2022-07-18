@@ -68,7 +68,6 @@ const exchangeLanguageValues = (page: ChatbotStaticPage, answer?: ChatbotAnswer)
   }
   let changedValues = retrieveValue(page, Property.ANSWER)
   if (Object.keys(changedValues).length !== 0 && answer.data.length > 0) {
-    console.log("set changed values")
     answer.data[0].label = changedValues
   }
   return answer

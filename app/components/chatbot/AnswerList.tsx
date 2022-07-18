@@ -93,7 +93,7 @@ const AnswerList = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    minHeight: '150px',
+    minHeight: 150,
   },
   row: {
     flexDirection: "row",

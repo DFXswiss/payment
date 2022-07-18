@@ -1,4 +1,5 @@
 import { ChatbotAPIAnswer, ChatbotElement, ChatbotLanguageValues, ChatbotAPIQuestion, ChatbotAPIItem, ChatbotAPIItemType, ChatbotList, ChatbotAnswerData, ChatbotPage, ChatbotAnswer, ChatbotQuestion, ChatbotAPIState, ChatbotAPIItemKind, ChatbotAPIConfirmations } from "../models/ChatbotData"
+import { createAutoAnswer, shouldAutoAnswer } from "./ChatbotAutoAnswer";
 import { createStaticPage, shouldExchangeWithStaticPage } from "./ChatbotStaticPage";
 
 function replaceAll(str: string, find: string, replace: string) {
@@ -23,7 +24,7 @@ export const chatbotFillAnswerWithData = (apiQuestion: ChatbotAPIQuestion, answe
   }
 }
 
-export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, previousPages?: ChatbotPage[], language?: string): [ChatbotPage[], boolean, string?] => {
+export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, previousPages?: ChatbotPage[], language?: string): [ChatbotPage[], boolean, string?, ChatbotAnswer?] => {
   const items: ChatbotQuestion[] = []
   let confirmations: ChatbotAPIConfirmations|undefined
   // check if confirmations is already attached to conversation partner attributes
@@ -69,6 +70,11 @@ export const chatbotFeedQuestion = (apiQuestion: ChatbotAPIQuestion, previousPag
   // if we aren't able to finish, check if we have a multiline header
   if (!shouldFinish) {
     pages.push(createPage(previousPages, confirmations, question, undefined, answer))
+  }
+  const autoAnswer = shouldAutoAnswer(pages)
+  if (autoAnswer !== undefined) {
+    const lastPage = pages.splice(-1)[0]
+    return [pages, shouldFinish, undefined, createAutoAnswer(autoAnswer, lastPage.answer)]
   }
   return [pages, shouldFinish]
 }
@@ -299,8 +305,8 @@ const createPage = (previousPages?: ChatbotPage[], confirmations?: ChatbotAPICon
 
 const restorePages = (items: ChatbotAPIItem[], previousPages?: ChatbotPage[], item?: ChatbotAPIItem, language?: string): ChatbotPage[] => {
   const question = {items: items, chatState: "TEXT"}
-  const [newPages] = chatbotFeedQuestion(question, previousPages, language)
-  if (item !== undefined && item.kind === ChatbotAPIItemKind.INPUT) {
+  const [newPages, isFinished, help, autoAnswer] = chatbotFeedQuestion(question, previousPages, language)
+  if (item !== undefined && item.kind === ChatbotAPIItemKind.INPUT && autoAnswer === undefined) {
     const lastPage = newPages.slice(-1)[0]
     restoreAnswerValues(item, lastPage.answer)
   }

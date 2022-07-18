@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { createRef, useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Linking, ScrollView, StyleSheet, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import { IconButton, Text, TextInput } from 'react-native-paper';
@@ -10,7 +10,7 @@ import Loading from '../components/util/Loading';
 import Colors from '../config/Colors';
 import Routes from '../config/Routes';
 import { DeFiButton } from '../elements/Buttons';
-import { SpacerH, SpacerV } from '../elements/Spacers';
+import { SpacerV } from '../elements/Spacers';
 import { H2, H3 } from '../elements/Texts';
 import withSettings from '../hocs/withSettings';
 import { ChatbotAnswer, ChatbotAPIAnswer, ChatbotElement, ChatbotPage, ChatbotStatus } from '../models/ChatbotData';
@@ -45,7 +45,7 @@ const ChatbotScreen = ({
   const [isFinished, setFinished] = useState<boolean>(false);
 
   const {height} = useWindowDimensions()
-  let scrollViewRef = createRef<ScrollView>()
+  let scrollViewRef = useRef<ScrollView>(null)
 
   useEffect(() => {
     const id = extractSessionId(sessionUrl)
@@ -104,15 +104,12 @@ const ChatbotScreen = ({
         setPageIndex(newPageIndex)
         setAnswer(pages[newPageIndex].answer)
         updateProgress(pages, newPageIndex)
+        resetScrollView()
       }
-      resetScrollView()
     }
   }
 
   const resetScrollView = () => {
-    if (scrollViewRef.current === null) {
-      scrollViewRef = createRef<ScrollView>()
-    }
     scrollViewRef.current?.scrollTo({x: 0, y: 0, animated: false})
   }
 
@@ -226,7 +223,6 @@ const ChatbotScreen = ({
           }
         }
         setLoading(false)
-        return combinedPages
       })
   }
 

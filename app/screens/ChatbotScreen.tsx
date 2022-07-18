@@ -222,8 +222,10 @@ const ChatbotScreen = ({
         if (answer !== undefined) {
           chatbotFillAnswerWithData(question, answer)
         }
-        const [newPages, isFinished, help] = chatbotFeedQuestion(question, inputPages, settings?.language)
-        if (help !== undefined) {
+        const [newPages, isFinished, help, autoAnswer] = chatbotFeedQuestion(question, inputPages, settings?.language)
+        if (autoAnswer !== undefined) {
+          requestNextStep(chatbotCreateAnswer(autoAnswer.value, autoAnswer), autoAnswer, chatbotId, newPages)
+        } else if (help !== undefined) {
           NotificationService.error(help)
         } else {
           if (newPages.length > 0) {

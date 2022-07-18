@@ -47,13 +47,15 @@ const ChatbotScreen = ({
   const supportEmail = "support@dfx.swiss"
 
   useEffect(() => {
-    const id = extractSessionId(sessionUrl)
-    setSessionId(id)
-    getAuthenticationInfo(id)
-      .then(() => {
-        requestSMS(id)
-      })
-      .catch(onLoadFailed)
+    if (sessionId === undefined) {
+      const id = extractSessionId(sessionUrl)
+      setSessionId(id)
+      getAuthenticationInfo(id)
+        .then(() => {
+          requestSMS(id)
+        })
+        .catch(onLoadFailed)
+    }
   }, [settings])
 
   const extractSessionId = (sessionUrl: string): string => {
@@ -117,15 +119,15 @@ const ChatbotScreen = ({
   const updateSMSCode = (code: string) => {
     setSMSCode(code)
     if (code.length === 4) {
-      submitSMSCode(code)
+      submitSMSCode(sessionId, code)
       Keyboard.dismiss()
     }
   }
 
-  const submitSMSCode = (id?: string) => {
-    if (id !== undefined) {
+  const submitSMSCode = (id?: string, code?: string) => {
+    if (id !== undefined && code !== undefined) {
       setRequestingNextStep(true)
-      postSMSCode(id, smsCode)
+      postSMSCode(id, code)
         .then((id) => {
           if (id === "false") {
             NotificationService.error(t("kyc.bot.error.wrong_sms"))
@@ -263,7 +265,7 @@ const ChatbotScreen = ({
             <TextInput 
               value={smsCode} 
               onChangeText={updateSMSCode} 
-              onSubmitEditing={() => submitSMSCode(sessionId)} 
+              onSubmitEditing={() => submitSMSCode(sessionId, smsCode)} 
               placeholder={t("kyc.bot.sms_placeholder")} 
               keyboardType="numeric" />
             <SpacerV />
@@ -272,7 +274,7 @@ const ChatbotScreen = ({
               <Text style={AppStyles.link}>{supportEmail}</Text>
             </TouchableOpacity>
             <SpacerV height={20} />
-            <DeFiButton mode="contained" loading={isRequestNextStep} onPress={() => { submitSMSCode(sessionId) }}>
+            <DeFiButton mode="contained" loading={isRequestNextStep} onPress={() => { submitSMSCode(sessionId, smsCode) }}>
               {t("action.next")}
             </DeFiButton>
           </View>

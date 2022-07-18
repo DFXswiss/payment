@@ -1,5 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useState } from 'react';
+import React, { createRef, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Linking, ScrollView, StyleSheet, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import { IconButton, Text, TextInput } from 'react-native-paper';
@@ -45,6 +45,7 @@ const ChatbotScreen = ({
   const [isFinished, setFinished] = useState<boolean>(false);
 
   const {height} = useWindowDimensions()
+  let scrollViewRef = createRef<ScrollView>()
 
   useEffect(() => {
     const id = extractSessionId(sessionUrl)
@@ -77,6 +78,7 @@ const ChatbotScreen = ({
       setPageIndex(newPageIndex)
       updateProgress(pages, newPageIndex, true)
       setAnswer(pages[newPageIndex].answer)
+      resetScrollView()
     }
   }
 
@@ -103,7 +105,15 @@ const ChatbotScreen = ({
         setAnswer(pages[newPageIndex].answer)
         updateProgress(pages, newPageIndex)
       }
+      resetScrollView()
     }
+  }
+
+  const resetScrollView = () => {
+    if (scrollViewRef.current === null) {
+      scrollViewRef = createRef<ScrollView>()
+    }
+    scrollViewRef.current?.scrollTo({x: 0, y: 0, animated: false})
   }
 
   const requestSMS = (id?: string) => {
@@ -269,16 +279,16 @@ const ChatbotScreen = ({
       {/* Chatbot pages screen */}
       {!isLoading && pages && pageIndex >= 0 && pageIndex < pages.length && (
         <View style={styles.container}>
-          <ScrollView contentContainerStyle={{flex: 1}}>
-            {/* BACK & PROGRESS */}
-            <View style={styles.progressHeader}>
-              <IconButton color={Colors.Primary} icon="arrow-left" onPress={() => { onBack() }} />
-              {/* <SpacerH />
-              <View style={styles.progressBar}>
-                <ProgressBar color={Colors.Primary} progress={progress} />
-              </View> */}
-            </View>
-            <SpacerV />
+          {/* BACK & PROGRESS */}
+          <View style={styles.progressHeader}>
+            <IconButton color={Colors.Primary} icon="arrow-left" onPress={() => { onBack() }} />
+            {/* <SpacerH />
+            <View style={styles.progressBar}>
+              <ProgressBar color={Colors.Primary} progress={progress} />
+            </View> */}
+          </View>
+          <SpacerV />
+          <ScrollView ref={scrollViewRef} contentContainerStyle={{flex: 1}}>
             {/* HEADER */}
             {pages[pageIndex].header !== undefined && (
               <>

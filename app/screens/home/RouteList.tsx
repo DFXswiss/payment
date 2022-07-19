@@ -191,33 +191,21 @@ const RouteList = ({
   };
 
   const routeData = (route: BuyRoute | SellRoute | StakingRoute | CryptoRoute) =>
-    "type" in route // buy route
+    "blockchain" in route // crypto route
       ? [
-          { condition: true, label: "model.route.type", value: t(`model.route.${route.type.toLowerCase()}`) },
-          { condition: route.type === BuyType.WALLET, label: "model.route.asset", value: route.asset?.name },
-          {
-            condition: route.type === BuyType.STAKING,
-            label: "model.route.staking",
-            value: `${t("model.route." + route.staking?.rewardType.toLowerCase())} - ${t(
-              "model.route." + route.staking?.paybackType.toLowerCase()
-            )}`,
-          },
-          { condition: true, label: "model.route.iban", value: route.iban },
-          {
-            condition: true,
-            label: "model.route.bank_usage",
-            value: route.bankUsage,
-            icon: "content-copy",
-            onPress: () => ClipboardService.copy(route.bankUsage),
-          },
-          {
-            condition: true,
-            label: "model.route.fee",
-            value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
-          },
-          { condition: true, label: "model.route.volume", value: `${formatAmount(route.volume)} €` },
-          { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
-        ]
+        {
+          condition: true,
+          label: "model.route.deposit_address",
+          value: route.deposit?.address,
+          icon: "content-copy",
+          onPress: () => ClipboardService.copy(route.deposit?.address),
+        },
+        { condition: true, label: "model.route.blockchain", value: route.blockchain?.name },
+        { condition: true, label: "model.route.asset", value: route.asset?.name },
+        { condition: true, label: "model.route.fee", value: `${route.fee}%` },
+        { condition: true, label: "model.route.volume", value: `${formatAmount(route.volume)} €` },
+        { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
+      ]
       : "fiat" in route // sell route
       ? [
           { condition: true, label: "model.route.fiat", value: route.fiat?.name },
@@ -281,21 +269,33 @@ const RouteList = ({
           },
           { condition: true, label: "model.route.rewards", value: `${formatAmount(route.rewardVolume)} EUR` },
         ]
-      : // crypto route
-        [
-          {
-            condition: true,
-            label: "model.route.deposit_address",
-            value: route.deposit?.address,
-            icon: "content-copy",
-            onPress: () => ClipboardService.copy(route.deposit?.address),
-          },
-          { condition: true, label: "model.route.blockchain", value: route.blockchain.name },
-          { condition: true, label: "model.route.asset", value: route.asset?.name },
-          { condition: true, label: "model.route.fee", value: `${route.fee}%` },
-          { condition: true, label: "model.route.volume", value: `${formatAmount(route.volume)} €` },
-          { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
-        ];
+      : // buy route
+      [
+        { condition: true, label: "model.route.type", value: t(`model.route.${route.type.toLowerCase()}`) },
+        { condition: route.type === BuyType.WALLET, label: "model.route.asset", value: route.asset?.name },
+        {
+          condition: route.type === BuyType.STAKING,
+          label: "model.route.staking",
+          value: `${t("model.route." + route.staking?.rewardType.toLowerCase())} - ${t(
+            "model.route." + route.staking?.paybackType.toLowerCase()
+          )}`,
+        },
+        { condition: true, label: "model.route.iban", value: route.iban },
+        {
+          condition: true,
+          label: "model.route.bank_usage",
+          value: route.bankUsage,
+          icon: "content-copy",
+          onPress: () => ClipboardService.copy(route.bankUsage),
+        },
+        {
+          condition: true,
+          label: "model.route.fee",
+          value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
+        },
+        { condition: true, label: "model.route.volume", value: `${formatAmount(route.volume)} €` },
+        { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
+      ];
 
   return (
     <>
@@ -342,13 +342,13 @@ const RouteList = ({
                       : isStakingLoading[detailRoute.id]
                   }
                   onPress={() => {
-                    ("type" in detailRoute
-                      ? deleteBuyRoute(buyRoutes?.find((r) => r.id === detailRoute.id) as BuyRoute)
+                    ("blockchain" in detailRoute
+                      ? deleteCryptoRoute(cryptoRoutes?.find((r) => r.id === detailRoute.id) as CryptoRoute)
                       : "fiat" in detailRoute
                       ? deleteSellRoute(sellRoutes?.find((r) => r.id === detailRoute.id) as SellRoute)
                       : "rewardType" in detailRoute
                       ? deleteStakingRoute(stakingRoutes?.find((r) => r.id === detailRoute.id) as StakingRoute)
-                      : deleteCryptoRoute(cryptoRoutes?.find((r) => r.id === detailRoute.id) as CryptoRoute)
+                      : deleteBuyRoute(buyRoutes?.find((r) => r.id === detailRoute.id) as BuyRoute)
                     ).then(() => setDetailRoute(undefined));
                   }}
                   disabled={"isInUse" in detailRoute && detailRoute.isInUse}
@@ -500,15 +500,23 @@ const RouteList = ({
             </DeFiButton>
           </View>
           <SpacerV />
-          <View style={AppStyles.containerHorizontal}>
-            <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)} style={{ flex: 1 }}>
-              {t("model.route.staking")}
-            </DeFiButton>
-            <SpacerH />
-            <DeFiButton mode="contained" onPress={() => setIsCryptoRouteEdit(true)} style={{ flex: 1 }}>
-              {t("model.route.crypto")}
-            </DeFiButton>
+          {session?.isBetaUser ? (
+            <View style={AppStyles.containerHorizontal}>
+              <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)} style={{ flex: 1 }}>
+                {t("model.route.staking")}
+              </DeFiButton>
+              <SpacerH />
+              <DeFiButton mode="contained" onPress={() => setIsCryptoRouteEdit(true)} style={{ flex: 1 }}>
+                {t("model.route.crypto")}
+              </DeFiButton>
           </View>
+          ) : (
+            <View style={AppStyles.containerHorizontal}>
+              <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)} style={{ flex: 1 }}>
+                {t("model.route.staking")}
+              </DeFiButton>
+            </View>
+          )}
         </>
       )}
 

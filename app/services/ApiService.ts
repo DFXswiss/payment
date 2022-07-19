@@ -30,6 +30,7 @@ import { Settings } from "../models/Settings";
 import { HistoryType } from "../models/HistoryType";
 import { fromStakingBatchDto, StakingBatch, StakingBatchDto } from "../models/StakingBatch";
 import { ApiKey } from "../models/ApiKey";
+import { CryptoRoute, CryptoRouteDto, fromCryptoRouteDto, toCryptoRouteDto } from "../models/CryptoRoute";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -39,6 +40,7 @@ const BuyUrl = "buy";
 const RouteUrl = "route";
 const SellUrl = "sell";
 const StakingUrl = "staking";
+const CryptoRouteUrl = "cryptoRoute";
 const HistoryUrl = "history";
 const AssetUrl = "asset";
 const FiatUrl = "fiat";
@@ -165,6 +167,14 @@ export const getStakingBatches = (route: StakingRoute): Promise<StakingBatch[]> 
   return fetchFrom<StakingBatchDto[]>(`${StakingUrl}/${route?.id}/batches`).then((dtoList) =>
     dtoList.map((dto) => fromStakingBatchDto(dto))
   );
+};
+
+export const postCryptoRoute = (route: CryptoRoute): Promise<CryptoRoute> => {
+  return fetchFrom<CryptoRouteDto>(CryptoRouteUrl, "POST", toCryptoRouteDto(route)).then(fromCryptoRouteDto);
+};
+
+export const putCryptoRoute = (route: CryptoRoute): Promise<CryptoRoute> => {
+  return fetchFrom<CryptoRouteDto>(`${CryptoRouteUrl}/${route.id}`, "PUT", toCryptoRouteDto(route)).then(fromCryptoRouteDto);
 };
 
 export const getHistory = (types?: HistoryType[]): Promise<History[]> => {

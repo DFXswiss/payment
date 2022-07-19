@@ -13,7 +13,7 @@ import { H2, H3 } from "../../elements/Texts";
 import { useDevice } from "../../hooks/useDevice";
 import { BuyRoute, BuyType } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import { getStakingBatches, putBuyRoute, putSellRoute, putStakingRoute } from "../../services/ApiService";
+import { getStakingBatches, putBuyRoute, putCryptoRoute, putSellRoute, putStakingRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import AppStyles from "../../styles/AppStyles";
 import { formatAmount, updateObject } from "../../utils/Utils";
@@ -30,6 +30,8 @@ import TransactionHistory from "./TransactionHistory";
 import { StakingBatch } from "../../models/StakingBatch";
 import Moment from "moment";
 import Loading from "../../components/util/Loading";
+import { CryptoRoute } from "../../models/CryptoRoute";
+import CryptoRouteEdit from "../../components/edit/CryptoRouteEdit";
 
 interface Props {
   user?: User;
@@ -41,12 +43,16 @@ interface Props {
   setSellRoutes: Dispatch<SetStateAction<SellRoute[] | undefined>>;
   stakingRoutes?: StakingRoute[];
   setStakingRoutes: Dispatch<SetStateAction<StakingRoute[] | undefined>>;
+  cryptoRoutes?: CryptoRoute[];
+  setCryptoRoutes: Dispatch<SetStateAction<CryptoRoute[] | undefined>>;
   isBuyRouteEdit: boolean;
   setIsBuyRouteEdit: Dispatch<SetStateAction<boolean>>;
   isSellRouteEdit: boolean;
   setIsSellRouteEdit: Dispatch<SetStateAction<boolean>>;
   isStakingRouteEdit: boolean;
   setIsStakingRouteEdit: Dispatch<SetStateAction<boolean>>;
+  isCryptoRouteEdit: boolean;
+  setIsCryptoRouteEdit: Dispatch<SetStateAction<boolean>>;
 }
 
 const IconPlaceholder = ({ icon }: { icon: string }) => (
@@ -78,12 +84,16 @@ const RouteList = ({
   setSellRoutes,
   stakingRoutes,
   setStakingRoutes,
+  cryptoRoutes,
+  setCryptoRoutes,
   isBuyRouteEdit,
   setIsBuyRouteEdit,
   isSellRouteEdit,
   setIsSellRouteEdit,
   isStakingRouteEdit,
   setIsStakingRouteEdit,
+  isCryptoRouteEdit,
+  setIsCryptoRouteEdit,
 }: Props) => {
   const { t } = useTranslation();
   const device = useDevice();
@@ -92,14 +102,16 @@ const RouteList = ({
   const [isBuyLoading, setIsBuyLoading] = useState<{ [id: string]: boolean }>({});
   const [isSellLoading, setIsSellLoading] = useState<{ [id: string]: boolean }>({});
   const [isStakingLoading, setIsStakingLoading] = useState<{ [id: string]: boolean }>({});
+  const [isCryptoLoading, setIsCryptoLoading] = useState<{ [id: string]: boolean }>({});
   const [isHistoryVisible, setIsHistoryVisible] = useState(false);
-  const [detailRoute, setDetailRoute] = useState<BuyRoute | SellRoute | StakingRoute | undefined>(undefined);
+  const [detailRoute, setDetailRoute] = useState<BuyRoute | SellRoute | StakingRoute | CryptoRoute | undefined>(undefined);
   const [isBalanceDetail, setIsBalanceDetail] = useState(false);
   const [stakingBatches, setStakingBatches] = useState<StakingBatch[]>();
 
   const activeBuyRoutes = buyRoutes?.filter((r) => r.active);
   const activeSellRoutes = sellRoutes?.filter((r) => r.active);
   const activeStakingRoutes = stakingRoutes?.filter((r) => r.active);
+  const activeCryptoRoutes = cryptoRoutes?.filter((r) => r.active);
 
   const onBuyRouteCreated = (route: BuyRoute) => {
     setBuyRoutes((routes) => updateRoutes(route, routes));
@@ -120,7 +132,12 @@ const RouteList = ({
     setDetailRoute(route);
     setIsStakingRouteEdit(false);
   };
-  const updateRoutes: <T extends BuyRoute | SellRoute | StakingRoute>(route: T, routes?: T[]) => T[] | undefined = (
+  const onCryptoRouteCreated = (route: CryptoRoute) => {
+    setCryptoRoutes((routes) => updateRoutes(route, routes));
+    setDetailRoute(route);
+    setIsCryptoRouteEdit(false);
+  }
+  const updateRoutes: <T extends BuyRoute | SellRoute | StakingRoute | CryptoRoute>(route: T, routes?: T[]) => T[] | undefined = (
     route,
     routes
   ) => {
@@ -154,6 +171,13 @@ const RouteList = ({
       .catch(() => NotificationService.error(t("feedback.delete_failed")))
       .finally(() => setIsStakingLoading((obj) => updateObject(obj, { [route.id]: false })));
   };
+  const deleteCryptoRoute = (route: CryptoRoute) => {
+    setIsCryptoLoading((obj) => updateObject(obj, { [route.id]: true }))
+    return putCryptoRoute(updateObject(route, { active: false }))
+      .then(() => (route.active = false))
+      .catch(() => NotificationService.error(t("feedback.delete_failed")))
+      .finally(() => setIsCryptoLoading((obj) => updateObject(obj, { [route.id]: false })));
+  }
 
   const fetchStakingBatches = (route: StakingRoute) => {
     setStakingBatches(undefined);
@@ -166,7 +190,7 @@ const RouteList = ({
       });
   };
 
-  const routeData = (route: BuyRoute | SellRoute | StakingRoute) =>
+  const routeData = (route: BuyRoute | SellRoute | StakingRoute | CryptoRoute) =>
     "type" in route // buy route
       ? [
           { condition: true, label: "model.route.type", value: t(`model.route.${route.type.toLowerCase()}`) },
@@ -209,8 +233,8 @@ const RouteList = ({
           { condition: true, label: "model.route.min_deposit", value: "0.1 DFI / 1 USD" },
           { condition: true, label: "model.route.volume", value: `${formatAmount(route.volume)} €` },
         ]
-      : // staking route
-        [
+      : "rewardType" in route // staking route
+      ? [
           {
             condition: true,
             label: "model.route.deposit_address",
@@ -256,6 +280,21 @@ const RouteList = ({
             onPress: () => fetchStakingBatches(route),
           },
           { condition: true, label: "model.route.rewards", value: `${formatAmount(route.rewardVolume)} EUR` },
+        ]
+      : // crypto route
+        [
+          {
+            condition: true,
+            label: "model.route.deposit_address",
+            value: route.deposit?.address,
+            icon: "content-copy",
+            onPress: () => ClipboardService.copy(route.deposit?.address),
+          },
+          { condition: true, label: "model.route.blockchain", value: route.blockchain.name },
+          { condition: true, label: "model.route.asset", value: route.asset?.name },
+          { condition: true, label: "model.route.fee", value: `${route.fee}%` },
+          { condition: true, label: "model.route.volume", value: `${formatAmount(route.volume)} €` },
+          { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
         ];
 
   return (
@@ -307,7 +346,9 @@ const RouteList = ({
                       ? deleteBuyRoute(buyRoutes?.find((r) => r.id === detailRoute.id) as BuyRoute)
                       : "fiat" in detailRoute
                       ? deleteSellRoute(sellRoutes?.find((r) => r.id === detailRoute.id) as SellRoute)
-                      : deleteStakingRoute(stakingRoutes?.find((r) => r.id === detailRoute.id) as StakingRoute)
+                      : "rewardType" in detailRoute
+                      ? deleteStakingRoute(stakingRoutes?.find((r) => r.id === detailRoute.id) as StakingRoute)
+                      : deleteCryptoRoute(cryptoRoutes?.find((r) => r.id === detailRoute.id) as CryptoRoute)
                     ).then(() => setDetailRoute(undefined));
                   }}
                   disabled={"isInUse" in detailRoute && detailRoute.isInUse}
@@ -389,6 +430,17 @@ const RouteList = ({
           stakingRoutes={activeStakingRoutes}
         />
       </DeFiModal>
+      <DeFiModal
+        isVisible={isCryptoRouteEdit}
+        setIsVisible={setIsCryptoRouteEdit}
+        title={t("model.route.new_crypto")}
+        style={{ width: 400 }}
+      >
+        <CryptoRouteEdit
+          routes={cryptoRoutes}
+          onRouteCreated={onCryptoRouteCreated}
+        />
+      </DeFiModal>
 
       <DeFiModal
         isVisible={isHistoryVisible}
@@ -423,6 +475,13 @@ const RouteList = ({
                 {t("model.route.staking")}
               </DeFiButton>
             </View>
+            {session?.isBetaUser && (
+              <View style={AppStyles.ml10}>
+                <DeFiButton mode="contained" onPress={() => setIsCryptoRouteEdit(true)}>
+                  {t("model.route.crypto")}
+                </DeFiButton>
+              </View>
+            )}
           </>
         )}
       </View>
@@ -444,11 +503,15 @@ const RouteList = ({
             <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)} style={{ flex: 1 }}>
               {t("model.route.staking")}
             </DeFiButton>
+            <SpacerH />
+            <DeFiButton mode="contained" onPress={() => setIsCryptoRouteEdit(true)} style={{ flex: 1 }}>
+              {t("model.route.crypto")}
+            </DeFiButton>
           </View>
         </>
       )}
 
-      {(activeBuyRoutes?.length ?? 0) + (activeSellRoutes?.length ?? 0) + (activeStakingRoutes?.length ?? 0) > 0 ? (
+      {(activeBuyRoutes?.length ?? 0) + (activeSellRoutes?.length ?? 0) + (activeStakingRoutes?.length ?? 0) + (activeCryptoRoutes?.length ?? 0) > 0 ? (
         <>
           {activeBuyRoutes && activeBuyRoutes.length > 0 && (
             <>
@@ -556,6 +619,51 @@ const RouteList = ({
                       </CompactCell>
                       <CompactCell style={{ flex: 1 }}>
                         {t(`model.route.${route.paybackType.toLowerCase()}`)}
+                      </CompactCell>
+                      {device.SM && <CompactCell style={{ flex: 2 }}>{route.deposit?.address}</CompactCell>}
+                      <CompactCell style={{ flex: undefined }}>
+                        {device.SM ? (
+                          <>
+                            <IconButton
+                              icon="content-copy"
+                              onPress={() => ClipboardService.copy(route.deposit?.address)}
+                            />
+                            <IconButton icon="chevron-right" onPress={() => setDetailRoute(route)} />
+                          </>
+                        ) : (
+                          <IconButton icon="chevron-right" />
+                        )}
+                      </CompactCell>
+                    </CompactRow>
+                  </TouchableOpacity>
+                ))}
+              </DataTable>
+            </>
+          )}
+          {activeCryptoRoutes && activeCryptoRoutes.length > 0 && (
+            <>
+              <SpacerV height={20} />
+              <View style={AppStyles.containerHorizontal}>
+                <H3 text={t("model.route.crypto")} />
+              </View>
+
+              <DataTable>
+                <CompactHeader>
+                  <CompactTitle style={{ flex: 1 }}>{t("model.route.blockchain")}</CompactTitle>
+                  <CompactTitle style={{ flex: 1 }}>{t("model.route.asset")}</CompactTitle>
+                  {device.SM && <CompactTitle style={{ flex: 2 }}>{t("model.route.deposit_address")}</CompactTitle>}
+                  <CompactTitle style={{ flex: undefined }}>
+                    <Placeholders device={device} />
+                  </CompactTitle>
+                </CompactHeader>
+                {activeCryptoRoutes.map((route) => (
+                  <TouchableOpacity key={route.id} onPress={() => setDetailRoute(route)} disabled={device.SM}>
+                    <CompactRow>
+                      <CompactCell style={{ flex: 1 }}>
+                        {route.blockchain.name}
+                      </CompactCell>
+                      <CompactCell style={{ flex: 1 }}>
+                        {route.asset?.name}
                       </CompactCell>
                       {device.SM && <CompactCell style={{ flex: 2 }}>{route.deposit?.address}</CompactCell>}
                       <CompactCell style={{ flex: undefined }}>

@@ -324,7 +324,10 @@
         "rewards": "Rewards",
         "type": "Type",
         "amount": "Amount",
-        "output_date": "End date"
+        "output_date": "End date",
+        "crypto": "Crypto",
+        "new_crypto": "New crypto route",
+        "blockchain": "Blockchain"
       },
       "history": {
         "buy": "Buy transactions",

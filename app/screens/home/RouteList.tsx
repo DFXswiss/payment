@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { StyleSheet, View } from "react-native";
+import { View } from "react-native";
 import { DataTable, Text } from "react-native-paper";
 import BuyRouteEdit from "../../components/edit/BuyRouteEdit";
 import SellRouteEdit from "../../components/edit/SellRouteEdit";
@@ -654,8 +654,8 @@ const RouteList = ({
               <SpacerV height={20} />
               <View style={AppStyles.containerHorizontal}>
                 <H3 text={t("model.route.crypto")} />
-                <View style={styles.betaContainer}>
-                  <Text style={styles.beta}> Beta</Text>
+                <View style={AppStyles.betaContainer}>
+                  <Text style={AppStyles.beta}> Beta</Text>
                 </View>
               </View>
 
@@ -749,16 +749,5 @@ const RouteList = ({
     </>
   );
 };
-
-const styles = StyleSheet.create({
-  betaContainer: {
-    alignItems: "flex-start",
-    height: "100%",
-  },
-  beta: {
-    fontSize: 12,
-    marginTop: 6,
-  },
-});
 
 export default withSession(RouteList);

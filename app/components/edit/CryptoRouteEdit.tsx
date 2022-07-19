@@ -53,7 +53,7 @@ const CryptoRouteEdit = ({
       existingRoute.active = true;
     }
 
-    route.buyType = BuyType.WALLET;
+    route.type = BuyType.WALLET;
 
     (existingRoute ? putCryptoRoute(existingRoute) : postCryptoRoute(route))
       .then(onRouteCreated)

@@ -326,7 +326,7 @@
         "amount": "Montant",
         "output_date": "Date de fin",
         "crypto": "Crypto",
-        "new_crypto": "Nouvelle route cryptographique",
+        "new_crypto": "Nouvelle route crypto",
         "Blockchain": "Blockchain"
       },
       "history": {

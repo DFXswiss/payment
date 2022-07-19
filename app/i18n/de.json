@@ -329,7 +329,7 @@
         "type": "Typ",
         "amount": "Betrag",
         "output_date": "Enddatum",
-        "Krypto": "Krypto",
+        "crypto": "Krypto",
         "new_crypto": "Neue Krypto-Route",
         "blockchain": "Blockchain"
       },

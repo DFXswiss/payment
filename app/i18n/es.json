@@ -312,7 +312,7 @@
         "amount": "Importe",
         "output_date": "Fecha de terminación",
         "crypto": "Crypto",
-        "new_crypto": "New crypto route",
+        "new_crypto": "Nueva ruta crypto",
         "blockchain": "Blockchain"
       },
       "history": {

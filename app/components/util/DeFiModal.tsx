@@ -31,15 +31,11 @@ const DeFiModal = ({
       >
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View style={[AppStyles.containerHorizontal]}>
-            {isBeta ? (
-              <>
-                <H2 text={title} />
-                <View style={styles.betaContainer}>
-                  <Text style={styles.beta}> Beta</Text>
-                </View>
-              </>
-            ) : (
-              <H2 text={title} style={AppStyles.mr20} />
+            <H2 text={title} />
+            {isBeta && (
+              <View style={AppStyles.betaContainer}>
+                <Text style={AppStyles.beta}> Beta</Text>
+              </View>
             )}
             <View style={AppStyles.mla}>
               <IconButton
@@ -71,14 +67,6 @@ const styles = StyleSheet.create({
   closeIcon: {
     marginTop: -10,
     marginRight: -10,
-  },
-  betaContainer: {
-    alignItems: "flex-start",
-    height: "100%",
-  },
-  beta: {
-    fontSize: 12,
-    marginTop: 6,
   },
 });
 

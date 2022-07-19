@@ -435,6 +435,7 @@ const RouteList = ({
         setIsVisible={setIsCryptoRouteEdit}
         title={t("model.route.new_crypto")}
         style={{ width: 400 }}
+        isBeta={true}
       >
         <CryptoRouteEdit
           routes={cryptoRoutes}
@@ -645,6 +646,9 @@ const RouteList = ({
               <SpacerV height={20} />
               <View style={AppStyles.containerHorizontal}>
                 <H3 text={t("model.route.crypto")} />
+                <View style={styles.betaContainer}>
+                  <Text style={styles.beta}> Beta</Text>
+                </View>
               </View>
 
               <DataTable>

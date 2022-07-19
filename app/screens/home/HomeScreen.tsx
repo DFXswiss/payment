@@ -48,6 +48,7 @@ import withSettings from "../../hocs/withSettings";
 import { AppSettings } from "../../services/SettingsService";
 import KycInit from "../../components/KycInit";
 import LimitEdit from "../../components/edit/LimitEdit";
+import { CryptoRoute } from "../../models/CryptoRoute";
 
 const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSettings }) => {
   const { t } = useTranslation();
@@ -58,10 +59,12 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const [buyRoutes, setBuyRoutes] = useState<BuyRoute[]>();
   const [sellRoutes, setSellRoutes] = useState<SellRoute[]>();
   const [stakingRoutes, setStakingRoutes] = useState<StakingRoute[]>();
+  const [cryptoRoutes, setCryptoRoutes] = useState<CryptoRoute[]>();
   const [isUserEdit, setIsUserEdit] = useState(false);
   const [isBuyRouteEdit, setIsBuyRouteEdit] = useState(false);
   const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
   const [isStakingRouteEdit, setIsStakingRouteEdit] = useState(false);
+  const [isCryptoRouteEdit, setIsCryptoRouteEdit] = useState(false);
   const [isKycRequest, setIsKycRequest] = useState(false);
   const [isLimitRequest, setIsLimitRequest] = useState(false);
   const [isFileUploading, setIsFileUploading] = useState(false);
@@ -182,6 +185,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       setBuyRoutes(routes.buy);
       setSellRoutes(routes.sell);
       setStakingRoutes(routes.staking);
+      setCryptoRoutes(routes.crypto);
       setCanVote(routes.staking.find((r) => r.balance >= 100) != null);
     });
   };
@@ -440,12 +444,16 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
               setSellRoutes={setSellRoutes}
               stakingRoutes={stakingRoutes}
               setStakingRoutes={setStakingRoutes}
+              cryptoRoutes={cryptoRoutes}
+              setCryptoRoutes={setCryptoRoutes}
               isBuyRouteEdit={isBuyRouteEdit}
               setIsBuyRouteEdit={setIsBuyRouteEdit}
               isSellRouteEdit={isSellRouteEdit && !isUserEdit}
               setIsSellRouteEdit={sellRouteEdit}
               isStakingRouteEdit={isStakingRouteEdit}
               setIsStakingRouteEdit={stakingRouteEdit}
+              isCryptoRouteEdit={isCryptoRouteEdit}
+              setIsCryptoRouteEdit={setIsCryptoRouteEdit}
             />
           )}
         </>

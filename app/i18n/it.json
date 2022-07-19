@@ -327,7 +327,10 @@
         "rewards": "Ricompense",
         "type": "Digita",
         "amount": "Importo",
-        "output_date": "Data di fine"
+        "output_date": "Data di fine",
+        "crypto": "Crypto",
+        "new_crypto": "Nuovo percorso crypto",
+        "blockchain": "Blockchain"
       },
       "history": {
         "buy": "Operazioni di acquisto",

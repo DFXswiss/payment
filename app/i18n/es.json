@@ -310,7 +310,10 @@
         "rewards": "Recompensas",
         "type": "Tipo",
         "amount": "Importe",
-        "output_date": "Fecha de terminación"
+        "output_date": "Fecha de terminación",
+        "crypto": "Crypto",
+        "new_crypto": "New crypto route",
+        "blockchain": "Blockchain"
       },
       "history": {
         "buy": "Operaciones de compra",

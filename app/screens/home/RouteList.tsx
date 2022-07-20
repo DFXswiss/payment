@@ -500,23 +500,19 @@ const RouteList = ({
             </DeFiButton>
           </View>
           <SpacerV />
-          {session?.isBetaUser ? (
-            <View style={AppStyles.containerHorizontal}>
-              <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)} style={{ flex: 1 }}>
-                {t("model.route.staking")}
-              </DeFiButton>
-              <SpacerH />
-              <DeFiButton mode="contained" onPress={() => setIsCryptoRouteEdit(true)} style={{ flex: 1 }}>
-                {t("model.route.crypto")}
-              </DeFiButton>
+          <View style={AppStyles.containerHorizontal}>
+            <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)} style={{ flex: 1 }}>
+              {t("model.route.staking")}
+            </DeFiButton>
+            {session?.isBetaUser && (
+              <>
+                <SpacerH />
+                <DeFiButton mode="contained" onPress={() => setIsCryptoRouteEdit(true)} style={{ flex: 1 }}>
+                  {t("model.route.crypto")}
+                </DeFiButton>
+              </>
+            )}
           </View>
-          ) : (
-            <View style={AppStyles.containerHorizontal}>
-              <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)} style={{ flex: 1 }}>
-                {t("model.route.staking")}
-              </DeFiButton>
-            </View>
-          )}
         </>
       )}
 

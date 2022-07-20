@@ -7,7 +7,7 @@ import { Alert } from "../../elements/Texts";
 import { ApiError } from "../../models/ApiDto";
 import { Asset } from "../../models/Asset";
 import { BuyType } from "../../models/BuyRoute";
-import { availableBlockchains, Blockchain, CryptoRoute } from "../../models/CryptoRoute";
+import { Blockchain, CryptoRoute } from "../../models/CryptoRoute";
 import { getAssets, postCryptoRoute, putCryptoRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import { createRules } from "../../utils/Utils";
@@ -73,9 +73,8 @@ const CryptoRouteEdit = ({
       <DeFiPicker
         name="blockchain"
         label={t("model.route.blockchain")}
-        items={availableBlockchains}
-        idFunc={(i) => i.id}
-        labelFunc={(i) => i.name}
+        items={Object.values(Blockchain)}
+        labelFunc={(i) => i}
       />
       <SpacerV />
       <DeFiPicker 

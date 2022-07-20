@@ -1,5 +1,5 @@
 import { BuyRoute, BuyRouteDto, fromBuyRouteDto } from "./BuyRoute";
-import { CryptoRoute, CryptoRouteDto, fromCryptoRouteDto } from "./CryptoRoute";
+import { assignBlockchain, CryptoRoute } from "./CryptoRoute";
 import { fromSellRouteDto, SellRoute, SellRouteDto } from "./SellRoute";
 import { StakingRoute } from "./StakingRoute";
 
@@ -7,7 +7,7 @@ export interface RoutesDto {
   buy: BuyRouteDto[];
   sell: SellRouteDto[];
   staking: StakingRoute[];
-  crypto: CryptoRouteDto[];
+  crypto: CryptoRoute[];
 }
 
 export interface Routes {
@@ -21,5 +21,5 @@ export const fromRoutesDto = (route: RoutesDto): Routes => ({
   buy: route.buy.map((b) => fromBuyRouteDto(b)),
   sell: route.sell.map((b) => fromSellRouteDto(b)),
   staking: route.staking,
-  crypto: route.crypto.map((b) => fromCryptoRouteDto(b)),
+  crypto: route.crypto.map((b) => assignBlockchain(b)),
 });

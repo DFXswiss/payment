@@ -45,7 +45,7 @@ const ChatbotScreen = ({
   const [isFinished, setFinished] = useState<boolean>(false);
 
   const {height} = useWindowDimensions()
-  let scrollViewRef = useRef<ScrollView>(null)
+  const scrollViewRef = useRef<ScrollView>(null)
 
   useEffect(() => {
     const id = extractSessionId(sessionUrl)

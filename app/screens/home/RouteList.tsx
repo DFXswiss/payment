@@ -200,7 +200,7 @@ const RouteList = ({
           icon: "content-copy",
           onPress: () => ClipboardService.copy(route.deposit?.address),
         },
-        { condition: true, label: "model.route.blockchain", value: route.blockchain?.name },
+        { condition: true, label: "model.route.blockchain", value: route.blockchain },
         { condition: true, label: "model.route.asset", value: route.asset?.name },
         { condition: true, label: "model.route.fee", value: `${route.fee}%` },
         { condition: true, label: "model.route.volume", value: `${formatAmount(route.volume)} €` },
@@ -672,7 +672,7 @@ const RouteList = ({
                   <TouchableOpacity key={route.id} onPress={() => setDetailRoute(route)} disabled={device.SM}>
                     <CompactRow>
                       <CompactCell style={{ flex: 1 }}>
-                        {route.blockchain.name}
+                        {route.blockchain}
                       </CompactCell>
                       <CompactCell style={{ flex: 1 }}>
                         {route.asset?.name}

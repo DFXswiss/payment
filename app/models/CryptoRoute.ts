@@ -18,8 +18,3 @@ export interface CryptoRoute {
   volume: number;
   annualVolume: number;
 }
-
-export const assignBlockchain = (route: CryptoRoute): CryptoRoute => {
-  route.blockchain = Blockchain.BITCOIN
-  return route
-}

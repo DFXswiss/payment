@@ -17,6 +17,10 @@ export const H4 = ({ text, style }: { text: string; style?: TextStyle }) => (
   <Title style={[AppStyles.h4, style]}>{text}</Title>
 );
 
+export const T5 = ({ text, style }: { text: string; style?: TextStyle | any }) => (
+  <Text style={[{fontSize: 14}, style]}>{text}</Text>
+);
+
 export const Alert = ({ label }: { label: string }) => (
   <View style={AppStyles.error}>
     <Text style={[AppStyles.b, { color: Colors.White }]}>{label}</Text>

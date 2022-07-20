@@ -29,7 +29,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [cfpFilter, setCfpFilter] = useState<"all" | "dfx">("all");
-  const [cfpResults, setCfpResults] = useState<(CfpResult)[]>();
+  const [cfpResults, setCfpResults] = useState<CfpResult[]>();
   const [canVote, setCanVote] = useState(false);
   const [isVotingOpen, setIsVotingOpen] = useState(false);
   const [votes, setVotes] = useState<CfpVotes | undefined>();

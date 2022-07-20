@@ -197,7 +197,8 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     setUser(undefined);
     setBuyRoutes(undefined);
     setSellRoutes(undefined);
-    // Krysh: should we reset staking & crypto routes too?
+    setStakingRoutes(undefined);
+    setCryptoRoutes(undefined);
     setIsUserEdit(false);
   };
 

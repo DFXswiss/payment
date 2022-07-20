@@ -8,7 +8,14 @@ import { AppSettings } from "../services/SettingsService";
 import AppStyles from "../styles/AppStyles";
 import Header from "./Header";
 
-const AppLayout = ({ settings, preventScrolling, removeHeaderSpace, children }: { settings?: AppSettings; preventScrolling?: boolean; removeHeaderSpace?: boolean, children: ReactNode }) => {
+interface AppLayoutProps { 
+  settings?: AppSettings; 
+  preventScrolling?: boolean; 
+  removeHeaderSpace?: boolean, 
+  children: ReactNode 
+}
+
+const AppLayout = ({ settings, preventScrolling, removeHeaderSpace, children }: AppLayoutProps) => {
   const dimensions = useWindowDimensions();
   const [contentSize, setContentSize] = useState(0);
   const [contentOffset, setContentOffset] = useState(0);

@@ -83,20 +83,29 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     setIsSellRouteEdit(update);
   };
 
+  const areKYCChecksSuccessful = (): boolean => {
+    if (user?.kycStatus === KycStatus.NA) {
+      onIncreaseLimit();
+      return false
+    } else if (
+      kycInProgress(user?.kycStatus) ||
+      user?.kycStatus === KycStatus.CHECK ||
+      user?.kycStatus === KycStatus.REJECTED
+    ) {
+      NotificationService.error(t("model.kyc.kyc_not_complete"));
+      return false
+    }
+    return true
+  }
+
   const stakingRouteEdit = (update: SetStateAction<boolean>) => {
     if (resolve(update, isStakingRouteEdit)) {
       // bank TX required
       if (user?.status !== UserStatus.ACTIVE) return NotificationService.error(t("feedback.bank_tx_required"));
 
       // check if user has KYC
-      if (user?.kycStatus === KycStatus.NA) {
-        return onIncreaseLimit();
-      } else if (
-        kycInProgress(user?.kycStatus) ||
-        user?.kycStatus === KycStatus.CHECK ||
-        user?.kycStatus === KycStatus.REJECTED
-      ) {
-        return NotificationService.error(t("model.kyc.kyc_not_complete"));
+      if (!areKYCChecksSuccessful()) {
+        return
       }
     } else {
       // reload all routes after close (may impact sell routes)
@@ -105,6 +114,17 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
 
     setIsStakingRouteEdit(update);
   };
+
+  const cryptoRouteEdit = (update: SetStateAction<boolean>) => {
+    if (resolve(update, isCryptoRouteEdit)) {
+      // check if user has KYC
+      if (!areKYCChecksSuccessful()) {
+        return
+      }
+    }
+
+    setIsCryptoRouteEdit(update)
+  }
 
   const userEdit = (edit: boolean) => {
     setIsUserEdit(edit);
@@ -177,6 +197,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     setUser(undefined);
     setBuyRoutes(undefined);
     setSellRoutes(undefined);
+    // Krysh: should we reset staking & crypto routes too?
     setIsUserEdit(false);
   };
 
@@ -453,7 +474,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
               isStakingRouteEdit={isStakingRouteEdit}
               setIsStakingRouteEdit={stakingRouteEdit}
               isCryptoRouteEdit={isCryptoRouteEdit}
-              setIsCryptoRouteEdit={setIsCryptoRouteEdit}
+              setIsCryptoRouteEdit={cryptoRouteEdit}
             />
           )}
         </>

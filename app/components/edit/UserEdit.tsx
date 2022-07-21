@@ -54,8 +54,8 @@ const UserEdit = ({ user, onUserChanged, kycDataEdit }: Props) => {
   const onSubmit = (updatedUser: User & KycData) => {
     setIsSaving(true);
     setError(undefined);
-
-    (kycDataEdit ? putKycData(updatedUser) : Promise.resolve())
+    
+    (kycDataEdit ? putKycData(updatedUser, updatedUser.kycHash) : Promise.resolve())
       .then(() => putUser(updatedUser))
       .then(onUserChanged)
       .catch((error: ApiError) => setError(error.statusCode === 409 ? "feedback.mail_error" : ""))

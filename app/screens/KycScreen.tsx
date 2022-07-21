@@ -6,9 +6,10 @@ import Routes from "../config/Routes";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { DeFiButton } from "../elements/Buttons";
-import { getKyc } from "../services/ApiService";
+import { getKyc, postFounderCertificate } from "../services/ApiService";
 import NotificationService from "../services/NotificationService";
 import {
+  AccountType,
   getKycStatusString,
   getTradeLimit,
   kycCompleted,
@@ -16,19 +17,24 @@ import {
   KycResult,
   KycState,
   KycStatus,
+  UserDetail,
+  UserStatus,
 } from "../models/User";
-import { sleep } from "../utils/Utils";
+import { pickDocuments, sleep } from "../utils/Utils";
 import KycInit from "../components/KycInit";
 import { SpacerV } from "../elements/Spacers";
 import { H2 } from "../elements/Texts";
 import { AppSettings } from "../services/SettingsService";
 import withSettings from "../hocs/withSettings";
-import { DataTable } from "react-native-paper";
+import { DataTable, Dialog, Paragraph, Portal } from "react-native-paper";
 import { CompactRow, CompactCell } from "../elements/Tables";
 import ButtonContainer from "../components/util/ButtonContainer";
 import LimitEdit from "../components/edit/LimitEdit";
 import DeFiModal from "../components/util/DeFiModal";
 import ChatbotScreen from "./ChatbotScreen";
+import AppStyles from "../styles/AppStyles";
+import Colors from "../config/Colors";
+import UserEdit from "../components/edit/UserEdit";
 
 const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const { t } = useTranslation();
@@ -37,9 +43,20 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isLimitRequest, setIsLimitRequest] = useState(false);
-  const [code, setCode] = useState<string | undefined>();
-  const [kycResult, setKycResult] = useState<KycResult | undefined>();
+  const [code, setCode] = useState<string>();
+  const [kycResult, setKycResult] = useState<KycResult>();
   const [startProcess, setStartProcess] = useState<boolean>(false);
+  const [isUserEdit, setUserEdit] = useState<boolean>(false);
+  const [user, setUser] = useState<UserDetail>();
+  const [isFileUploading, setIsFileUploading] = useState(false);
+
+  const defaultLanguage = { 
+    id: 1,
+    symbol: "EN",
+    name: "English",
+    foreignName: "English",
+    enable: true,
+   }
 
   useEffect(() => {
     // get params
@@ -49,12 +66,13 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     setCode(params.code);
 
     // reset params
-    nav.navigate(Routes.Kyc, { code: undefined, autostart: undefined });
+    // Krysh: temporarily disabled, and needs adjustments
+    // nav.navigate(Routes.Kyc, { code: undefined, autostart: undefined });
 
     // get KYC info
     getKyc(params?.code)
       .then((result) => {
-        updateState(result);
+        updateState(result, params);
         if (params?.autostart) onContinue(result);
       })
       .catch(onLoadFailed);
@@ -86,8 +104,37 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     nav.navigate(Routes.Home);
   };
 
-  const updateState = (result: KycResult) => {
+  const createNewUser = (result: KycResult, params?: any): UserDetail => {
+    return {
+      kycStatus: result.kycStatus,
+      kycState: result.kycState,
+      depositLimit: result.depositLimit,
+      accountType: AccountType.PERSONAL,
+      address: "",
+      mail: params?.mail ?? "",
+      mobileNumber: params?.phone ?? "",
+      language: defaultLanguage,
+      usedRef: "",
+      status: UserStatus.ACTIVE,
+    
+      kycHash: params?.code ?? "",
+      kycDataComplete: false,
+    
+      apiKeyCT: "",
+      refVolume: 0,
+      refCredit: 0,
+      paidRefCredit: 0,
+      refCount: 0,
+      refCountActive: 0,
+    }
+  }
+
+  const updateState = (result: KycResult, params?: any) => {
     setKycResult(result);
+    if (!params.autostart && result.kycState === KycState.NA && result.kycStatus === KycStatus.NA) {
+      setUser(createNewUser(result, params))
+      setUserEdit(true)
+    }
     setIsLoading(false);
   };
 
@@ -104,6 +151,29 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     }
   };
 
+  const onUserChanged = (newUser: UserDetail) => {
+    setUser(newUser);
+    setUserEdit(false);
+  };
+
+  const doUpload = async () => {
+    await uploadFounderCertificate()
+  };
+
+  const uploadFounderCertificate = (): Promise<boolean> => {
+    return pickDocuments({ type: "public.item", multiple: false })
+      .then((files) => {
+        setIsFileUploading(true);
+        return postFounderCertificate(files, code);
+      })
+      .then(() => true)
+      .catch(() => {
+        NotificationService.error(t("feedback.file_error"));
+        return false;
+      })
+      .finally(() => setIsFileUploading(false));
+  };
+
   return (
     <AppLayout preventScrolling={kycResult?.kycStatus === KycStatus.CHATBOT} removeHeaderSpace={kycResult?.kycStatus === KycStatus.CHATBOT}>
       <KycInit isVisible={isLoading} setIsVisible={setIsLoading} />
@@ -115,6 +185,15 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
         style={{ width: 400 }}
       >
         <LimitEdit code={code} onSuccess={() => setIsLimitRequest(false)} />
+      </DeFiModal>
+
+      <DeFiModal
+        isVisible={isUserEdit}
+        setIsVisible={setUserEdit}
+        title={t("model.user.edit")}
+        style={{ width: 500 }}
+      >
+        <UserEdit user={user} onUserChanged={onUserChanged} kycDataEdit={true} />
       </DeFiModal>
 
       {kycResult &&
@@ -134,32 +213,53 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
             )}
           </View>
         ) : (
-          <View>
-            {!settings?.isIframe && <SpacerV height={30} />}
+          <>
+            {user?.accountType === AccountType.BUSINESS && (
+              <Portal>
+                <Dialog visible={!isUserEdit} style={AppStyles.dialog}>
+                  <Dialog.Content>
+                    <Paragraph>
+                      {t("model.kyc.request_business")}
+                    </Paragraph>
+                  </Dialog.Content>
+                  <Dialog.Actions>
+                    <DeFiButton color={Colors.Grey}>
+                      {t("action.abort")}
+                    </DeFiButton>
+                    <DeFiButton onPress={doUpload} loading={isFileUploading}>
+                      {t("action.upload")}
+                    </DeFiButton>
+                  </Dialog.Actions>
+                </Dialog>
+              </Portal>
+            )}
+            
+            <View>
+              {!settings?.isIframe && <SpacerV height={30} />}
 
-            <H2 text={t("model.kyc.status")} />
-            <SpacerV />
-            <DataTable>
-              <CompactRow>
-                <CompactCell>{t("model.kyc.status")}</CompactCell>
-                <CompactCell multiLine>{getKycStatusString(kycResult)}</CompactCell>
-              </CompactRow>
-              <CompactRow>
-                <CompactCell>{t("model.user.limit")}</CompactCell>
-                <CompactCell>{getTradeLimit(kycResult)}</CompactCell>
-              </CompactRow>
-            </DataTable>
-            <SpacerV />
-            {/* TODO: integrate initial limit increase */}
-            {((kycInProgress(kycResult.kycStatus) && kycResult.kycState !== KycState.REVIEW) ||
-              kycCompleted(kycResult.kycStatus)) && (
-                <ButtonContainer>
-                  <DeFiButton mode="contained" onPress={() => onContinue(kycResult)}>
-                    {t(kycCompleted(kycResult.kycStatus) ? "model.kyc.increase_limit" : "action.next")}
-                  </DeFiButton>
-                </ButtonContainer>
-              )}
-          </View>
+              <H2 text={t("model.kyc.status")} />
+              <SpacerV />
+              <DataTable>
+                <CompactRow>
+                  <CompactCell>{t("model.kyc.status")}</CompactCell>
+                  <CompactCell multiLine>{getKycStatusString(kycResult)}</CompactCell>
+                </CompactRow>
+                <CompactRow>
+                  <CompactCell>{t("model.user.limit")}</CompactCell>
+                  <CompactCell>{getTradeLimit(kycResult)}</CompactCell>
+                </CompactRow>
+              </DataTable>
+              <SpacerV />
+              {/* TODO: integrate initial limit increase */}
+              {kycResult.kycState !== KycState.REVIEW && (
+                  <ButtonContainer>
+                    <DeFiButton mode="contained" onPress={() => onContinue(kycResult)}>
+                      {t(kycCompleted(kycResult.kycStatus) ? "model.kyc.increase_limit" : "action.next")}
+                    </DeFiButton>
+                  </ButtonContainer>
+                )}
+            </View>
+          </>
         ))}
     </AppLayout>
   );

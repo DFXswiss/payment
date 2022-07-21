@@ -89,12 +89,14 @@ export const deleteApiKey = (): Promise<void> => {
 };
 
 // --- KYC --- //
-export const putKycData = (data: KycData): Promise<void> => {
-  return fetchFrom(`${KycUrl}/data`, "POST", toKycDataDto(data));
+
+// TODO: check these services if called correctly with code
+export const putKycData = (data: KycData, code?: string): Promise<void> => {
+  return fetchFrom(`${KycUrl}/data?code=${code}`, "POST", toKycDataDto(data));
 };
 
-export const postKyc = (): Promise<string> => {
-  return fetchFrom<string>(KycUrl, "POST");
+export const postKyc = (code?: string): Promise<string> => {
+  return fetchFrom<string>(`${KycUrl}?code=${code}`, "POST");
 };
 
 export const getKyc = (code?: string): Promise<KycResult> => {
@@ -105,8 +107,8 @@ export const postLimit = (request: LimitRequest, code?: string): Promise<LimitRe
   return fetchFrom<LimitRequest>(`${KycUrl}/limit?code=${code}`, "POST", request);
 };
 
-export const postFounderCertificate = (files: File[]): Promise<void> => {
-  return postFiles(`${KycUrl}/incorporationCertificate`, files);
+export const postFounderCertificate = (files: File[], code?: string): Promise<void> => {
+  return postFiles(`${KycUrl}/incorporationCertificate?code=${code}`, files);
 };
 
 // --- VOTING --- //

@@ -73,11 +73,12 @@ const SpecialVotingScreen = ({ session }: { session?: Session }) => {
       .then(([settings, user]) => {
         const results: CfpResult[] = []
 
+        const startDate = new Date(specialVotingCfp.startDate)  
         const currentDate = new Date()
         const expiryDate = new Date(specialVotingCfp.endDate)
 
         // specialVotingCfp automatically disappears after expiryDate
-        if (currentDate < expiryDate) {
+        if (currentDate < expiryDate && currentDate > startDate) {
           results.push(specialVotingCfp)
         }
 

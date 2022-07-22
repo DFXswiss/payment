@@ -68,8 +68,14 @@
     "gtc": {
       "title": "Termos e condições gerais",
       "text": [
-        { "title": "", "text": "Última actualização: 28. August 2021" },
-        { "title": "", "text": "Em caso de discrepâncias, prevalece a versão alemã." },
+        {
+          "title": "",
+          "text": "Última actualização: 28. August 2021"
+        },
+        {
+          "title": "",
+          "text": "Em caso de discrepâncias, prevalece a versão alemã."
+        },
         {
           "title": "Geral",
           "text": "DFX AG (número de identificação da empresa: CHE-429.856.521), localizada em Bahnhofstrasse 7, 6300 Zug, Suíça ('nós', 'nos' ou 'nosso') opera o website DFX.swiss (o 'Serviço'). O acesso e a utilização do website estão sujeitos aos importantes avisos legais aqui contidos (os 'Termos e Condições'). Estes Termos e Condições são complementados por quaisquer acordos especiais que se apliquem em relação a serviços ou produtos oferecidos pela DFX, nos quais o cliente ou o seu representante (doravante 'o cliente') seja parte. Contudo, em caso de conflito, prevalecem as disposições de qualquer acordo especial deste tipo. Ao aceder e utilizar o Website, reconhece que leu, compreendeu e aceitou os Termos e Condições. Além disso, aceita que a DFX pode alterar os Termos e Condições em qualquer altura sem aviso prévio. Se não concordar com os Termos e Condições, não aceda ou utilize o Website de forma alguma."
@@ -150,7 +156,10 @@
           "title": "Lei aplicável e local de jurisdição",
           "text": "Os Termos e Condições serão regidos e interpretados de acordo com as leis da Suíça, excluindo o conflito de disposições legais da Suíça ou do seu país ou estado de residência real. Qualquer litígio, controvérsia ou reclamação decorrente ou relacionada com os Termos e Condições, a sua relação com a DFX, incluindo as obrigações extracontratuais, estará sujeita à jurisdição exclusiva dos tribunais de Zug, Suíça."
         },
-        { "title": "", "text": "" }
+        {
+          "title": "",
+          "text": ""
+        }
       ]
     },
     "cfp": {
@@ -339,6 +348,15 @@
         "delete_api_key": "Apagar chave API",
         "csv_export": "Exportação CSV"
       }
+    },
+    "specialVoting": {
+      "title": "",
+      "ended": "",
+      "link": "",
+      "collectively": "",
+      "proportionally": "",
+      "explanation": "",
+      "description": ""
     }
   }
 }

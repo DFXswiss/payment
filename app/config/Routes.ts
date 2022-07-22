@@ -5,6 +5,7 @@ export default {
   Login: `${PageTitle} - Login`,
   Gtc: `${PageTitle} - Legal`,
   Cfp: `${PageTitle} - CFPs`,
+  SpecialVoting: `${PageTitle} - Voting`,
   Admin: `${PageTitle} - Admin`,
   Kyc: `${PageTitle} - KYC`,
   NotFound: `${PageTitle} - NotFound`,

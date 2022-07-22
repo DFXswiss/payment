@@ -12,20 +12,19 @@ import { DeFiButton } from "../elements/Buttons";
 import { RadioButton } from "../elements/RadioButton";
 import { SpacerV } from "../elements/Spacers";
 import { CompactRow, CompactCell } from "../elements/Tables";
-import { H1, H3 } from "../elements/Texts";
+import { H1, H3, T5 } from "../elements/Texts";
 import withSession from "../hocs/withSession";
 import useAuthGuard from "../hooks/useAuthGuard";
-import { CfpResult } from "../models/CfpResult";
+import { CfpResult, ResultStatus, VotingType } from "../models/CfpResult";
 import { CfpVote, CfpVotes } from "../models/User";
-import { getCfpResults, getCfpVotes, getSettings, getUserDetail, putCfpVotes } from "../services/ApiService";
+import { getSettings, getUserDetail, putCfpVotes } from "../services/ApiService";
 import { Session } from "../services/AuthService";
 import NotificationService from "../services/NotificationService";
 import AppStyles from "../styles/AppStyles";
-import { openUrl } from "../utils/Utils";
 
 const DfxCfpNumbers: number[] = [];
 
-const CfpScreen = ({ session }: { session?: Session }) => {
+const SpecialVotingScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   const [isLoading, setIsLoading] = useState(true);
   const [cfpFilter, setCfpFilter] = useState<"all" | "dfx">("all");
@@ -37,30 +36,72 @@ const CfpScreen = ({ session }: { session?: Session }) => {
 
   useAuthGuard(session);
 
+  const specialVotingCfp: CfpResult = {
+    number: 0,
+    title: t("specialVoting.title"),
+    type: VotingType.CFP,
+    dfiAmount: 0,
+    htmlUrl: "",
+    currentResult: ResultStatus.APPROVED,
+    totalVotes: {
+      total: 0,
+      possible: 0,
+      turnout: 0,
+      yes: 0,
+      neutral: 0,
+      no: 0
+    },
+    cakeVotes: {
+      total: 0,
+      yes: 0,
+      neutral: 0,
+      no: 0
+    },
+    voteDetails: {
+      yes: [],
+      no: [],
+      neutral: []
+    },
+    startDate: "2022-07-23T23:59:59.000Z",
+    endDate: "2022-07-30T23:59:59.000Z"
+  }
+
+  const isSpecialVoting = (result: CfpResult) => result.title === specialVotingCfp.title
+
   useEffect(() => {
-    Promise.all([getCfpResults("latest"), getCfpVotes(), getUserDetail(), getSettings()])
-      .then(([results, votes, userDetail, settings]) => {
+    Promise.all([getSettings(), getUserDetail()])
+      .then(([settings, user]) => {
+        const results: CfpResult[] = []
+
+        const currentDate = new Date()
+        const expiryDate = new Date(specialVotingCfp.endDate)
+
+        // specialVotingCfp automatically disappears after expiryDate
+        if (currentDate < expiryDate) {
+          results.push(specialVotingCfp)
+        }
+
         setCfpResults(results);
         setVotes(votes);
-        setCanVote(userDetail.stakingBalance >= 100);
+        setCanVote(user.stakingBalance >= 100);
         setIsVotingOpen(settings.cfpVotingOpen);
       })
       .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));
   }, []);
 
-  const getData = (result: CfpResult): StackedBarChartData => {
-    return {
-      labels: [],
-      legend: [
-        `${t("cfp.yes")} (${Math.round((result.totalVotes.yes / result.totalVotes.total) * 100)}%)`,
-        `${t("cfp.neutral")} (${Math.round((result.totalVotes.neutral / result.totalVotes.total) * 100)}%)`,
-        `${t("cfp.no")} (${Math.round((result.totalVotes.no / result.totalVotes.total) * 100)}%)`,
-      ],
-      data: [[], [result.totalVotes.yes, result.totalVotes.neutral, result.totalVotes.no]],
-      barColors: [Colors.Success, Colors.LightGrey, Colors.Error],
-    };
-  };
+  // const getData = (result: CfpResult): StackedBarChartData => {
+  //   return {
+  //     labels: [],
+  //     legend: [
+  //       `${t("cfp.yes")} (${Math.round((result.totalVotes.yes / result.totalVotes.total) * 100)}%)`,
+  //       `${t("cfp.neutral")} (${Math.round((result.totalVotes.neutral / result.totalVotes.total) * 100)}%)`,
+  //       `${t("cfp.no")} (${Math.round((result.totalVotes.no / result.totalVotes.total) * 100)}%)`,
+  //     ],
+  //     data: [[], [result.totalVotes.yes, result.totalVotes.neutral, result.totalVotes.no]],
+  //     barColors: [Colors.Success, Colors.LightGrey, Colors.Error],
+  //   };
+  // };
 
   const onVote = (number: number, vote: CfpVote) => {
     setVotes((votes) => {
@@ -85,11 +126,14 @@ const CfpScreen = ({ session }: { session?: Session }) => {
     },
   };
 
+  // const collectively = () => t("specialVoting.collectively")
+  // const proportionally = () => t("specialVoting.proportionally")
+
   return (
     <AppLayout>
       <View style={[AppStyles.container, AppStyles.alignCenter]}>
-        <H1 text={t("cfp.title")} />
-        <SpacerV height={30} />
+        <H1 text={specialVotingCfp.title} style={AppStyles.center} />
+        <SpacerV height={50} />
 
         {isLoading ? (
           <Loading size="large" />
@@ -109,88 +153,55 @@ const CfpScreen = ({ session }: { session?: Session }) => {
               </>
             )}
 
+            {cfpResults === undefined || (cfpResults.length === 0) && (
+              <>
+                <H1 text={t("specialVoting.ended")} />
+                <SpacerV height={50} />
+              </>
+            )}
+
             {cfpResults
               ?.filter((r) => cfpFilter === "all" || DfxCfpNumbers.includes(r.number))
               ?.sort((a, b) => a.number - b.number)
               .map((result) => (
                 <View key={result.number} style={{ width: "100%" }}>
-                  <H3 text={result.title} style={AppStyles.center} />
-
-                  <DeFiButton onPress={() => openUrl(result.htmlUrl)} compact>
-                    {t("cfp.read_proposal")}
-                  </DeFiButton>
-
-                  <View style={styles.cfpContainer}>
-                    <View>
-                      <DataTable style={{ width: 300 }}>
-                        <CompactRow>
-                          <CompactCell>ID</CompactCell>
-                          <CompactCell>#{result.number}</CompactCell>
-                        </CompactRow>
-                        <CompactRow>
-                          <CompactCell>{t("cfp.voting")}</CompactCell>
-                          <CompactCell>
-                            {result.totalVotes.yes} / {result.totalVotes.neutral} / {result.totalVotes.no}
-                          </CompactCell>
-                        </CompactRow>
-                        <CompactRow>
-                          <CompactCell>#{t("cfp.votes")}</CompactCell>
-                          <CompactCell>{result.totalVotes.total}</CompactCell>
-                        </CompactRow>
-                        <CompactRow>
-                          <CompactCell>{t("cfp.vote_turnout")}</CompactCell>
-                          <CompactCell>{result.totalVotes.turnout}%</CompactCell>
-                        </CompactRow>
-                        <CompactRow>
-                          <CompactCell>{t("cfp.current_result")}</CompactCell>
-                          <CompactCell>{t(`cfp.${result.currentResult.toLowerCase()}`)}</CompactCell>
-                        </CompactRow>
-                      </DataTable>
-                    </View>
-                    {result.totalVotes.total > 0 && (
-                      <View style={styles.chartContainer}>
-                        <StackedBarChart
-                          data={getData(result)}
-                          width={350}
-                          height={200}
-                          chartConfig={config}
-                          hideLegend={false}
-                          withHorizontalLabels={false}
-                          style={{ marginTop: 5 }}
-                        />
-                      </View>
-                    )}
+                  <View style={AppStyles.halfWidth} >
+                    <T5 text={t("specialVoting.explanation") + "\n\n\n"} /* style={AppStyles.center}  */ />
                   </View>
 
-                  {canVote && (
+                  {(canVote || isSpecialVoting(result)) && (
                     <>
                       <SpacerV />
                       <Text style={[AppStyles.center, AppStyles.b]}>{t("cfp.your_vote")}</Text>
                       <View style={[AppStyles.containerHorizontalWrap, styles.voteContainer]}>
                         <RadioButton
-                          label={t("cfp.yes")}
+                          label={t("specialVoting.collectively")}
                           onPress={() => onVote(result.number, CfpVote.YES)}
                           checked={votes?.[result.number] === CfpVote.YES}
-                          disabled={!isVotingOpen}
+                          disabled={!canVote}
                           loading={isSaving?.number === result.number && isSaving.vote === CfpVote.YES}
                         />
                         <RadioButton
-                          label={t("cfp.no")}
+                          label={t("specialVoting.proportionally")}
                           onPress={() => onVote(result.number, CfpVote.NO)}
                           checked={votes?.[result.number] === CfpVote.NO}
-                          disabled={!isVotingOpen}
+                          disabled={!canVote}
                           loading={isSaving?.number === result.number && isSaving.vote === CfpVote.NO}
                         />
                         <RadioButton
                           label={t("cfp.neutral")}
                           onPress={() => onVote(result.number, CfpVote.NEUTRAL)}
                           checked={(votes?.[result.number] ?? CfpVote.NEUTRAL) === CfpVote.NEUTRAL}
-                          disabled={!isVotingOpen}
+                          disabled={!canVote}
                           loading={isSaving?.number === result.number && isSaving.vote === CfpVote.NEUTRAL}
                         />
                       </View>
                     </>
                   )}
+
+                  <View style={AppStyles.halfWidth} >
+                    <T5 text={"\n\n\n" + t("specialVoting.description")} /* style={AppStyles.center}  */ />
+                  </View>
 
                   <SpacerV height={50} />
                 </View>
@@ -226,4 +237,32 @@ const styles = StyleSheet.create({
   },
 });
 
-export default withSession(CfpScreen);
+export default withSession(SpecialVotingScreen);
+
+const description1 = `
+Jeder Nutzer des DFI Stakingservice von DFX erhält eine gewichtete Stimme auf Basis der investierten DFI. Zur Wahl stehen zwei alternative Abstimmungsmechanismen. 
+
+
+Auswahlmöglichkeiten:
+
+DFX soll mit allen Masternodes als Kollektiv mit ja/nein/neutral abstimmen
+DFX soll mit allen Masternodes anteilig der abgegebenen Stimmen mit ja/nein/neutral abstimmen
+Neutral
+`
+
+const description2 = `
+Kollektivbetrachtung:
+
+Abhängig der Wahlergebnisse der jeweiligen CFPs/DFIPs von der DFX Community stimmt DFX mit allen Masternodes für seine Kunden ab. 
+> 50% - DFX votet mit allen Masternodes „nein“
+50% - DFX votet mit allen Masternodes „neutral“
+>50% - DFX votet mit allen Masternodes „ja“
+Die Kollektivbetrachtung wird nur angewendet, so lange DFX <10 % der DeFiChain Masternodes für seine Kunden betreibt. Wird dieser Schwellenwert überschritten wird DFX automatisch die anteilige Betrachtung wählen
+
+
+Anteilige Betrachtung:
+
+Abhängig der Wahlergebnisse der jeweiligen CFPs von der DFX Community stimmt DFX für seine Kunden anteilig der abgegeben Stimmen mit ja/nein/neutral ab
+
+
+`

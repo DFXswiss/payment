@@ -68,8 +68,14 @@
     "gtc": {
       "title": "Allgemeine Geschäftsbedingungen",
       "text": [
-        { "title": "", "text": "Zuletzt aktualisiert: 24. Februar 2022" },
-        { "title": "", "text": "Im Falle von Unstimmigkeiten ist die Deutsche Version maßgebend." },
+        {
+          "title": "",
+          "text": "Zuletzt aktualisiert: 24. Februar 2022"
+        },
+        {
+          "title": "",
+          "text": "Im Falle von Unstimmigkeiten ist die Deutsche Version maßgebend."
+        },
         {
           "title": "Allgemein",
           "text": "Die DFX AG (Unternehmens-Identifikationsnummer: CHE-429.856.521, nachfolgend DFX) mit Sitz an der Bahnhofstrasse 7, 6300 Zug, Schweiz betreibt die Website DFX.swiss, die dazugehörige Paymentseite payment.dfx.swiss und die DFX-App (den „Service“). Der Zugriff auf und die Nutzung der Website, der Paymentseite respektive der DFX-App unterliegen den hierin enthaltenen wichtigen rechtlichen Hinweisen (im Folgenden „die Allgemeinen Geschäftsbedingungen“)."
@@ -154,7 +160,10 @@
           "title": "Anwendbares Recht und Gerichtsstand",
           "text": "Die Allgemeinen Geschäftsbedingungen unterliegen dem schweizerischen Recht und werden in Übereinstimmung mit diesem ausgelegt, unter Ausschluss der kollisionsrechtlichen Bestimmungen der Schweiz oder des tatsächlichen (Wohn-)Sitzlandes oder -bundesstaats des Kunden. Jegliche Streitigkeiten, die sich aus oder in Bezug auf die Allgemeinen Geschäftsbedingungen, die Beziehung des Kunden zu DFX, einschliesslich ausservertraglicher Verpflichtungen, ergeben, unterliegen ausschliesslich der Zuständigkeit des Gerichtsstands Zug, Schweiz."
         },
-        { "title": "", "text": "" }
+        {
+          "title": "",
+          "text": ""
+        }
       ]
     },
     "cfp": {
@@ -176,7 +185,7 @@
     },
     "admin": {
       "title": "Admin"
-    },    
+    },
     "kyc": {
       "bot": {
         "sms_header": "Bitte geben Sie den SMS-Code von KYC ein:",
@@ -343,6 +352,15 @@
         "delete_api_key": "API-Key löschen",
         "csv_export": "CSV-Export"
       }
+    },
+    "specialVoting": {
+      "title": "Abstimmung: DFX Masternode CFP/DFIP Bewertungslogik",
+      "ended": "Vielen Dank für deine Stimme. Die Ergebnisse präsentieren wir in Kürze!",
+      "link": "DFX-Abstimmung",
+      "collectively": "Kollektiv",
+      "proportionally": "Anteilig",
+      "explanation": "Abstimmung: DFX Masternode CFP/DFIP Bewertungslogik\n\nJeder Nutzer des DFI Stakingservice von DFX erhält eine gewichtete Stimme auf Basis der investierten DFI. Zur Wahl stehen zwei alternative Abstimmungsechanismen. Auswahlmöglichkeiten:\n\n• Kollektiv: DFX soll mit allen Masternodes als Kollektiv mit ja/nein/neutral abstimmen\n\n• Anteilig: DFX soll mit allen Masternodes anteilig der abgegebenen Stimmen mit ja/nein/neutral abstimmen\n\n• Neutral",
+      "description": "Kollektivbetrachtung: \n\nAbhängig der Wahlergebnisse der jeweiligen CFPs/DFIPs von der DFX Community stimmt DFX mit allen Masternodes für seine Kunden ab. \n\n> 50% - DFX votet mit allen Masternodes „nein“\n\n50% - DFX votet mit allen Masternodes „neutral“\n\n>50% - DFX votet mit allen Masternodes „ja“\n\nDie Kollektivbetrachtung wird nur angewendet, so lange DFX <10 % der DeFiChain Masternodes für seine Kunden betreibt. Wird dieser Schwellenwert überschritten wird DFX automatisch die anteilige Betrachtung wählen\n\n\n\nAnteilige Betrachtung:\n\nAbhängig der Wahlergebnisse der jeweiligen CFPs von der DFX Community stimmt DFX für seine Kunden anteilig der abgegeben Stimmen mit ja/nein/neutral ab"
     }
   }
 }

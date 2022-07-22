@@ -67,8 +67,14 @@
     "gtc": {
       "title": "Conditions générales",
       "text": [
-        { "title": "", "text": "Mis à jour le 24/02/2022" },
-        { "title": "", "text": "En cas de divergences, la version allemande fait foi." },
+        {
+          "title": "",
+          "text": "Mis à jour le 24/02/2022"
+        },
+        {
+          "title": "",
+          "text": "En cas de divergences, la version allemande fait foi."
+        },
         {
           "title": "Généralités",
           "text": "En cas de divergences, la version allemande fait foi. DFX AG (numéro d'identification de la société : CHE-429.856.521, ci-après DFX), dont le siège social est situé Bahnhofstrasse 7, 6300 Zug, Suisse, exploite le site web DFX.swiss, le site de paiement associé payment.dfx.swiss et l'application DFX (le 'Service'). L'accès et l'utilisation du site web, de la page de paiement et de l'app DFX, respectivement, sont soumis aux avis juridiques importants contenus dans le présent document (les 'Conditions générales')."
@@ -133,7 +139,10 @@
           "title": "Frais",
           "text": "Notre structure de frais s'applique aux paiements dans le système de paiement SEPA [ainsi qu'aux transactions crypto-à-crypto]. DFX se réserve le droit de facturer des frais supplémentaires en cas de transferts utilisant d'autres systèmes de paiement. Lors de l'utilisation de liens de parrainage, la structure des frais change (voir la section ci-dessous). Les pourcentages sont calculés sur le volume réel des transactions. Les chiffres du volume de transactions sont en EUR dans les tableaux ci-dessous. [Dans le cas d'une transaction crypto-à-crypto, le volume sera converti en EUR en utilisant le taux de change du jour (www.defichain.com/dex ou www.kraken.com) afin de pouvoir déterminer le montant des frais]."
         },
-        { "title": "Structure des frais", "text": "Vue détaillée des frais DFX: https://dfx.swiss/en/terms/" },
+        {
+          "title": "Structure des frais",
+          "text": "Vue détaillée des frais DFX: https://dfx.swiss/en/terms/"
+        },
         {
           "title": "Liens de parrainage",
           "text": "Notre programme de parrainage paie aux clients un maximum de 0,5% sur le volume d'achat/d'investissement acheté par un nouveau client via le lien de parrainage du client. Le programme de parrainage est plafonné à 100 000 CHF de volume d'achat par client ou l'équivalent dans toute autre devise proposée. Cela signifie que le programme de parrainage n'est valable que jusqu'à un bonus total de parrainage de 500 CHF par client : CHF 100000 * 0,5% = CHF 500. Si le volume d'achat d'un client dépasse 100 000 CHF, qui a été traité par le biais de ce lien de parrainage, aucun bonus supplémentaire ne sera versé. Toutefois, le nombre de clients acquis par le biais des liens de parrainage est illimité. DFX se réserve le droit de modifier ou de mettre fin au programme de parrainage à tout moment sans donner de raisons. Il n'y a aucun droit à des paiements continus de bonus de parrainage en cas de résiliation du programme de référence."
@@ -150,7 +159,10 @@
           "title": "Droit applicable et lieu de juridiction",
           "text": "Les Conditions générales sont régies et interprétées conformément au droit suisse, à l'exclusion des dispositions relatives aux conflits de lois de la Suisse ou du pays ou de l'État réel du domicile (de résidence) du Client. Tout litige découlant de ou en relation avec les Conditions générales, la relation du client avec DFX, y compris les obligations non contractuelles, sera soumis à la juridiction exclusive des tribunaux de Zug, Suisse."
         },
-        { "title": "", "text": "" }
+        {
+          "title": "",
+          "text": ""
+        }
       ]
     },
     "cfp": {
@@ -172,7 +184,7 @@
     },
     "admin": {
       "title": "Admin"
-    },    
+    },
     "kyc": {
       "bot": {
         "sms_header": "Veuillez entrer le code SMS de KYC :",
@@ -308,7 +320,7 @@
         "staking": "Staking",
         "new_staking": "Nouvel itinéraire de staking",
         "edit_staking": "Modifier l'itinéraire de staking",
-        "edit_payback": "Cette modification n'aura d'effet que sur les lots futurs !",        
+        "edit_payback": "Cette modification n'aura d'effet que sur les lots futurs !",
         "reward": "Récompenses",
         "payback": "Destination des fonds",
         "reinvest": "Réinvestir",
@@ -339,6 +351,15 @@
         "delete_api_key": "Supprimer la clé API",
         "csv_export": "Exportation CSV"
       }
+    },
+    "specialVoting": {
+      "title": "Vote : Logique de notation DFX Masternode CFP/DFIP",
+      "ended": "Merci pour votre vote. Nous vous présenterons les résultats sous peu !",
+      "link": "Vote-DFX",
+      "collectively": "Collectivement",
+      "proportionally": "Proportionnellement",
+      "explanation": "Vote : Logique de notation DFX Masternode CFP/DFIP\n\nChaque utilisateur du service de jalonnement DFI de DFX reçoit un vote pondéré en fonction du DFI investi. Vous avez le choix entre deux mécanismes de vote alternatifs. Les choix:\n\n• Collectif : DFX votera avec tous les Masternodes en tant que collectif avec oui/non/neutre\n\n• Proportionnellement : DFX votera avec tous les Masternodes au prorata des votes exprimés avec oui/non/neutre\n\n• Neutre",
+      "description": "Considération collective :\n\nEn fonction des résultats des élections des CFP/DFIP respectifs de la communauté DFX, DFX vote avec tous les masternodes pour ses clients.\n\n> 50% - DFX vote \"non\" avec tous les masternodes\n\n50% - DFX vote \"neutre\" avec tous les masternodes\n\n>50% - DFX vote \"oui\" avec tous les Masternodes\n\nLa vue collective n'est appliquée que tant que DFX exploite <10 % des masternodes DeFiChain pour ses clients. Si ce seuil est dépassé, DFX sélectionnera automatiquement la vue proportionnelle\n\n\n\nRémunération proportionnelle :\n\nEn fonction des résultats des élections des CFP respectifs de la communauté DFX, DFX vote pour ses clients au prorata des votes exprimés par oui/non/neutre"
     }
   }
 }

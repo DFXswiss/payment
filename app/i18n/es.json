@@ -67,8 +67,14 @@
     "gtc": {
       "title": "Términos y condiciones generales",
       "text": [
-        { "title": "", "text": "Ultima actualización: 28 de Agosto, 2021" },
-        { "title": "", "text": "En caso de discrepancias, la versión alemana prevalecerá." },
+        {
+          "title": "",
+          "text": "Ultima actualización: 28 de Agosto, 2021"
+        },
+        {
+          "title": "",
+          "text": "En caso de discrepancias, la versión alemana prevalecerá."
+        },
         {
           "title": "General",
           "text": "DFX AG (Número de identificación de la compañía: CHE-429.856.521), localizada en Bahnhofstrasse 7, 6300 Zug, Suiza ('nosotros', o 'nuestro') operamos la página web DFX.swiss (el 'Servicio'). El acceso a la página y su uso está sujeto a importantes notas legales contenidas aquí (los 'Términos y condiciones generales'). Estos Términos y Condiciones están complementados por cualquier acuerdo especial que se aplica en relación con los servicios y productos ofertados por DFX, de los cuales tu o tu representante sois participes. De todas formas, en caso de conflicto, los términos de cualquier acuerdo especial prevalecerán. Al acceder y usar la página web, tu reconoces que has leído, entendido y aceptado los 'Términos y condiciones generales'. Además, tu aceptas que DFX pudiera cambiar los 'Términos y condiciones generales' en cualquier momento sin aviso. Si tu no aceptas los 'Términos y condiciones generales', no accedas ni uses la página de ninguna forma."
@@ -137,7 +143,10 @@
           "title": "Ley aplicable y lugar de jurisdicción",
           "text": "Los términos y condiciones deberán ser gobernados e interpretados en acordancia con las leyes de Suiza, excluyendo el conflicto entre la provisión de leyes entre tu país y estado residencia, y las leyes Suizas. Cualquier disputa, controversia o reclamación resultados de los \"términos y condiciones generales\" mencionados, tu relación con DFX, incluida obligaciones no contractuales, deberán ser objetos de la jurisdicción exclusiva de las cortes de Zug, Suiza."
         },
-        { "title": "", "text": "" }
+        {
+          "title": "",
+          "text": ""
+        }
       ]
     },
     "cfp": {
@@ -159,7 +168,7 @@
     },
     "admin": {
       "title": "Administrador"
-    },    
+    },
     "kyc": {
       "bot": {
         "sms_header": "Por favor, introduzca el código SMS de KYC:",
@@ -325,6 +334,15 @@
         "delete_api_key": "Eliminar la clave API",
         "csv_export": "Exportación CSV"
       }
+    },
+    "specialVoting": {
+      "title": "Votación: Lógica de puntuación DFX Masternode CFP/DFIP",
+      "ended": "Gracias por tu voto. ¡Presentaremos los resultados en breve!",
+      "link": "Votación-DFX",
+      "collectively": "Colectivamente",
+      "proportionally": "Proporcionalmente",
+      "explanation": "Votación: Lógica de puntuación DFX Masternode CFP/DFIP\n\nCada usuario del servicio de participación DFI de DFX recibe un voto ponderado basado en la DFI invertida. Hay dos mecanismos de votación alternativos para elegir. Opciones:\n\n• Colectivo: DFX votará con todos los Masternodes como un colectivo con sí/no/neutral\n\n• Proporcionalmente: DFX votará con todos los Masternodes a prorrata de los votos emitidos con sí/no/neutral\n\n• Neutral",
+      "description": "Consideración colectiva:\n\nDependiendo de los resultados de las elecciones de los respectivos CFP/DFIP de la comunidad DFX, DFX vota con todos los masternodes para sus clientes.\n\n> 50% - DFX vota \"no\" con todos los masternodes\n\n50% - DFX vota \"neutral\" con todos los masternodes\n\n>50% - DFX vota \"sí\" con todos los Masternodes\n\nLa vista colectiva solo se aplica siempre que DFX opere <10 % de los nodos maestros de DeFiChain para sus clientes. Si se supera este umbral, DFX seleccionará automáticamente la vista proporcional\n\n\n\nConsideración proporcional:\n\nSegún los resultados de las elecciones de los respectivos CFP de la comunidad DFX, DFX vota por sus clientes en proporción a los votos emitidos con sí/no/neutral"
     }
   }
 }

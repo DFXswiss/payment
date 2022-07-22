@@ -1,0 +1,17 @@
+{
+  "start": {
+    "header": "Bienvenue, je suis votre chatbot et ensemble, nous allons vérifier votre compte pour DFX.",
+    "body": "Afin de pouoir vous vérifier, j'ai besoin d'informations complémentaires pour être en règle avec la politique anti-blanchiment (ABA) et autres régulations.",
+    "answer": null
+  },
+  "all_answers_correct": {
+    "header": "Merci pour ces informations. Veuillez confirmer que les informations fournies sont vraies et correctes.",
+    "body": "Fournir délibérément de fausses informations dans ce formulaire est une infraction pénale au sens de l'article 251 du Code Pénal Suisse sur la falsification des documents.",
+    "answer": "Toutes les réponses sont correctes."
+  },
+  "inform_of_change": {
+    "header": "Veuillez confirmer que vous vous engagez à avertir DFX de tout changement relatif à ces informations.",
+    "body": "Communiquez tout changement immédiatement par e-mail :",
+    "answer": null
+  }
+}

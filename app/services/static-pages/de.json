@@ -1,0 +1,17 @@
+{
+  "start": {
+    "header": "Herzlich willkommen, ich bin dein Chatbot und zusammen verifizieren wir dich für die Nutzung bei DFX.",
+    "body": "Um dich verifizieren zu können, benötige ich weitere Informationen um dem Geldwäschegesetz (GwG) und anderen Vorschriften zu entsprechen.",
+    "answer": null
+  },
+  "all_answers_correct": {
+    "header": "Vielen Dank für deine Angaben. Bitte bestätige, dass alle Angaben der Wahrheit entsprechen.",
+    "body": "Es ist strafbar, vorsätzlich falsche Angaben in diesem Formular zu machen (Artikel 251 des Schweizer Strafgesetzbuches, Urkundenfälschung).",
+    "answer": "Alle Antworten sind richtig."
+  },
+  "inform_of_change": {
+    "header": "Bitte bestätige, dass du dich dazu verpflichtest, DFX über alle Änderungen der hier gemachten Angaben zu informieren.",
+    "body": "Kommuniziere etwaige Änderungen direkt per Email:",
+    "answer": null
+  }
+}

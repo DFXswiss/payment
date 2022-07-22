@@ -1,0 +1,17 @@
+{
+  "start": {
+    "header": "Welcome, I am your chatbot and together we will verify you for using DFX.",
+    "body": "To be able to verify you, I need further information in order to comply with Anti-Money Laundering (AML) and other regulations.",
+    "answer": null
+  },
+  "all_answers_correct": {
+    "header": "Thank you for your information. Please confirm that your provided information are true.",
+    "body": "It is a criminal offense to deliberately provide false information in this form (article 251 of the Swiss Criminal Code, document forgery).",
+    "answer": "All answers are correct."
+  },
+  "inform_of_change": {
+    "header": "Please confirm that you commit to inform DFX im case of any changes with regard to the given information.",
+    "body": "Communicate any changes right away via email:",
+    "answer": null
+  }
+}

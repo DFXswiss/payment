@@ -175,10 +175,10 @@
     },    
     "kyc": {
       "bot": {
-        "sms_header": "Veuillez entrer le code SMS de KYC :",
-        "sms_code": "Entrez le code SMS",
+        "sms_header": "Notre partenaire de vérification de compte (KYC Spider) vous a envoyé un code par SMS.",
+        "sms_code": "Veuillez entre le code ici :",
         "sms_placeholder": "Votre code SMS",
-        "sms_help": "Si vous n'avez pas reçu de code SMS, veuillez contacter",
+        "sms_help": "Si vous n'avez pas reçu le code SMS, veuillez nous contacter sur",
         "error": {
           "missing_session_id": "Erreur : Please try again later.",
           "validation": "Erreur : Veuillez vérifier votre réponse.",

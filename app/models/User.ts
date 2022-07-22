@@ -49,6 +49,7 @@ export enum CfpVote {
 export interface KycUser {
   kycStatus: KycStatus;
   kycState: KycState;
+  kycDataComplete: boolean;
   depositLimit: number;
 }
 

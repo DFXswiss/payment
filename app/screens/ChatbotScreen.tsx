@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Keyboard, Linking, StyleSheet, TouchableOpacity, useWindowDimensions, View } from "react-native";
+import { Keyboard, Linking, ScrollView, StyleSheet, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import { IconButton, Text, TextInput } from 'react-native-paper';
 import AnswerDatePicker from '../components/chatbot/AnswerDatePicker';
 import AnswerList from '../components/chatbot/AnswerList';

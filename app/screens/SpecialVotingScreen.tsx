@@ -153,7 +153,7 @@ const SpecialVotingScreen = ({ session }: { session?: Session }) => {
 
             {cfpResults === undefined || (cfpResults.length === 0) && (
               <>
-                <H1 text={t("specialVoting.ended")} />
+                <H3 text={t("specialVoting.ended")} />
                 <SpacerV height={50} />
               </>
             )}

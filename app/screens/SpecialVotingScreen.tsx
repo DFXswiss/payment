@@ -62,8 +62,8 @@ const SpecialVotingScreen = ({ session }: { session?: Session }) => {
       no: [],
       neutral: []
     },
-    startDate: "2022-07-23T23:59:59.000Z",
-    endDate: "2022-07-30T23:59:59.000Z"
+    startDate: "2022-07-25T23:59:59.000Z",
+    endDate: "2022-08-02T23:59:59.000Z"
   }
 
   const isSpecialVoting = (result: CfpResult) => result.title === specialVotingCfp.title

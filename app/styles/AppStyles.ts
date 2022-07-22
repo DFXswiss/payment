@@ -73,6 +73,11 @@ export default StyleSheet.create({
   transparent: {
     opacity: 0.3,
   },
+  halfWidth: {
+    flex: 1,
+    width: "50%",
+    margin: "auto"
+  },
   center: {
     textAlign: "center",
   },

@@ -20,6 +20,7 @@ import AdminScreen from "./screens/AdminScreen";
 import CfpScreen from "./screens/CfpScreen";
 import Colors from "./config/Colors";
 import KycScreen from "./screens/KycScreen";
+import SpecialVotingScreen from "./screens/SpecialVotingScreen";
 
 const DrawerContent = () => {
   const device = useDevice();
@@ -48,6 +49,7 @@ const Main = () => {
         [Routes.Login]: "login",
         [Routes.Gtc]: "legal",
         [Routes.Cfp]: "cfp",
+        [Routes.SpecialVoting]: "voting",
         [Routes.Admin]: "admin",
         [Routes.Kyc]: "kyc",
         [Routes.NotFound]: "*",
@@ -59,8 +61,9 @@ const Main = () => {
     { route: Routes.Login, screen: LoginScreen },
     { route: Routes.Gtc, screen: GtcScreen },
     { route: Routes.Cfp, screen: CfpScreen },
+    { route: Routes.SpecialVoting, screen: SpecialVotingScreen },
     { route: Routes.Admin, screen: AdminScreen },
-    {route: Routes.Kyc, screen: KycScreen},
+    { route: Routes.Kyc, screen: KycScreen },
     { route: Routes.NotFound, screen: NotFoundScreen },
   ];
 

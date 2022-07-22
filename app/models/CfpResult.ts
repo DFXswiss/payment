@@ -1,9 +1,9 @@
-enum ResultStatus {
+export enum ResultStatus {
   APPROVED = "Approved",
   NOT_APPROVED = "Not approved",
 }
 
-enum VotingType {
+export enum VotingType {
   CFP = 'cfp',
   DFIP = 'dfip',
 }

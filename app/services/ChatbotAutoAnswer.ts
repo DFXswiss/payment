@@ -29,15 +29,9 @@ const getValueWithKey = (values: ChatbotAnswerData[], key: string): string => {
   const foundValue = values.find((value) => {
     return value.key === key
   })
-  if (foundValue !== undefined) {
-    return foundValue.apiElement
-  }
-  return ""
+  return foundValue?.apiElement ?? ""
 }
 
 const doesHeaderContain = (needle: string, language: string, haystack?: ChatbotLanguageValues): boolean => {
-  if (haystack === undefined) {
-    return false
-  }
-  return haystack[language].includes(needle)
+  return haystack?.[language].includes(needle) ?? false
 }

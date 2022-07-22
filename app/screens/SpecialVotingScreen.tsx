@@ -126,9 +126,6 @@ const SpecialVotingScreen = ({ session }: { session?: Session }) => {
     },
   };
 
-  // const collectively = () => t("specialVoting.collectively")
-  // const proportionally = () => t("specialVoting.proportionally")
-
   return (
     <AppLayout>
       <View style={[AppStyles.container, AppStyles.alignCenter]}>

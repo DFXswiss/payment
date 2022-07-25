@@ -5,16 +5,18 @@ import { TextInput } from "react-native-paper";
 import { RadioButton, Text, TouchableRipple } from "react-native-paper";
 import { SpacerV } from "../../elements/Spacers";
 import { ChatbotAnswer, ChatbotAnswerData } from "../../models/ChatbotData";
-import { chatbotUpdateAnswer } from "../../services/ChatbotUtils";
+import { chatbotLocalize, chatbotUpdateAnswer } from "../../services/chatbot/ChatbotUtils";
 
 interface Props {
   onSubmit: (answer: ChatbotAnswer) => void;
   answer?: ChatbotAnswer;
+  language?: string;
 }
 
 const AnswerList = ({
   onSubmit,
   answer,
+  language,
 }: Props) => {
   const { t } = useTranslation()
   const scrollViewRef = createRef<ScrollView>()
@@ -51,7 +53,10 @@ const AnswerList = ({
       if (search.length === 0) {
         setItems(answer.data)
       } else {
-        setItems(answer.data.filter((item) => item.label.toLowerCase().includes(search.toLocaleLowerCase()) || item.isSelected))
+        setItems(answer.data.filter((item) => {
+          let label = chatbotLocalize(item.label, language)
+          return label.toLowerCase().includes(search.toLocaleLowerCase()) || item.isSelected
+        }))
       }
     }
   }
@@ -81,7 +86,7 @@ const AnswerList = ({
                   status={item.isSelected ? "checked" : "unchecked"}
                 />
               </View>
-              <Text>{item.label}</Text>
+              <Text>{ chatbotLocalize(item.label, language) }</Text>
             </View>
           </TouchableRipple>
         ))}

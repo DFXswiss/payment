@@ -6,8 +6,9 @@ export enum ChatbotStatus {
 }
 
 export interface ChatbotPage {
-  header?: string,
-  body?: string,
+  header?: ChatbotLanguageValues,
+  body?: ChatbotLanguageValues,
+  bodyHasSupportLink: boolean,
   answer?: ChatbotAnswer,
 }
 
@@ -26,7 +27,7 @@ export interface ChatbotInfo {
 
 export interface ChatbotQuestion {
   key: number,
-  label: string,
+  label: ChatbotLanguageValues,
 }
 
 export interface ChatbotAnswer {
@@ -37,13 +38,19 @@ export interface ChatbotAnswer {
   value: string,
   previousSentValue: string,
   timestamp: number,
+  hasChanged: boolean,
 }
 
 export interface ChatbotAPIQuestion {
   items?: object,
-  attributes?: object,
+  attributes?: any,
   chatState?: string,
   error?: any,
+}
+
+export interface ChatbotAPIConfirmations {
+  confirmsForm: string,
+  informsOfChanges: string,
 }
 
 export enum ChatbotAPIState {
@@ -87,7 +94,7 @@ export interface ChatbotAPIAnswerItem {
 
 export interface ChatbotAnswerData {
   key: string
-  label: string
+  label: ChatbotLanguageValues
   isSelected: boolean
   apiElement: any
 }

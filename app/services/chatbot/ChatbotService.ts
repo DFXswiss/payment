@@ -1,5 +1,4 @@
-import { ChatbotAPIAnswer, ChatbotAPIQuestion, ChatbotStatus } from "../models/ChatbotData"
-import { sleep } from "../utils/Utils"
+import { ChatbotAPIAnswer, ChatbotAPIQuestion, ChatbotStatus } from "../../models/ChatbotData"
 
 const BaseUrl = "https://services.eurospider.com/chatbot-service/rest/session"
 const Status = "status"

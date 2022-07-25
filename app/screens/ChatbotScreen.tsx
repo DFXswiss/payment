@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import React, { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Linking, ScrollView, StyleSheet, TouchableOpacity, useWindowDimensions, View } from "react-native";
+import { Keyboard, Linking, ScrollView, StyleSheet, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import { IconButton, Text, TextInput } from 'react-native-paper';
 import AnswerDatePicker from '../components/chatbot/AnswerDatePicker';
 import AnswerList from '../components/chatbot/AnswerList';
@@ -14,8 +14,8 @@ import { SpacerV } from '../elements/Spacers';
 import { H2, H3 } from '../elements/Texts';
 import withSettings from '../hocs/withSettings';
 import { ChatbotAnswer, ChatbotAPIAnswer, ChatbotElement, ChatbotPage, ChatbotStatus } from '../models/ChatbotData';
-import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotFillAnswerWithData, chatbotIsEdit, chatbotRestorePages, chatbotShouldSendAnswer, chatbotStart } from '../services/ChatbotUtils';
-import { getAuthenticationInfo, getStatus, getUpdate, nextStep, postSMSCode, requestSkip, requestSMSCode } from '../services/ChatbotService';
+import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotFillAnswerWithData, chatbotIsEdit, chatbotLocalize, chatbotRestorePages, chatbotShouldSendAnswer, chatbotStart } from '../services/chatbot/ChatbotUtils';
+import { getAuthenticationInfo, getStatus, getUpdate, nextStep, postSMSCode, requestSkip, requestSMSCode } from '../services/chatbot/ChatbotService';
 import NotificationService from '../services/NotificationService';
 import { AppSettings } from '../services/SettingsService';
 import AppStyles from '../styles/AppStyles';
@@ -44,18 +44,21 @@ const ChatbotScreen = ({
   const [progress, setProgress] = useState<number>(0);
   const [isFinished, setFinished] = useState<boolean>(false);
 
+  const supportEmail = "support@dfx.swiss"
   const {height} = useWindowDimensions()
   const scrollViewRef = useRef<ScrollView>(null)
 
   useEffect(() => {
-    const id = extractSessionId(sessionUrl)
-    setSessionId(id)
-    getAuthenticationInfo(id)
-      .then(() => {
-        requestSMS(id)
-      })
-      .catch(onLoadFailed)
-  }, [])
+    if (sessionId === undefined) {
+      const id = extractSessionId(sessionUrl)
+      setSessionId(id)
+      getAuthenticationInfo(id)
+        .then(() => {
+          requestSMS(id)
+        })
+        .catch(onLoadFailed)
+    }
+  }, [settings])
 
   const extractSessionId = (sessionUrl: string): string => {
     const sessionId = sessionUrl.replace("https://services.eurospider.com/chatbot-ui/program/kyc-onboarding/", "")
@@ -121,15 +124,23 @@ const ChatbotScreen = ({
     }
   }
 
-  const submitSMSCode = (id?: string) => {
-    if (id !== undefined) {
-      setLoading(true)
-      postSMSCode(id, smsCode)
+  const updateSMSCode = (code: string) => {
+    setSMSCode(code)
+    if (code.length === 4) {
+      submitSMSCode(sessionId, code)
+      Keyboard.dismiss()
+    }
+  }
+
+  const submitSMSCode = (id?: string, code?: string) => {
+    if (id !== undefined && code !== undefined) {
+      setRequestingNextStep(true)
+      postSMSCode(id, code)
         .then((id) => {
           if (id === "false") {
             NotificationService.error(t("kyc.bot.error.wrong_sms"))
             // wait a short amount of time to avoid screen flickering due to fast network request
-            setTimeout(() => setLoading(false), 1000)
+            setTimeout(() => setRequestingNextStep(false), 1000)
           } else {
             setChatbotId(id)
             setSMSCompleted(true)
@@ -142,6 +153,7 @@ const ChatbotScreen = ({
   }
 
   const requestStart = (id?: string, chatbotId?: string) => {
+    setLoading(true)
     getStatus(id, chatbotId)
       .then((status) => {
         switch (status) {
@@ -160,22 +172,23 @@ const ChatbotScreen = ({
       })
   }
 
-  const restoreSession = (id?: string, chatbotId?: string, inputPages?: ChatbotPage[], shouldDoUpdates: boolean = true): Promise<ChatbotPage[]> => {
+  const restoreSession = (id?: string, chatbotId?: string, inputPages?: ChatbotPage[], shouldDeactivateLoading: boolean = true): Promise<ChatbotPage[]> => {
     if (inputPages === undefined) {
       inputPages = pages
     }
     return getUpdate(id, chatbotId)
       .then((question) => {
-        const restoredPages = chatbotRestorePages(question, settings?.language)
-        const combinedPages = inputPages?.concat(restoredPages) ?? restoredPages
-        if (shouldDoUpdates) {
-          setPages(combinedPages)
-          setAnswer(combinedPages.slice(-1)[0].answer)
-          // jump to last index
-          setPageIndex(combinedPages.length - 1)
+        const restoredPages = chatbotRestorePages(question, inputPages, settings?.language)
+
+        setPages(restoredPages)
+        setAnswer(restoredPages[restoredPages.length - 1].answer)
+        // jump to last index
+        setPageIndex(restoredPages.length - 1)
+        if (shouldDeactivateLoading) {
           setLoading(false)
+          setRequestingNextStep(false)
         }
-        return combinedPages
+        return restoredPages
       })
   }
 
@@ -209,15 +222,15 @@ const ChatbotScreen = ({
         if (answer !== undefined) {
           chatbotFillAnswerWithData(question, answer)
         }
-        const [newPages, isFinished, help] = chatbotFeedQuestion(question, settings?.language)
-        const combinedPages: ChatbotPage[] = []
-        if (help !== undefined) {
+        const [newPages, isFinished, help, autoAnswer] = chatbotFeedQuestion(question, inputPages, settings?.language)
+        if (autoAnswer !== undefined) {
+          requestNextStep(chatbotCreateAnswer(autoAnswer.value, autoAnswer), autoAnswer, chatbotId, newPages)
+        } else if (help !== undefined) {
           NotificationService.error(help)
         } else {
           if (newPages.length > 0) {
-            const combinedPages = inputPages?.concat(newPages) ?? newPages
-            setPages(combinedPages)
-            onNext(combinedPages, isFinished, answer)
+            setPages(newPages)
+            onNext(newPages, isFinished, answer)
           } else {
             NotificationService.error(t("kyc.bot.error.validation"))
           }
@@ -259,14 +272,19 @@ const ChatbotScreen = ({
               <IconButton color={Colors.Primary} icon="reload" onPress={() => { requestSMS(sessionId) }} />
             </View>
             <SpacerV />
-            <TextInput value={smsCode} onChangeText={setSMSCode} onSubmitEditing={() => { submitSMSCode(sessionId) }} placeholder={t("kyc.bot.sms_placeholder")} keyboardType="numeric" />
+            <TextInput 
+              value={smsCode} 
+              onChangeText={updateSMSCode} 
+              onSubmitEditing={() => submitSMSCode(sessionId, smsCode)} 
+              placeholder={t("kyc.bot.sms_placeholder")} 
+              keyboardType="numeric" />
             <SpacerV />
             <Text style={{ color: Colors.Grey }}>{t("kyc.bot.sms_help")}</Text>
-            <TouchableOpacity onPress={() => Linking.openURL('mailto:support@kyc.ch')}>
-              <Text style={AppStyles.link}>support@kyc.ch</Text>
+            <TouchableOpacity onPress={async () => await Linking.openURL('mailto:' + supportEmail)}>
+              <Text style={AppStyles.link}>{supportEmail}</Text>
             </TouchableOpacity>
             <SpacerV height={20} />
-            <DeFiButton mode="contained" onPress={() => { submitSMSCode(sessionId) }}>
+            <DeFiButton mode="contained" loading={isRequestNextStep} onPress={() => { submitSMSCode(sessionId, smsCode) }}>
               {t("action.next")}
             </DeFiButton>
           </View>
@@ -289,9 +307,9 @@ const ChatbotScreen = ({
             {pages[pageIndex].header !== undefined && (
               <>
                 {height > 667 ? (
-                  <H2 text={pages[pageIndex].header ?? ""} />
+                  <H2 text={ chatbotLocalize(pages[pageIndex].header, settings?.language, pages[pageIndex].answer) } />
                 ) : (
-                  <H3 text={pages[pageIndex].header ?? ""} />
+                  <H3 text={ chatbotLocalize(pages[pageIndex].header, settings?.language, pages[pageIndex].answer) } />
                 )}
               </>
             )}
@@ -299,7 +317,12 @@ const ChatbotScreen = ({
             {/* BODY */}
             {pages[pageIndex].body !== undefined && (
               <View>
-                <Text>{pages[pageIndex].body ?? ""}</Text>
+                <Text>{ chatbotLocalize(pages[pageIndex].body, settings?.language) }</Text>
+                {pages[pageIndex].bodyHasSupportLink && (
+                  <TouchableOpacity onPress={async () => await Linking.openURL('mailto:' + supportEmail)}>
+                    <Text style={AppStyles.link}>{supportEmail}</Text>
+                  </TouchableOpacity>
+                )}
                 <SpacerV />
               </View>
             )}
@@ -323,6 +346,7 @@ const ChatbotScreen = ({
                   <AnswerList
                     answer={pages[pageIndex].answer}
                     onSubmit={answer => { setAnswer(answer) }}
+                    language={settings?.language}
                   />
                 )}
                 {/* DATE PICKER */}

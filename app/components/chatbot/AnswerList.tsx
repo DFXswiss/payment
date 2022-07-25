@@ -5,7 +5,7 @@ import { TextInput } from "react-native-paper";
 import { RadioButton, Text, TouchableRipple } from "react-native-paper";
 import { SpacerV } from "../../elements/Spacers";
 import { ChatbotAnswer, ChatbotAnswerData } from "../../models/ChatbotData";
-import { chatbotLocalize, chatbotUpdateAnswer } from "../../services/ChatbotUtils";
+import { chatbotLocalize, chatbotUpdateAnswer } from "../../services/chatbot/ChatbotUtils";
 
 interface Props {
   onSubmit: (answer: ChatbotAnswer) => void;

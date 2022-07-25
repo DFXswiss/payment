@@ -85,8 +85,7 @@ export const chatbotRestorePages = (apiQuestion: ChatbotAPIQuestion, previousPag
   let itemsToFeed: ChatbotAPIItem[] = []
   apiItems.forEach((item) => {
     if (item.sequence === 0 && itemsToFeed.length > 0) {
-      const newPages = restorePages(itemsToFeed, previousPages, item, language)
-      pages = pages.concat(newPages)
+      pages = restorePages(itemsToFeed, previousPages, item, language)
       itemsToFeed = []
     } else {
       itemsToFeed.push(item)
@@ -94,8 +93,7 @@ export const chatbotRestorePages = (apiQuestion: ChatbotAPIQuestion, previousPag
   })
   // check if items to feed is empty, if not there is still a page to be restored
   if (itemsToFeed.length > 0) {
-    const newPages = restorePages(itemsToFeed, previousPages, undefined, language)
-    pages = pages.concat(newPages)
+    pages = restorePages(itemsToFeed, previousPages, undefined, language)
   }
   return pages
 }
@@ -307,7 +305,7 @@ const restorePages = (items: ChatbotAPIItem[], previousPages?: ChatbotPage[], it
   const question = {items: items, chatState: "TEXT"}
   const [newPages, isFinished, help, autoAnswer] = chatbotFeedQuestion(question, previousPages, language)
   if (item !== undefined && item.kind === ChatbotAPIItemKind.INPUT && autoAnswer === undefined) {
-    const lastPage = newPages.slice(-1)[0]
+    const lastPage = newPages[newPages.length - 1]
     restoreAnswerValues(item, lastPage.answer)
   }
   return newPages

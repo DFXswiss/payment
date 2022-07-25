@@ -1,4 +1,4 @@
-import { ChatbotAnswer, ChatbotPage, ChatbotAnswerData, ChatbotLanguageValues } from "../models/ChatbotData";
+import { ChatbotAnswer, ChatbotPage, ChatbotAnswerData, ChatbotLanguageValues } from "../../models/ChatbotData";
 
 export enum ChatbotAutoAnswer {
   CHF_0_COMING_FROM

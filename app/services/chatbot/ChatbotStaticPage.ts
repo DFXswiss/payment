@@ -1,4 +1,4 @@
-import { ChatbotAnswer, ChatbotAPIConfirmations, ChatbotLanguageValues, ChatbotPage } from "../models/ChatbotData";
+import { ChatbotAnswer, ChatbotAPIConfirmations, ChatbotLanguageValues, ChatbotPage } from "../../models/ChatbotData";
 import en from "./static-pages/en.json"
 import de from "./static-pages/de.json"
 import fr from "./static-pages/fr.json"

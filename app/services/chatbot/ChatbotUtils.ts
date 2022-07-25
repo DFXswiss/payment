@@ -1,4 +1,4 @@
-import { ChatbotAPIAnswer, ChatbotElement, ChatbotLanguageValues, ChatbotAPIQuestion, ChatbotAPIItem, ChatbotAPIItemType, ChatbotList, ChatbotAnswerData, ChatbotPage, ChatbotAnswer, ChatbotQuestion, ChatbotAPIState, ChatbotAPIItemKind, ChatbotAPIConfirmations } from "../models/ChatbotData"
+import { ChatbotAPIAnswer, ChatbotElement, ChatbotLanguageValues, ChatbotAPIQuestion, ChatbotAPIItem, ChatbotAPIItemType, ChatbotList, ChatbotAnswerData, ChatbotPage, ChatbotAnswer, ChatbotQuestion, ChatbotAPIState, ChatbotAPIItemKind, ChatbotAPIConfirmations } from "../../models/ChatbotData"
 import { createAutoAnswer, shouldAutoAnswer } from "./ChatbotAutoAnswer";
 import { createStaticPage, shouldExchangeWithStaticPage } from "./ChatbotStaticPage";
 

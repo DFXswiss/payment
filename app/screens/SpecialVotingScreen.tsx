@@ -56,8 +56,6 @@ const SpecialVotingScreen = ({ session }: { session?: Session }) => {
     endDate: "2022-08-02T23:59:59.000Z"
   }
 
-  const isSpecialVoting = (result: CfpResult) => result.title === specialVotingCfp.title
-
   useEffect(() => {
     Promise.all([getSettings(), getUserDetail()])
       .then(([settings, user]) => {

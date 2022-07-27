@@ -21,6 +21,7 @@ const SpecialVotingScreen = ({ session }: { session?: Session }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [cfpResults, setCfpResults] = useState<CfpResult[]>();
   const [canVote, setCanVote] = useState(false);
+  const [isVotingOpen, setIsVotingOpen] = useState(false);
   const [votes, setVotes] = useState<CfpVotes | undefined>();
   const [isSaving, setIsSaving] = useState<{ number: Number; vote: CfpVote } | undefined>();
 
@@ -73,6 +74,7 @@ const SpecialVotingScreen = ({ session }: { session?: Session }) => {
         setCfpResults(results);
         setVotes(votes);
         setCanVote(user.stakingBalance >= 100);
+        setIsVotingOpen(settings.cfpVotingOpen);
       })
       .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));
@@ -112,31 +114,35 @@ const SpecialVotingScreen = ({ session }: { session?: Session }) => {
                 <View key={result.number} style={{ width: "100%" }}>
                   <T5 text={t("specialVoting.explanation") + "\n\n\n"} />
 
-                  <SpacerV />
-                  <Text style={[AppStyles.center, AppStyles.b]}>{t("cfp.your_vote")}</Text>
-                  <View style={[AppStyles.containerHorizontalWrap, styles.voteContainer]}>
-                    <RadioButton
-                      label={t("specialVoting.collectively")}
-                      onPress={() => onVote(result.number, CfpVote.YES)}
-                      checked={votes?.[result.number] === CfpVote.YES}
-                      disabled={!canVote}
-                      loading={isSaving?.number === result.number && isSaving.vote === CfpVote.YES}
-                    />
-                    <RadioButton
-                      label={t("specialVoting.proportionally")}
-                      onPress={() => onVote(result.number, CfpVote.NO)}
-                      checked={votes?.[result.number] === CfpVote.NO}
-                      disabled={!canVote}
-                      loading={isSaving?.number === result.number && isSaving.vote === CfpVote.NO}
-                    />
-                    <RadioButton
-                      label={t("cfp.neutral")}
-                      onPress={() => onVote(result.number, CfpVote.NEUTRAL)}
-                      checked={votes?.[result.number] === CfpVote.NEUTRAL}
-                      disabled={!canVote}
-                      loading={isSaving?.number === result.number && isSaving.vote === CfpVote.NEUTRAL}
-                    />
-                  </View>
+                  {canVote && (
+                    <>
+                      <SpacerV />
+                      <Text style={[AppStyles.center, AppStyles.b]}>{t("cfp.your_vote")}</Text>
+                      <View style={[AppStyles.containerHorizontalWrap, styles.voteContainer]}>
+                        <RadioButton
+                          label={t("specialVoting.collectively")}
+                          onPress={() => onVote(result.number, CfpVote.YES)}
+                          checked={votes?.[result.number] === CfpVote.YES}
+                          disabled={!isVotingOpen}
+                          loading={isSaving?.number === result.number && isSaving.vote === CfpVote.YES}
+                        />
+                        <RadioButton
+                          label={t("specialVoting.proportionally")}
+                          onPress={() => onVote(result.number, CfpVote.NO)}
+                          checked={votes?.[result.number] === CfpVote.NO}
+                          disabled={!isVotingOpen}
+                          loading={isSaving?.number === result.number && isSaving.vote === CfpVote.NO}
+                        />
+                        <RadioButton
+                          label={t("cfp.neutral")}
+                          onPress={() => onVote(result.number, CfpVote.NEUTRAL)}
+                          checked={votes?.[result.number] === CfpVote.NEUTRAL}
+                          disabled={!isVotingOpen}
+                          loading={isSaving?.number === result.number && isSaving.vote === CfpVote.NEUTRAL}
+                        />
+                      </View>
+                    </>
+                  )}
 
                   <T5 text={"\n\n\n" + t("specialVoting.description")} />
 

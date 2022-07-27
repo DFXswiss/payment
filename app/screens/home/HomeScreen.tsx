@@ -182,7 +182,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       setBuyRoutes(routes.buy);
       setSellRoutes(routes.sell);
       setStakingRoutes(routes.staking);
-      setCanVote(routes.staking.find((r) => r.balance >= 100) != null);
+      setCanVote((user?.stakingBalance ?? 0) >= 100);
     });
   };
 

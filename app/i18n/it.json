@@ -344,6 +344,21 @@
         "create_api_key": "Genera chiave API",
         "delete_api_key": "Cancella la chiave API",
         "csv_export": "Esportazione CSV"
+      },
+      "sepa": {
+        "instant": {
+          "title": "For SEPA Instant transfers",
+          "items": [
+            "No additional fees from DFX",
+            "Available for banks with SEPA Instant Service",
+            "Only possible for transfers in EUR",
+            "Purchased assets on the wallet within a few minutes",
+            "24h per day",
+            "7 days a week",
+            "365 days a year"
+          ]
+        },
+        "regular": "For regular SEPA transfers"
       }
     }
   }

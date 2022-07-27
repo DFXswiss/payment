@@ -350,13 +350,13 @@
       }
     },
     "specialVoting": {
-      "title": "",
-      "ended": "",
-      "link": "",
-      "collectively": "",
-      "proportionally": "",
-      "explanation": "",
-      "description": ""
+      "title": "Votação: lógica de pontuação DFX Masternode CFP/DFIP",
+      "ended": "Obrigado pelo seu voto. Em breve apresentaremos os resultados!",
+      "link": "DFX-Votação",
+      "collectively": "Coletivamente",
+      "proportionally": "Proporcionalmente",
+      "explanation": "Cada usuário do DFI Staking Service da DFX recebe um voto ponderado com base em seu DFI investido. Existem dois mecanismos alternativos de votação para escolher. Escolhas:\n\n• Coletivo: DFX votará sim ou não com todos os masternodes como um coletivo.\n\n• Proporcional: DFX votará sim ou não com todos os masternodes proporcionais aos votos emitidos.",
+      "description": "Consideração coletiva:\n\nDependendo dos resultados eleitorais dos respectivos CFPs/DFIPs da comunidade DFX, a DFX vota com todos os masternodes para seus clientes.\n\n< 50% - DFX vota \"não\" com todos os masternodes\n\n>= 50% - DFX vota “sim” com todos os Masternodes\n\nA visão coletiva só é aplicada desde que o DFX opere <10% dos masternodes DeFiChain para seus clientes. Se este limite for excedido, o DFX selecionará automaticamente a visualização proporcional\n\n\n\nConsideração proporcional:\n\nDependendo dos resultados eleitorais dos respectivos CFPs da comunidade DFX, a DFX vota em seus clientes na proporção dos votos expressos com sim ou não."
     }
   }
 }

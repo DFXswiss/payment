@@ -52,8 +52,8 @@ const SpecialVotingScreen = ({ session }: { session?: Session }) => {
       no: [],
       neutral: []
     },
-    startDate: "2022-07-25T23:59:59.000Z",
-    endDate: "2022-08-02T23:59:59.000Z"
+    startDate: "2022-07-27T23:59:59.000Z",
+    endDate: "2022-08-04T23:59:59.000Z"
   }
 
   useEffect(() => {
@@ -110,9 +110,7 @@ const SpecialVotingScreen = ({ session }: { session?: Session }) => {
               ?.sort((a, b) => a.number - b.number)
               .map((result) => (
                 <View key={result.number} style={{ width: "100%" }}>
-                  <View style={AppStyles.halfWidth} >
-                    <T5 text={t("specialVoting.explanation") + "\n\n\n"} />
-                  </View>
+                  <T5 text={t("specialVoting.explanation") + "\n\n\n"} />
 
                   <SpacerV />
                   <Text style={[AppStyles.center, AppStyles.b]}>{t("cfp.your_vote")}</Text>
@@ -134,15 +132,13 @@ const SpecialVotingScreen = ({ session }: { session?: Session }) => {
                     <RadioButton
                       label={t("cfp.neutral")}
                       onPress={() => onVote(result.number, CfpVote.NEUTRAL)}
-                      checked={(votes?.[result.number] ?? CfpVote.NEUTRAL) === CfpVote.NEUTRAL}
+                      checked={votes?.[result.number] === CfpVote.NEUTRAL}
                       disabled={!canVote}
                       loading={isSaving?.number === result.number && isSaving.vote === CfpVote.NEUTRAL}
                     />
                   </View>
 
-                  <View style={AppStyles.halfWidth} >
-                    <T5 text={"\n\n\n" + t("specialVoting.description")} />
-                  </View>
+                  <T5 text={"\n\n\n" + t("specialVoting.description")} />
 
                   <SpacerV height={50} />
                 </View>

@@ -176,7 +176,7 @@
     },
     "admin": {
       "title": "Admin"
-    },    
+    },
     "kyc": {
       "bot": {
         "sms_header": "Unser Verifikationspartner (KYC Spider) hat dir soeben einen SMS Code zugesendet.",
@@ -345,6 +345,21 @@
         "create_api_key": "API-Key generieren",
         "delete_api_key": "API-Key löschen",
         "csv_export": "CSV-Export"
+      },
+      "sepa": {
+        "instant": {
+          "title": "Für SEPA Sofortüberweisungen",
+          "items": [
+            "Keine Zusatzgebühren seitens DFX",
+            "Verfügbar für Banken mit dem Service SEPA Sofortüberweisung",
+            "Ausschließlich für Überweisungen in EUR möglich",
+            "Gekaufte Assets auf der Wallet in wenigen Minuten",
+            "24h pro Tag",
+            "7 Tage die Woche",
+            "365 Tage pro Jahr"
+          ]
+        },
+        "regular": "Für reguläre SEPA Überweisungen"
       }
     }
   }

@@ -130,7 +130,7 @@ const SpecialVotingScreen = ({ session }: { session?: Session }) => {
                       loading={isSaving?.number === result.number && isSaving.vote === CfpVote.NO}
                     />
                     <RadioButton
-                      label={t("cfp.neutral")}
+                      label={t("specialVoting.neutral")}
                       onPress={() => onVote(result.number, CfpVote.NEUTRAL)}
                       checked={votes?.[result.number] === CfpVote.NEUTRAL}
                       disabled={!canVote}

@@ -353,13 +353,14 @@
       }
     },
     "specialVoting": {
-      "title": "Votazione: logica di punteggio DFX Masternode CFP/DFIP",
+      "title": "Votazione: logica di voto DFX Masternode CFP/DFIP",
       "ended": "Grazie per il tuo voto. A breve presenteremo i risultati!",
       "link": "Votazione-DFX",
-      "collectively": "Collettivamente",
-      "proportionally": "Proporzionalmente",
-      "explanation": "Ciascun utente del servizio di staking DFI di DFX riceve un voto ponderato in base al DFI investito. Ci sono due meccanismi di voto alternativi tra cui scegliere. Scelte:\n\n• Collettivo: DFX voterà con tutti i Masternode come collettivo con sì/no/neutrale\n\n• Proporzionalmente: DFX voterà con tutti i Masternode proporzionalmente ai voti espressi con sì/no/neutrale\n\n• Neutro",
-      "description": "Considerazione collettiva:\n\nA seconda dei risultati elettorali dei rispettivi CFP/DFIP della community DFX, DFX vota con tutti i masternode per i propri clienti.\n\n> 50% - DFX vota \"no\" con tutti i masternode\n\n50% - DFX vota \"neutrale\" con tutti i masternode\n\n>50% - DFX vota \"sì\" con tutti i Masternode\n\nLa vista collettiva viene applicata solo fintanto che DFX opera <10% dei masternode DeFiChain per i suoi clienti. Se questa soglia viene superata, DFX selezionerà automaticamente la visualizzazione proporzionale\n\n\n\nConsiderazione proporzionale:\n\nA seconda dei risultati elettorali dei rispettivi CFP della comunità DFX, DFX vota per i propri clienti in proporzione ai voti espressi con sì/no/neutrale"
+      "collectively": "Collettivo",
+      "proportionally": "Proporzionale",
+      "explanation": "Ciascun utente del servizio di staking DFI di DFX riceve un voto ponderato in base al proprio DFI investito. Ci sono due meccanismi di voto alternativi tra cui scegliere. Scelte:\n\n\n• Collettivo: DFX voterà sì/no con tutti i masternode come collettivo.\n\n\n• Proporzionale: DFX voterà sì/no/neutrale con tutti i masternode proporzionati ai voti espressi.",
+      "description": "Vista collettiva:\n\nA seconda dei risultati delle votazioni dei rispettivi CFP/DFIP della community DFX, DFX vota con tutti i masternode per i propri clienti.\n\n\nPCP:\n\n<= 50% - DFX vota \"no\" con tutti i masternode.\n> 50% - DFX vota \"sì\" con tutti i masternode\n\n\nDFIP:\n\n<= 66,66 % - DFX vota \"no\" con tutti i masternode\n> 66,66 % - DFX vota \"sì\" con tutti i masternode\n\n\nLa considerazione collettiva viene applicata solo fintanto che DFX opera <10% dei masternode DeFiChain per i suoi clienti. Se questa soglia viene superata, DFX selezionerà automaticamente la considerazione proporzionale\n\n\nConsiderazione proporzionale:\n\nA seconda dei risultati delle votazioni dei rispettivi CFP/DFIP della community DFX, DFX vota sì/no/neutralmente per i propri clienti con tutti i masternode in proporzione ai voti espressi",
+      "neutral": "Nessuna preferenza"
     }
   }
 }

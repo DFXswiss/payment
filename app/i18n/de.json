@@ -354,13 +354,14 @@
       }
     },
     "specialVoting": {
-      "title": "Abstimmung: DFX Masternode CFP/DFIP Bewertungslogik",
+      "title": "DFX Masternode CFP/DFIP Abstimmungslogik",
       "ended": "Vielen Dank für deine Stimme. Die Ergebnisse präsentieren wir in Kürze!",
       "link": "DFX-Abstimmung",
       "collectively": "Kollektiv",
-      "proportionally": "Anteilig",
-      "explanation": "Jeder Nutzer des DFI Stakingservice von DFX erhält eine gewichtete Stimme auf Basis der investierten DFI. Zur Wahl stehen zwei alternative Abstimmungsmechanismen. Auswahlmöglichkeiten:\n\n• Kollektiv: DFX soll mit allen Masternodes als Kollektiv mit ja oder nein abstimmen\n\n• Anteilig: DFX soll mit allen Masternodes anteilig der abgegebenen Stimmen mit ja oder nein abstimmen",
-      "description": "Kollektivbetrachtung:\n\nAbhängig der Wahlergebnisse der jeweiligen CFPs/DFIPs von der DFX Community stimmt DFX mit allen Masternodes für seine Kunden ab.\n\n< 50% - DFX votet mit allen Masternodes „nein“\n\n>= 50% - DFX votet mit allen Masternodes „ja“\n\nDie Kollektivbetrachtung wird nur angewendet, so lange DFX <10 % der DeFiChain Masternodes für seine Kunden betreibt. Wird dieser Schwellenwert überschritten wird DFX automatisch die anteilige Betrachtung wählen\n\n\n\nAnteilige Betrachtung:\n\nAbhängig der Wahlergebnisse der jeweiligen CFPs von der DFX Community stimmt DFX für seine Kunden anteilig der abgegeben Stimmen mit ja oder nein ab."
+      "proportionally": "Proportional",
+      "explanation": "Jeder Nutzer des DFI Stakingservice von DFX erhält eine gewichtete Stimme auf Basis der investierten DFI. Zur Wahl stehen zwei alternative Abstimmungsechanismen. Auswahlmöglichkeiten:\n\n\n• Kollektiv: DFX stimmt mit allen Masternodes als Kollektiv mit Ja/Nein ab\n\n\n• Proportional: DFX stimmt mit Ja/Nein/Neutral mit allen Masternodes im Verhältnis der abgegebenen Stimmen ab.",
+      "description": "Kollektive Abstimmung: \n\nAbhängig von den Abstimmungsergebnissen der jeweiligen CFPs/DFIPs aus der DFX-Community stimmt DFX mit allen Masternodes für seine Kunden ab. \n\n\nCFPs:\n\n<= 50% - DFX stimmt mit allen Masternodes \"nein\".\n> 50% - DFX stimmt mit allen Masternodes \"ja\"\n\n\nDFIPs:\n\n<= 66,66 % - DFX stimmt mir allen Masternodes \"nein\"\n> 66,66 % - DFX stimmt mit allen Masternodes \"ja\"\n\n\nDie kollektive Abstimmung wird nur angewendet, solange DFX <10% der DeFiChain-Masternodes für seine Kunden betreibt. Wenn diese Schwelle überschritten wird, wählt DFX automatisch die proportionale Abstimmung.\n\n\nProportionale Abstimmung:\n\nAbhängig von den Abstimmungsergebnissen der jeweiligen CFPs/DFIPs aus der DFX-Community stimmt DFX für seine Kunden mit allen Masternodes proportional zu den abgegebenen Stimmen ja/nein/neutral ab.",
+      "neutral": "Keine Präferenz"
     }
   }
 }

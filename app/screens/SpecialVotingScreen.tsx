@@ -11,7 +11,7 @@ import withSession from "../hocs/withSession";
 import useAuthGuard from "../hooks/useAuthGuard";
 import { CfpResult, ResultStatus, VotingType } from "../models/CfpResult";
 import { CfpVote, CfpVotes } from "../models/User";
-import { getSettings, getUserDetail, putCfpVotes } from "../services/ApiService";
+import { getCfpVotes, getSettings, getUserDetail, putCfpVotes } from "../services/ApiService";
 import { Session } from "../services/AuthService";
 import NotificationService from "../services/NotificationService";
 import AppStyles from "../styles/AppStyles";
@@ -58,8 +58,8 @@ const SpecialVotingScreen = ({ session }: { session?: Session }) => {
   }
 
   useEffect(() => {
-    Promise.all([getSettings(), getUserDetail()])
-      .then(([settings, user]) => {
+    Promise.all([getSettings(), getCfpVotes(), getUserDetail()])
+      .then(([settings, votes, user]) => {
         const results: CfpResult[] = []
 
         const startDate = new Date(specialVotingCfp.startDate)  

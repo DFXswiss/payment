@@ -78,11 +78,6 @@ const Placeholders = ({ device }: { device: DeviceClass }) => (
   </>
 );
 
-const instantIban = "LU11 6060 0020 0000 5040";
-const instantBic = "OLKILUL1";
-const iban = "CH68 0857 3177 9752 0181 4";
-const swift = "MAEBCHZZ";
-
 const RouteList = ({
   user,
   setUser,
@@ -720,46 +715,68 @@ const RouteList = ({
         </>
       )}
 
-      {activeBuyRoutes && activeBuyRoutes.length > 0 && (
-        <>
-          <SpacerV height={50} />
-          <H3 text={t("model.route.payment_info")} />
+      {activeBuyRoutes && activeBuyRoutes.length > 0 && <PaymentDetails />}
+    </>
+  );
+};
+
+const PaymentDetails = (): ReactElement => {
+  const instantIban = "LU11 6060 0020 0000 5040";
+  const instantBic = "OLKILUL1";
+  const iban = "CH68 0857 3177 9752 0181 4";
+  const swift = "MAEBCHZZ";
+
+  const instantItemsLength = 7;
+  const itemHasPadding = (i: number) => i > 3;
+
+  const device = useDevice();
+  const { t } = useTranslation();
+
+  return (
+    <>
+      <SpacerV height={50} />
+      <H3 text={t("model.route.payment_info")} />
+      <SpacerV />
+      <Text>DFX AG</Text>
+      <Text>Bahnhofstrasse 7</Text>
+      <Text>6300 Zug</Text>
+      <Text>Schweiz</Text>
+
+      <SpacerV height={20} />
+
+      <View style={device.SM && [AppStyles.containerHorizontal, styles.sepaContainer]}>
+        <View style={[styles.sepaItem, device.SM && { flexShrink: 1 }]}>
+          <H4 text={t("model.sepa.instant.title")} style={{ color: Colors.Primary }} />
+          <CopyLine text={`${t("model.route.iban")}: ${instantIban}`} copyText={instantIban} />
+          <CopyLine text={`BIC: ${instantBic}`} copyText={instantBic} />
           <SpacerV />
-          <Text>DFX AG</Text>
-          <Text>Bahnhofstrasse 7</Text>
-          <Text>6300 Zug</Text>
-          <Text>Schweiz</Text>
-
-          <SpacerV height={20} />
-
-          <View style={device.SM && [AppStyles.containerHorizontal, styles.sepaContainer]}>
-            <View style={[styles.sepaItem, device.SM && { flexShrink: 1 }]}>
-              <H4 text={t("model.sepa.instant.title")} style={{ color: Colors.Primary }} />
-              <CopyLine text={`${t("model.route.iban")}: ${instantIban}`} copyText={instantIban} />
-              <CopyLine text={`BIC: ${instantBic}`} copyText={instantBic} />
-              <SpacerV />
-              {[...Array(7).keys()].map((_, i) => (
-                <View key={i} style={[AppStyles.containerHorizontal, { alignItems: "flex-start" }]}>
-                  <View style={i > 3 && { marginLeft: 20 }}>
-                    <Text>-</Text>
-                  </View>
-                  <View style={{ marginLeft: 5, flexShrink: 1 }}>
-                    <Text>{t(`model.sepa.instant.items.${i}`)}</Text>
-                  </View>
-                </View>
-              ))}
+          {[...Array(instantItemsLength).keys()].map((_, i) => (
+            <View
+              key={i}
+              style={[
+                AppStyles.containerHorizontal,
+                { alignItems: "flex-start" },
+                itemHasPadding(i) && { marginLeft: 20 },
+              ]}
+            >
+              <View>
+                <Text>-</Text>
+              </View>
+              <View style={{ marginLeft: 5, flexShrink: 1 }}>
+                <Text>{t(`model.sepa.instant.items.${i}`)}</Text>
+              </View>
             </View>
+          ))}
+        </View>
 
-            <Spacer />
+        <Spacer />
 
-            <View style={[styles.sepaItem, device.SM && { flexShrink: 1 }]}>
-              <H4 text={t("model.sepa.regular")} style={{ color: Colors.Primary }} />
-              <CopyLine text={`${t("model.route.iban")}: ${iban}`} copyText={iban} />
-              <CopyLine text={`SWIFT/BIC: ${swift}`} copyText={swift} />
-            </View>
-          </View>
-        </>
-      )}
+        <View style={[styles.sepaItem, device.SM && { flexShrink: 1 }]}>
+          <H4 text={t("model.sepa.regular")} style={{ color: Colors.Primary }} />
+          <CopyLine text={`${t("model.route.iban")}: ${iban}`} copyText={iban} />
+          <CopyLine text={`SWIFT/BIC: ${swift}`} copyText={swift} />
+        </View>
+      </View>
     </>
   );
 };

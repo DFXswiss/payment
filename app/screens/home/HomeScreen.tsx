@@ -370,7 +370,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
 
       {isVotingOpen && canVote && (
         <View onLayout={(event) => setVotingImageWidth(event.nativeEvent.layout.width)}>
-          <TouchableOpacity onPress={() => navigate(Routes.Cfp)}>
+          <TouchableOpacity onPress={() => navigate(Routes.SpecialVoting)}>
             <Image
               style={{ width: votingImageWidth, height: votingImageWidth / 3 }}
               source={

@@ -341,6 +341,21 @@
         "create_api_key": "Générer une clé API",
         "delete_api_key": "Supprimer la clé API",
         "csv_export": "Exportation CSV"
+      },
+      "sepa": {
+        "instant": {
+          "title": "Pour les virements instantanés SEPA",
+          "items": [
+            "Sans frais DFX supplémentaires",
+            "Avec les banques autorisant le virement SEPA instantané",
+            "Possible pour les virements en EUR uniquement",
+            "Les actifs achetés sont sur le wallet en quelques minutes",
+            "24h par jour",
+            "7 jours par semaine",
+            "365 jours par an"
+          ]
+        },
+        "regular": "Pour les virements SEPA réguliers"
       }
     }
   }

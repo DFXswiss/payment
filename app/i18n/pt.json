@@ -341,6 +341,21 @@
         "create_api_key": "Gerar chave API",
         "delete_api_key": "Apagar chave API",
         "csv_export": "Exportação CSV"
+      },
+      "sepa": {
+        "instant": {
+          "title": "Para transferências instantâneas SEPA",
+          "items": [
+            "Sem taxas adicionais da DFX",
+            "Disponível para bancos com serviço instantâneo SEPA",
+            "Apenas possível para transferências em euros",
+            "Activos comprados na carteira em poucos minutos",
+            "24h por dia",
+            "7 dias por semana",
+            "365 dias por ano"
+          ]
+        },
+        "regular": "Para transferências SEPA regulares"
       }
     }
   }

@@ -67,8 +67,14 @@
     "gtc": {
       "title": "Termini e condizioni generali",
       "text": [
-        { "title": "", "text": "Ultimo aggiornamento: 24 febbraio 2022" },
-        { "title": "", "text": "In caso di discrepanze, prevale la versione tedesca." },
+        {
+          "title": "",
+          "text": "Ultimo aggiornamento: 24 febbraio 2022"
+        },
+        {
+          "title": "",
+          "text": "In caso di discrepanze, prevale la versione tedesca."
+        },
         {
           "title": "Generale",
           "text": "In caso di discrepanze, fa fede la versione tedesca. La DFX AG (numero di identificazione della società: CHE-429.856.521, di seguito DFX) con sede in Bahnhofstrasse 7, 6300 Zug, Svizzera, gestisce il sito web DFX.swiss, la relativa pagina di pagamento payment.dfx.swiss e l'app DFX (il 'Servizio'). L'accesso e l'utilizzo del sito web, della pagina di pagamento e dell'app DFX, rispettivamente, sono soggetti alle importanti avvertenze legali qui contenute (i 'Termini e condizioni')."
@@ -153,12 +159,14 @@
           "title": "Legge applicabile e foro competente",
           "text": "Le Condizioni generali sono regolate e interpretate in conformità al diritto svizzero, con l'esclusione delle disposizioni sul conflitto di leggi della Svizzera o del paese o dello stato di (residenza) effettivo del Cliente. Qualsiasi controversia derivante da o in relazione alle Condizioni generali, al rapporto del Cliente con DFX, compresi gli obblighi extracontrattuali, sarà soggetta alla giurisdizione esclusiva dei tribunali di Zug, Svizzera."
         },
-        { "title": "", "text": "" }
+        {
+          "title": "",
+          "text": ""
+        }
       ]
     },
     "cfp": {
       "link": "CFP",
-      "titel": "Attuali CFP di DeFiChain",
       "all": "Tutti i CFP",
       "dfx_only": "Solo DFX CFP",
       "yes": "Sì",
@@ -171,7 +179,8 @@
       "approved": "Accettato",
       "not approved": "Non accettato",
       "read_proposal": "Leggi la proposta",
-      "your_vote": "Il tuo voto"
+      "your_vote": "Il tuo voto",
+      "title": "Attuali CFP di DeFiChain"
     },
     "admin": {
       "title": "Admin"
@@ -360,6 +369,16 @@
         },
         "regular": "Per i trasferimenti SEPA regolari"
       }
+    },
+    "specialVoting": {
+      "title": "Votazione: logica di voto DFX Masternode CFP/DFIP",
+      "ended": "Grazie per il tuo voto. A breve presenteremo i risultati!",
+      "link": "Votazione-DFX",
+      "collectively": "Collettivo",
+      "proportionally": "Proporzionale",
+      "explanation": "Ciascun utente del servizio di staking DFI di DFX riceve un voto ponderato in base al proprio DFI investito. Ci sono due meccanismi di voto alternativi tra cui scegliere. Scelte:\n\n\n• Collettivo: DFX voterà sì/no con tutti i masternode come collettivo.\n\n\n• Proporzionale: DFX voterà sì/no/neutrale con tutti i masternode proporzionati ai voti espressi.",
+      "description": "Vista collettiva:\n\nA seconda dei risultati delle votazioni dei rispettivi CFP/DFIP della community DFX, DFX vota con tutti i masternode per i propri clienti.\n\n\nPCP:\n\n<= 50% - DFX vota \"no\" con tutti i masternode.\n> 50% - DFX vota \"sì\" con tutti i masternode\n\n\nDFIP:\n\n<= 66,66 % - DFX vota \"no\" con tutti i masternode\n> 66,66 % - DFX vota \"sì\" con tutti i masternode\n\n\nLa considerazione collettiva viene applicata solo fintanto che DFX opera <10% dei masternode DeFiChain per i suoi clienti. Se questa soglia viene superata, DFX selezionerà automaticamente la considerazione proporzionale\n\n\nConsiderazione proporzionale:\n\nA seconda dei risultati delle votazioni dei rispettivi CFP/DFIP della community DFX, DFX vota sì/no/neutralmente per i propri clienti con tutti i masternode in proporzione ai voti espressi",
+      "neutral": "Nessuna preferenza"
     }
   }
 }

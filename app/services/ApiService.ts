@@ -13,7 +13,7 @@ import {
   CfpVotes,
   fromUserDetailDto,
   fromUserDto,
-  KycResult,
+  KycInfo,
   NewUser,
   toUserDto,
   User,
@@ -91,24 +91,24 @@ export const deleteApiKey = (): Promise<void> => {
 // --- KYC --- //
 
 // TODO: check these services if called correctly with code
-export const putKycData = (data: KycData, code?: string): Promise<void> => {
-  return fetchFrom(`${KycUrl}/data?code=${code}`, "POST", toKycDataDto(data));
+export const putKycData = (data: KycData, code?: string): Promise<KycInfo> => {
+  return fetchFrom<KycInfo>(`${KycUrl}/${code}`, "PUT", toKycDataDto(data));
 };
 
-export const postKyc = (code?: string): Promise<string> => {
-  return fetchFrom<string>(`${KycUrl}?code=${code}`, "POST");
+export const postKyc = (code?: string): Promise<KycInfo> => {
+  return fetchFrom<KycInfo>(`${KycUrl}/${code}`, "POST");
 };
 
-export const getKyc = (code?: string): Promise<KycResult> => {
-  return fetchFrom<KycResult>(`${KycUrl}?code=${code}`);
+export const getKyc = (code?: string): Promise<KycInfo> => {
+  return fetchFrom<KycInfo>(`${KycUrl}/${code}`);
 };
 
 export const postLimit = (request: LimitRequest, code?: string): Promise<LimitRequest> => {
-  return fetchFrom<LimitRequest>(`${KycUrl}/limit?code=${code}`, "POST", request);
+  return fetchFrom<LimitRequest>(`${KycUrl}/${code}/limit`, "POST", request);
 };
 
 export const postFounderCertificate = (files: File[], code?: string): Promise<void> => {
-  return postFiles(`${KycUrl}/incorporationCertificate?code=${code}`, files);
+  return postFiles(`${KycUrl}/${code}/incorporationCertificate`, files);
 };
 
 // --- VOTING --- //
@@ -172,11 +172,11 @@ export const getStakingBatches = (route: StakingRoute): Promise<StakingBatch[]> 
 };
 
 export const postCryptoRoute = (route: CryptoRoute): Promise<CryptoRoute> => {
-  return fetchFrom<CryptoRoute>(CryptoRouteUrl, "POST", route)
+  return fetchFrom<CryptoRoute>(CryptoRouteUrl, "POST", route);
 };
 
 export const putCryptoRoute = (route: CryptoRoute): Promise<CryptoRoute> => {
-  return fetchFrom<CryptoRoute>(`${CryptoRouteUrl}/${route.id}`, "PUT", route)
+  return fetchFrom<CryptoRoute>(`${CryptoRouteUrl}/${route.id}`, "PUT", route);
 };
 
 export const getHistory = (types?: HistoryType[]): Promise<History[]> => {

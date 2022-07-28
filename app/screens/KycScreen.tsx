@@ -6,7 +6,7 @@ import Routes from "../config/Routes";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { DeFiButton } from "../elements/Buttons";
-import { getKyc, postFounderCertificate } from "../services/ApiService";
+import { getKyc, postFounderCertificate, postKyc } from "../services/ApiService";
 import NotificationService from "../services/NotificationService";
 import {
   AccountType,
@@ -14,11 +14,9 @@ import {
   getTradeLimit,
   kycCompleted,
   kycInProgress,
-  KycResult,
+  KycInfo,
   KycState,
   KycStatus,
-  UserDetail,
-  UserStatus,
 } from "../models/User";
 import { pickDocuments, sleep } from "../utils/Utils";
 import KycInit from "../components/KycInit";
@@ -34,7 +32,6 @@ import DeFiModal from "../components/util/DeFiModal";
 import ChatbotScreen from "./ChatbotScreen";
 import AppStyles from "../styles/AppStyles";
 import Colors from "../config/Colors";
-import UserEdit from "../components/edit/UserEdit";
 import { KycData } from "../models/KycData";
 import KycDataEdit from "../components/edit/KycDataEdit";
 
@@ -46,11 +43,14 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLimitRequest, setIsLimitRequest] = useState(false);
   const [code, setCode] = useState<string>();
-  const [kycResult, setKycResult] = useState<KycResult>();
+  const [kycInfo, setKycInfo] = useState<KycInfo>();
   const [startProcess, setStartProcess] = useState<boolean>(false);
   const [kycData, setKycData] = useState<KycData>();
   const [isKycDataEdit, setKycDataEdit] = useState<boolean>(false);
+  const [showsUploadDialog, setShowsUploadDialog] = useState<boolean>(false);
   const [isFileUploading, setIsFileUploading] = useState(false);
+  const [hasUploadedFile, setHasUploadFile] = useState(false);
+  const [isAutostart, setIsAutostart] = useState(false);
 
   useEffect(() => {
     // get params
@@ -58,6 +58,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     if (!params?.code) return onLoadFailed();
 
     setCode(params.code);
+    setIsAutostart(params.autostart);
 
     // reset params
     // Krysh: temporarily disabled, and needs adjustments
@@ -67,16 +68,29 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     getKyc(params?.code)
       .then((result) => {
         updateState(result, params);
-        if (params?.autostart) onContinue(result);
+        if (params?.autostart && result.kycStatus !== KycStatus.NA) onContinue(result);
+        else if (params?.autostart && shouldStart(result)) requestStart(params?.code);
       })
       .catch(onLoadFailed);
   }, []);
 
+  const shouldStart = (info: KycInfo): boolean => {
+    return info.kycDataComplete && info.kycStatus === KycStatus.NA;
+  };
+
+  const requestStart = (kycCode?: string) => {
+    setIsLoading(true);
+    postKyc(kycCode).then((result) => {
+      updateState(result);
+      if (isAutostart || kycInProgress(result.kycStatus)) onContinue(result);
+    });
+  };
+
   const finishChatBot = (nthTry = 13): Promise<void> => {
     setIsLoading(true);
     return getKyc(code)
-      .then((result: KycResult) => {
-        if (result.kycStatus === KycStatus.CHATBOT || !result.sessionUrl) {
+      .then((info: KycInfo) => {
+        if (info.kycStatus === KycStatus.CHATBOT || !info.sessionUrl) {
           // retry
           if (nthTry > 1) {
             return sleep(5).then(() => finishChatBot(nthTry - 1));
@@ -84,7 +98,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
 
           throw Error();
         } else {
-          updateState(result);
+          updateState(info);
         }
       })
       .catch(() => {
@@ -94,35 +108,45 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   };
 
   const onLoadFailed = () => {
+    console.log("onLoadFailed is called");
     NotificationService.error(t("feedback.load_failed"));
     nav.navigate(Routes.Home);
   };
 
-  const updateState = (result: KycResult, params?: any) => {
-    setKycResult(result);
-    if (!result.kycDataComplete) {
-      setKycData({ accountType: AccountType.PERSONAL, ...params })
+  const updateState = (info: KycInfo, params?: any) => {
+    setKycInfo(info);
+    if (!info.kycDataComplete) {
+      setKycData({ accountType: AccountType.PERSONAL, ...params });
       setKycDataEdit(true);
     }
     setIsLoading(false);
   };
 
-  const onContinue = (result: KycResult) => {
-    if (kycInProgress(result?.kycStatus)) {
-      if (!result?.sessionUrl) return NotificationService.error(t("feedback.load_failed"));
+  const onContinue = (info: KycInfo) => {
+    if (!info.kycDataComplete) {
+      setKycDataEdit(true);
+    } else if (kycInProgress(info?.kycStatus)) {
+      if (!info?.sessionUrl) return NotificationService.error(t("feedback.load_failed"));
 
       // load iframe
       setIsLoading(true);
       setStartProcess(true);
       setTimeout(() => setIsLoading(false), 2000);
-    } else if (kycCompleted(result?.kycStatus)) {
+    } else if (kycCompleted(info?.kycStatus)) {
       setIsLimitRequest(true);
+    } else if (shouldStart(info)) {
+      requestStart(code);
     }
   };
 
-  const onChanged = (newKycData: KycData) => {
+  const onChanged = (newKycData: KycData, info: KycInfo) => {
     setKycData(newKycData);
     setKycDataEdit(false);
+    setShowsUploadDialog(newKycData.accountType === AccountType.BUSINESS);
+    console.log("onChange: should autostart?", isAutostart);
+
+    updateState(info);
+    if (isAutostart) onContinue(info);
   };
 
   const doUpload = async () => {
@@ -135,6 +159,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
         setIsFileUploading(true);
         return postFounderCertificate(files, code);
       })
+      .then(() => setHasUploadFile(true))
       .then(() => true)
       .catch(() => {
         NotificationService.error(t("feedback.file_error"));
@@ -145,8 +170,8 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
 
   return (
     <AppLayout
-      preventScrolling={kycResult?.kycStatus === KycStatus.CHATBOT}
-      removeHeaderSpace={kycResult?.kycStatus === KycStatus.CHATBOT}
+      preventScrolling={kycInfo?.kycStatus === KycStatus.CHATBOT}
+      removeHeaderSpace={kycInfo?.kycStatus === KycStatus.CHATBOT}
     >
       <KycInit isVisible={isLoading} setIsVisible={setIsLoading} />
 
@@ -170,31 +195,35 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
         </DeFiModal>
       )}
 
-      {kycResult &&
-        (startProcess && kycResult.sessionUrl ? (
+      {kycInfo &&
+        (startProcess && kycInfo.sessionUrl ? (
           <View style={styles.container}>
-            {kycResult.setupUrl && (
+            {kycInfo.setupUrl && (
               <View style={styles.hiddenIframe}>
-                <Iframe src={kycResult.setupUrl} />
+                <Iframe src={kycInfo.setupUrl} />
               </View>
             )}
-            {kycResult.kycStatus === KycStatus.CHATBOT ? (
+            {kycInfo.kycStatus === KycStatus.CHATBOT ? (
               <View style={styles.container}>
                 <ChatbotScreen
-                  sessionUrl={kycResult.sessionUrl}
+                  sessionUrl={kycInfo.sessionUrl}
                   onFinish={() => {
                     finishChatBot();
                   }}
                 />
               </View>
             ) : (
-              <Iframe src={kycResult.sessionUrl} />
+              <Iframe src={kycInfo.sessionUrl} />
             )}
           </View>
         ) : (
           <>
             <Portal>
-              <Dialog visible={!isKycDataEdit && kycData?.accountType === AccountType.BUSINESS} style={AppStyles.dialog}>
+              <Dialog
+                visible={showsUploadDialog && kycData?.accountType === AccountType.BUSINESS && !hasUploadedFile}
+                onDismiss={() => setShowsUploadDialog(false)}
+                style={AppStyles.dialog}
+              >
                 <Dialog.Content>
                   <Paragraph>{t("model.kyc.request_business")}</Paragraph>
                 </Dialog.Content>
@@ -215,18 +244,30 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
               <DataTable>
                 <CompactRow>
                   <CompactCell>{t("model.kyc.status")}</CompactCell>
-                  <CompactCell multiLine>{getKycStatusString(kycResult)}</CompactCell>
+                  <CompactCell multiLine>{getKycStatusString(kycInfo)}</CompactCell>
                 </CompactRow>
                 <CompactRow>
                   <CompactCell>{t("model.user.limit")}</CompactCell>
-                  <CompactCell>{getTradeLimit(kycResult)}</CompactCell>
+                  <CompactCell>{getTradeLimit(kycInfo)}</CompactCell>
                 </CompactRow>
+                {kycInfo.blankedMail && (
+                  <CompactRow>
+                    <CompactCell>{t("model.user.mail")}</CompactCell>
+                    <CompactCell>{kycInfo.blankedMail}</CompactCell>
+                  </CompactRow>
+                )}
+                {kycInfo.blankedPhone && (
+                  <CompactRow>
+                    <CompactCell>{t("model.user.mobile_number")}</CompactCell>
+                    <CompactCell>{kycInfo.blankedPhone}</CompactCell>
+                  </CompactRow>
+                )}
               </DataTable>
               <SpacerV />
-              {kycResult.kycState !== KycState.REVIEW && (
+              {kycInfo.kycState !== KycState.REVIEW && (
                 <ButtonContainer>
-                  <DeFiButton mode="contained" onPress={() => onContinue(kycResult)}>
-                    {t(kycCompleted(kycResult.kycStatus) ? "model.kyc.increase_limit" : "action.next")}
+                  <DeFiButton mode="contained" onPress={() => onContinue(kycInfo)}>
+                    {t(kycCompleted(kycInfo.kycStatus) ? "model.kyc.increase_limit" : "action.next")}
                   </DeFiButton>
                 </ButtonContainer>
               )}

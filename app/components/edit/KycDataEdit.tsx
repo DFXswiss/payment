@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { Country } from "../../models/Country";
-import { AccountType } from "../../models/User";
+import { AccountType, KycInfo } from "../../models/User";
 import { getCountries, putKycData } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import DeFiPicker from "../form/DeFiPicker";
@@ -25,7 +25,7 @@ import Loading from "../util/Loading";
 interface Props {
   code: string;
   kycData?: KycData;
-  onChanged: (kycData: KycData) => void;
+  onChanged: (kycData: KycData, info: KycInfo) => void;
 }
 
 const KycDataEdit = ({ code, kycData, onChanged }: Props) => {
@@ -56,7 +56,7 @@ const KycDataEdit = ({ code, kycData, onChanged }: Props) => {
     setError(undefined);
 
     putKycData(updatedData, code)
-      .then(() => onChanged(updatedData))
+      .then((info) => onChanged(updatedData, info))
       .catch((error: ApiError) => setError(error.statusCode === 409 ? "feedback.mail_error" : ""))
       .finally(() => setIsSaving(false));
   };

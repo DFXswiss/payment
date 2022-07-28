@@ -86,17 +86,17 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const areKYCChecksSuccessful = (): boolean => {
     if (user?.kycStatus === KycStatus.NA) {
       onIncreaseLimit();
-      return false
+      return false;
     } else if (
       kycInProgress(user?.kycStatus) ||
       user?.kycStatus === KycStatus.CHECK ||
       user?.kycStatus === KycStatus.REJECTED
     ) {
       NotificationService.error(t("model.kyc.kyc_not_complete"));
-      return false
+      return false;
     }
-    return true
-  }
+    return true;
+  };
 
   const stakingRouteEdit = (update: SetStateAction<boolean>) => {
     if (resolve(update, isStakingRouteEdit)) {
@@ -105,7 +105,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
 
       // check if user has KYC
       if (!areKYCChecksSuccessful()) {
-        return
+        return;
       }
     } else {
       // reload all routes after close (may impact sell routes)
@@ -119,12 +119,12 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     if (resolve(update, isCryptoRouteEdit)) {
       // check if user has KYC
       if (!areKYCChecksSuccessful()) {
-        return
+        return;
       }
     }
 
-    setIsCryptoRouteEdit(update)
-  }
+    setIsCryptoRouteEdit(update);
+  };
 
   const userEdit = (edit: boolean) => {
     setIsUserEdit(edit);
@@ -145,10 +145,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const onIncreaseLimit = () => {
     if (user?.kycStatus === KycStatus.NA) {
       // start KYC
-      if (!user?.kycDataComplete) {
-        setIsUserEdit(true);
-      }
-      setIsKycRequest(true);
+      goToKycScreen();
     } else {
       // increase limit
       setIsLimitRequest(true);
@@ -179,13 +176,18 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     setIsKycInit(true);
 
     return postKyc()
-      .then(goToKycScreen)
+      .then((info) => goToKycScreen(info.kycHash))
       .catch(() => NotificationService.error(t("feedback.request_failed")))
       .finally(() => setIsKycInit(false));
   };
 
   const goToKycScreen = (code: string | undefined = user?.kycHash) =>
-    navigate(Routes.Kyc, { code: code ?? "", autostart: "1" });
+    navigate(Routes.Kyc, {
+      code: code ?? "",
+      autostart: "1",
+      phone: user?.mobileNumber ?? "",
+      mail: user?.mail ?? "",
+    });
 
   const onRefFeeChanged = (fee: number): void => {
     if (user) user.refFeePercent = fee;

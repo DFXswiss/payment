@@ -67,8 +67,14 @@
     "gtc": {
       "title": "General terms and conditions",
       "text": [
-        { "title": "", "text": "Last Updated: February 24th, 2022" },
-        { "title": "", "text": "In case of discrepancies, the German version shall prevail." },
+        {
+          "title": "",
+          "text": "Last Updated: February 24th, 2022"
+        },
+        {
+          "title": "",
+          "text": "In case of discrepancies, the German version shall prevail."
+        },
         {
           "title": "General",
           "text": "In case of any discrepancies, the German version shall prevail. DFX AG (company identification number: CHE-429.856.521, hereinafter DFX) with its registered office at Bahnhofstrasse 7, 6300 Zug, Switzerland operates the website DFX.swiss, the associated payment site payment.dfx.swiss and the DFX app (the 'Service'). The access to and the use of the website, the Payment Page and the DFX App, respectively, are subject to the important legal notices contained herein (the 'Terms and Conditions')."
@@ -133,7 +139,10 @@
           "title": "Fees",
           "text": "Our fee structure applies to payments in the SEPA payment system [as well as crypto-to-crypto transactions]. DFX reserves the right to charge additional fees in case of transfers using other payment systems. When using referral links, the fee structure changes (see section below). Percentages are calculated on actual transaction volume. The transaction volume figures are in EUR in the tables below. [In case of a crypto-to-crypto transaction, the volume would be converted into EUR accordingly using the daily exchange rate (www.defichain.com/dex or www.kraken.com) in order to be able to determine the amount of the fees]."
         },
-        { "title": "Fee structure", "text": "Detailed overview of the fees at DFX: https://dfx.swiss/en/terms/" },
+        {
+          "title": "Fee structure",
+          "text": "Detailed overview of the fees at DFX: https://dfx.swiss/en/terms/"
+        },
         {
           "title": "Referral Links",
           "text": "Our referral program pays customers a maximum of 0.5% on the purchase/investment volume purchased by a new customer via the customer's referral link. The referral program has a cap of CHF 100'000 purchase volume per customer or the equivalent in any other offered currency. This means that the referral program is only valid up to a total referral bonus of CHF 500 per customer: CHF 100000 * 0.5% = CHF 500. If the purchase volume of a customer exceeds CHF 100,000, which has been processed through this referral link, no more bonus will be paid. However, the number of customers acquired through referral links is unlimited. DFX reserves the right to change or terminate the referral program at any time without giving reasons. There is no entitlement to continuous referral bonus payments in case of termination of the referral program."
@@ -150,7 +159,10 @@
           "title": "Applicable law and place of jurisdiction",
           "text": "The General Terms and Conditions shall be governed by and construed in accordance with Swiss law, excluding the conflict of law provisions of Switzerland or the Customer's actual country or state of (residence) domicile. Any dispute arising out of or in relation to the General Terms and Conditions, Customer's relationship with DFX, including non-contractual obligations, shall be subject to the exclusive jurisdiction of the courts of Zug, Switzerland."
         },
-        { "title": "", "text": "" }
+        {
+          "title": "",
+          "text": ""
+        }
       ]
     },
     "cfp": {
@@ -357,6 +369,16 @@
         },
         "regular": "For regular SEPA transfers"
       }
+    },
+    "specialVoting": {
+      "title": "Voting: DFX Masternode CFP/DFIP Voting Logic",
+      "ended": "Thank you for your vote. We'll present the results shortly!",
+      "link": "DFX-Voting",
+      "collectively": "Collective",
+      "proportionally": "Proportional",
+      "explanation": "Each user of DFX's DFI Staking Service receives a weighted vote based on their DFI invested. There are two alternative voting mechanisms to choose from. Choices:\n\n\n• Collective: DFX shall vote yes/no with all masternodes as a collective.\n\n\n• Proportional: DFX shall vote yes/no/neutral with all masternodes proportionate to the votes cast.",
+      "description": "Collective View: \n\nDepending on the voting results of the respective CFPs/DFIPs from the DFX community, DFX votes with all masternodes for its customers. \n\n\nCFPs:\n\n<= 50% - DFX votes \"no\" with all masternodes.\n> 50% - DFX votes \"yes\" with all masternodes\n\n\nDFIPs:\n\n<= 66,66 % - DFX votes \"no\" with all masternodes\n> 66,66 % - DFX votes \"yes\" with all masternodes\n\n\nCollective consideration is only applied as long as DFX operates <10% of DeFiChain masternodes for its customers. If this threshold is exceeded, DFX will automatically select proportional consideration\n\n\nProportional Consideration:\n\nDepending on the voting results of the respective CFPs/DFIPs from the DFX community, DFX votes yes/no/neutral for its customers with all masternodes proportionally to the votes cast",
+      "neutral": "No preference"
     }
   }
 }

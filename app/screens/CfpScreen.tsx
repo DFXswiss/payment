@@ -17,7 +17,7 @@ import withSession from "../hocs/withSession";
 import useAuthGuard from "../hooks/useAuthGuard";
 import { CfpResult } from "../models/CfpResult";
 import { CfpVote, CfpVotes } from "../models/User";
-import { getCfpResults, getCfpVotes, getSettings, getStakingRoutes, putCfpVotes } from "../services/ApiService";
+import { getCfpResults, getCfpVotes, getSettings, getUserDetail, putCfpVotes } from "../services/ApiService";
 import { Session } from "../services/AuthService";
 import NotificationService from "../services/NotificationService";
 import AppStyles from "../styles/AppStyles";
@@ -38,11 +38,11 @@ const CfpScreen = ({ session }: { session?: Session }) => {
   useAuthGuard(session);
 
   useEffect(() => {
-    Promise.all([getCfpResults("latest"), getCfpVotes(), getStakingRoutes(), getSettings()])
-      .then(([results, votes, stakingRoutes, settings]) => {
+    Promise.all([getCfpResults("latest"), getCfpVotes(), getUserDetail(), getSettings()])
+      .then(([results, votes, userDetail, settings]) => {
         setCfpResults(results);
         setVotes(votes);
-        setCanVote(stakingRoutes.find((r) => r.balance >= 100) != null);
+        setCanVote(userDetail.stakingBalance >= 100);
         setIsVotingOpen(settings.cfpVotingOpen);
       })
       .catch(() => NotificationService.error(t("feedback.load_failed")))

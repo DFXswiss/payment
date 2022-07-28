@@ -207,8 +207,8 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       setBuyRoutes(routes.buy);
       setSellRoutes(routes.sell);
       setStakingRoutes(routes.staking);
+      setCanVote(routes.staking.find((r) => r.balance >= 100) != null);      
       setCryptoRoutes(routes.crypto);
-      setCanVote(routes.staking.find((r) => r.balance >= 100) != null);
     });
   };
 
@@ -370,13 +370,13 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
 
       {isVotingOpen && canVote && (
         <View onLayout={(event) => setVotingImageWidth(event.nativeEvent.layout.width)}>
-          <TouchableOpacity onPress={() => navigate(Routes.Cfp)}>
+          <TouchableOpacity onPress={() => navigate(Routes.SpecialVoting)}>
             <Image
               style={{ width: votingImageWidth, height: votingImageWidth / 3 }}
               source={
                 settings?.language === "DE"
-                  ? require("../../assets/voting_2207_de.svg")
-                  : require("../../assets/voting_2207_en.svg")
+                  ? require("../../assets/voting_2207_dfx_de.svg")
+                  : require("../../assets/voting_2207_dfx_en.svg")
               }
             />
           </TouchableOpacity>

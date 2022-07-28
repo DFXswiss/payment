@@ -67,8 +67,14 @@
     "gtc": {
       "title": "Términos y condiciones generales",
       "text": [
-        { "title": "", "text": "Ultima actualización: 28 de Agosto, 2021" },
-        { "title": "", "text": "En caso de discrepancias, la versión alemana prevalecerá." },
+        {
+          "title": "",
+          "text": "Ultima actualización: 28 de Agosto, 2021"
+        },
+        {
+          "title": "",
+          "text": "En caso de discrepancias, la versión alemana prevalecerá."
+        },
         {
           "title": "General",
           "text": "DFX AG (Número de identificación de la compañía: CHE-429.856.521), localizada en Bahnhofstrasse 7, 6300 Zug, Suiza ('nosotros', o 'nuestro') operamos la página web DFX.swiss (el 'Servicio'). El acceso a la página y su uso está sujeto a importantes notas legales contenidas aquí (los 'Términos y condiciones generales'). Estos Términos y Condiciones están complementados por cualquier acuerdo especial que se aplica en relación con los servicios y productos ofertados por DFX, de los cuales tu o tu representante sois participes. De todas formas, en caso de conflicto, los términos de cualquier acuerdo especial prevalecerán. Al acceder y usar la página web, tu reconoces que has leído, entendido y aceptado los 'Términos y condiciones generales'. Además, tu aceptas que DFX pudiera cambiar los 'Términos y condiciones generales' en cualquier momento sin aviso. Si tu no aceptas los 'Términos y condiciones generales', no accedas ni uses la página de ninguna forma."
@@ -137,7 +143,10 @@
           "title": "Ley aplicable y lugar de jurisdicción",
           "text": "Los términos y condiciones deberán ser gobernados e interpretados en acordancia con las leyes de Suiza, excluyendo el conflicto entre la provisión de leyes entre tu país y estado residencia, y las leyes Suizas. Cualquier disputa, controversia o reclamación resultados de los \"términos y condiciones generales\" mencionados, tu relación con DFX, incluida obligaciones no contractuales, deberán ser objetos de la jurisdicción exclusiva de las cortes de Zug, Suiza."
         },
-        { "title": "", "text": "" }
+        {
+          "title": "",
+          "text": ""
+        }
       ]
     },
     "cfp": {
@@ -159,7 +168,7 @@
     },
     "admin": {
       "title": "Administrador"
-    },    
+    },
     "kyc": {
       "bot": {
         "sms_header": "Nuestro socio de verificación (KYC Spider) le ha enviado un código SMS",
@@ -343,6 +352,16 @@
         },
         "regular": "Para las transferencias regulares SEPA"
       }
+    },
+    "specialVoting": {
+      "title": "Votación: DFX Masternode CFP/DFIP Lógica de votación",
+      "ended": "Gracias por tu voto. ¡Presentaremos los resultados en breve!",
+      "link": "Votación-DFX",
+      "collectively": "Colectivo",
+      "proportionally": "Proporcional",
+      "explanation": "Cada usuario del Servicio de participación de DFI de DFX recibe un voto ponderado en función de su inversión de DFI. Hay dos mecanismos de votación alternativos para elegir. Opciones:\n\n\n• Colectivo: DFX votará sí/no con todos los masternodes como colectivo.\n\n\n• Proporcional: DFX votará sí/no/neutral con todos los masternodes en proporción a los votos emitidos.",
+      "description": "Vista colectiva:\n\nDependiendo de los resultados de la votación de los respectivos CFP/DFIP de la comunidad DFX, DFX vota con todos los masternodes para sus clientes.\n\n\nCFP:\n\n<= 50% - DFX vota \"no\" con todos los masternodes.\n> 50% - DFX vota \"sí\" con todos los masternodes\n\n\nDFIP:\n\n<= 66,66 % - DFX vota \"no\" con todos los masternodes\n> 66,66 % - DFX vota \"sí\" con todos los masternodes\n\n\nLa consideración colectiva solo se aplica siempre que DFX opere <10 % de los masternodes de DeFiChain para sus clientes. Si se supera este umbral, DFX seleccionará automáticamente la consideración proporcional\n\n\nConsideración proporcional:\n\nDependiendo de los resultados de la votación de los respectivos CFP/DFIP de la comunidad DFX, DFX vota sí/no/neutral para sus clientes con todos los masternodes proporcionalmente a los votos emitidos.",
+      "neutral": "Sin preferencias"
     }
   }
 }

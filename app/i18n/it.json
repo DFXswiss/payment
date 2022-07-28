@@ -347,18 +347,18 @@
       },
       "sepa": {
         "instant": {
-          "title": "For SEPA Instant transfers",
+          "title": "Per i trasferimenti istantanei SEPA",
           "items": [
-            "No additional fees from DFX",
-            "Available for banks with SEPA Instant Service",
-            "Only possible for transfers in EUR",
-            "Purchased assets on the wallet within a few minutes",
-            "24h per day",
-            "7 days a week",
-            "365 days a year"
+            "Nessuna commissione aggiuntiva da parte di DFX",
+            "Disponibile per le banche con il servizio SEPA Instant",
+            "Possibile solo per trasferimenti in EUR",
+            "Attività acquistate sul portafoglio entro pochi minuti",
+            "24 ore al giorno",
+            "7 giorni alla settimana",
+            "365 giorni all'anno"
           ]
         },
-        "regular": "For regular SEPA transfers"
+        "regular": "Per i trasferimenti SEPA regolari"
       }
     }
   }

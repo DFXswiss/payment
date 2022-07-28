@@ -5,7 +5,7 @@ import { SpacerV } from "../../elements/Spacers";
 import AppStyles from "../../styles/AppStyles";
 import { H2 } from "../../elements/Texts";
 import IconButton from "./IconButton";
-import { Modal, Portal } from "react-native-paper";
+import { Modal, Portal, Text } from "react-native-paper";
 
 const DeFiModal = ({
   isVisible,
@@ -13,12 +13,14 @@ const DeFiModal = ({
   style,
   title,
   children,
+  isBeta,
 }: {
   isVisible: boolean;
   setIsVisible: (isVisible: boolean) => void;
   style?: TextStyle;
   title: string;
   children: ReactNode;
+  isBeta?: boolean;
 }) => {
   return (
     <Portal>
@@ -29,7 +31,12 @@ const DeFiModal = ({
       >
         <ScrollView contentContainerStyle={styles.scrollContainer}>
           <View style={[AppStyles.containerHorizontal]}>
-            <H2 text={title} style={AppStyles.mr20} />
+            <H2 text={title} />
+            {isBeta && (
+              <View style={AppStyles.betaContainer}>
+                <Text style={AppStyles.beta}> Beta</Text>
+              </View>
+            )}
             <View style={AppStyles.mla}>
               <IconButton
                 icon="close"

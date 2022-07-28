@@ -184,10 +184,10 @@
     },
     "kyc": {
       "bot": {
-        "sms_header": "Por favor introduza o código SMS da KYC:",
-        "sms_code": "Introduzir o código SMS",
+        "sms_header": "O nosso parceiro de verificação (KYC Spider) enviou-lhe um código SMS",
+        "sms_code": "Por favor introduza-o aqui:",
         "sms_placeholder": "O seu código SMS",
-        "sms_help": "Se não recebeu um código SMS, por favor contacte",
+        "sms_help": "Se não tiver recebido o código SMS, por favor contacte",
         "error": {
           "missing_session_id": "Erro: Por favor, tente novamente mais tarde",
           "validation": "Erro: Por favor, verifique a sua resposta",
@@ -333,7 +333,10 @@
         "rewards": "Recompensas",
         "type": "Tipo",
         "amount": "Montante",
-        "output_date": "Data de fim"
+        "output_date": "Data de fim",
+        "crypto": "Cripto",
+        "new_crypto": "Nova rota cripto",
+        "blockchain": "Blockchain"
       },
       "history": {
         "buy": "Transacções de compra",
@@ -347,6 +350,21 @@
         "create_api_key": "Gerar chave API",
         "delete_api_key": "Apagar chave API",
         "csv_export": "Exportação CSV"
+      },
+      "sepa": {
+        "instant": {
+          "title": "Para transferências instantâneas SEPA",
+          "items": [
+            "Sem taxas adicionais da DFX",
+            "Disponível para bancos com serviço instantâneo SEPA",
+            "Apenas possível para transferências em euros",
+            "Activos comprados na carteira em poucos minutos",
+            "24h por dia",
+            "7 dias por semana",
+            "365 dias por ano"
+          ]
+        },
+        "regular": "Para transferências SEPA regulares"
       }
     },
     "specialVoting": {

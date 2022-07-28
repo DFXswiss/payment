@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useRef, useState } from "react";
+import React, { Dispatch, ReactElement, SetStateAction, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { DataTable, Text } from "react-native-paper";
@@ -7,13 +7,19 @@ import SellRouteEdit from "../../components/edit/SellRouteEdit";
 import DeFiModal from "../../components/util/DeFiModal";
 import IconButton from "../../components/util/IconButton";
 import { DeFiButton } from "../../elements/Buttons";
-import { SpacerH, SpacerV } from "../../elements/Spacers";
+import { Spacer, SpacerH, SpacerV } from "../../elements/Spacers";
 import { CompactRow, CompactCell, CompactHeader, CompactTitle } from "../../elements/Tables";
-import { H2, H3 } from "../../elements/Texts";
+import { H2, H3, H4 } from "../../elements/Texts";
 import { useDevice } from "../../hooks/useDevice";
 import { BuyRoute, BuyType } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import { getStakingBatches, putBuyRoute, putSellRoute, putStakingRoute } from "../../services/ApiService";
+import {
+  getStakingBatches,
+  putBuyRoute,
+  putCryptoRoute,
+  putSellRoute,
+  putStakingRoute,
+} from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import AppStyles from "../../styles/AppStyles";
 import { formatAmount, updateObject } from "../../utils/Utils";
@@ -30,6 +36,9 @@ import TransactionHistory from "./TransactionHistory";
 import { StakingBatch } from "../../models/StakingBatch";
 import Moment from "moment";
 import Loading from "../../components/util/Loading";
+import { CryptoRoute } from "../../models/CryptoRoute";
+import CryptoRouteEdit from "../../components/edit/CryptoRouteEdit";
+import Colors from "../../config/Colors";
 
 interface Props {
   user?: User;
@@ -41,12 +50,16 @@ interface Props {
   setSellRoutes: Dispatch<SetStateAction<SellRoute[] | undefined>>;
   stakingRoutes?: StakingRoute[];
   setStakingRoutes: Dispatch<SetStateAction<StakingRoute[] | undefined>>;
+  cryptoRoutes?: CryptoRoute[];
+  setCryptoRoutes: Dispatch<SetStateAction<CryptoRoute[] | undefined>>;
   isBuyRouteEdit: boolean;
   setIsBuyRouteEdit: Dispatch<SetStateAction<boolean>>;
   isSellRouteEdit: boolean;
   setIsSellRouteEdit: Dispatch<SetStateAction<boolean>>;
   isStakingRouteEdit: boolean;
   setIsStakingRouteEdit: Dispatch<SetStateAction<boolean>>;
+  isCryptoRouteEdit: boolean;
+  setIsCryptoRouteEdit: Dispatch<SetStateAction<boolean>>;
 }
 
 const IconPlaceholder = ({ icon }: { icon: string }) => (
@@ -65,9 +78,6 @@ const Placeholders = ({ device }: { device: DeviceClass }) => (
   </>
 );
 
-const iban = "CH68 0857 3177 9752 0181 4";
-const swift = "MAEBCHZZ";
-
 const RouteList = ({
   user,
   setUser,
@@ -78,12 +88,16 @@ const RouteList = ({
   setSellRoutes,
   stakingRoutes,
   setStakingRoutes,
+  cryptoRoutes,
+  setCryptoRoutes,
   isBuyRouteEdit,
   setIsBuyRouteEdit,
   isSellRouteEdit,
   setIsSellRouteEdit,
   isStakingRouteEdit,
   setIsStakingRouteEdit,
+  isCryptoRouteEdit,
+  setIsCryptoRouteEdit,
 }: Props) => {
   const { t } = useTranslation();
   const device = useDevice();
@@ -92,14 +106,18 @@ const RouteList = ({
   const [isBuyLoading, setIsBuyLoading] = useState<{ [id: string]: boolean }>({});
   const [isSellLoading, setIsSellLoading] = useState<{ [id: string]: boolean }>({});
   const [isStakingLoading, setIsStakingLoading] = useState<{ [id: string]: boolean }>({});
+  const [isCryptoLoading, setIsCryptoLoading] = useState<{ [id: string]: boolean }>({});
   const [isHistoryVisible, setIsHistoryVisible] = useState(false);
-  const [detailRoute, setDetailRoute] = useState<BuyRoute | SellRoute | StakingRoute | undefined>(undefined);
+  const [detailRoute, setDetailRoute] = useState<BuyRoute | SellRoute | StakingRoute | CryptoRoute | undefined>(
+    undefined
+  );
   const [isBalanceDetail, setIsBalanceDetail] = useState(false);
   const [stakingBatches, setStakingBatches] = useState<StakingBatch[]>();
 
   const activeBuyRoutes = buyRoutes?.filter((r) => r.active);
   const activeSellRoutes = sellRoutes?.filter((r) => r.active);
   const activeStakingRoutes = stakingRoutes?.filter((r) => r.active);
+  const activeCryptoRoutes = cryptoRoutes?.filter((r) => r.active);
 
   const onBuyRouteCreated = (route: BuyRoute) => {
     setBuyRoutes((routes) => updateRoutes(route, routes));
@@ -120,10 +138,15 @@ const RouteList = ({
     setDetailRoute(route);
     setIsStakingRouteEdit(false);
   };
-  const updateRoutes: <T extends BuyRoute | SellRoute | StakingRoute>(route: T, routes?: T[]) => T[] | undefined = (
-    route,
-    routes
-  ) => {
+  const onCryptoRouteCreated = (route: CryptoRoute) => {
+    setCryptoRoutes((routes) => updateRoutes(route, routes));
+    setDetailRoute(route);
+    setIsCryptoRouteEdit(false);
+  };
+  const updateRoutes: <T extends BuyRoute | SellRoute | StakingRoute | CryptoRoute>(
+    route: T,
+    routes?: T[]
+  ) => T[] | undefined = (route, routes) => {
     const oldRoute = routes?.find((r) => r.id === route.id);
     if (oldRoute) {
       Object.assign(oldRoute, route);
@@ -154,6 +177,13 @@ const RouteList = ({
       .catch(() => NotificationService.error(t("feedback.delete_failed")))
       .finally(() => setIsStakingLoading((obj) => updateObject(obj, { [route.id]: false })));
   };
+  const deleteCryptoRoute = (route: CryptoRoute) => {
+    setIsCryptoLoading((obj) => updateObject(obj, { [route.id]: true }));
+    return putCryptoRoute(updateObject(route, { active: false }))
+      .then(() => (route.active = false))
+      .catch(() => NotificationService.error(t("feedback.delete_failed")))
+      .finally(() => setIsCryptoLoading((obj) => updateObject(obj, { [route.id]: false })));
+  };
 
   const fetchStakingBatches = (route: StakingRoute) => {
     setStakingBatches(undefined);
@@ -166,31 +196,19 @@ const RouteList = ({
       });
   };
 
-  const routeData = (route: BuyRoute | SellRoute | StakingRoute) =>
-    "type" in route // buy route
+  const routeData = (route: BuyRoute | SellRoute | StakingRoute | CryptoRoute) =>
+    "blockchain" in route // crypto route
       ? [
-          { condition: true, label: "model.route.type", value: t(`model.route.${route.type.toLowerCase()}`) },
-          { condition: route.type === BuyType.WALLET, label: "model.route.asset", value: route.asset?.name },
-          {
-            condition: route.type === BuyType.STAKING,
-            label: "model.route.staking",
-            value: `${t("model.route." + route.staking?.rewardType.toLowerCase())} - ${t(
-              "model.route." + route.staking?.paybackType.toLowerCase()
-            )}`,
-          },
-          { condition: true, label: "model.route.iban", value: route.iban },
           {
             condition: true,
-            label: "model.route.bank_usage",
-            value: route.bankUsage,
+            label: "model.route.deposit_address",
+            value: route.deposit?.address,
             icon: "content-copy",
-            onPress: () => ClipboardService.copy(route.bankUsage),
+            onPress: () => ClipboardService.copy(route.deposit?.address),
           },
-          {
-            condition: true,
-            label: "model.route.fee",
-            value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
-          },
+          { condition: true, label: "model.route.blockchain", value: route.blockchain },
+          { condition: true, label: "model.route.asset", value: route.asset?.name },
+          { condition: true, label: "model.route.fee", value: `${route.fee}%` },
           { condition: true, label: "model.route.volume", value: `${formatAmount(route.volume)} €` },
           { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
         ]
@@ -209,8 +227,8 @@ const RouteList = ({
           { condition: true, label: "model.route.min_deposit", value: "0.1 DFI / 1 USD" },
           { condition: true, label: "model.route.volume", value: `${formatAmount(route.volume)} €` },
         ]
-      : // staking route
-        [
+      : "rewardType" in route // staking route
+      ? [
           {
             condition: true,
             label: "model.route.deposit_address",
@@ -256,6 +274,33 @@ const RouteList = ({
             onPress: () => fetchStakingBatches(route),
           },
           { condition: true, label: "model.route.rewards", value: `${formatAmount(route.rewardVolume)} EUR` },
+        ]
+      : // buy route
+        [
+          { condition: true, label: "model.route.type", value: t(`model.route.${route.type.toLowerCase()}`) },
+          { condition: route.type === BuyType.WALLET, label: "model.route.asset", value: route.asset?.name },
+          {
+            condition: route.type === BuyType.STAKING,
+            label: "model.route.staking",
+            value: `${t("model.route." + route.staking?.rewardType.toLowerCase())} - ${t(
+              "model.route." + route.staking?.paybackType.toLowerCase()
+            )}`,
+          },
+          { condition: true, label: "model.route.iban", value: route.iban },
+          {
+            condition: true,
+            label: "model.route.bank_usage",
+            value: route.bankUsage,
+            icon: "content-copy",
+            onPress: () => ClipboardService.copy(route.bankUsage),
+          },
+          {
+            condition: true,
+            label: "model.route.fee",
+            value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
+          },
+          { condition: true, label: "model.route.volume", value: `${formatAmount(route.volume)} €` },
+          { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
         ];
 
   return (
@@ -303,11 +348,13 @@ const RouteList = ({
                       : isStakingLoading[detailRoute.id]
                   }
                   onPress={() => {
-                    ("type" in detailRoute
-                      ? deleteBuyRoute(buyRoutes?.find((r) => r.id === detailRoute.id) as BuyRoute)
+                    ("blockchain" in detailRoute
+                      ? deleteCryptoRoute(cryptoRoutes?.find((r) => r.id === detailRoute.id) as CryptoRoute)
                       : "fiat" in detailRoute
                       ? deleteSellRoute(sellRoutes?.find((r) => r.id === detailRoute.id) as SellRoute)
-                      : deleteStakingRoute(stakingRoutes?.find((r) => r.id === detailRoute.id) as StakingRoute)
+                      : "rewardType" in detailRoute
+                      ? deleteStakingRoute(stakingRoutes?.find((r) => r.id === detailRoute.id) as StakingRoute)
+                      : deleteBuyRoute(buyRoutes?.find((r) => r.id === detailRoute.id) as BuyRoute)
                     ).then(() => setDetailRoute(undefined));
                   }}
                   disabled={"isInUse" in detailRoute && detailRoute.isInUse}
@@ -389,6 +436,15 @@ const RouteList = ({
           stakingRoutes={activeStakingRoutes}
         />
       </DeFiModal>
+      <DeFiModal
+        isVisible={isCryptoRouteEdit}
+        setIsVisible={setIsCryptoRouteEdit}
+        title={t("model.route.new_crypto")}
+        style={{ width: 400 }}
+        isBeta={true}
+      >
+        <CryptoRouteEdit routes={cryptoRoutes} onRouteCreated={onCryptoRouteCreated} />
+      </DeFiModal>
 
       <DeFiModal
         isVisible={isHistoryVisible}
@@ -423,6 +479,13 @@ const RouteList = ({
                 {t("model.route.staking")}
               </DeFiButton>
             </View>
+            {session?.isBetaUser && (
+              <View style={AppStyles.ml10}>
+                <DeFiButton mode="contained" onPress={() => setIsCryptoRouteEdit(true)}>
+                  {t("model.route.crypto")}
+                </DeFiButton>
+              </View>
+            )}
           </>
         )}
       </View>
@@ -444,11 +507,23 @@ const RouteList = ({
             <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)} style={{ flex: 1 }}>
               {t("model.route.staking")}
             </DeFiButton>
+            {session?.isBetaUser && (
+              <>
+                <SpacerH />
+                <DeFiButton mode="contained" onPress={() => setIsCryptoRouteEdit(true)} style={{ flex: 1 }}>
+                  {t("model.route.crypto")}
+                </DeFiButton>
+              </>
+            )}
           </View>
         </>
       )}
 
-      {(activeBuyRoutes?.length ?? 0) + (activeSellRoutes?.length ?? 0) + (activeStakingRoutes?.length ?? 0) > 0 ? (
+      {(activeBuyRoutes?.length ?? 0) +
+        (activeSellRoutes?.length ?? 0) +
+        (activeStakingRoutes?.length ?? 0) +
+        (activeCryptoRoutes?.length ?? 0) >
+      0 ? (
         <>
           {activeBuyRoutes && activeBuyRoutes.length > 0 && (
             <>
@@ -577,6 +652,50 @@ const RouteList = ({
               </DataTable>
             </>
           )}
+          {activeCryptoRoutes && activeCryptoRoutes.length > 0 && (
+            <>
+              <SpacerV height={20} />
+              <View style={AppStyles.containerHorizontal}>
+                <H3 text={t("model.route.crypto")} />
+                <View style={AppStyles.betaContainer}>
+                  <Text style={AppStyles.beta}> Beta</Text>
+                </View>
+              </View>
+
+              <DataTable>
+                <CompactHeader>
+                  <CompactTitle style={{ flex: 1 }}>{t("model.route.blockchain")}</CompactTitle>
+                  <CompactTitle style={{ flex: 1 }}>{t("model.route.asset")}</CompactTitle>
+                  {device.SM && <CompactTitle style={{ flex: 2 }}>{t("model.route.deposit_address")}</CompactTitle>}
+                  <CompactTitle style={{ flex: undefined }}>
+                    <Placeholders device={device} />
+                  </CompactTitle>
+                </CompactHeader>
+                {activeCryptoRoutes.map((route) => (
+                  <TouchableOpacity key={route.id} onPress={() => setDetailRoute(route)} disabled={device.SM}>
+                    <CompactRow>
+                      <CompactCell style={{ flex: 1 }}>{route.blockchain}</CompactCell>
+                      <CompactCell style={{ flex: 1 }}>{route.asset?.name}</CompactCell>
+                      {device.SM && <CompactCell style={{ flex: 2 }}>{route.deposit?.address}</CompactCell>}
+                      <CompactCell style={{ flex: undefined }}>
+                        {device.SM ? (
+                          <>
+                            <IconButton
+                              icon="content-copy"
+                              onPress={() => ClipboardService.copy(route.deposit?.address)}
+                            />
+                            <IconButton icon="chevron-right" onPress={() => setDetailRoute(route)} />
+                          </>
+                        ) : (
+                          <IconButton icon="chevron-right" />
+                        )}
+                      </CompactCell>
+                    </CompactRow>
+                  </TouchableOpacity>
+                ))}
+              </DataTable>
+            </>
+          )}
 
           {
             <>
@@ -596,48 +715,96 @@ const RouteList = ({
         </>
       )}
 
-      {activeBuyRoutes && activeBuyRoutes.length > 0 && (
-        <>
-          <SpacerV height={50} />
-          <H3 text={t("model.route.payment_info")} />
-          <SpacerV />
-          <Text>DFX AG</Text>
-          <Text>Bahnhofstrasse 7</Text>
-          <Text>6300 Zug</Text>
-          <Text>Schweiz</Text>
-          <SpacerV />
-          <View style={AppStyles.containerHorizontal}>
-            <Text>{`${t("model.route.iban")}: ${iban}`}</Text>
-            <IconButton
-              icon="content-copy"
-              onPress={() => ClipboardService.copy(iban)}
-              style={device.SM ? undefined : AppStyles.mla}
-              size={20}
-            />
-          </View>
-          <View style={AppStyles.containerHorizontal}>
-            <Text>{`SWIFT/BIC: ${swift}`}</Text>
-            <IconButton
-              icon="content-copy"
-              onPress={() => ClipboardService.copy(swift)}
-              style={device.SM ? undefined : AppStyles.mla}
-              size={20}
-            />
-          </View>
-        </>
-      )}
+      {activeBuyRoutes && activeBuyRoutes.length > 0 && <PaymentDetails />}
     </>
   );
 };
 
+const PaymentDetails = (): ReactElement => {
+  const instantIban = "LU11 6060 0020 0000 5040";
+  const instantBic = "OLKILUL1";
+  const iban = "CH68 0857 3177 9752 0181 4";
+  const swift = "MAEBCHZZ";
+
+  const instantItemsLength = 7;
+  const itemHasPadding = (i: number) => i > 3;
+
+  const device = useDevice();
+  const { t } = useTranslation();
+
+  return (
+    <>
+      <SpacerV height={50} />
+      <H3 text={t("model.route.payment_info")} />
+      <SpacerV />
+      <Text>DFX AG</Text>
+      <Text>Bahnhofstrasse 7</Text>
+      <Text>6300 Zug</Text>
+      <Text>Schweiz</Text>
+
+      <SpacerV height={20} />
+
+      <View style={device.SM && [AppStyles.containerHorizontal, styles.sepaContainer]}>
+        <View style={[styles.sepaItem, device.SM && { flexShrink: 1 }]}>
+          <H4 text={t("model.sepa.instant.title")} style={{ color: Colors.Primary }} />
+          <CopyLine text={`${t("model.route.iban")}: ${instantIban}`} copyText={instantIban} />
+          <CopyLine text={`BIC: ${instantBic}`} copyText={instantBic} />
+          <SpacerV />
+          {[...Array(instantItemsLength).keys()].map((_, i) => (
+            <View
+              key={i}
+              style={[
+                AppStyles.containerHorizontal,
+                { alignItems: "flex-start" },
+                itemHasPadding(i) && { marginLeft: 20 },
+              ]}
+            >
+              <View>
+                <Text>-</Text>
+              </View>
+              <View style={{ marginLeft: 5, flexShrink: 1 }}>
+                <Text>{t(`model.sepa.instant.items.${i}`)}</Text>
+              </View>
+            </View>
+          ))}
+        </View>
+
+        <Spacer />
+
+        <View style={[styles.sepaItem, device.SM && { flexShrink: 1 }]}>
+          <H4 text={t("model.sepa.regular")} style={{ color: Colors.Primary }} />
+          <CopyLine text={`${t("model.route.iban")}: ${iban}`} copyText={iban} />
+          <CopyLine text={`SWIFT/BIC: ${swift}`} copyText={swift} />
+        </View>
+      </View>
+    </>
+  );
+};
+
+const CopyLine = ({ text, copyText }: { text: string; copyText: string }): ReactElement => {
+  const device = useDevice();
+  return (
+    <View style={AppStyles.containerHorizontal}>
+      <Text>{text}</Text>
+      <IconButton
+        icon="content-copy"
+        onPress={() => ClipboardService.copy(copyText)}
+        style={device.SM ? undefined : AppStyles.mla}
+        size={20}
+      />
+    </View>
+  );
+};
+
 const styles = StyleSheet.create({
-  betaContainer: {
+  sepaContainer: {
+    justifyContent: "space-between",
     alignItems: "flex-start",
-    height: "100%",
   },
-  beta: {
-    fontSize: 12,
-    marginTop: 6,
+  sepaItem: {
+    flexGrow: 1,
+    backgroundColor: Colors.LightBlue,
+    padding: 10,
   },
 });
 

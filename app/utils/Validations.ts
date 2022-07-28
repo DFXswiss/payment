@@ -28,7 +28,7 @@ class ValidationsClass {
 
       // check blocked IBANs
       const blockedIbans = BlockedIbans.map((i) => i.split(" ").join("").toLowerCase());
-      if (blockedIbans.some((i) => iban.toLowerCase().startsWith(i))) {
+      if (blockedIbans.some((i) => iban.toLowerCase().match(i) != null)) {
         return "validation.iban_blocked";
       }
 

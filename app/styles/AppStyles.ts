@@ -113,4 +113,12 @@ export default StyleSheet.create({
     width: "100%",
     maxWidth: 400,
   },
+  betaContainer: {
+    alignItems: "flex-start",
+    height: "100%",
+  },
+  beta: {
+    fontSize: 12,
+    marginTop: 6,
+  },
 });

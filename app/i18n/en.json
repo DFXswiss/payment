@@ -187,10 +187,10 @@
     },
     "kyc": {
       "bot": {
-        "sms_header": "Please enter the SMS code from KYC:",
-        "sms_code": "Enter SMS code",
+        "sms_header": "Our verification partner (KYC Spider) has sent you a SMS code.",
+        "sms_code": "Please enter it here:",
         "sms_placeholder": "Your SMS code",
-        "sms_help": "If you did not receive an SMS code, please contact ",
+        "sms_help": "If you have not received the SMS code, please contact ",
         "error": {
           "missing_session_id": "Error: Please try again later.",
           "validation": "Error: Please check your answer.",
@@ -336,7 +336,10 @@
         "rewards": "Rewards",
         "type": "Type",
         "amount": "Amount",
-        "output_date": "End date"
+        "output_date": "End date",
+        "crypto": "Crypto",
+        "new_crypto": "New crypto route",
+        "blockchain": "Blockchain"
       },
       "history": {
         "buy": "Buy transactions",
@@ -350,6 +353,21 @@
         "create_api_key": "Generate API key",
         "delete_api_key": "Delete API key",
         "csv_export": "CSV Export"
+      },
+      "sepa": {
+        "instant": {
+          "title": "For SEPA Instant transfers",
+          "items": [
+            "No additional fees from DFX",
+            "Available for banks with SEPA Instant Service",
+            "Only possible for transfers in EUR",
+            "Purchased assets on the wallet within a few minutes",
+            "24h per day",
+            "7 days a week",
+            "365 days a year"
+          ]
+        },
+        "regular": "For regular SEPA transfers"
       }
     },
     "specialVoting": {

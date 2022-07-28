@@ -48,6 +48,7 @@ import withSettings from "../../hocs/withSettings";
 import { AppSettings } from "../../services/SettingsService";
 import KycInit from "../../components/KycInit";
 import LimitEdit from "../../components/edit/LimitEdit";
+import { CryptoRoute } from "../../models/CryptoRoute";
 
 const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSettings }) => {
   const { t } = useTranslation();
@@ -58,10 +59,12 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const [buyRoutes, setBuyRoutes] = useState<BuyRoute[]>();
   const [sellRoutes, setSellRoutes] = useState<SellRoute[]>();
   const [stakingRoutes, setStakingRoutes] = useState<StakingRoute[]>();
+  const [cryptoRoutes, setCryptoRoutes] = useState<CryptoRoute[]>();
   const [isUserEdit, setIsUserEdit] = useState(false);
   const [isBuyRouteEdit, setIsBuyRouteEdit] = useState(false);
   const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
   const [isStakingRouteEdit, setIsStakingRouteEdit] = useState(false);
+  const [isCryptoRouteEdit, setIsCryptoRouteEdit] = useState(false);
   const [isKycRequest, setIsKycRequest] = useState(false);
   const [isLimitRequest, setIsLimitRequest] = useState(false);
   const [isFileUploading, setIsFileUploading] = useState(false);
@@ -80,20 +83,29 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     setIsSellRouteEdit(update);
   };
 
+  const areKYCChecksSuccessful = (): boolean => {
+    if (user?.kycStatus === KycStatus.NA) {
+      onIncreaseLimit();
+      return false
+    } else if (
+      kycInProgress(user?.kycStatus) ||
+      user?.kycStatus === KycStatus.CHECK ||
+      user?.kycStatus === KycStatus.REJECTED
+    ) {
+      NotificationService.error(t("model.kyc.kyc_not_complete"));
+      return false
+    }
+    return true
+  }
+
   const stakingRouteEdit = (update: SetStateAction<boolean>) => {
     if (resolve(update, isStakingRouteEdit)) {
       // bank TX required
       if (user?.status !== UserStatus.ACTIVE) return NotificationService.error(t("feedback.bank_tx_required"));
 
       // check if user has KYC
-      if (user?.kycStatus === KycStatus.NA) {
-        return onIncreaseLimit();
-      } else if (
-        kycInProgress(user?.kycStatus) ||
-        user?.kycStatus === KycStatus.CHECK ||
-        user?.kycStatus === KycStatus.REJECTED
-      ) {
-        return NotificationService.error(t("model.kyc.kyc_not_complete"));
+      if (!areKYCChecksSuccessful()) {
+        return
       }
     } else {
       // reload all routes after close (may impact sell routes)
@@ -102,6 +114,17 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
 
     setIsStakingRouteEdit(update);
   };
+
+  const cryptoRouteEdit = (update: SetStateAction<boolean>) => {
+    if (resolve(update, isCryptoRouteEdit)) {
+      // check if user has KYC
+      if (!areKYCChecksSuccessful()) {
+        return
+      }
+    }
+
+    setIsCryptoRouteEdit(update)
+  }
 
   const userEdit = (edit: boolean) => {
     setIsUserEdit(edit);
@@ -174,6 +197,8 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     setUser(undefined);
     setBuyRoutes(undefined);
     setSellRoutes(undefined);
+    setStakingRoutes(undefined);
+    setCryptoRoutes(undefined);
     setIsUserEdit(false);
   };
 
@@ -183,6 +208,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       setSellRoutes(routes.sell);
       setStakingRoutes(routes.staking);
       setCanVote((user?.stakingBalance ?? 0) >= 100);
+      setCryptoRoutes(routes.crypto);
     });
   };
 
@@ -440,12 +466,16 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
               setSellRoutes={setSellRoutes}
               stakingRoutes={stakingRoutes}
               setStakingRoutes={setStakingRoutes}
+              cryptoRoutes={cryptoRoutes}
+              setCryptoRoutes={setCryptoRoutes}
               isBuyRouteEdit={isBuyRouteEdit}
               setIsBuyRouteEdit={setIsBuyRouteEdit}
               isSellRouteEdit={isSellRouteEdit && !isUserEdit}
               setIsSellRouteEdit={sellRouteEdit}
               isStakingRouteEdit={isStakingRouteEdit}
               setIsStakingRouteEdit={stakingRouteEdit}
+              isCryptoRouteEdit={isCryptoRouteEdit}
+              setIsCryptoRouteEdit={cryptoRouteEdit}
             />
           )}
         </>

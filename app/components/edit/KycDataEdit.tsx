@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { Country } from "../../models/Country";
-import { AccountType, KycInfo } from "../../models/User";
+import { AccountType, KycInfo, UserDetail } from "../../models/User";
 import { getCountries, putKycData } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import DeFiPicker from "../form/DeFiPicker";
@@ -25,17 +25,18 @@ import Loading from "../util/Loading";
 interface Props {
   code: string;
   kycData?: KycData;
+  user?: UserDetail;
   onChanged: (kycData: KycData, info: KycInfo) => void;
 }
 
-const KycDataEdit = ({ code, kycData, onChanged }: Props) => {
+const KycDataEdit = ({ code, kycData, user, onChanged }: Props) => {
   const { t } = useTranslation();
   const device = useDevice();
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<KycData>({ defaultValues: kycData });
+  } = useForm<KycData>({ defaultValues: kycData ? kycData : { phone: user?.mobileNumber, ...user } });
   const accountType = useWatch({ control, name: "accountType" });
   const country = useWatch({ control, name: "country" });
 

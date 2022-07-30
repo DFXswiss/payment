@@ -61,8 +61,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     setIsAutostart(params.autostart);
 
     // reset params
-    // Krysh: temporarily disabled, and needs adjustments
-    // nav.navigate(Routes.Kyc, { code: undefined, autostart: undefined });
+    nav.navigate(Routes.Kyc, { code: undefined, autostart: undefined, phone: undefined, mail: undefined });
 
     // get KYC info
     getKyc(params?.code)
@@ -108,7 +107,6 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   };
 
   const onLoadFailed = () => {
-    console.log("onLoadFailed is called");
     NotificationService.error(t("feedback.load_failed"));
     nav.navigate(Routes.Home);
   };
@@ -143,7 +141,6 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     setKycData(newKycData);
     setKycDataEdit(false);
     setShowsUploadDialog(newKycData.accountType === AccountType.BUSINESS);
-    console.log("onChange: should autostart?", isAutostart);
 
     updateState(info);
     if (isAutostart) onContinue(info);

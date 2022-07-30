@@ -8,10 +8,10 @@ import { SpacerV } from "../../elements/Spacers";
 import { H2 } from "../../elements/Texts";
 import withSession from "../../hocs/withSession";
 import {
-  AccountType,
   getKycStatusString,
   getTradeLimit,
   kycCompleted,
+  KycInfo,
   kycInProgress,
   KycState,
   KycStatus,
@@ -19,16 +19,15 @@ import {
   UserDetail,
   UserStatus,
 } from "../../models/User";
-import { getRoutes, getSettings, getUserDetail, postFounderCertificate, postKyc } from "../../services/ApiService";
+import { getRoutes, getSettings, getUserDetail } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
 import AppLayout from "../../components/AppLayout";
 import NotificationService from "../../services/NotificationService";
-import { DataTable, Dialog, Paragraph, Portal, Text } from "react-native-paper";
+import { DataTable, Text } from "react-native-paper";
 import { CompactCell, CompactRow } from "../../elements/Tables";
 import { useDevice } from "../../hooks/useDevice";
-import { DeFiButton } from "../../elements/Buttons";
 import useLoader from "../../hooks/useLoader";
 import { BuyRoute } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
@@ -46,9 +45,9 @@ import Routes from "../../config/Routes";
 import { StakingRoute } from "../../models/StakingRoute";
 import withSettings from "../../hocs/withSettings";
 import { AppSettings } from "../../services/SettingsService";
-import KycInit from "../../components/KycInit";
-import LimitEdit from "../../components/edit/LimitEdit";
 import { CryptoRoute } from "../../models/CryptoRoute";
+import KycDataEdit from "../../components/edit/KycDataEdit";
+import { KycData } from "../../models/KycData";
 
 const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSettings }) => {
   const { t } = useTranslation();
@@ -65,10 +64,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
   const [isStakingRouteEdit, setIsStakingRouteEdit] = useState(false);
   const [isCryptoRouteEdit, setIsCryptoRouteEdit] = useState(false);
-  const [isKycRequest, setIsKycRequest] = useState(false);
-  const [isLimitRequest, setIsLimitRequest] = useState(false);
-  const [isFileUploading, setIsFileUploading] = useState(false);
-  const [isKycInit, setIsKycInit] = useState(false);
   const [isRefFeeEdit, setIsRefFeeEdit] = useState(false);
 
   const [isVotingOpen, setIsVotingOpen] = useState(false);
@@ -83,7 +78,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     setIsSellRouteEdit(update);
   };
 
-  const areKYCChecksSuccessful = (): boolean => {
+  const areKycChecksSuccessful = (): boolean => {
     if (user?.kycStatus === KycStatus.NA) {
       onIncreaseLimit();
       return false;
@@ -104,7 +99,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       if (user?.status !== UserStatus.ACTIVE) return NotificationService.error(t("feedback.bank_tx_required"));
 
       // check if user has KYC
-      if (!areKYCChecksSuccessful()) {
+      if (!areKycChecksSuccessful()) {
         return;
       }
     } else {
@@ -118,7 +113,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const cryptoRouteEdit = (update: SetStateAction<boolean>) => {
     if (resolve(update, isCryptoRouteEdit)) {
       // check if user has KYC
-      if (!areKYCChecksSuccessful()) {
+      if (!areKycChecksSuccessful()) {
         return;
       }
     }
@@ -130,7 +125,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     setIsUserEdit(edit);
     if (!edit) {
       setIsSellRouteEdit(false);
-      setIsKycRequest(false);
     }
   };
 
@@ -142,43 +136,19 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     setIsUserEdit(false);
   };
 
-  const onIncreaseLimit = () => {
-    if (user?.kycStatus === KycStatus.NA) {
-      // start KYC
-      goToKycScreen();
-    } else {
-      // increase limit
-      setIsLimitRequest(true);
+  const onKycDataChanged = (newKycData: KycData, info: KycInfo) => {
+    let newUser = user;
+    if (newUser) {
+      Object.assign(newUser, newKycData);
+      Object.assign(newUser, info);
     }
+    setUser(newUser);
+    setIsUserEdit(false);
   };
 
-  const startKyc = async () => {
-    const doStartKyc = user?.accountType === AccountType.BUSINESS ? await uploadFounderCertificate() : true;
-    setIsKycRequest(false);
-    if (doStartKyc) await requestKyc();
-  };
-
-  const uploadFounderCertificate = (): Promise<boolean> => {
-    return pickDocuments({ type: "public.item", multiple: false })
-      .then((files) => {
-        setIsFileUploading(true);
-        return postFounderCertificate(files);
-      })
-      .then(() => true)
-      .catch(() => {
-        NotificationService.error(t("feedback.file_error"));
-        return false;
-      })
-      .finally(() => setIsFileUploading(false));
-  };
-
-  const requestKyc = (): Promise<void> => {
-    setIsKycInit(true);
-
-    return postKyc()
-      .then((info) => goToKycScreen(info.kycHash))
-      .catch(() => NotificationService.error(t("feedback.request_failed")))
-      .finally(() => setIsKycInit(false));
+  const onIncreaseLimit = () => {
+    // start KYC
+    goToKycScreen();
   };
 
   const goToKycScreen = (code: string | undefined = user?.kycHash) =>
@@ -319,42 +289,18 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
 
   return (
     <AppLayout>
-      <Portal>
-        <Dialog visible={isKycRequest && !isUserEdit} onDismiss={() => setIsKycRequest(false)} style={AppStyles.dialog}>
-          <Dialog.Content>
-            <Paragraph>
-              {t(user?.accountType === AccountType.BUSINESS ? "model.kyc.request_business" : "model.kyc.request")}
-            </Paragraph>
-          </Dialog.Content>
-          <Dialog.Actions>
-            <DeFiButton onPress={() => setIsKycRequest(false)} color={Colors.Grey}>
-              {t("action.abort")}
-            </DeFiButton>
-            <DeFiButton onPress={startKyc} loading={isFileUploading}>
-              {t(user?.accountType !== AccountType.BUSINESS ? "action.yes" : "action.upload")}
-            </DeFiButton>
-          </Dialog.Actions>
-        </Dialog>
-
-        <KycInit isVisible={isKycInit} setIsVisible={setIsKycInit} />
-      </Portal>
-
-      <DeFiModal
-        isVisible={isLimitRequest}
-        setIsVisible={setIsLimitRequest}
-        title={t("model.kyc.increase_limit")}
-        style={{ width: 400 }}
-      >
-        <LimitEdit code={user?.kycHash} onSuccess={() => setIsLimitRequest(false)} />
-      </DeFiModal>
-
       <DeFiModal
         isVisible={isUserEdit}
         setIsVisible={userEdit}
-        title={t(isSellRouteEdit || isKycRequest ? "model.user.edit" : "model.user.settings")}
+        title={t(isSellRouteEdit && !user?.kycDataComplete ? "model.user.edit" : "model.user.settings")}
         style={{ width: 500 }}
       >
-        <UserEdit user={user} onUserChanged={onUserChanged} kycDataEdit={isSellRouteEdit || isKycRequest} />
+        {isSellRouteEdit && !user?.kycDataComplete ? (
+          // kycHash is auto-generated and therefore should never be null
+          <KycDataEdit code={user?.kycHash ?? ""} user={user} onChanged={onKycDataChanged} />
+        ) : (
+          <UserEdit user={user} onUserChanged={onUserChanged} />
+        )}
       </DeFiModal>
 
       <DeFiModal

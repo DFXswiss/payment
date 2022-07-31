@@ -21,15 +21,17 @@ import { createRules } from "../../utils/Utils";
 import { ApiError } from "../../models/ApiDto";
 import { KycData } from "../../models/KycData";
 import Loading from "../util/Loading";
+import { Text } from "react-native-paper";
 
 interface Props {
   code: string;
+  kycInfo?: KycInfo;
   kycData?: KycData;
   user?: UserDetail;
   onChanged: (kycData: KycData, info: KycInfo) => void;
 }
 
-const KycDataEdit = ({ code, kycData, user, onChanged }: Props) => {
+const KycDataEdit = ({ code, kycInfo, kycData, user, onChanged }: Props) => {
   const { t } = useTranslation();
   const device = useDevice();
   const {
@@ -155,6 +157,25 @@ const KycDataEdit = ({ code, kycData, user, onChanged }: Props) => {
       )}
 
       <H3 text={t("model.user.contact_data")} />
+
+      {/* 
+        Krysh: not quite sure, if we should display like this.
+        or if we should only display it, if there is no mail or phone information delivered
+        through kycData
+       */}
+      {kycInfo?.blankedMail && (
+        <>
+          <Text>{`${t("model.user.mail")}: ${kycInfo.blankedMail}`}</Text>
+          <SpacerV />
+        </>
+      )}
+
+      {kycInfo?.blankedPhone && (
+        <>
+          <Text>{`${t("model.user.mobile_number")}: ${kycInfo.blankedPhone}`}</Text>
+          <SpacerV />
+        </>
+      )}
 
       <Input name="mail" label={t("model.user.mail")} valueHook={(v: string) => v.trim()} />
       <SpacerV />

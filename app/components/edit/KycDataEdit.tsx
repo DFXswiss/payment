@@ -65,8 +65,8 @@ const KycDataEdit = ({ code, kycInfo, kycData, user, onChanged }: Props) => {
   };
 
   const rules: any = createRules({
-    phone: Validations.Required,
-    mail: [Validations.Mail, Validations.Required],
+    phone: !kycInfo?.blankedPhone && Validations.Required,
+    mail: !kycInfo?.blankedMail && [Validations.Mail, Validations.Required],
 
     accountType: Validations.Required,
     firstName: Validations.Required,

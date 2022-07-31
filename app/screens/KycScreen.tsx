@@ -113,7 +113,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
 
   const updateState = (info: KycInfo, params?: any) => {
     setKycInfo(info);
-    if (!info.kycDataComplete) {
+    if (!info.kycDataComplete && params.autostart) {
       setKycData({ accountType: AccountType.PERSONAL, ...params });
       setKycDataEdit(true);
     }
@@ -188,7 +188,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
           title={t("model.user.edit")}
           style={{ width: 500 }}
         >
-          <KycDataEdit code={code} kycData={kycData} onChanged={onChanged} />
+          <KycDataEdit code={code} kycData={kycData} kycInfo={kycInfo} onChanged={onChanged} />
         </DeFiModal>
       )}
 

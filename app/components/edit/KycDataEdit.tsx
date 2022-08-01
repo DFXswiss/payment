@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { Country } from "../../models/Country";
 import { AccountType, KycInfo, UserDetail } from "../../models/User";
@@ -21,7 +21,7 @@ import { createRules } from "../../utils/Utils";
 import { ApiError } from "../../models/ApiDto";
 import { KycData } from "../../models/KycData";
 import Loading from "../util/Loading";
-import { Text } from "react-native-paper";
+import IconButton from "../../components/util/IconButton";
 
 interface Props {
   code: string;
@@ -44,6 +44,8 @@ const KycDataEdit = ({ code, kycInfo, kycData, user, onChanged }: Props) => {
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
+  const [wantsEditMail, setWantsEditMail] = useState(false);
+  const [wantsEditPhone, setWantsEditPhone] = useState(false);
   const [error, setError] = useState<string>();
   const [countries, setCountries] = useState<Country[]>([]);
 
@@ -158,34 +160,40 @@ const KycDataEdit = ({ code, kycInfo, kycData, user, onChanged }: Props) => {
 
       <H3 text={t("model.user.contact_data")} />
 
-      {/* 
-        Krysh: not quite sure, if we should display like this.
-        or if we should only display it, if there is no mail or phone information delivered
-        through kycData
-       */}
-      {kycInfo?.blankedMail && (
-        <>
-          <Text>{`${t("model.user.mail")}: ${kycInfo.blankedMail}`}</Text>
-          <SpacerV />
-        </>
+      {kycInfo?.blankedMail && !wantsEditMail ? (
+        <View style={styles.editable}>
+          <Input name="mail" label={t("model.user.mail")} value={kycInfo.blankedMail} disabled />
+          <IconButton
+            icon="square-edit-outline"
+            onPress={() => {
+              setWantsEditMail(true);
+            }}
+          />
+        </View>
+      ) : (
+        <Input name="mail" label={t("model.user.mail")} valueHook={(v: string) => v.trim()} />
       )}
 
-      {kycInfo?.blankedPhone && (
-        <>
-          <Text>{`${t("model.user.mobile_number")}: ${kycInfo.blankedPhone}`}</Text>
-          <SpacerV />
-        </>
-      )}
-
-      <Input name="mail" label={t("model.user.mail")} valueHook={(v: string) => v.trim()} />
       <SpacerV />
-      <PhoneNumber
-        name="phone"
-        label={t("model.user.mobile_number")}
-        placeholder="1761212112"
-        wrap={!device.SM}
-        country={country?.symbol}
-      />
+      {kycInfo?.blankedPhone && !wantsEditPhone ? (
+        <View style={styles.editable}>
+          <Input name="phone" label={t("model.user.mobile_number")} value={kycInfo.blankedPhone} disabled />
+          <IconButton
+            icon="square-edit-outline"
+            onPress={() => {
+              setWantsEditPhone(true);
+            }}
+          />
+        </View>
+      ) : (
+        <PhoneNumber
+          name="phone"
+          label={t("model.user.mobile_number")}
+          placeholder="1761212112"
+          wrap={!device.SM}
+          country={country?.symbol}
+        />
+      )}
       <SpacerV />
 
       {error != null && (
@@ -203,5 +211,13 @@ const KycDataEdit = ({ code, kycInfo, kycData, user, onChanged }: Props) => {
     </Form>
   );
 };
+
+const styles = StyleSheet.create({
+  editable: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+});
 
 export default KycDataEdit;

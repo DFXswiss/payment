@@ -43,14 +43,14 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLimitRequest, setIsLimitRequest] = useState(false);
   const [code, setCode] = useState<string>();
+  const [inputParams, setInputParams] = useState<any>();
   const [kycInfo, setKycInfo] = useState<KycInfo>();
   const [startProcess, setStartProcess] = useState<boolean>(false);
   const [kycData, setKycData] = useState<KycData>();
   const [isKycDataEdit, setKycDataEdit] = useState<boolean>(false);
   const [showsUploadDialog, setShowsUploadDialog] = useState<boolean>(false);
   const [isFileUploading, setIsFileUploading] = useState(false);
-  const [hasUploadedFile, setHasUploadFile] = useState(false);
-  const [isAutostart, setIsAutostart] = useState(false);
+  const [hasUploadedFile, setHasUploadedFile] = useState(false);
 
   useEffect(() => {
     // get params
@@ -58,7 +58,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     if (!params?.code) return onLoadFailed();
 
     setCode(params.code);
-    setIsAutostart(params.autostart);
+    setInputParams(params);
 
     // reset params
     nav.navigate(Routes.Kyc, { code: undefined, autostart: undefined, phone: undefined, mail: undefined });
@@ -66,9 +66,8 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     // get KYC info
     getKyc(params?.code)
       .then((result) => {
-        updateState(result, params);
-        if (params?.autostart && result.kycStatus !== KycStatus.NA) onContinue(result);
-        else if (params?.autostart && shouldStart(result)) requestStart(params?.code);
+        updateState(result);
+        if (params?.autostart) onContinue(result, params);
       })
       .catch(onLoadFailed);
   }, []);
@@ -81,7 +80,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     setIsLoading(true);
     postKyc(kycCode).then((result) => {
       updateState(result);
-      if (isAutostart || kycInProgress(result.kycStatus)) onContinue(result);
+      onContinue(result);
     });
   };
 
@@ -111,17 +110,14 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     nav.navigate(Routes.Home);
   };
 
-  const updateState = (info: KycInfo, params?: any) => {
+  const updateState = (info: KycInfo) => {
     setKycInfo(info);
-    if (!info.kycDataComplete && params.autostart) {
-      setKycData({ accountType: AccountType.PERSONAL, ...params });
-      setKycDataEdit(true);
-    }
     setIsLoading(false);
   };
 
-  const onContinue = (info: KycInfo) => {
+  const onContinue = (info: KycInfo, params?: any) => {
     if (!info.kycDataComplete) {
+      setKycData({ accountType: AccountType.PERSONAL, ...params });
       setKycDataEdit(true);
     } else if (kycInProgress(info?.kycStatus)) {
       if (!info?.sessionUrl) return NotificationService.error(t("feedback.load_failed"));
@@ -133,7 +129,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     } else if (kycCompleted(info?.kycStatus)) {
       setIsLimitRequest(true);
     } else if (shouldStart(info)) {
-      requestStart(code);
+      requestStart(info.kycHash);
     }
   };
 
@@ -143,7 +139,6 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     setShowsUploadDialog(newKycData.accountType === AccountType.BUSINESS);
 
     updateState(info);
-    if (isAutostart) onContinue(info);
   };
 
   const doUpload = async () => {
@@ -156,7 +151,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
         setIsFileUploading(true);
         return postFounderCertificate(files, code);
       })
-      .then(() => setHasUploadFile(true))
+      .then(() => setHasUploadedFile(true))
       .then(() => true)
       .catch(() => {
         NotificationService.error(t("feedback.file_error"));
@@ -217,7 +212,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
           <>
             <Portal>
               <Dialog
-                visible={showsUploadDialog && kycData?.accountType === AccountType.BUSINESS && !hasUploadedFile}
+                visible={showsUploadDialog && !hasUploadedFile}
                 onDismiss={() => setShowsUploadDialog(false)}
                 style={AppStyles.dialog}
               >
@@ -225,7 +220,9 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
                   <Paragraph>{t("model.kyc.request_business")}</Paragraph>
                 </Dialog.Content>
                 <Dialog.Actions>
-                  <DeFiButton color={Colors.Grey}>{t("action.abort")}</DeFiButton>
+                  <DeFiButton onPress={() => setShowsUploadDialog(false)} color={Colors.Grey}>
+                    {t("action.abort")}
+                  </DeFiButton>
                   <DeFiButton onPress={doUpload} loading={isFileUploading}>
                     {t("action.upload")}
                   </DeFiButton>
@@ -263,7 +260,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
               <SpacerV />
               {kycInfo.kycState !== KycState.REVIEW && (
                 <ButtonContainer>
-                  <DeFiButton mode="contained" onPress={() => onContinue(kycInfo)}>
+                  <DeFiButton mode="contained" onPress={() => onContinue(kycInfo, inputParams)}>
                     {t(kycCompleted(kycInfo.kycStatus) ? "model.kyc.increase_limit" : "action.next")}
                   </DeFiButton>
                 </ButtonContainer>

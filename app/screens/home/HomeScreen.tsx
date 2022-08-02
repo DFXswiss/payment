@@ -139,10 +139,8 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const onKycDataChanged = (newKycData: KycData, info: KycInfo) => {
     let newUser = user;
     if (newUser) {
-      Object.assign(newUser, newKycData);
-      Object.assign(newUser, info);
+      setUser({ ...newUser, ...newKycData, ...info });
     }
-    setUser(newUser);
     setIsUserEdit(false);
   };
 

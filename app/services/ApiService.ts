@@ -89,8 +89,6 @@ export const deleteApiKey = (): Promise<void> => {
 };
 
 // --- KYC --- //
-
-// TODO: check these services if called correctly with code
 export const putKycData = (data: KycData, code?: string): Promise<KycInfo> => {
   return fetchFrom<KycInfo>(`${KycUrl}/${code}/data`, "PUT", toKycDataDto(data));
 };

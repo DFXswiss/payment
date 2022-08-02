@@ -44,8 +44,7 @@ const UserEdit = ({ user, onUserChanged }: Props) => {
   };
 
   const rules: any = createRules({
-    mobileNumber: Validations.Required,
-    mail: [Validations.Mail, Validations.Required],
+    mail: [Validations.Mail],
     usedRef: Validations.Ref,
   });
 

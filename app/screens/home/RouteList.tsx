@@ -14,6 +14,9 @@ import { useDevice } from "../../hooks/useDevice";
 import { BuyRoute, BuyType } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
 import {
+  getBuyRouteHistory,
+  getCryptoRouteHistory,
+  getSellRouteHistory,
   getStakingBatches,
   putBuyRoute,
   putCryptoRoute,
@@ -39,6 +42,8 @@ import Loading from "../../components/util/Loading";
 import { CryptoRoute } from "../../models/CryptoRoute";
 import CryptoRouteEdit from "../../components/edit/CryptoRouteEdit";
 import Colors from "../../config/Colors";
+import RouteHistory from "../../components/RouteHistory";
+import { RouteHistoryAlias } from "../../models/RouteHistory";
 
 interface Props {
   user?: User;
@@ -78,6 +83,8 @@ const Placeholders = ({ device }: { device: DeviceClass }) => (
   </>
 );
 
+type RouteAlias = BuyRoute | SellRoute | StakingRoute | CryptoRoute;
+
 const RouteList = ({
   user,
   setUser,
@@ -108,11 +115,11 @@ const RouteList = ({
   const [isStakingLoading, setIsStakingLoading] = useState<{ [id: string]: boolean }>({});
   const [isCryptoLoading, setIsCryptoLoading] = useState<{ [id: string]: boolean }>({});
   const [isHistoryVisible, setIsHistoryVisible] = useState(false);
-  const [detailRoute, setDetailRoute] = useState<BuyRoute | SellRoute | StakingRoute | CryptoRoute | undefined>(
-    undefined
-  );
+  const [detailRoute, setDetailRoute] = useState<RouteAlias>();
   const [isBalanceDetail, setIsBalanceDetail] = useState(false);
   const [stakingBatches, setStakingBatches] = useState<StakingBatch[]>();
+  const [routeHistory, setRouteHistory] = useState<RouteHistoryAlias[]>();
+  const [isRouteHistoryVisible, setIsRouteHistoryVisible] = useState(false);
 
   const activeBuyRoutes = buyRoutes?.filter((r) => r.active);
   const activeSellRoutes = sellRoutes?.filter((r) => r.active);
@@ -143,10 +150,7 @@ const RouteList = ({
     setDetailRoute(route);
     setIsCryptoRouteEdit(false);
   };
-  const updateRoutes: <T extends BuyRoute | SellRoute | StakingRoute | CryptoRoute>(
-    route: T,
-    routes?: T[]
-  ) => T[] | undefined = (route, routes) => {
+  const updateRoutes: <T extends RouteAlias>(route: T, routes?: T[]) => T[] | undefined = (route, routes) => {
     const oldRoute = routes?.find((r) => r.id === route.id);
     if (oldRoute) {
       Object.assign(oldRoute, route);
@@ -185,6 +189,39 @@ const RouteList = ({
       .finally(() => setIsCryptoLoading((obj) => updateObject(obj, { [route.id]: false })));
   };
 
+  const fetchBuyHistory = (route: BuyRoute) => {
+    setRouteHistory(undefined);
+    setIsRouteHistoryVisible(true);
+    getBuyRouteHistory(route)
+      .then(setRouteHistory)
+      .catch(() => {
+        setIsRouteHistoryVisible(false);
+        NotificationService.error(t("feedback.load_failed"));
+      });
+  };
+
+  const fetchSellHistory = (route: SellRoute) => {
+    setRouteHistory(undefined);
+    setIsRouteHistoryVisible(true);
+    getSellRouteHistory(route)
+      .then(setRouteHistory)
+      .catch(() => {
+        setIsRouteHistoryVisible(false);
+        NotificationService.error(t("feedback.load_failed"));
+      });
+  };
+
+  const fetchCryptoHistory = (route: CryptoRoute) => {
+    setRouteHistory(undefined);
+    setIsRouteHistoryVisible(true);
+    getCryptoRouteHistory(route)
+      .then(setRouteHistory)
+      .catch(() => {
+        setIsRouteHistoryVisible(false);
+        NotificationService.error(t("feedback.load_failed"));
+      });
+  };
+
   const fetchStakingBatches = (route: StakingRoute) => {
     setStakingBatches(undefined);
     setIsBalanceDetail(true);
@@ -196,116 +233,150 @@ const RouteList = ({
       });
   };
 
-  const routeData = (route: BuyRoute | SellRoute | StakingRoute | CryptoRoute) =>
-    "blockchain" in route // crypto route
-      ? [
-          {
-            condition: true,
-            label: "model.route.deposit_address",
-            value: route.deposit?.address,
-            icon: "content-copy",
-            onPress: () => ClipboardService.copy(route.deposit?.address),
-          },
-          { condition: true, label: "model.route.blockchain", value: route.blockchain },
-          { condition: true, label: "model.route.asset", value: route.asset?.name },
-          {
-            condition: true,
-            label: "model.route.fee",
-            value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
-          },
-          { condition: true, label: "model.route.volume", value: `${formatAmount(route.volume)} €` },
-          { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
-        ]
-      : "fiat" in route // sell route
-      ? [
-          { condition: true, label: "model.route.fiat", value: route.fiat?.name },
-          { condition: true, label: "model.route.iban", value: route.iban },
-          {
-            condition: true,
-            label: "model.route.deposit_address",
-            value: route.deposit?.address,
-            icon: "content-copy",
-            onPress: () => ClipboardService.copy(route.deposit?.address),
-          },
-          { condition: true, label: "model.route.fee", value: `${route.fee}%` },
-          { condition: true, label: "model.route.min_deposit", value: "0.1 DFI / 1 USD" },
-          { condition: true, label: "model.route.volume", value: `${formatAmount(route.volume)} €` },
-        ]
-      : "rewardType" in route // staking route
-      ? [
-          {
-            condition: true,
-            label: "model.route.deposit_address",
-            value: route.deposit?.address,
-            icon: "content-copy",
-            onPress: () => ClipboardService.copy(route.deposit?.address),
-          },
-          { condition: true, label: "model.route.min_deposit", value: "0.1 DFI" },
-          { condition: true, label: "model.route.min_invest", value: "100 DFI" },
-          {
-            condition: true,
-            label: "model.route.reward",
-            value:
-              route.rewardType === PayoutType.BANK_ACCOUNT
-                ? `${route.rewardSell?.fiat.name} - ${route.rewardSell?.iban}`
-                : t(`model.route.${route.rewardType.toLowerCase()}`),
-          },
-          {
-            condition: route.rewardType === PayoutType.WALLET,
-            label: "model.route.reward_asset",
-            value: route.rewardAsset?.name,
-          },
-          { condition: true, label: "model.route.reward_fee", value: `${route.fee}%` },
-          { condition: true, label: "model.route.payback_date", value: `${route.period} ${t("model.route.days")}` },
-          {
-            condition: true,
-            label: "model.route.payback",
-            value:
-              route.paybackType === PayoutType.BANK_ACCOUNT
-                ? `${route.paybackSell?.fiat.name} - ${route.paybackSell?.iban}`
-                : t(`model.route.${route.paybackType.toLowerCase()}`),
-          },
-          {
-            condition: route.paybackType === PayoutType.WALLET,
-            label: "model.route.payback_asset",
-            value: route.paybackAsset?.name,
-          },
-          {
-            condition: true,
-            label: "model.route.balance",
-            value: `${formatAmount(route.balance)} DFI`,
-            icon: route.balance > 0 ? "chevron-right" : undefined,
-            onPress: () => fetchStakingBatches(route),
-          },
-          { condition: true, label: "model.route.rewards", value: `${formatAmount(route.rewardVolume)} EUR` },
-        ]
-      : // buy route
-        [
-          { condition: true, label: "model.route.type", value: t(`model.route.${route.type.toLowerCase()}`) },
-          { condition: route.type === BuyType.WALLET, label: "model.route.asset", value: route.asset?.name },
-          {
-            condition: route.type === BuyType.STAKING,
-            label: "model.route.staking",
-            value: `${t("model.route." + route.staking?.rewardType.toLowerCase())} - ${t(
-              "model.route." + route.staking?.paybackType.toLowerCase()
-            )}`,
-          },
-          { condition: true, label: "model.route.iban", value: route.iban },
-          {
-            condition: true,
-            label: "model.route.bank_usage",
-            value: route.bankUsage,
-            icon: "content-copy",
-            onPress: () => ClipboardService.copy(route.bankUsage),
-          },
-          {
-            condition: true,
-            label: "model.route.fee",
-            value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
-          },
-          { condition: true, label: "model.route.volume", value: `${formatAmount(route.volume)} €` },
-          { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
-        ];
+  const cryptoRouteData = (route: CryptoRoute) => [
+    {
+      condition: true,
+      label: "model.route.deposit_address",
+      value: route.deposit?.address,
+      icon: "content-copy",
+      onPress: () => ClipboardService.copy(route.deposit?.address),
+    },
+    { condition: true, label: "model.route.blockchain", value: route.blockchain },
+    { condition: true, label: "model.route.asset", value: route.asset?.name },
+    { condition: true, label: "model.route.fee", value: `${route.fee}%` },
+    {
+      condition: true,
+      label: "model.route.volume",
+      value: `${formatAmount(route.volume)} €`,
+      icon: route.volume > 0 ? "chevron-right" : undefined,
+      onPress: () => fetchCryptoHistory(route),
+    },
+    { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
+  ];
+
+  const sellRouteData = (route: SellRoute) => [
+    { condition: true, label: "model.route.fiat", value: route.fiat?.name },
+    { condition: true, label: "model.route.iban", value: route.iban },
+    {
+      condition: true,
+      label: "model.route.deposit_address",
+      value: route.deposit?.address,
+      icon: "content-copy",
+      onPress: () => ClipboardService.copy(route.deposit?.address),
+    },
+    { condition: true, label: "model.route.fee", value: `${route.fee}%` },
+    { condition: true, label: "model.route.min_deposit", value: "0.1 DFI / 1 USD" },
+    {
+      condition: true,
+      label: "model.route.volume",
+      value: `${formatAmount(route.volume)} €`,
+      icon: route.volume > 0 ? "chevron-right" : undefined,
+      onPress: () => fetchSellHistory(route),
+    },
+  ];
+
+  const stakingRouteData = (route: StakingRoute) => [
+    {
+      condition: true,
+      label: "model.route.deposit_address",
+      value: route.deposit?.address,
+      icon: "content-copy",
+      onPress: () => ClipboardService.copy(route.deposit?.address),
+    },
+    { condition: true, label: "model.route.min_deposit", value: "0.1 DFI" },
+    { condition: true, label: "model.route.min_invest", value: "100 DFI" },
+    {
+      condition: true,
+      label: "model.route.reward",
+      value:
+        route.rewardType === PayoutType.BANK_ACCOUNT
+          ? `${route.rewardSell?.fiat.name} - ${route.rewardSell?.iban}`
+          : t(`model.route.${route.rewardType.toLowerCase()}`),
+    },
+    {
+      condition: route.rewardType === PayoutType.WALLET,
+      label: "model.route.reward_asset",
+      value: route.rewardAsset?.name,
+    },
+    { condition: true, label: "model.route.reward_fee", value: `${route.fee}%` },
+    { condition: true, label: "model.route.payback_date", value: `${route.period} ${t("model.route.days")}` },
+    {
+      condition: true,
+      label: "model.route.payback",
+      value:
+        route.paybackType === PayoutType.BANK_ACCOUNT
+          ? `${route.paybackSell?.fiat.name} - ${route.paybackSell?.iban}`
+          : t(`model.route.${route.paybackType.toLowerCase()}`),
+    },
+    {
+      condition: route.paybackType === PayoutType.WALLET,
+      label: "model.route.payback_asset",
+      value: route.paybackAsset?.name,
+    },
+    {
+      condition: true,
+      label: "model.route.balance",
+      value: `${formatAmount(route.balance)} DFI`,
+      icon: route.balance > 0 ? "chevron-right" : undefined,
+      onPress: () => fetchStakingBatches(route),
+    },
+    { condition: true, label: "model.route.rewards", value: `${formatAmount(route.rewardVolume)} EUR` },
+  ];
+
+  const buyRouteData = (route: BuyRoute) => [
+    { condition: true, label: "model.route.type", value: t(`model.route.${route.type.toLowerCase()}`) },
+    { condition: route.type === BuyType.WALLET, label: "model.route.asset", value: route.asset?.name },
+    {
+      condition: route.type === BuyType.STAKING,
+      label: "model.route.staking",
+      value: `${t("model.route." + route.staking?.rewardType.toLowerCase())} - ${t(
+        "model.route." + route.staking?.paybackType.toLowerCase()
+      )}`,
+    },
+    { condition: true, label: "model.route.iban", value: route.iban },
+    {
+      condition: true,
+      label: "model.route.bank_usage",
+      value: route.bankUsage,
+      icon: "content-copy",
+      onPress: () => ClipboardService.copy(route.bankUsage),
+    },
+    {
+      condition: true,
+      label: "model.route.fee",
+      value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
+    },
+    {
+      condition: true,
+      label: "model.route.volume",
+      value: `${formatAmount(route.volume)} €`,
+      icon: route.volume > 0 ? "chevron-right" : undefined,
+      onPress: () => fetchBuyHistory(route),
+    },
+    { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
+  ];
+
+  const routeData = (route: RouteAlias) => {
+    if ("blockchain" in route) return cryptoRouteData(route);
+    else if ("fiat" in route) return sellRouteData(route);
+    else if ("rewardType" in route) return stakingRouteData(route);
+    else return buyRouteData(route);
+  };
+
+  const deleteRoute = (route: RouteAlias): Promise<boolean | void> => {
+    if ("blockchain" in route) return deleteCryptoRoute(cryptoRoutes?.find((r) => r.id === route.id) as CryptoRoute);
+    else if ("fiat" in route) return deleteSellRoute(sellRoutes?.find((r) => r.id === route.id) as SellRoute);
+    else if ("rewardType" in route)
+      return deleteStakingRoute(stakingRoutes?.find((r) => r.id === route.id) as StakingRoute);
+    else return deleteBuyRoute(buyRoutes?.find((r) => r.id === route.id) as BuyRoute);
+  };
+
+  const isRouteLoading = (route: RouteAlias): boolean => {
+    if ("blockchain" in route) return isCryptoLoading[route.id];
+    else if ("fiat" in route) return isSellLoading[route.id];
+    else if ("rewardType" in route) return isStakingLoading[route.id];
+    else return isBuyLoading[route.id];
+  };
 
   return (
     <>
@@ -344,22 +415,9 @@ const RouteList = ({
             <View>
               <ButtonContainer>
                 <DeFiButton
-                  loading={
-                    "type" in detailRoute
-                      ? isBuyLoading[detailRoute.id]
-                      : "fiat" in detailRoute
-                      ? isSellLoading[detailRoute.id]
-                      : isStakingLoading[detailRoute.id]
-                  }
+                  loading={isRouteLoading(detailRoute)}
                   onPress={() => {
-                    ("blockchain" in detailRoute
-                      ? deleteCryptoRoute(cryptoRoutes?.find((r) => r.id === detailRoute.id) as CryptoRoute)
-                      : "fiat" in detailRoute
-                      ? deleteSellRoute(sellRoutes?.find((r) => r.id === detailRoute.id) as SellRoute)
-                      : "rewardType" in detailRoute
-                      ? deleteStakingRoute(stakingRoutes?.find((r) => r.id === detailRoute.id) as StakingRoute)
-                      : deleteBuyRoute(buyRoutes?.find((r) => r.id === detailRoute.id) as BuyRoute)
-                    ).then(() => setDetailRoute(undefined));
+                    deleteRoute(detailRoute).then(() => setDetailRoute(undefined));
                   }}
                   disabled={"isInUse" in detailRoute && detailRoute.isInUse}
                 >
@@ -448,6 +506,15 @@ const RouteList = ({
         isBeta={true}
       >
         <CryptoRouteEdit routes={cryptoRoutes} onRouteCreated={onCryptoRouteCreated} />
+      </DeFiModal>
+
+      <DeFiModal
+        isVisible={isRouteHistoryVisible}
+        setIsVisible={() => setIsRouteHistoryVisible(false)}
+        title={t("model.route.history")}
+        style={{ width: 700 }}
+      >
+        {routeHistory != null ? <RouteHistory history={routeHistory} /> : <Loading size="large" />}
       </DeFiModal>
 
       <DeFiModal

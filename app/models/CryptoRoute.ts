@@ -17,4 +17,5 @@ export interface CryptoRoute {
   staking?: StakingRoute;
   volume: number;
   annualVolume: number;
+  refBonus: number;
 }

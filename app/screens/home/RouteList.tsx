@@ -208,7 +208,11 @@ const RouteList = ({
           },
           { condition: true, label: "model.route.blockchain", value: route.blockchain },
           { condition: true, label: "model.route.asset", value: route.asset?.name },
-          { condition: true, label: "model.route.fee", value: `${route.fee}%` },
+          {
+            condition: true,
+            label: "model.route.fee",
+            value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
+          },
           { condition: true, label: "model.route.volume", value: `${formatAmount(route.volume)} €` },
           { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
         ]

@@ -46,6 +46,12 @@ export enum CfpVote {
   NEUTRAL = "Neutral",
 }
 
+export enum AmlCheck {
+  PASS = "Pass",
+  FAIL = "Fail",
+  PENDING = "Pending",
+}
+
 export interface KycInfo {
   kycStatus: KycStatus;
   kycState: KycState;

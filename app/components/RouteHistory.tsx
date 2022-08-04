@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { DataTable } from "react-native-paper";
 import { CompactCell, CompactHeader, CompactRow, CompactTitle } from "../elements/Tables";
 import Moment from "moment";
-import { formatAmount } from "../utils/Utils";
+import { formatAmount, openUrl } from "../utils/Utils";
 import { useDevice } from "../hooks/useDevice";
 import IconButton from "./util/IconButton";
 import DeFiModal from "./util/DeFiModal";
@@ -26,6 +26,10 @@ const RouteHistory = ({ history }: Props) => {
   const [transaction, setTransaction] = useState<RouteHistoryAlias>();
 
   const invalidValue = "-";
+  // Krysh: I would love to take external link here. But that is not available in MaterialCommunityIcons
+  // and I am not quite sure, if we should introduce other icon sets like Feather
+  const iconOpenLink = "export";
+  const iconShowDetail = "chevron-right";
 
   const isInvalid = (value: any): boolean => {
     return value === undefined || value === null;
@@ -87,7 +91,7 @@ const RouteHistory = ({ history }: Props) => {
 
   const openLink = async (tx: RouteHistoryAlias) => {
     const link = defiscanTxLink(tx);
-    if (await Linking.canOpenURL(link)) await Linking.openURL(link);
+    openUrl(link);
   };
 
   const data = (tx: RouteHistoryAlias) => [
@@ -99,7 +103,7 @@ const RouteHistory = ({ history }: Props) => {
     {
       condition: true,
       label: "model.route.tx_link",
-      icon: "chevron-right",
+      icon: iconOpenLink,
       onPress: () => openLink(tx),
     },
   ];
@@ -112,7 +116,7 @@ const RouteHistory = ({ history }: Props) => {
             {data(transaction)
               .filter((d) => d.condition)
               .map((d) => (
-                <CompactRow key={d.label}>
+                <CompactRow key={d.label} style={d.icon ? styles.cleanEnd : {}}>
                   <CompactCell style={styles.default}>{t(d.label)}</CompactCell>
                   {d.value && <CompactCell style={styles.right}>{d.value}</CompactCell>}
                   {d.icon && d.onPress && (
@@ -127,7 +131,7 @@ const RouteHistory = ({ history }: Props) => {
       </DeFiModal>
 
       <DataTable>
-        <CompactHeader>
+        <CompactHeader style={styles.cleanEnd}>
           <CompactTitle style={styles.default}>{t("model.route.date")}</CompactTitle>
           {device.MD && (
             <>
@@ -140,7 +144,7 @@ const RouteHistory = ({ history }: Props) => {
           <CompactTitle style={styles.icon}>{device.MD ? t("model.route.link") : ""}</CompactTitle>
         </CompactHeader>
         {history.map((entry, i) => (
-          <CompactRow style={styles.row} key={i}>
+          <CompactRow style={[styles.row, styles.cleanEnd]} key={i}>
             <CompactCell style={styles.default}>{dateOf(entry)}</CompactCell>
             {device.MD && (
               <>
@@ -152,7 +156,7 @@ const RouteHistory = ({ history }: Props) => {
             <CompactCell style={styles.right}>{statusOf(entry)}</CompactCell>
             <CompactCell style={styles.icon}>
               <IconButton
-                icon="chevron-right"
+                icon={device.MD ? iconOpenLink : iconShowDetail}
                 onPress={() => {
                   device.MD ? openLink(entry) : showDetail(entry);
                 }}
@@ -169,6 +173,9 @@ const styles = StyleSheet.create({
   row: {
     height: 48,
   },
+  cleanEnd: {
+    paddingRight: 0,
+  },
   default: {
     flex: 2,
   },
@@ -178,7 +185,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: "center",
   },
 });
 

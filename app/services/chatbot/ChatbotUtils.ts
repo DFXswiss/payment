@@ -175,7 +175,8 @@ export const chatbotLocalize = (values?: ChatbotLanguageValues, language?: strin
       localizedValue = localizedValue.replace(dateFormat, "").replace("(", "").replace(")", "").trim();
     }
   }
-  return localizedValue;
+  // this is intended not a normal whitespace
+  return localizedValue.replace("&nbsp;", " ");
 };
 
 /// Parses each item and generates data and assign label

@@ -53,7 +53,7 @@ const UserEdit = ({ user, onUserChanged }: Props) => {
       <Input name="mail" label={t("model.user.mail")} valueHook={(v: string) => v.trim()} />
       <SpacerV />
       <PhoneNumber
-        name="mobileNumber"
+        name="phone"
         label={t("model.user.mobile_number")}
         placeholder="1761212112"
         wrap={!device.SM}

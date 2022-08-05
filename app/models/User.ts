@@ -97,7 +97,7 @@ export interface User {
   accountType: AccountType;
   address: string;
   mail: string;
-  mobileNumber: string;
+  phone: string;
   language: Language;
   usedRef: string;
   status: UserStatus;
@@ -112,32 +112,32 @@ export interface User {
 }
 
 export interface UserDetailDto extends UserDto {
-  ref?: string
-  refFeePercent?: number
-  refVolume: number
-  refCredit: number
-  paidRefCredit: number
-  refCount: number
-  refCountActive: number
-  stakingBalance: number
+  ref?: string;
+  refFeePercent?: number;
+  refVolume: number;
+  refCredit: number;
+  paidRefCredit: number;
+  refCount: number;
+  refCountActive: number;
+  stakingBalance: number;
 }
 
 export interface UserDetail extends User {
-  ref?: string
-  refFeePercent?: number
-  refVolume: number
-  refCredit: number
-  paidRefCredit: number
-  refCount: number
-  refCountActive: number
-  stakingBalance: number
+  ref?: string;
+  refFeePercent?: number;
+  refVolume: number;
+  refCredit: number;
+  paidRefCredit: number;
+  refCount: number;
+  refCountActive: number;
+  stakingBalance: number;
 }
 
 export const fromUserDto = (user: UserDto): User => ({
   accountType: user.accountType,
   address: user.address,
   mail: user.mail ?? "",
-  mobileNumber: user.phone,
+  phone: user.phone,
   language: user.language,
   usedRef: user.usedRef ?? "",
   status: user.status,
@@ -156,7 +156,7 @@ export const toUserDto = (user: User): UserDto => ({
   address: user.address,
 
   mail: toStringDto(user.mail),
-  phone: user.mobileNumber,
+  phone: user.phone,
   language: user.language,
   usedRef: toStringDto(user.usedRef),
   status: user.status,
@@ -179,8 +179,8 @@ export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
   paidRefCredit: dto.paidRefCredit,
   refCount: dto.refCount,
   refCountActive: dto.refCountActive,
-  stakingBalance: dto.stakingBalance
-})
+  stakingBalance: dto.stakingBalance,
+});
 
 const toStringDto = (string: string): string | null => (string === "" ? null : string);
 

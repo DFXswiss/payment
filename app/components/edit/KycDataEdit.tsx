@@ -38,7 +38,7 @@ const KycDataEdit = ({ code, kycInfo, kycData, user, onChanged }: Props) => {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<KycData>({ defaultValues: kycData ? kycData : { phone: user?.mobileNumber, ...user } });
+  } = useForm<KycData>({ defaultValues: kycData ? kycData : user });
   const accountType = useWatch({ control, name: "accountType" });
   const country = useWatch({ control, name: "country" });
 

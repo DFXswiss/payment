@@ -339,7 +339,20 @@
         "output_date": "Date de fin",
         "crypto": "Crypto",
         "new_crypto": "Nouvelle route crypto",
-        "Blockchain": "Blockchain"
+        "Blockchain": "Blockchain",
+        "aml_check": "Contrôle AML",
+        "aml_check_pass": "Réussi",
+        "aml_check_fail": "Échoué",
+        "aml_check_pending": "En attente",
+        "link": "Lien",
+        "input": "Entrée",
+        "output": "Sortie",
+        "date": "Date",
+        "status": "Statut",
+        "status_complete": "Achevé",
+        "status_incomplete": "En cours d'exécution",
+        "tx_details": "Détails de la transaction",
+        "tx_link": "Lien vers la transaction sur defiscan.live"
       },
       "history": {
         "buy": "Transactions d'achat",

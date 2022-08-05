@@ -137,10 +137,14 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   };
 
   const onKycDataChanged = (newKycData: KycData, info: KycInfo) => {
-    let newUser = user;
-    if (newUser) {
-      setUser({ ...newUser, ...newKycData, ...info });
-    }
+    setUser(
+      (currentUser) =>
+        currentUser && {
+          ...currentUser,
+          ...newKycData,
+          ...info,
+        }
+    );
     setIsUserEdit(false);
   };
 
@@ -153,7 +157,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     navigate(Routes.Kyc, {
       code: code ?? "",
       autostart: "1",
-      phone: user?.mobileNumber ?? "",
+      phone: user?.phone ?? "",
       mail: user?.mail ?? "",
     });
 
@@ -177,7 +181,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       setBuyRoutes(routes.buy);
       setSellRoutes(routes.sell);
       setStakingRoutes(routes.staking);
-      setCanVote(routes.staking.find((r) => r.balance >= 100) != null);      
+      setCanVote(routes.staking.find((r) => r.balance >= 100) != null);
       setCryptoRoutes(routes.crypto);
     });
   };
@@ -219,7 +223,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const userData = (user: User) => [
     { condition: Boolean(user.address), label: "model.user.address", value: user.address },
     { condition: true, label: "model.user.mail", value: user.mail, emptyHint: t("model.user.add_mail") },
-    { condition: Boolean(user.mobileNumber), label: "model.user.mobile_number", value: user.mobileNumber },
+    { condition: Boolean(user.phone), label: "model.user.mobile_number", value: user.phone },
     { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef },
     {
       condition: Boolean(buyVolume()),

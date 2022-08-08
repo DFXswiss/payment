@@ -18,4 +18,5 @@ export interface CryptoRoute {
   volume: number;
   annualVolume: number;
   refBonus: number;
+  minDeposit: number;
 }

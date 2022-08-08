@@ -5,7 +5,7 @@ import { SellRoute } from "./SellRoute";
 export enum PayoutType {
   REINVEST = "Reinvest",
   WALLET = "Wallet",
-  BANK_ACCOUNT = 'BankAccount'
+  BANK_ACCOUNT = "BankAccount",
 }
 
 export interface StakingRoute {
@@ -23,4 +23,6 @@ export interface StakingRoute {
   isInUse: boolean;
   fee: number;
   period: number;
+  minInvestment: number;
+  minDeposit: number;
 }

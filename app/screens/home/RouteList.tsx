@@ -231,6 +231,7 @@ const RouteList = ({
       label: "model.route.fee",
       value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
     },
+    { condition: true, label: "model.route.min_deposit", value: `${route.minDeposit} BTC` }, // BTC hardcoded until we get asset for deposit from API
     {
       condition: true,
       label: "model.route.volume",
@@ -252,7 +253,11 @@ const RouteList = ({
       onPress: () => ClipboardService.copy(route.deposit?.address),
     },
     { condition: true, label: "model.route.fee", value: `${route.fee}%` },
-    { condition: true, label: "model.route.min_deposit", value: "0.1 DFI / 1 USD" },
+    {
+      condition: true,
+      label: "model.route.min_deposit",
+      value: `${route.minDeposit.dfi} DFI / ${route.minDeposit.usd} USD`,
+    },
     {
       condition: true,
       label: "model.route.volume",
@@ -270,8 +275,8 @@ const RouteList = ({
       icon: "content-copy",
       onPress: () => ClipboardService.copy(route.deposit?.address),
     },
-    { condition: true, label: "model.route.min_deposit", value: "0.1 DFI" },
-    { condition: true, label: "model.route.min_invest", value: "100 DFI" },
+    { condition: true, label: "model.route.min_deposit", value: `${route.minDeposit} DFI` },
+    { condition: true, label: "model.route.min_invest", value: `${route.minInvestment} DFI` },
     {
       condition: true,
       label: "model.route.reward",
@@ -333,6 +338,7 @@ const RouteList = ({
       label: "model.route.fee",
       value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
     },
+    { condition: true, label: "model.route.min_deposit", value: `${route.minDeposit} USD` },
     {
       condition: true,
       label: "model.route.volume",

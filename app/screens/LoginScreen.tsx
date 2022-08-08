@@ -31,11 +31,15 @@ interface LoginData {
   refCode: string;
 }
 
+const messageDefichain =
+  "By signing this message, you confirm that you are the sole owner of the provided DeFiChain address and are in possession of its private key. Your ID:";
+const messageEthereum =
+  "By signing this message, you confirm that you are the sole owner of the provided Blockchain address and are in possession of its private key. Your ID:";
+
 const signingCommand = (address: string) => {
-  const message = `By signing this message, you confirm that you are the sole owner of the provided DeFiChain address and are in possession of its private key. Your ID: ${address}`
-      .split(" ")
-      .join("_");
-  return `signmessage "${address}" "${message}"`;
+  const isEthereum = address.startsWith("0x");
+  const message = `${isEthereum ? messageEthereum : messageDefichain} ${address}`.split(" ").join("_");
+  return isEthereum ? message : `signmessage "${address}" "${message}"`;
 };
 
 const LoginScreen = () => {

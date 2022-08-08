@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Linking, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { useTranslation } from "react-i18next";
 import { DataTable } from "react-native-paper";
 import { CompactCell, CompactHeader, CompactRow, CompactTitle } from "../elements/Tables";
@@ -32,7 +32,7 @@ const RouteHistory = ({ history }: Props) => {
   const iconShowDetail = "chevron-right";
 
   const isInvalid = (value: any): boolean => {
-    return value === undefined || value === null;
+    return value == null;
   };
 
   const dateFormat = (): string => {
@@ -52,7 +52,12 @@ const RouteHistory = ({ history }: Props) => {
     tx: RouteHistoryAlias,
     direction: DirectionType
   ): string => {
-    return needsFormat(tx, direction) ? `${formatAmount(amount)} ${asset}` : `${amount} ${asset}`;
+    // Krysh: only non fiat could be so small, that we need to use toFixed(8)
+    // 8 because on DeFiChain it is the last possible decimal to be shown
+    const useToFixed = ("" + amount).includes("e-");
+    const amountToBeUsed = useToFixed ? amount.toFixed(8) : amount;
+
+    return needsFormat(tx, direction) ? `${formatAmount(amount)} ${asset}` : `${amountToBeUsed} ${asset}`;
   };
 
   const dateOf = (tx: RouteHistoryAlias): string => {
@@ -110,7 +115,7 @@ const RouteHistory = ({ history }: Props) => {
 
   return (
     <>
-      <DeFiModal isVisible={showsDetail} setIsVisible={() => setShowsDetail(false)} title={t("model.route.tx_details")}>
+      <DeFiModal isVisible={showsDetail} setIsVisible={setShowsDetail} title={t("model.route.tx_details")}>
         {transaction && (
           <DataTable>
             {data(transaction)

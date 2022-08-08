@@ -189,37 +189,20 @@ const RouteList = ({
       .finally(() => setIsCryptoLoading((obj) => updateObject(obj, { [route.id]: false })));
   };
 
-  const fetchBuyHistory = (route: BuyRoute) => {
+  const fetchHistory = (route: BuyRoute | SellRoute | CryptoRoute) => {
     setRouteHistory(undefined);
     setIsRouteHistoryVisible(true);
-    getBuyRouteHistory(route)
-      .then(setRouteHistory)
-      .catch(() => {
-        setIsRouteHistoryVisible(false);
-        NotificationService.error(t("feedback.load_failed"));
-      });
-  };
 
-  const fetchSellHistory = (route: SellRoute) => {
-    setRouteHistory(undefined);
-    setIsRouteHistoryVisible(true);
-    getSellRouteHistory(route)
-      .then(setRouteHistory)
-      .catch(() => {
-        setIsRouteHistoryVisible(false);
-        NotificationService.error(t("feedback.load_failed"));
-      });
-  };
+    let promise: Promise<RouteHistoryAlias[]>;
 
-  const fetchCryptoHistory = (route: CryptoRoute) => {
-    setRouteHistory(undefined);
-    setIsRouteHistoryVisible(true);
-    getCryptoRouteHistory(route)
-      .then(setRouteHistory)
-      .catch(() => {
-        setIsRouteHistoryVisible(false);
-        NotificationService.error(t("feedback.load_failed"));
-      });
+    if ("blockchain" in route) promise = getCryptoRouteHistory(route);
+    else if ("fiat" in route) promise = getSellRouteHistory(route);
+    else promise = getBuyRouteHistory(route);
+
+    promise.then(setRouteHistory).catch(() => {
+      setIsRouteHistoryVisible(false);
+      NotificationService.error(t("feedback.load_failed"));
+    });
   };
 
   const fetchStakingBatches = (route: StakingRoute) => {
@@ -253,7 +236,7 @@ const RouteList = ({
       label: "model.route.volume",
       value: `${formatAmount(route.volume)} €`,
       icon: route.volume > 0 ? "chevron-right" : undefined,
-      onPress: () => fetchCryptoHistory(route),
+      onPress: () => fetchHistory(route),
     },
     { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
   ];
@@ -275,7 +258,7 @@ const RouteList = ({
       label: "model.route.volume",
       value: `${formatAmount(route.volume)} €`,
       icon: route.volume > 0 ? "chevron-right" : undefined,
-      onPress: () => fetchSellHistory(route),
+      onPress: () => fetchHistory(route),
     },
   ];
 
@@ -355,7 +338,7 @@ const RouteList = ({
       label: "model.route.volume",
       value: `${formatAmount(route.volume)} €`,
       icon: route.volume > 0 ? "chevron-right" : undefined,
-      onPress: () => fetchBuyHistory(route),
+      onPress: () => fetchHistory(route),
     },
     { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
   ];
@@ -440,7 +423,7 @@ const RouteList = ({
 
       <DeFiModal
         isVisible={isBalanceDetail}
-        setIsVisible={() => setIsBalanceDetail(false)}
+        setIsVisible={setIsBalanceDetail}
         title={t("model.route.balance_details")}
         style={{ width: 450 }}
       >
@@ -514,7 +497,7 @@ const RouteList = ({
 
       <DeFiModal
         isVisible={isRouteHistoryVisible}
-        setIsVisible={() => setIsRouteHistoryVisible(false)}
+        setIsVisible={setIsRouteHistoryVisible}
         title={t("model.route.history")}
         style={{ width: 700 }}
       >

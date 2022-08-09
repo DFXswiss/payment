@@ -39,7 +39,7 @@ const RouteHistory = ({ history }: Props) => {
     return device.SM ? "L HH:mm" : "L";
   };
 
-  const needsFormat = (tx: RouteHistoryAlias, direction: DirectionType): boolean => {
+  const isFiatInput = (tx: RouteHistoryAlias, direction: DirectionType): boolean => {
     return (
       (tx.type === RouteHistoryType.BUY && direction === DirectionType.INPUT) ||
       (tx.type === RouteHistoryType.SELL && direction === DirectionType.OUTPUT)
@@ -57,7 +57,7 @@ const RouteHistory = ({ history }: Props) => {
     const useToFixed = ("" + amount).includes("e-");
     const amountToBeUsed = useToFixed ? amount.toFixed(8) : amount;
 
-    return needsFormat(tx, direction) ? `${formatAmount(amount)} ${asset}` : `${amountToBeUsed} ${asset}`;
+    return isFiatInput(tx, direction) ? `${formatAmount(amount)} ${asset}` : `${amountToBeUsed} ${asset}`;
   };
 
   const dateOf = (tx: RouteHistoryAlias): string => {

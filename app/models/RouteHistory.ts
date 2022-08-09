@@ -1,9 +1,13 @@
-import { AmlCheck } from "./User";
-
 export enum RouteHistoryType {
   BUY,
   SELL,
   CRYPTO,
+}
+
+export enum AmlCheck {
+  PASS = "Pass",
+  FAIL = "Fail",
+  PENDING = "Pending",
 }
 
 export type RouteHistoryAlias = BuyRouteHistory | SellRouteHistory | CryptoRouteHistory;

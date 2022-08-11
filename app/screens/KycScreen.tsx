@@ -34,6 +34,7 @@ import AppStyles from "../styles/AppStyles";
 import Colors from "../config/Colors";
 import { KycData } from "../models/KycData";
 import KycDataEdit from "../components/edit/KycDataEdit";
+import { ApiError } from "../models/ApiDto";
 
 const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const { t } = useTranslation();
@@ -51,6 +52,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const [showsUploadDialog, setShowsUploadDialog] = useState<boolean>(false);
   const [isFileUploading, setIsFileUploading] = useState(false);
   const [hasUploadedFile, setHasUploadedFile] = useState(false);
+  const [showsLinkInstructions, setShowsLinkInstructions] = useState(false);
 
   useEffect(() => {
     // get params
@@ -78,10 +80,21 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
 
   const requestStart = (kycCode?: string) => {
     setIsLoading(true);
-    postKyc(kycCode).then((result) => {
-      updateState(result);
-      onContinue(result);
-    });
+    postKyc(kycCode)
+      .then((result) => {
+        updateState(result);
+        onContinue(result);
+      })
+      .catch((error: ApiError) => {
+        if (error.statusCode === 409) {
+          setShowsLinkInstructions(true);
+        } else {
+          onLoadFailed();
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   };
 
   const finishChatBot = (nthTry = 13): Promise<void> => {
@@ -226,6 +239,21 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
                   <DeFiButton onPress={doUpload} loading={isFileUploading}>
                     {t("action.upload")}
                   </DeFiButton>
+                </Dialog.Actions>
+              </Dialog>
+            </Portal>
+
+            <Portal>
+              <Dialog
+                visible={showsLinkInstructions}
+                onDismiss={() => setShowsLinkInstructions(false)}
+                style={AppStyles.dialog}
+              >
+                <Dialog.Content>
+                  <Paragraph>{t("link.instructions")}</Paragraph>
+                </Dialog.Content>
+                <Dialog.Actions>
+                  <DeFiButton onPress={() => setShowsLinkInstructions(false)}>{t("action.ok")}</DeFiButton>
                 </Dialog.Actions>
               </Dialog>
             </Portal>

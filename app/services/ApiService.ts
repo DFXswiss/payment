@@ -34,6 +34,7 @@ import { CryptoRoute } from "../models/CryptoRoute";
 import { attachType, CryptoRouteHistory, RouteHistoryType } from "../models/RouteHistory";
 import { SellRouteHistory } from "../models/RouteHistory";
 import { BuyRouteHistory } from "../models/RouteHistory";
+import { LinkDto } from "../models/Link";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -52,6 +53,7 @@ const LanguageUrl = "language";
 const BankTxUrl = "bankTx";
 const StatisticUrl = "statistic";
 const SettingUrl = "setting/frontend";
+const LinkUrl = "link";
 
 // --- AUTH --- //
 export const signIn = (credentials?: Credentials): Promise<string> => {
@@ -224,6 +226,11 @@ export const getStatistic = (): Promise<Statistic> => {
 
 export const getCfpResults = (voting: string): Promise<CfpResult[]> => {
   return fetchFrom(`${StatisticUrl}/cfp/${voting}`);
+};
+
+// --- LINK --- //
+export const postLink = (link: LinkDto): Promise<void> => {
+  return fetchFrom(LinkUrl, "POST", link);
 };
 
 // --- MASTER DATA --- //

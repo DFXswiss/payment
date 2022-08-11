@@ -8,5 +8,6 @@ export default {
   SpecialVoting: `${PageTitle} - Voting`,
   Admin: `${PageTitle} - Admin`,
   Kyc: `${PageTitle} - KYC`,
+  Link: `${PageTitle} - Link`,
   NotFound: `${PageTitle} - NotFound`,
 };

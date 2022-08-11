@@ -379,6 +379,9 @@
       "explanation": "Cada usuario del Servicio de participación de DFI de DFX recibe un voto ponderado en función de su inversión de DFI. Hay dos mecanismos de votación alternativos para elegir. Opciones:\n\n\n• Colectivo: DFX votará sí/no con todos los masternodes como colectivo.\n\n\n• Proporcional: DFX votará sí/no/neutral con todos los masternodes en proporción a los votos emitidos.",
       "description": "Vista colectiva:\n\nDependiendo de los resultados de la votación de los respectivos CFP/DFIP de la comunidad DFX, DFX vota con todos los masternodes para sus clientes.\n\n\nCFP:\n\n<= 50% - DFX vota \"no\" con todos los masternodes.\n> 50% - DFX vota \"sí\" con todos los masternodes\n\n\nDFIP:\n\n<= 66,66 % - DFX vota \"no\" con todos los masternodes\n> 66,66 % - DFX vota \"sí\" con todos los masternodes\n\n\nLa consideración colectiva solo se aplica siempre que DFX opere <10 % de los masternodes de DeFiChain para sus clientes. Si se supera este umbral, DFX seleccionará automáticamente la consideración proporcional\n\n\nConsideración proporcional:\n\nDependiendo de los resultados de la votación de los respectivos CFP/DFIP de la comunidad DFX, DFX vota sí/no/neutral para sus clientes con todos los masternodes proporcionalmente a los votos emitidos.",
       "neutral": "Sin preferencias"
+    },
+    "link": {
+      "instructions": "It seems you are already verified with another address.\n\nBefore you are doing our KYC process again, we sent you an email to link your new address to your verified account."
     }
   }
 }

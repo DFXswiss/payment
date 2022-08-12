@@ -25,7 +25,8 @@
       "upload": "Carregar",
       "send": "Enviar",
       "start": "Início",
-      "search": "Pesquisa"
+      "search": "Pesquisa",
+      "link": "Link"
     },
     "feedback": {
       "page_not_found": "Página não encontrada!",
@@ -391,7 +392,8 @@
       "neutral": "Sem preferência"
     },
     "link": {
-      "instructions": "It seems you are already verified with another address.\n\nBefore you are doing our KYC process again, we sent you an email to link your new address to your verified account."
+      "instructions": "It seems you are already verified with another address.\n\nBefore you are doing our KYC process again, we sent you an email to link your new address to your verified account.",
+      "success": "Successfully linked your addresses."
     }
   }
 }

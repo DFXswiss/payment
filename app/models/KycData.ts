@@ -1,5 +1,5 @@
 import { Country } from "./Country";
-import { AccountType } from "./User";
+import { AccountType, UserDetail } from "./User";
 
 export interface KycData {
   accountType: AccountType;
@@ -10,6 +10,9 @@ export interface KycData {
   zip: string;
   location: string;
   country: Country;
+
+  mail: string;
+  phone: string;
 
   organizationName: string;
   organizationStreet: string;
@@ -29,6 +32,9 @@ export interface KycDataDto {
   location: string;
   country: Country;
 
+  mail: string;
+  phone: string;
+
   organizationName: string;
   organizationStreet: string;
   organizationHouseNumber: string;
@@ -46,6 +52,8 @@ export const toKycDataDto = (data: KycData): KycDataDto => ({
   zip: data.zip,
   location: data.location,
   country: data.country,
+  mail: data.mail,
+  phone: data.phone,
   organizationName: data.organizationName,
   organizationStreet: data.organizationStreet,
   organizationHouseNumber: data.organizationHouseNumber,

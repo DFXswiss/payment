@@ -50,7 +50,7 @@ const PhoneNumber = ({
   const [showDropDown, setShowDropDown] = useState(false);
   const [phoneCode, setPhoneCode] = useState<PhoneCode>();
 
-  const value = useWatch({ control, name: "mobileNumber" });
+  const value = useWatch({ control, name: "phone" });
 
   const parseNumber = (phoneNumber: string): PhoneNumber => {
     const code = phoneCode ?? phoneCodes.find((c) => phoneNumber?.startsWith(c.dialCode));

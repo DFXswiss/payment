@@ -24,7 +24,8 @@
       "upload": "Télécharger",
       "send": "Envoyer",
       "start": "Start",
-      "search": "Recherche"
+      "search": "Recherche",
+      "link": "Link"
     },
     "feedback": {
       "page_not_found": "Page non trouvée !",
@@ -398,7 +399,8 @@
       "neutral": "Pas de préférence"
     },
     "link": {
-      "instructions": "It seems you are already verified with another address.\n\nBefore you are doing our KYC process again, we sent you an email to link your new address to your verified account."
+      "instructions": "It seems you are already verified with another address.\n\nBefore you are doing our KYC process again, we sent you an email to link your new address to your verified account.",
+      "success": "Successfully linked your addresses."
     }
   }
 }

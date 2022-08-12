@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Platform, StyleSheet, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
 import AppLayout from "../components/AppLayout";
 import { SpacerH, SpacerV } from "../elements/Spacers";
 import { H2, H3 } from "../elements/Texts";
@@ -10,26 +10,18 @@ import Colors from "../config/Colors";
 import Form from "../components/form/Form";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useForm, useWatch } from "react-hook-form";
-import { LinkDto } from "../models/Link";
 import ButtonContainer from "../components/util/ButtonContainer";
 import { DeFiButton } from "../elements/Buttons";
 import { createRules } from "../utils/Utils";
 import Validations from "../utils/Validations";
 import Input from "../components/form/Input";
 import IconButton from "../components/util/IconButton";
-import { Text } from "react-native-paper";
+import { Dialog, Paragraph, Portal, Text } from "react-native-paper";
 import ClipboardService from "../services/ClipboardService";
-
-const messageDefichain =
-  "By signing this message, you confirm that you are the sole owner of the provided DeFiChain address and are in possession of its private key. Your ID:";
-const messageGeneral =
-  "By signing this message, you confirm that you are the sole owner of the provided Blockchain address. Your ID:";
-
-const signingCommand = (address: string) => {
-  const isDefichain = address.match(/^((7|8)\w{33}|(t|d)\w{33}|(t|d)\w{41})$/) !== null;
-  const message = `${isDefichain ? messageDefichain : messageGeneral} ${address}`.split(" ").join("_");
-  return isDefichain ? `signmessage "${address}" "${message}"` : message;
-};
+import { postLink } from "../services/ApiService";
+import NotificationService from "../services/NotificationService";
+import Routes from "../config/Routes";
+import { signingCommand } from "../services/SignatureService";
 
 interface Data {
   existingAddress: string;
@@ -56,12 +48,49 @@ const LinkScreen = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [existingSignCommandCopied, setExistingSignCommandCopied] = useState(false);
   const [newSignCommandCopied, setNewSignCommandCopied] = useState(false);
-  const [error, setError] = useState<string>();
+  const [showsSuccess, setShowsSuccess] = useState(false);
 
-  const onSubmit = () => (data: LinkDto) => {
-    // setIsProcessing(true);
-    setError(undefined);
-    console.log(data);
+  useEffect(() => {
+    // get params
+    const params = route.params as any;
+    if (params && params.existing) setValue("existingAddress", params.existing);
+    if (params && params.new) setValue("newAddress", params.new);
+  }, []);
+
+  const onSubmit = () => (data: Data) => {
+    setIsProcessing(true);
+
+    const link = {
+      existing: {
+        address: data.existingAddress,
+        signature: data.existingSignature,
+      },
+      linkTo: {
+        address: data.newAddress,
+        signature: data.newSignature,
+      },
+    };
+
+    postLink(link)
+      .then(() => {
+        setShowsSuccess(true);
+      })
+      .catch(() => {
+        onLoadFailed();
+      })
+      .finally(() => {
+        setIsProcessing(false);
+      });
+  };
+
+  const onLoadFailed = () => {
+    NotificationService.error(t("feedback.load_failed"));
+    nav.navigate(Routes.Home);
+  };
+
+  const goToHome = () => {
+    setShowsSuccess(false);
+    nav.navigate(Routes.Home);
   };
 
   const rules: any = createRules({
@@ -73,11 +102,28 @@ const LinkScreen = () => {
 
   return (
     <AppLayout>
+      <Portal>
+        <Dialog visible={showsSuccess} onDismiss={() => setShowsSuccess(false)} style={AppStyles.dialog}>
+          <Dialog.Content>
+            <Paragraph>{t("link.success")}</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <DeFiButton onPress={() => goToHome()}>{t("action.ok")}</DeFiButton>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
+
       <View>
         <H2 text="Link a new address to your existing account" />
       </View>
       <SpacerV />
-      <View style={device.SM ? [AppStyles.containerHorizontal, styles.pageContainer] : undefined}>
+      <View
+        style={
+          device.SM
+            ? [AppStyles.containerHorizontal, styles.pageContainer]
+            : [{ flexDirection: "column" }, styles.pageContainer]
+        }
+      >
         <Form
           control={control}
           rules={rules}
@@ -85,6 +131,39 @@ const LinkScreen = () => {
           disabled={isProcessing}
           onSubmit={handleSubmit(onSubmit())}
         >
+          <View style={[styles.addressContainer, styles.container]}>
+            <H3 text="New address" />
+            <SpacerV />
+            <Input
+              name="newAddress"
+              label={t("model.user.legacy_address")}
+              returnKeyType="next"
+              blurOnSubmit={false}
+              placeholder="8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG"
+            />
+            <View style={newAddress ? styles.container : AppStyles.noDisplay}>
+              <SpacerV />
+              <H3 text={t("session.signing_command")}></H3>
+              <View style={[AppStyles.containerHorizontal, styles.signingMessage]}>
+                <View style={styles.textContainer}>
+                  <Text>{signingCommand(newAddress)}</Text>
+                </View>
+                <SpacerH />
+                <IconButton
+                  icon={newSignCommandCopied ? "check" : "content-copy"}
+                  color={newSignCommandCopied ? Colors.Success : Colors.Grey}
+                  onPress={() => {
+                    ClipboardService.copy(signingCommand(newAddress));
+                    setTimeout(() => setNewSignCommandCopied(true), 200);
+                    setTimeout(() => setNewSignCommandCopied(false), 2200);
+                  }}
+                />
+              </View>
+              <SpacerV />
+              <Input name="newSignature" label={t("model.user.signature")} returnKeyType="send" secureTextEntry />
+            </View>
+          </View>
+          <IconButton icon="link" style={{ alignSelf: "center" }} />
           <View style={[styles.container, styles.addressContainer]}>
             <H3 text="Existing address" />
             <SpacerV />
@@ -122,39 +201,6 @@ const LinkScreen = () => {
               />
             </View>
           </View>
-          <IconButton disabled icon="link" style={{ alignSelf: "center" }} />
-          <View style={[styles.addressContainer, styles.container]}>
-            <H3 text="New address" />
-            <SpacerV />
-            <Input
-              name="newAddress"
-              label={t("model.user.legacy_address")}
-              returnKeyType="next"
-              blurOnSubmit={false}
-              placeholder="8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG"
-            />
-            <View style={newAddress ? styles.container : AppStyles.noDisplay}>
-              <SpacerV />
-              <H3 text={t("session.signing_command")}></H3>
-              <View style={[AppStyles.containerHorizontal, styles.signingMessage]}>
-                <View style={styles.textContainer}>
-                  <Text>{signingCommand(newAddress)}</Text>
-                </View>
-                <SpacerH />
-                <IconButton
-                  icon={newSignCommandCopied ? "check" : "content-copy"}
-                  color={newSignCommandCopied ? Colors.Success : Colors.Grey}
-                  onPress={() => {
-                    ClipboardService.copy(signingCommand(newAddress));
-                    setTimeout(() => setNewSignCommandCopied(true), 200);
-                    setTimeout(() => setNewSignCommandCopied(false), 2200);
-                  }}
-                />
-              </View>
-              <SpacerV height={20} />
-              <Input name="newSignature" label={t("model.user.signature")} returnKeyType="send" secureTextEntry />
-            </View>
-          </View>
         </Form>
       </View>
       <SpacerV />
@@ -180,7 +226,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    justifyContent: "space-between",
     alignItems: "center",
   },
   signingMessage: {

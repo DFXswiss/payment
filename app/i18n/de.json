@@ -383,6 +383,14 @@
           ]
         },
         "regular": "Für reguläre SEPA Überweisungen"
+      },
+      "link": {
+        "existing_address": "Bestehende Adresse",
+        "new_address": "Zu verknüpfende Adresse",
+        "is_completed": "Bereits durchgeführt?",
+        "complete": "ja",
+        "incomplete": "nein",
+        "expiration": "Ablaufdatum"
       }
     },
     "specialVoting": {
@@ -396,8 +404,9 @@
       "neutral": "Keine Präferenz"
     },
     "link": {
-      "instructions": "It seems you are already verified with another address.\n\nBefore you are doing our KYC process again, we sent you an email to link your new address to your verified account.",
-      "success": "Successfully linked your addresses."
+      "header": "Informationen zur Verknüpfung der Adresse",
+      "instructions": "Es scheint, dass Sie bereits mit einer anderen Adresse verifiziert sind.\n\nBevor Sie unseren KYC-Prozess erneut durchführen, haben wir Ihnen eine E-Mail geschickt, um Ihre neue Adresse mit Ihrem verifizierten Konto zu verknüpfen.",
+      "success": "Ihre Adressen wurden erfolgreich verknüpft."
     }
   }
 }

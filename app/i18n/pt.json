@@ -379,6 +379,14 @@
           ]
         },
         "regular": "Para transferências SEPA regulares"
+      },
+      "link": {
+        "existing_address": "Endereço existente",
+        "new_address": "Endereço a ser ligado",
+        "is_completed": "Está concluído?",
+        "complete": "sim",
+        "incomplete": "não",
+        "expiration": "Data de expiração"
       }
     },
     "specialVoting": {
@@ -392,8 +400,9 @@
       "neutral": "Sem preferência"
     },
     "link": {
-      "instructions": "It seems you are already verified with another address.\n\nBefore you are doing our KYC process again, we sent you an email to link your new address to your verified account.",
-      "success": "Successfully linked your addresses."
+      "header": "Link address request information",
+      "instructions": "Parece que já está verificado com outro endereço.\n\nAntes de estar novamente a fazer o nosso processo KYC, enviámos-lhe um e-mail para ligar o seu novo endereço à sua conta verificada.",
+      "success": "Conseguimos estabelecer uma ligação bem sucedida entre os seus endereços."
     }
   }
 }

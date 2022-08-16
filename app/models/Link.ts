@@ -1,9 +1,7 @@
-export interface LinkDto {
-  existing: AddressInformationDto;
-  linkTo: AddressInformationDto;
-}
-
-interface AddressInformationDto {
-  address: string;
-  signature: string;
+export interface LinkAddressDto {
+  authentication: string;
+  existingAddress: string;
+  newAddress: string;
+  isCompleted: boolean;
+  expiration: Date;
 }

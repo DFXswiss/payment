@@ -31,6 +31,9 @@ import { HistoryType } from "../models/HistoryType";
 import { fromStakingBatchDto, StakingBatch, StakingBatchDto } from "../models/StakingBatch";
 import { ApiKey } from "../models/ApiKey";
 import { CryptoRoute } from "../models/CryptoRoute";
+import { attachType, CryptoRouteHistory, RouteHistoryType } from "../models/RouteHistory";
+import { SellRouteHistory } from "../models/RouteHistory";
+import { BuyRouteHistory } from "../models/RouteHistory";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -139,6 +142,12 @@ export const putBuyRoute = (route: BuyRoute): Promise<BuyRoute> => {
   return fetchFrom<BuyRouteDto>(`${BuyUrl}/${route.id}`, "PUT", toBuyRouteDto(route)).then(fromBuyRouteDto);
 };
 
+export const getBuyRouteHistory = (route: BuyRoute): Promise<BuyRouteHistory[]> => {
+  return fetchFrom<BuyRouteHistory[]>(`${BuyUrl}/${route.id}/history`).then((history) =>
+    attachType(RouteHistoryType.BUY, history)
+  );
+};
+
 export const getSellRoutes = (): Promise<SellRoute[]> => {
   return fetchFrom<SellRouteDto[]>(SellUrl).then((dtoList) => dtoList.map((dto) => fromSellRouteDto(dto)));
 };
@@ -149,6 +158,12 @@ export const postSellRoute = (route: SellRoute): Promise<SellRoute> => {
 
 export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
   return fetchFrom<SellRouteDto>(`${SellUrl}/${route.id}`, "PUT", toSellRouteDto(route)).then(fromSellRouteDto);
+};
+
+export const getSellRouteHistory = (route: SellRoute): Promise<SellRouteHistory[]> => {
+  return fetchFrom<SellRouteHistory[]>(`${SellUrl}/${route.id}/history`).then((history) =>
+    attachType(RouteHistoryType.SELL, history)
+  );
 };
 
 export const getStakingRoutes = (): Promise<StakingRoute[]> => {
@@ -175,6 +190,12 @@ export const postCryptoRoute = (route: CryptoRoute): Promise<CryptoRoute> => {
 
 export const putCryptoRoute = (route: CryptoRoute): Promise<CryptoRoute> => {
   return fetchFrom<CryptoRoute>(`${CryptoRouteUrl}/${route.id}`, "PUT", route);
+};
+
+export const getCryptoRouteHistory = (route: CryptoRoute): Promise<CryptoRouteHistory[]> => {
+  return fetchFrom<CryptoRouteHistory[]>(`${CryptoRouteUrl}/${route.id}/history`).then((history) =>
+    attachType(RouteHistoryType.CRYPTO, history)
+  );
 };
 
 export const getHistory = (types?: HistoryType[]): Promise<History[]> => {

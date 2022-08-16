@@ -386,6 +386,14 @@
           ]
         },
         "regular": "Pour les virements SEPA réguliers"
+      },
+      "link": {
+        "existing_address": "Adresse existante",
+        "new_address": "Adresse à relier",
+        "is_completed": "Est-elle complétée ?",
+        "complete": "oui",
+        "incomplete": "non",
+        "expiration": "Date d'expiration"
       }
     },
     "specialVoting": {
@@ -399,8 +407,9 @@
       "neutral": "Pas de préférence"
     },
     "link": {
-      "instructions": "It seems you are already verified with another address.\n\nBefore you are doing our KYC process again, we sent you an email to link your new address to your verified account.",
-      "success": "Successfully linked your addresses."
+      "header": "Informations sur la demande de liaison d'adresse",
+      "instructions": "Il semble que vous soyez déjà vérifié avec une autre adresse.\n\nAvant que vous ne refassiez notre processus KYC, nous vous avons envoyé un e-mail pour relier votre nouvelle adresse à votre compte vérifié.",
+      "success": "Vos adresses ont été liées avec succès."
     }
   }
 }

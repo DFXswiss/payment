@@ -369,6 +369,14 @@
           ]
         },
         "regular": "Para las transferencias regulares SEPA"
+      },
+      "link": {
+        "existing_address": "Dirección existente",
+        "new_address": "Dirección a vincular",
+        "is_completed": "¿Está completa?",
+        "complete": "sí",
+        "incomplete": "no",
+        "expiration": "Fecha de caducidad"
       }
     },
     "specialVoting": {
@@ -382,8 +390,9 @@
       "neutral": "Sin preferencias"
     },
     "link": {
-      "instructions": "It seems you are already verified with another address.\n\nBefore you are doing our KYC process again, we sent you an email to link your new address to your verified account.",
-      "success": "Successfully linked your addresses."
+      "header": "Información sobre la solicitud de vinculación de la dirección",
+      "instructions": "Parece que ya está verificado con otra dirección.\n\nAntes de hacer nuestro proceso de KYC de nuevo, le enviamos un correo electrónico para vincular su nueva dirección a su cuenta verificada.",
+      "success": "Ha vinculado con éxito sus direcciones."
     }
   }
 }

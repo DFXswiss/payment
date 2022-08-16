@@ -34,7 +34,7 @@ import { CryptoRoute } from "../models/CryptoRoute";
 import { attachType, CryptoRouteHistory, RouteHistoryType } from "../models/RouteHistory";
 import { SellRouteHistory } from "../models/RouteHistory";
 import { BuyRouteHistory } from "../models/RouteHistory";
-import { LinkDto } from "../models/Link";
+import { LinkAddressDto } from "../models/Link";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -229,8 +229,12 @@ export const getCfpResults = (voting: string): Promise<CfpResult[]> => {
 };
 
 // --- LINK --- //
-export const postLink = (link: LinkDto): Promise<void> => {
-  return fetchFrom(LinkUrl, "POST", link);
+export const getLinkAddress = (authentication: string): Promise<LinkAddressDto> => {
+  return fetchFrom(`${LinkUrl}/${authentication}`);
+};
+
+export const postLinkAddress = (authentication: string): Promise<LinkAddressDto> => {
+  return fetchFrom(`${LinkUrl}/${authentication}`, "POST");
 };
 
 // --- MASTER DATA --- //

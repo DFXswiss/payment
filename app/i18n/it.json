@@ -386,6 +386,14 @@
           ]
         },
         "regular": "Per i trasferimenti SEPA regolari"
+      },
+      "link": {
+        "existing_address": "Indirizzo esistente",
+        "new_address": "Indirizzo da collegare",
+        "is_completed": "È stato completato?",
+        "complete": "Sì",
+        "incomplete": "No",
+        "expiration": "Data di scadenza"
       }
     },
     "specialVoting": {
@@ -399,8 +407,9 @@
       "neutral": "Nessuna preferenza"
     },
     "link": {
-      "instructions": "It seems you are already verified with another address.\n\nBefore you are doing our KYC process again, we sent you an email to link your new address to your verified account.",
-      "success": "Successfully linked your addresses."
+      "header": "Informazioni sulla richiesta di collegamento dell'indirizzo",
+      "instructions": "Sembra che lei sia già verificato con un altro indirizzo.\n\nPrima di ripetere il processo KYC, le abbiamo inviato un'e-mail per collegare il suo nuovo indirizzo al suo conto verificato.",
+      "success": "Il collegamento dei vostri indirizzi è riuscito."
     }
   }
 }

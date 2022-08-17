@@ -35,7 +35,7 @@ const LinkScreen = () => {
     if (params && params.authentication) {
       getLinkAddress(params.authentication)
         .then(setLinkAddress)
-        .catch(() => NotificationService.error(t("feedback.load_failed")))
+        .catch(() => onLoadFailed())
         .finally(() => setIsLoading(false));
     } else {
       onLoadFailed();
@@ -47,15 +47,9 @@ const LinkScreen = () => {
 
     if (!linkAddress) return;
     postLinkAddress(linkAddress.authentication)
-      .then(() => {
-        setShowsSuccess(true);
-      })
-      .catch(() => {
-        onLoadFailed();
-      })
-      .finally(() => {
-        setIsProcessing(false);
-      });
+      .then(() => setShowsSuccess(true))
+      .catch(() => onLoadFailed())
+      .finally(() => setIsProcessing(false));
   };
 
   const onLoadFailed = () => {

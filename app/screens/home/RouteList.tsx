@@ -217,10 +217,8 @@ const RouteList = ({
       });
   };
 
-  const formatMinDeposit = (minDeposits: MinDeposit[], asset: string): string | undefined => {
-    const minDeposit = minDeposits.find((d) => d.asset === asset);
-    if (!minDeposit) return undefined;
-    return `${minDeposit.amount} ${minDeposit.asset}`;
+  const formatMinDeposit = (minDeposits: MinDeposit[]): string => {
+    return minDeposits.map((d) => `${d.amount} ${d.asset}`).join(" / ");
   };
 
   const cryptoRouteData = (route: CryptoRoute) => [
@@ -241,7 +239,7 @@ const RouteList = ({
     {
       condition: true,
       label: "model.route.min_deposit",
-      value: `${formatMinDeposit(route.minDeposits, "BTC")}`,
+      value: `${formatMinDeposit(route.minDeposits)}`,
     }, // BTC hardcoded until we get asset for deposit from API
     {
       condition: true,
@@ -267,7 +265,7 @@ const RouteList = ({
     {
       condition: true,
       label: "model.route.min_deposit",
-      value: `${formatMinDeposit(route.minDeposits, "DFI")} / ${formatMinDeposit(route.minDeposits, "USD")}`,
+      value: `${formatMinDeposit(route.minDeposits)}`,
     },
     {
       condition: true,
@@ -286,7 +284,7 @@ const RouteList = ({
       icon: "content-copy",
       onPress: () => ClipboardService.copy(route.deposit?.address),
     },
-    { condition: true, label: "model.route.min_deposit", value: `${formatMinDeposit(route.minDeposits, "DFI")}` },
+    { condition: true, label: "model.route.min_deposit", value: `${formatMinDeposit(route.minDeposits)}` },
     { condition: true, label: "model.route.min_invest", value: `${route.minInvestment} DFI` },
     {
       condition: true,
@@ -349,7 +347,7 @@ const RouteList = ({
       label: "model.route.fee",
       value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
     },
-    { condition: true, label: "model.route.min_deposit", value: `${formatMinDeposit(route.minDeposits, "USD")}` },
+    { condition: true, label: "model.route.min_deposit", value: `${formatMinDeposit(route.minDeposits)}` },
     {
       condition: true,
       label: "model.route.volume",

@@ -1,5 +1,6 @@
 import { Asset } from "./Asset";
 import { Deposit } from "./Deposit";
+import { MinDeposit } from "./MinDeposit";
 import { SellRoute } from "./SellRoute";
 
 export enum PayoutType {
@@ -24,5 +25,5 @@ export interface StakingRoute {
   fee: number;
   period: number;
   minInvestment: number;
-  minDeposit: number;
+  minDeposits: MinDeposit[];
 }

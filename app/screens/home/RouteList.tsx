@@ -44,6 +44,7 @@ import CryptoRouteEdit from "../../components/edit/CryptoRouteEdit";
 import Colors from "../../config/Colors";
 import RouteHistory from "../../components/RouteHistory";
 import { RouteHistoryAlias } from "../../models/RouteHistory";
+import { MinDeposit } from "../../models/MinDeposit";
 
 interface Props {
   user?: User;
@@ -216,6 +217,12 @@ const RouteList = ({
       });
   };
 
+  const formatMinDeposit = (minDeposits: MinDeposit[], asset: string): string | undefined => {
+    const minDeposit = minDeposits.find((d) => d.asset === asset);
+    if (!minDeposit) return undefined;
+    return `${minDeposit.amount} ${minDeposit.asset}`;
+  };
+
   const cryptoRouteData = (route: CryptoRoute) => [
     {
       condition: true,
@@ -231,7 +238,11 @@ const RouteList = ({
       label: "model.route.fee",
       value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
     },
-    { condition: true, label: "model.route.min_deposit", value: `${route.minDeposit} BTC` }, // BTC hardcoded until we get asset for deposit from API
+    {
+      condition: true,
+      label: "model.route.min_deposit",
+      value: `${formatMinDeposit(route.minDeposits, "BTC")}`,
+    }, // BTC hardcoded until we get asset for deposit from API
     {
       condition: true,
       label: "model.route.volume",
@@ -256,7 +267,7 @@ const RouteList = ({
     {
       condition: true,
       label: "model.route.min_deposit",
-      value: `${route.minDeposit.dfi} DFI / ${route.minDeposit.usd} USD`,
+      value: `${formatMinDeposit(route.minDeposits, "DFI")} / ${formatMinDeposit(route.minDeposits, "USD")}`,
     },
     {
       condition: true,
@@ -275,7 +286,7 @@ const RouteList = ({
       icon: "content-copy",
       onPress: () => ClipboardService.copy(route.deposit?.address),
     },
-    { condition: true, label: "model.route.min_deposit", value: `${route.minDeposit} DFI` },
+    { condition: true, label: "model.route.min_deposit", value: `${formatMinDeposit(route.minDeposits, "DFI")}` },
     { condition: true, label: "model.route.min_invest", value: `${route.minInvestment} DFI` },
     {
       condition: true,
@@ -338,7 +349,7 @@ const RouteList = ({
       label: "model.route.fee",
       value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
     },
-    { condition: true, label: "model.route.min_deposit", value: `${route.minDeposit} USD` },
+    { condition: true, label: "model.route.min_deposit", value: `${formatMinDeposit(route.minDeposits, "USD")}` },
     {
       condition: true,
       label: "model.route.volume",

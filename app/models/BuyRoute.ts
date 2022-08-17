@@ -1,4 +1,5 @@
 import { Asset } from "./Asset";
+import { MinDeposit } from "./MinDeposit";
 import { StakingRoute } from "./StakingRoute";
 
 export enum BuyType {
@@ -18,7 +19,7 @@ export interface BuyRouteDto {
   active: boolean;
   fee: number;
   refBonus: number;
-  minDeposit: number;
+  minDeposits: MinDeposit[];
 }
 
 export interface BuyRoute {
@@ -33,7 +34,7 @@ export interface BuyRoute {
   active: boolean;
   fee: number;
   refBonus: number;
-  minDeposit: number;
+  minDeposits: MinDeposit[];
 }
 
 export const fromBuyRouteDto = (route: BuyRouteDto): BuyRoute => ({
@@ -48,7 +49,7 @@ export const fromBuyRouteDto = (route: BuyRouteDto): BuyRoute => ({
   annualVolume: route.annualVolume,
   fee: route.fee,
   refBonus: route.refBonus,
-  minDeposit: route.minDeposit,
+  minDeposits: route.minDeposits,
 });
 
 export const toBuyRouteDto = (route: BuyRoute): BuyRouteDto => ({
@@ -63,5 +64,5 @@ export const toBuyRouteDto = (route: BuyRoute): BuyRouteDto => ({
   annualVolume: route.annualVolume,
   fee: route.fee,
   refBonus: route.refBonus,
-  minDeposit: route.minDeposit,
+  minDeposits: route.minDeposits,
 });

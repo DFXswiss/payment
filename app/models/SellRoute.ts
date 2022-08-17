@@ -1,10 +1,6 @@
 import { Deposit } from "./Deposit";
 import { Fiat } from "./Fiat";
-
-interface SellRouteDeposit {
-  dfi: number;
-  usd: number;
-}
+import { MinDeposit } from "./MinDeposit";
 
 export interface SellRouteDto {
   id: string;
@@ -16,7 +12,7 @@ export interface SellRouteDto {
   active: boolean;
   fee: number;
   isInUse: boolean;
-  minDeposit: SellRouteDeposit;
+  minDeposits: MinDeposit[];
 }
 
 export interface SellRoute {
@@ -29,7 +25,7 @@ export interface SellRoute {
   active: boolean;
   fee: number;
   isInUse: boolean;
-  minDeposit: SellRouteDeposit;
+  minDeposits: MinDeposit[];
 }
 
 export const fromSellRouteDto = (route: SellRouteDto): SellRoute => ({
@@ -42,7 +38,7 @@ export const fromSellRouteDto = (route: SellRouteDto): SellRoute => ({
   annualVolume: route.annualVolume,
   fee: route.fee,
   isInUse: route.isInUse,
-  minDeposit: route.minDeposit,
+  minDeposits: route.minDeposits,
 });
 
 export const toSellRouteDto = (route: SellRoute): SellRouteDto => ({
@@ -55,5 +51,5 @@ export const toSellRouteDto = (route: SellRoute): SellRouteDto => ({
   annualVolume: route.annualVolume,
   fee: route.fee,
   isInUse: route.isInUse,
-  minDeposit: route.minDeposit,
+  minDeposits: route.minDeposits,
 });

@@ -6,8 +6,9 @@ import { SpacerV } from "../../elements/Spacers";
 import { Alert } from "../../elements/Texts";
 import { ApiError } from "../../models/ApiDto";
 import { Asset } from "../../models/Asset";
+import { Blockchain } from "../../models/Blockchain";
 import { BuyType } from "../../models/BuyRoute";
-import { Blockchain, CryptoRoute } from "../../models/CryptoRoute";
+import { CryptoRoute } from "../../models/CryptoRoute";
 import { getAssets, postCryptoRoute, putCryptoRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import { createRules } from "../../utils/Utils";
@@ -73,13 +74,13 @@ const CryptoRouteEdit = ({
       <DeFiPicker
         name="blockchain"
         label={t("model.route.blockchain")}
-        items={Object.values(Blockchain)}
+        items={[Blockchain.BITCOIN]}
         labelFunc={(i) => i}
       />
       <SpacerV />
-      <DeFiPicker 
+      <DeFiPicker
         name="asset"
-        label={t("model.route.asset")} 
+        label={t("model.route.asset")}
         items={assets.filter((a) => a.id === 2)} // only dBTC is allowed right now
         idFunc={(i) => i.id}
         labelFunc={(i) => i.name}

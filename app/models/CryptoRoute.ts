@@ -1,11 +1,8 @@
 import { Asset } from "./Asset";
+import { Blockchain } from "./Blockchain";
 import { Deposit } from "./Deposit";
 import { MinDeposit } from "./MinDeposit";
 import { StakingRoute } from "./StakingRoute";
-
-export enum Blockchain {
-  BITCOIN = "Bitcoin",
-}
 
 export interface CryptoRoute {
   id: string;

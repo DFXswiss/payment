@@ -19,6 +19,7 @@ import ButtonContainer from "../util/ButtonContainer";
 import { StakingRoute } from "../../models/StakingRoute";
 import { Country } from "../../models/Country";
 import Loading from "../util/Loading";
+import { Blockchain } from "../../models/Blockchain";
 
 const BuyRouteEdit = ({
   routes,
@@ -34,6 +35,7 @@ const BuyRouteEdit = ({
   const { t } = useTranslation();
   const {
     control,
+    setValue,
     handleSubmit,
     formState: { errors },
   } = useForm<BuyRoute>();
@@ -47,9 +49,12 @@ const BuyRouteEdit = ({
   const [countries, setCountries] = useState<Country[]>([]);
 
   useEffect(() => {
+    const buyTypePreselection = getBuyTypePreselection();
+    if (buyTypePreselection) setValue("type", buyTypePreselection);
+
     Promise.all([getAssets(), getCountries()])
       .then(([a, c]) => {
-        setAssets(a);
+        updateAssets(a);
         setCountries(c);
       })
       .catch(() => NotificationService.error(t("feedback.load_failed")))
@@ -87,6 +92,26 @@ const BuyRouteEdit = ({
     iban: [Validations.Required, Validations.Iban(countries)],
   });
 
+  const getBuyTypes = (): BuyType[] => {
+    if (session?.blockchain === Blockchain.DEFICHAIN) return Object.values(BuyType);
+    return [BuyType.WALLET];
+  };
+
+  const getBuyTypePreselection = (): BuyType | undefined => {
+    const availableBuyTypes = getBuyTypes();
+    return availableBuyTypes.length === 1 ? availableBuyTypes[0] : undefined;
+  };
+
+  const getBuyableAssets = (values: Asset[]): Asset[] => {
+    return values.filter((a) => a.buyable);
+  };
+
+  const updateAssets = (values: Asset[]) => {
+    setAssets(values);
+    const buyableAssets = getBuyableAssets(values);
+    if (buyableAssets.length === 1) setValue("asset", buyableAssets[0]);
+  };
+
   return isLoading ? (
     <Loading size="large" />
   ) : (
@@ -94,7 +119,7 @@ const BuyRouteEdit = ({
       <DeFiPicker
         name="type"
         label={t("model.route.type")}
-        items={Object.values(BuyType)}
+        items={getBuyTypes()}
         labelFunc={(i) => t(`model.route.${i.toLowerCase()}`)}
       />
       <SpacerV />
@@ -104,7 +129,7 @@ const BuyRouteEdit = ({
           <DeFiPicker
             name="asset"
             label={t("model.route.asset")}
-            items={assets.filter((a) => a.buyable)}
+            items={getBuyableAssets(assets)}
             idFunc={(i) => i.id}
             labelFunc={(i) => i.name}
           />

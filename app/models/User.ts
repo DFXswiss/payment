@@ -1,5 +1,6 @@
 import i18n from "../i18n/i18n";
 import { formatAmount } from "../utils/Utils";
+import { Blockchain } from "./Blockchain";
 import { HistoryType } from "./HistoryType";
 import { Language } from "./Language";
 
@@ -80,6 +81,7 @@ export interface CfpVotes {
 export interface UserDto {
   accountType: AccountType;
   address: string;
+  blockchain: Blockchain;
   mail: string | null;
   phone: string;
   language: Language;
@@ -99,6 +101,7 @@ export interface UserDto {
 export interface User {
   accountType: AccountType;
   address: string;
+  blockchain: Blockchain;
   mail: string;
   phone: string;
   language: Language;
@@ -140,6 +143,7 @@ export interface UserDetail extends User {
 export const fromUserDto = (user: UserDto): User => ({
   accountType: user.accountType,
   address: user.address,
+  blockchain: user.blockchain,
   mail: user.mail ?? "",
   phone: user.phone,
   language: user.language,
@@ -159,6 +163,7 @@ export const fromUserDto = (user: UserDto): User => ({
 export const toUserDto = (user: User): UserDto => ({
   accountType: user.accountType,
   address: user.address,
+  blockchain: user.blockchain,
 
   mail: toStringDto(user.mail),
   phone: user.phone,

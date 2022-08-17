@@ -1,5 +1,6 @@
 import jwtDecode from "jwt-decode";
 import { Observable, ReplaySubject } from "rxjs";
+import { Blockchain } from "../models/Blockchain";
 import { UserRole } from "../models/User";
 import StorageService from "./StorageService";
 
@@ -18,6 +19,7 @@ interface JWT {
   exp: number;
   iat: number;
   address: string;
+  blockchain: Blockchain;
   role: UserRole;
 }
 
@@ -25,6 +27,7 @@ export class Session implements ISession {
   public accessToken?: string;
   public address?: string;
   public role?: UserRole;
+  public blockchain?: Blockchain;
   public expires?: Date;
 
   public get isLoggedIn(): boolean {
@@ -45,6 +48,7 @@ export class Session implements ISession {
       const jwt: JWT = jwtDecode(this.accessToken);
       this.address = jwt.address;
       this.role = jwt.role;
+      this.blockchain = jwt.blockchain;
       this.expires = new Date(jwt.exp * 1000);
     }
   }
@@ -54,9 +58,7 @@ class AuthServiceClass {
   private session$ = new ReplaySubject<Session>();
 
   constructor() {
-    this.Session
-      .then((session) =>this.session$.next(session))
-      .catch(() => this.session$.next(new Session()));
+    this.Session.then((session) => this.session$.next(session)).catch(() => this.session$.next(new Session()));
   }
 
   public get Session$(): Observable<Session> {

@@ -57,6 +57,7 @@
       "instruction_link": "https://defichain-wiki.com/wiki/DFX_manual_registration",
       "sign_up": "Log in / Register",
       "signing_command": "Sign command",
+      "signing_message": "Sign message",
       "login_failed": "Login failed!",
       "pattern_invalid": "Format of the address/signature is invalid!",
       "signature_invalid": "Invalid signature!",

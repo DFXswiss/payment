@@ -41,7 +41,8 @@
       "copied": "¡Copiada!",
       "saved": "¡Salvado!",
       "pop_up_blocked": "¡Error mientras se abría! Por favor permite las ventanas emergentes en los ajustes de tu buscador.",
-      "bank_tx_required": "Para utilizar esta función, primero debe completar con éxito una transacción bancaria (compra o venta)."
+      "bank_tx_required": "Para utilizar esta función, primero debe completar con éxito una transacción bancaria (compra o venta).",
+      "change_user_security": "El cambio a la dirección seleccionada está desactivado por seguridad."
     },
     "validation": {
       "required": "Campo obligatorio",
@@ -233,7 +234,8 @@
         "ref_commission": "Comisión de referidos",
         "ref_commission_edit": "Edita la comisión de referidos",
         "ref_commission_info": "Gana hasta un 0.5% de comisión en cada compra de uno de tus referidos. Simplemente comparte el enlace con el código de referidos a tus amigos, familia y redes sociales. Tu tienes también la opción de rebajar el porcentaje de tu comisión en favor de tus referidos. Date cuenta de que el porcentaje de comisión sólo se puede reducir, no subir.",
-        "ref_commission_hint": "¿Estás seguro de que quieres reducir tu comisión a {{fee}}%? Este paso no se puede rehacer."
+        "ref_commission_hint": "¿Estás seguro de que quieres reducir tu comisión a {{fee}}%? Este paso no se puede rehacer.",
+        "change": "Cambiar la dirección"
       },
       "kyc": {
         "request": "Su cuenta debe ser verificada primero con el chatbot y la identificación en línea.\n¿Desea comenzar con el chatbot?",

@@ -41,7 +41,8 @@
       "copied": "Copied!",
       "saved": "Saved!",
       "pop_up_blocked": "Error while opening! Please allow pop-up windows in the browser settings.",
-      "bank_tx_required": "To use this feature, you must first successfully complete a bank transaction (buy or sell)!"
+      "bank_tx_required": "To use this feature, you must first successfully complete a bank transaction (buy or sell)!",
+      "change_user_security": "Changing to selected address is deactivated due to security."
     },
     "validation": {
       "required": "Mandatory field",
@@ -249,7 +250,8 @@
         "ref_commission": "Ref commission",
         "ref_commission_edit": "Edit ref commission",
         "ref_commission_info": "Earn up to 0.5% commission on every purchase of your referred person. Simply share your referral link with your friends, family and on social media.\nYou also have the option to lower your commission percentage in favor of the referred customers. Please note that the commission percentage can only be changed downwards, not upwards.",
-        "ref_commission_hint": "Are you sure you want to reduce your commission to {{fee}}%? This step cannot be undone."
+        "ref_commission_hint": "Are you sure you want to reduce your commission to {{fee}}%? This step cannot be undone.",
+        "change": "Change address"
       },
       "kyc": {
         "request": "Your account must first be verified with the chatbot and online identification.\nDo you want to start with the chatbot?",

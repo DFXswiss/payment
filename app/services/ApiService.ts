@@ -14,6 +14,7 @@ import {
   fromUserDetailDto,
   fromUserDto,
   KycInfo,
+  LinkedAddress,
   NewUser,
   toUserDto,
   User,
@@ -35,6 +36,7 @@ import { attachType, CryptoRouteHistory, RouteHistoryType } from "../models/Rout
 import { SellRouteHistory } from "../models/RouteHistory";
 import { BuyRouteHistory } from "../models/RouteHistory";
 import { LinkAddressDto } from "../models/Link";
+import { Blockchain } from "../models/Blockchain";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -99,6 +101,10 @@ export const deleteApiKey = (): Promise<void> => {
 
 export const putApiKeyFilter = (types?: HistoryType[]): Promise<HistoryType[]> => {
   return fetchFrom<HistoryType[]>(`${UserUrl}/apiFilter/CT${toHistoryQuery(types)}`, "PUT");
+};
+
+export const changeUser = (info: LinkedAddress): Promise<string> => {
+  return fetchFrom<AuthResponse>(`${UserUrl}/change`, "POST", info).then((resp) => resp.accessToken);
 };
 
 // --- KYC --- //

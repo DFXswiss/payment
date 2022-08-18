@@ -40,7 +40,8 @@
       "request_failed": "La demande a échoué !",
       "copied": "Copié !",
       "pop_up_blocked": "Erreur d'ouverture ! Veuillez autoriser les fenêtres pop-up dans les paramètres de votre navigateur.",
-      "bank_tx_required": "Pour utiliser cette fonction, vous devez d'abord réussir une transaction bancaire (achat ou vente) !"
+      "bank_tx_required": "Pour utiliser cette fonction, vous devez d'abord réussir une transaction bancaire (achat ou vente) !",
+      "change_user_security": "La modification de l'adresse sélectionnée est désactivée pour des raisons de sécurité."
     },
     "validation": {
       "required": "Champ obligatoire",
@@ -248,7 +249,8 @@
         "ref_commission": "Commission de parrainage",
         "ref_commission_edit": "Modifier la commission de parrainage",
         "ref_commission_info": "Gagnez jusqu'à 0,5% de commission sur chaque achat fait par votre filleul. Il vous suffit de partager votre code de parrainage avec vos amis, votre famille et sur les réseaux sociaux.\nVous avez également la possibilité de diminuer votre pourcentage de commission en faveur des clients parrainés. Veuillez noter que le pourcentage de commission ne peut être modifié qu'à la baisse, et non à la hausse.",
-        "ref_commission_hint": "Êtes-vous sûr de vouloir réduire votre commission à {{fee}}%? Cette action est irréversible."
+        "ref_commission_hint": "Êtes-vous sûr de vouloir réduire votre commission à {{fee}}%? Cette action est irréversible.",
+        "change": "Changement d'adresse"
       },
       "kyc": {
         "request": "Votre compte doit d'abord être vérifié avec le chatbot et l'identification en ligne.\nVoulez-vous commencer avec le chatbot?",

@@ -41,7 +41,8 @@
       "request_failed": "Fehler bei der Anfrage!",
       "copied": "Kopiert!",
       "pop_up_blocked": "Fehler beim Öffnen! Bitte erlaube Pop-up-Fenster in den Browser-Einstellungen.",
-      "bank_tx_required": "Um diese Funktion zu nutzen, musst du zunächst eine Banktransaktion (Kauf oder Verkauf) erfolgreich abschliessen!"
+      "bank_tx_required": "Um diese Funktion zu nutzen, musst du zunächst eine Banktransaktion (Kauf oder Verkauf) erfolgreich abschliessen!",
+      "change_user_security": "Der Wechsel zur ausgewählten Adresse ist aus Sicherheitsgründen deaktiviert."
     },
     "validation": {
       "required": "Pflichtfeld",
@@ -249,7 +250,8 @@
         "ref_commission": "Ref-Provision",
         "ref_commission_edit": "Ref-Provision bearbeiten",
         "ref_commission_info": "Verdiene bis zu 0,5% Provision auf jeden Kauf einer von dir geworbenen Person. Teile einfach Deinen Empfehlungslink mit Deinen Freunden, Deiner Familie und in den sozialen Medien.\nDu hast ebenso die Möglichkeit deinen Provisionsanteil zu Gunsten der geworbenen Kunden herunterzusetzen. Bitte beachte, dass der Provisionsanteil nur nach unten, und nicht nach oben abgeändert werden kann.",
-        "ref_commission_hint": "Bist du sicher, dass du deine Provision auf {{fee}}% verkleinern möchtest? Dieser Schritt kann nicht mehr rückgängig gemacht werden."
+        "ref_commission_hint": "Bist du sicher, dass du deine Provision auf {{fee}}% verkleinern möchtest? Dieser Schritt kann nicht mehr rückgängig gemacht werden.",
+        "change": "Adresse ändern"
       },
       "kyc": {
         "request": "Dein Konto muss zuerst mit dem Chatbot und Online Identifikation verifiziert werden.\nMöchtest du mit dem Chatbot starten?",

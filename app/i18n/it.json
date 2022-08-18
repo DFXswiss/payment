@@ -40,7 +40,8 @@
       "request_failed": "Errore richiesta!",
       "copied": "Copiato!",
       "pop_up_blocked": "Errore durante l'apertura! Prego abilita i pop-up nelle impostazioni del browser.",
-      "bank_tx_required": "Per utilizzare questa funzione, devi prima completare con successo una transazione bancaria (acquisto o vendita)!"
+      "bank_tx_required": "Per utilizzare questa funzione, devi prima completare con successo una transazione bancaria (acquisto o vendita)!",
+      "change_user_security": "La modifica dell'indirizzo selezionato è disattivata per motivi di sicurezza."
     },
     "validation": {
       "required": "Campo obbligatorio",
@@ -248,7 +249,8 @@
         "ref_commission": "Commissione del refererral",
         "ref_commission_edit": "Modificare la commissione del referral",
         "ref_commission_info": "Guadagna fino allo 0,5% di commissione su ogni acquisto della persona da te riferita. Basta condividere il tuo referral link con amici, familiari e sui social media. Hai anche la possibilità di ridurre la tua percentuale di commissione a favore dei clienti referenziati. Si prega di notare che la percentuale di commissione può essere modificata solo verso il basso, non verso l'alto.",
-        "ref_commission_hint": "Sei sicuro di voler ridurre la tua commissione a {{fee}}%? Questo passo non può essere annullato."
+        "ref_commission_hint": "Sei sicuro di voler ridurre la tua commissione a {{fee}}%? Questo passo non può essere annullato.",
+        "change": "Cambiamento di indirizzo"
       },
       "kyc": {
         "request": "Il tuo account deve prima essere verificato con il chatbot e con l'identificazione online.\nVuoi iniziare con il chatbot?",

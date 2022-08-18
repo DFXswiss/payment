@@ -41,7 +41,8 @@
       "request_failed": "Erro com o pedido!",
       "copied": "Copiado!",
       "pop_up_blocked": "Erro ao abrir! Por favor permitir janelas pop-up nas definições do navegador.",
-      "bank_tx_required": "Para utilizar esta função, deve primeiro concluir com êxito uma transacção bancária (compra ou venda)!"
+      "bank_tx_required": "Para utilizar esta função, deve primeiro concluir com êxito uma transacção bancária (compra ou venda)!",
+      "change_user_security": "A mudança para o endereço seleccionado é desactivada devido à segurança."
     },
     "validation": {
       "required": "Campo Obrigatório",
@@ -245,7 +246,8 @@
         "ref_commission": "Comissão de referência",
         "ref_commission_edit": "Editar a Comissão de Ref",
         "ref_commission_info": "Ganhe até 0,5% de comissão em cada compra feita por alguém que indicar. Basta partilhar o seu link de referência com os seus amigos, família e meios de comunicação social.\nTem também a opção de baixar a sua percentagem de comissão a favor dos clientes referidos. É favor notar que a percentagem de comissão só pode ser ajustada para baixo, e não para cima.",
-        "ref_commission_hint": "Tem a certeza de que quer reduzir a sua comissão para {{fee}}%? Este passo não pode ser desfeito."
+        "ref_commission_hint": "Tem a certeza de que quer reduzir a sua comissão para {{fee}}%? Este passo não pode ser desfeito.",
+        "change": "Alterar endereço"
       },
       "kyc": {
         "request": "A sua conta deve primeiro ser verificada com o chatbot e a identificação em linha.\nQuer começar com o chatbot?",

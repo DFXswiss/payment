@@ -94,7 +94,16 @@ const Main = () => {
             style={styles.snack}
             wrapperStyle={styles.snackWrapper}
           >
-            <Paragraph style={{ color: snackContent?.level === Level.SUCCESS ? Colors.Success : Colors.Error }}>
+            <Paragraph
+              style={{
+                color:
+                  snackContent?.level === Level.SUCCESS
+                    ? Colors.Success
+                    : snackContent?.level === Level.WARNING
+                    ? Colors.Yellow
+                    : Colors.Error,
+              }}
+            >
               {snackContent?.text}
             </Paragraph>
           </Snackbar>

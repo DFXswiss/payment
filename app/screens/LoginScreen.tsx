@@ -1,6 +1,6 @@
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useRef, useState, useEffect } from "react";
-import { useForm, useWatch } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View, TextInput } from "react-native";
 import Form from "../components/form/Form";
@@ -19,10 +19,13 @@ import { Text } from "react-native-paper";
 import SettingsService from "../services/SettingsService";
 import { DeFiButton } from "../elements/Buttons";
 import ButtonContainer from "../components/util/ButtonContainer";
-import { createRules, openUrl } from "../utils/Utils";
+import { createRules } from "../utils/Utils";
 import { ApiError } from "../models/ApiDto";
 import StorageService from "../services/StorageService";
 import Loading from "../components/util/Loading";
+import { getSignMessage } from "../services/ApiService";
+import NotificationService from "../services/NotificationService";
+import { Blockchain } from "../models/Blockchain";
 
 interface LoginData {
   userName: string;
@@ -30,17 +33,6 @@ interface LoginData {
   walletId: number;
   refCode: string;
 }
-
-const messageDefichain =
-  "By signing this message, you confirm that you are the sole owner of the provided DeFiChain address and are in possession of its private key. Your ID:";
-const messageGeneral =
-  "By signing this message, you confirm that you are the sole owner of the provided Blockchain address. Your ID:";
-
-const signingCommand = (address: string) => {
-  const isDefichain = address.match(/^((7|8)\w{33}|(t|d)\w{33}|(t|d)\w{41})$/) !== null
-  const message = `${isDefichain ? messageDefichain : messageGeneral} ${address}`.split(" ").join("_");
-  return isDefichain ? `signmessage "${address}" "${message}"` : message;
-};
 
 const LoginScreen = () => {
   const nav = useNavigation();
@@ -53,7 +45,6 @@ const LoginScreen = () => {
     formState: { errors },
     setValue,
   } = useForm<LoginData>();
-  const address = useWatch({ control, name: "userName", defaultValue: "" });
 
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState<string>();
@@ -61,10 +52,26 @@ const LoginScreen = () => {
   const [signCommandCopied, setSignCommandCopied] = useState(false);
   const [isAutoLogin, setIsAutoLogin] = useState(false);
   const [isOldSignature, setIsOldSignature] = useState(false);
+  const [isSignCommand, setIsSignCommand] = useState(false);
+  const [signMessage, setSignMessage] = useState<string>();
 
   const passwordRef = useRef<TextInput>(null);
 
   const onSubmit = (direct: boolean) => (data: LoginData) => {
+    getSignMessage(data.userName)
+      .then((sign) => {
+        let signMessage = sign.message;
+        if (sign.blockchain === Blockchain.DEFICHAIN) {
+          signMessage = `signmessage "${data.userName}" "${signMessage}"`;
+          setIsSignCommand(true);
+        }
+        setSignMessage(signMessage);
+      })
+      .catch(() => {
+        setAddressEntered(false);
+        NotificationService.error(t("feedback.load_failed"));
+      });
+
     if (!direct && !addressEntered) {
       setAddressEntered(true);
       passwordRef.current?.focus();
@@ -107,8 +114,6 @@ const LoginScreen = () => {
         });
       });
   };
-
-  const openInstructions = () => openUrl(t("session.instruction_link"));
 
   useEffect(() => {
     // TODO: remove at some point ...
@@ -206,17 +211,18 @@ const LoginScreen = () => {
                 />
                 <View style={addressEntered ? undefined : AppStyles.noDisplay}>
                   <SpacerV />
-                  <H3 text={t("session.signing_command")}></H3>
+                  <H3 text={t(isSignCommand ? "session.signing_command" : "session.signing_message")}></H3>
                   <View style={[AppStyles.containerHorizontal, styles.signingMessage]}>
                     <View style={styles.textContainer}>
-                      <Text>{signingCommand(address)}</Text>
+                      <Text>{signMessage}</Text>
                     </View>
                     <SpacerH />
                     <IconButton
                       icon={signCommandCopied ? "check" : "content-copy"}
                       color={signCommandCopied ? Colors.Success : Colors.Grey}
                       onPress={() => {
-                        ClipboardService.copy(signingCommand(address));
+                        if (!signMessage) return;
+                        ClipboardService.copy(signMessage);
                         setTimeout(() => setSignCommandCopied(true), 200);
                         setTimeout(() => setSignCommandCopied(false), 2200);
                       }}

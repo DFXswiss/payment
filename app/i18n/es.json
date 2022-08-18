@@ -56,6 +56,7 @@
       "instruction_link": "https://defichain-wiki.com/wiki/DFX_manual_registration",
       "sign_up": "Inicia sesión / Regístrate",
       "signing_command": "Confirma",
+      "signing_message": "Mensaje de la señal",
       "login_failed": "¡Inicio fallido!",
       "pattern_invalid": "¡Formato de la dirección/firma no válida!",
       "signature_invalid": "¡Firma no válida!",

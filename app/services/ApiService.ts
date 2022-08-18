@@ -1,7 +1,7 @@
 import { History } from "../models/History";
 import { Statistic } from "../models/Statistic";
 import { Environment } from "../env/Environment";
-import { ApiError, AuthResponse } from "../models/ApiDto";
+import { ApiError, ApiSignMessage, AuthResponse } from "../models/ApiDto";
 import { Asset } from "../models/Asset";
 import { BuyRoute, BuyRouteDto, fromBuyRouteDto, toBuyRouteDto } from "../models/BuyRoute";
 import { CfpResult } from "../models/CfpResult";
@@ -62,6 +62,10 @@ export const signIn = (credentials?: Credentials): Promise<string> => {
 
 export const signUp = (user: NewUser): Promise<string> => {
   return fetchFrom<AuthResponse>(`${AuthUrl}/signUp`, "POST", user).then((resp) => resp.accessToken);
+};
+
+export const getSignMessage = (address: string): Promise<ApiSignMessage> => {
+  return fetchFrom<ApiSignMessage>(`${AuthUrl}/signMessage?address=${address}`);
 };
 
 // --- USER --- //

@@ -1,5 +1,6 @@
 import i18n from "../i18n/i18n";
 import { formatAmount } from "../utils/Utils";
+import { HistoryType } from "./HistoryType";
 import { Language } from "./Language";
 
 export enum UserRole {
@@ -91,6 +92,7 @@ export interface UserDto {
   depositLimit: number;
 
   apiKeyCT: string;
+  apiFilterCT: HistoryType[];
 }
 
 export interface User {
@@ -109,6 +111,7 @@ export interface User {
   depositLimit: number;
 
   apiKeyCT: string;
+  apiFilterCT: HistoryType[];
 }
 
 export interface UserDetailDto extends UserDto {
@@ -149,6 +152,7 @@ export const fromUserDto = (user: UserDto): User => ({
   kycDataComplete: user.kycDataComplete,
 
   apiKeyCT: user.apiKeyCT,
+  apiFilterCT: user.apiFilterCT,
 });
 
 export const toUserDto = (user: User): UserDto => ({
@@ -168,6 +172,7 @@ export const toUserDto = (user: User): UserDto => ({
   kycDataComplete: user.kycDataComplete,
 
   apiKeyCT: user.apiKeyCT,
+  apiFilterCT: user.apiFilterCT,
 });
 
 export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({

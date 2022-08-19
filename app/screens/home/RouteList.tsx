@@ -526,6 +526,13 @@ const RouteList = ({
         style={{ width: 400 }}
       >
         <TransactionHistory
+          ctFilter={user?.apiFilterCT}
+          onCtFilterChange={(filter) =>
+            setUser((user) => {
+              user ? (user.apiFilterCT = filter) : undefined;
+              return user;
+            })
+          }
           onClose={() => setIsHistoryVisible(false)}
           apiKey={user?.apiKeyCT}
           setApiKey={(key) => setUser((u) => ({ ...u, apiKeyCT: key } as UserDetail))}

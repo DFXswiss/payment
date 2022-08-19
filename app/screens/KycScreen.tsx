@@ -78,10 +78,12 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
 
   const requestStart = (kycCode?: string) => {
     setIsLoading(true);
-    postKyc(kycCode).then((result) => {
-      updateState(result);
-      onContinue(result);
-    });
+    postKyc(kycCode)
+      .then((result) => {
+        updateState(result);
+        onContinue(result);
+      })
+      .catch(onLoadFailed);
   };
 
   const finishChatBot = (nthTry = 13): Promise<void> => {

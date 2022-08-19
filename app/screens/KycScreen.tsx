@@ -17,6 +17,7 @@ import {
   KycInfo,
   KycState,
   KycStatus,
+  kycNotStarted,
 } from "../models/User";
 import { pickDocuments, sleep } from "../utils/Utils";
 import KycInit from "../components/KycInit";
@@ -162,6 +163,12 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
       .finally(() => setIsFileUploading(false));
   };
 
+  const continueLabel = (): string => {
+    if (kycCompleted(kycInfo?.kycStatus)) return "model.kyc.increase_limit";
+    else if (kycNotStarted(kycInfo?.kycStatus)) return "action.start";
+    else return "action.next";
+  };
+
   return (
     <AppLayout
       preventScrolling={kycInfo?.kycStatus === KycStatus.CHATBOT}
@@ -238,10 +245,12 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
               <H2 text={t("model.kyc.status")} />
               <SpacerV />
               <DataTable>
-                <CompactRow>
-                  <CompactCell>{t("model.kyc.status")}</CompactCell>
-                  <CompactCell multiLine>{getKycStatusString(kycInfo)}</CompactCell>
-                </CompactRow>
+                {!kycNotStarted(kycInfo.kycStatus) && (
+                  <CompactRow>
+                    <CompactCell>{t("model.kyc.status")}</CompactCell>
+                    <CompactCell multiLine>{getKycStatusString(kycInfo)}</CompactCell>
+                  </CompactRow>
+                )}
                 <CompactRow>
                   <CompactCell>{t("model.user.limit")}</CompactCell>
                   <CompactCell>{getTradeLimit(kycInfo)}</CompactCell>
@@ -263,7 +272,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
               {kycInfo.kycState !== KycState.REVIEW && (
                 <ButtonContainer>
                   <DeFiButton mode="contained" onPress={() => onContinue(kycInfo, inputParams)}>
-                    {t(kycCompleted(kycInfo.kycStatus) ? "model.kyc.increase_limit" : "action.next")}
+                    {t(continueLabel())}
                   </DeFiButton>
                 </ButtonContainer>
               )}

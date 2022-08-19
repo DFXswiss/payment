@@ -189,6 +189,8 @@ export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
 
 const toStringDto = (string: string): string | null => (string === "" ? null : string);
 
+export const kycNotStarted = (kycStatus?: KycStatus) => [KycStatus.NA].includes(kycStatus ?? KycStatus.NA);
+
 export const kycCompleted = (kycStatus?: KycStatus) =>
   [KycStatus.MANUAL, KycStatus.COMPLETED].includes(kycStatus ?? KycStatus.NA);
 

@@ -240,7 +240,7 @@ const RouteList = ({
       condition: true,
       label: "model.route.min_deposit",
       value: `${formatMinDeposit(route.minDeposits)}`,
-    }, // BTC hardcoded until we get asset for deposit from API
+    },
     {
       condition: true,
       label: "model.route.volume",

@@ -1,5 +1,6 @@
 import { Asset } from "./Asset";
 import { Deposit } from "./Deposit";
+import { MinDeposit } from "./MinDeposit";
 import { StakingRoute } from "./StakingRoute";
 
 export enum Blockchain {
@@ -18,4 +19,5 @@ export interface CryptoRoute {
   volume: number;
   annualVolume: number;
   refBonus: number;
+  minDeposits: MinDeposit[];
 }

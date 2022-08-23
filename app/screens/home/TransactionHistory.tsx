@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { View } from "react-native";
 import { DataTable, Divider, Paragraph } from "react-native-paper";
 import ButtonContainer from "../../components/util/ButtonContainer";
 import IconButton from "../../components/util/IconButton";
 import Colors from "../../config/Colors";
 import { DeFiButton } from "../../elements/Buttons";
 import { Checkbox } from "../../elements/Checkbox";
+import { RadioButton } from "../../elements/RadioButton";
 import { SpacerV } from "../../elements/Spacers";
 import { CompactRow, CompactCell } from "../../elements/Tables";
 import { H3, H4 } from "../../elements/Texts";
@@ -17,6 +19,7 @@ import { createHistoryCsv, deleteApiKey, generateApiKey, putApiKeyFilter } from 
 import ClipboardService from "../../services/ClipboardService";
 import NotificationService from "../../services/NotificationService";
 import { AppSettings } from "../../services/SettingsService";
+import AppStyles from "../../styles/AppStyles";
 import { openUrl } from "../../utils/Utils";
 
 // history filter type helpers
@@ -45,6 +48,7 @@ const TransactionHistory = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isKeyLoading, setIsKeyLoading] = useState(false);
   const [apiSecret, setApiSecret] = useState<string | undefined>(undefined);
+  const [ctFilterEnabled, setCtFilterEnabled] = useState<boolean>(!(ctFilter?.length === 0));
   const [ctTypes, setCtTypes] = useState<{ [type: string]: boolean }>(fromTypeArray(ctFilter));
   const [csvTypes, setCsvTypes] = useState<{ [type: string]: boolean }>(fromTypeArray());
 
@@ -73,12 +77,21 @@ const TransactionHistory = ({
       .finally(() => setIsKeyLoading(false));
   };
 
+  const enableCtFilter = (enabled: boolean) => {
+    setCtFilterEnabled(enabled);
+    updateFilter(enabled ? ctTypes : {});
+  };
+
   const toggleCtFilter = (type: HistoryType) => {
     setCtTypes((t) => {
       const types = { ...t, [type]: !t[type] };
-      putApiKeyFilter(toTypeArray(types)).then(onCtFilterChange);
+      updateFilter(types);
       return types;
     });
+  };
+
+  const updateFilter = (types: { [type: string]: boolean }) => {
+    putApiKeyFilter(toTypeArray(types)).then(onCtFilterChange);
   };
 
   const onExportHistory = () => {
@@ -142,10 +155,25 @@ const TransactionHistory = ({
 
       <SpacerV />
       <H4 text={t("model.history.ct_filter_text")} />
+
+      <View style={AppStyles.containerHorizontalWrap}>
+        <RadioButton
+          label={t("model.history.filter_active")}
+          onPress={() => enableCtFilter(true)}
+          checked={ctFilterEnabled}
+        />
+        <RadioButton
+          label={t("model.history.filter_inactive")}
+          onPress={() => enableCtFilter(false)}
+          checked={!ctFilterEnabled}
+        />
+      </View>
+
       {Object.values(HistoryType).map((type) => (
         <Checkbox
           key={type}
           checked={ctTypes[type]}
+          disabled={!ctFilterEnabled}
           label={t(`model.history.${type}`)}
           onPress={() => toggleCtFilter(type)}
         />

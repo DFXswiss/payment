@@ -91,7 +91,10 @@ const TransactionHistory = ({
   };
 
   const updateFilter = (types: { [type: string]: boolean }) => {
-    putApiKeyFilter(toTypeArray(types)).then(onCtFilterChange);
+    putApiKeyFilter(toTypeArray(types))
+      .then(onCtFilterChange)
+      .then(() => NotificationService.success(t("feedback.saved")))
+      .catch(() => NotificationService.error(t("feedback.save_failed")));
   };
 
   const onExportHistory = () => {

@@ -39,6 +39,7 @@
       "request_submitted": "Anfrage abgesetzt!",
       "request_failed": "Fehler bei der Anfrage!",
       "copied": "Kopiert!",
+      "saved": "Gespeichert!",
       "pop_up_blocked": "Fehler beim Öffnen! Bitte erlaube Pop-up-Fenster in den Browser-Einstellungen.",
       "bank_tx_required": "Um diese Funktion zu nutzen, musst du zunächst eine Banktransaktion (Kauf oder Verkauf) erfolgreich abschliessen!"
     },
@@ -364,7 +365,7 @@
         "ct_link": "Cointracking-Verknüpfung",
         "ct_website": "Cointracking Homepage",
         "ct_text": "Du kannst dein DFX-Konto mit deinem Cointracking-Konto verknüpfen.",
-        "ct_filter_text": "Importfilter",
+        "ct_filter_text": "Aktueller Importfilter",
         "filter_active": "Gefilterte Daten übertragen",
         "filter_inactive": "Alle Daten übertragen",
         "create_api_key": "API-Key generieren",

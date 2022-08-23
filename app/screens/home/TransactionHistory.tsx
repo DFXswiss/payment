@@ -158,26 +158,28 @@ const TransactionHistory = ({
 
       <View style={AppStyles.containerHorizontalWrap}>
         <RadioButton
-          label={t("model.history.filter_active")}
-          onPress={() => enableCtFilter(true)}
-          checked={ctFilterEnabled}
-        />
-        <RadioButton
           label={t("model.history.filter_inactive")}
           onPress={() => enableCtFilter(false)}
           checked={!ctFilterEnabled}
         />
+        <RadioButton
+          label={t("model.history.filter_active")}
+          onPress={() => enableCtFilter(true)}
+          checked={ctFilterEnabled}
+        />
       </View>
 
-      {Object.values(HistoryType).map((type) => (
-        <Checkbox
-          key={type}
-          checked={ctTypes[type]}
-          disabled={!ctFilterEnabled}
-          label={t(`model.history.${type}`)}
-          onPress={() => toggleCtFilter(type)}
-        />
-      ))}
+      <View style={{ marginLeft: 30 }}>
+        {Object.values(HistoryType).map((type) => (
+          <Checkbox
+            key={type}
+            checked={ctTypes[type]}
+            disabled={!ctFilterEnabled}
+            label={t(`model.history.${type}`)}
+            onPress={() => toggleCtFilter(type)}
+          />
+        ))}
+      </View>
 
       <SpacerV height={20} />
       <Divider style={{ backgroundColor: Colors.LightGrey }} />

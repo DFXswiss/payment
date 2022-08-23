@@ -92,7 +92,7 @@ export const deleteApiKey = (): Promise<void> => {
 };
 
 export const putApiKeyFilter = (types?: HistoryType[]): Promise<HistoryType[]> => {
-  return fetchFrom<HistoryType[]>(`${UserUrl}/apiKey/CT/filter${toHistoryQuery(types)}`, "PUT");
+  return fetchFrom<HistoryType[]>(`${UserUrl}/apiFilter/CT${toHistoryQuery(types)}`, "PUT");
 };
 
 // --- KYC --- //

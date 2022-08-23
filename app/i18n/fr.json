@@ -364,8 +364,8 @@
         "ct_website": "Page d'accueil de Cointracking",
         "ct_text": "Vous pouvez lier votre compte DFX à votre compte Cointracking.",
         "ct_filter_text": "Filtre d'importation",
-        "filter_active": "Actif",
-        "filter_inactive": "Inactif",
+        "filter_active" : "Transmettre les données filtrées",
+        "filter_inactive" : "Transmettre toutes les données",
         "create_api_key": "Générer une clé API",
         "delete_api_key": "Supprimer la clé API",
         "csv_export": "Exportation CSV"

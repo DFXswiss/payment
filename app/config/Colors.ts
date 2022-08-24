@@ -11,4 +11,5 @@ export default {
   Blue: "#072440",
   Error: "#FF453A",
   Success: "#32D74B",
+  Disabled: "#00000042",
 };

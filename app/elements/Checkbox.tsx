@@ -24,7 +24,7 @@ export const Checkbox = ({ label, onPress, checked, disabled, loading }: Checkbo
             <PaperCheckbox status={checked ? "checked" : "unchecked"} disabled={disabled} />
           )}
         </View>
-        <Paragraph style={disabled && { color: "#00000042" }}>{label}</Paragraph>
+        <Paragraph style={disabled && { color: Colors.Disabled }}>{label}</Paragraph>
       </View>
     </TouchableRipple>
   );

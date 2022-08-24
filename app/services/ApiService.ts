@@ -83,12 +83,16 @@ export const updateRefFee = (fee: number): Promise<void> => {
   return fetchFrom(UserUrl, "PUT", { refFeePercent: fee });
 };
 
-export const generateApiKey = (): Promise<ApiKey> => {
-  return fetchFrom<ApiKey>(`${UserUrl}/apiKey/CT`, "POST");
+export const generateApiKey = (types?: HistoryType[]): Promise<ApiKey> => {
+  return fetchFrom<ApiKey>(`${UserUrl}/apiKey/CT${toHistoryQuery(types)}`, "POST");
 };
 
 export const deleteApiKey = (): Promise<void> => {
   return fetchFrom<void>(`${UserUrl}/apiKey/CT`, "DELETE");
+};
+
+export const putApiKeyFilter = (types?: HistoryType[]): Promise<HistoryType[]> => {
+  return fetchFrom<HistoryType[]>(`${UserUrl}/apiFilter/CT${toHistoryQuery(types)}`, "PUT");
 };
 
 // --- KYC --- //

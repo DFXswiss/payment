@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { TouchableRipple, Checkbox as PaperCheckbox, Paragraph } from "react-native-paper";
 import Loading from "../components/util/Loading";
+import Colors from "../config/Colors";
 import { DefaultCursor } from "../styles/AppStyles";
 
 interface CheckboxProps {
@@ -23,7 +24,7 @@ export const Checkbox = ({ label, onPress, checked, disabled, loading }: Checkbo
             <PaperCheckbox status={checked ? "checked" : "unchecked"} disabled={disabled} />
           )}
         </View>
-        <Paragraph>{label}</Paragraph>
+        <Paragraph style={disabled && { color: Colors.Disabled }}>{label}</Paragraph>
       </View>
     </TouchableRipple>
   );

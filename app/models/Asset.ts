@@ -1,6 +1,12 @@
 export enum AssetType {
-  Coin = "Coin",
-  DAT = "DAT"
+  COIN = "Coin",
+  DAT = "DAT",
+}
+
+export enum AssetCategory {
+  POOL_PAIR = "PoolPair",
+  STOCK = "Stock",
+  CRYPTO = "Crypto",
 }
 
 export interface Asset {
@@ -10,4 +16,5 @@ export interface Asset {
   name: string;
   buyable: boolean;
   sellable: boolean;
+  category: AssetCategory;
 }

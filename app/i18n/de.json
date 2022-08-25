@@ -309,7 +309,7 @@
         "fiat": "Währung",
         "deposit_address": "Deposit-Adresse",
         "conflict": "Die Route existiert bereits!",
-        "exchange_rate_warning": "Achtung, wir kaufen dieses Asset auf der DEX und können keinen Wechselkurs garantieren! Die Preise auf der DEX können deutlich tiefer oder höher als auf anderen Exchanges sein, was sich auch negativ auf den Wechselkurs auswirken kann.",
+        "exchange_rate_warning": "Achtung, wir kaufen dieses Asset auf der DEX und können keinen Wechselkurs garantieren! Die Preise auf der DEX können deutlich tiefer oder höher als auf anderen Exchanges sein, was sich auch negativ auf den Wechselkurs auswirken kann.\n\nBitte beachte beim Kauf von dToken-Assets, dass eine DEX-Stabilisierungsgebühr von ca. 29% anfällt, wenn du diese zu einem späteren Zeitpunkt wieder in Krypto-Token (DFI, dBTC, dETH ...), Stablecoins (dUSDC, dUSDT) umtauschen oder über DFX gegen FIAT (EUR, USD, CHF ...) verkaufen möchtest. Bei einem späteren Umtausch innerhalb des dToken (dUSD, dTSLA, dAMZN, dCOIN ...) entfällt die oben genannte DEX-Stabilisierungsgebühr.",
         "history": "Transaktions-Historie",
         "no_tx": "Keine erfolgreichen Transaktionen gefunden!",
         "ref_bonus": "Ref-Bonus",

@@ -64,7 +64,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
 
   const onVote = (number: number, vote: CfpVote) => {
     setVotes((votes) => {
-      votes = { ...(votes ?? {}), [number]: vote };
+      votes = { ...(votes ?? {}), [number]: votes?.[number] === vote ? undefined : vote };
 
       setIsSaving({ number, vote });
       putCfpVotes(votes).finally(() => setIsSaving(undefined));
@@ -184,7 +184,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
                         <RadioButton
                           label={t("cfp.neutral")}
                           onPress={() => onVote(result.number, CfpVote.NEUTRAL)}
-                          checked={(votes?.[result.number] ?? CfpVote.NEUTRAL) === CfpVote.NEUTRAL}
+                          checked={votes?.[result.number] === CfpVote.NEUTRAL}
                           disabled={!isVotingOpen}
                           loading={isSaving?.number === result.number && isSaving.vote === CfpVote.NEUTRAL}
                         />

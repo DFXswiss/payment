@@ -73,7 +73,7 @@ export interface Fees {
 }
 
 export interface CfpVotes {
-  [number: number]: CfpVote;
+  [number: number]: CfpVote | undefined;
 }
 
 export interface UserDto {

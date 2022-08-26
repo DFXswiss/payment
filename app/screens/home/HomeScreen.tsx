@@ -320,14 +320,10 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
 
       {isVotingOpen && canVote && (
         <View onLayout={(event) => setVotingImageWidth(event.nativeEvent.layout.width)}>
-          <TouchableOpacity onPress={() => navigate(Routes.SpecialVoting)}>
+          <TouchableOpacity onPress={() => navigate(Routes.Cfp)}>
             <Image
               style={{ width: votingImageWidth, height: votingImageWidth / 3 }}
-              source={
-                settings?.language === "DE"
-                  ? require("../../assets/voting_2207_dfx_de.svg")
-                  : require("../../assets/voting_2207_dfx_en.svg")
-              }
+              source={require("../../assets/cfp_voting.svg")}
             />
           </TouchableOpacity>
         </View>

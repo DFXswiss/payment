@@ -6,7 +6,7 @@ import { DeFiButton } from "../../elements/Buttons";
 import { SpacerV } from "../../elements/Spacers";
 import { Alert } from "../../elements/Texts";
 import { ApiError } from "../../models/ApiDto";
-import { Asset } from "../../models/Asset";
+import { Asset, AssetCategory } from "../../models/Asset";
 import { BuyRoute, BuyType } from "../../models/BuyRoute";
 import { getAssets, getCountries, postBuyRoute, putBuyRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
@@ -19,8 +19,6 @@ import ButtonContainer from "../util/ButtonContainer";
 import { StakingRoute } from "../../models/StakingRoute";
 import { Country } from "../../models/Country";
 import Loading from "../util/Loading";
-
-const stockTokenChainIds = [15, 16, 19, 20, 21, 22, 23, 24, 26, 27, 28, 29, 30, 31, 34, 37];
 
 const BuyRouteEdit = ({
   routes,
@@ -78,7 +76,9 @@ const BuyRouteEdit = ({
       .finally(() => setIsSaving(false));
   };
 
-  const showAssetWarning = (): boolean => stockTokenChainIds.includes(asset?.chainId ?? 0);
+  const showAssetWarning = (): boolean =>
+    asset?.category === AssetCategory.STOCK ||
+    (asset?.category === AssetCategory.POOL_PAIR && asset?.name.includes("DUSD"));
 
   const rules: any = createRules({
     type: Validations.Required,

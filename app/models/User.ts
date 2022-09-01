@@ -52,6 +52,7 @@ export interface KycInfo {
   kycState: KycState;
   kycDataComplete: boolean;
   kycHash: string;
+  accountType: AccountType;
   depositLimit: number;
   sessionUrl?: string;
   setupUrl?: string;

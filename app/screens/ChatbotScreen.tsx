@@ -70,6 +70,13 @@ const ChatbotScreen = ({
     nav.navigate(Routes.Home);
   }
 
+  const onChatbotRequestFailed = () => {
+    NotificationService.error(t("feedback.load_failed"));
+    setLoading(false)
+    setRequestingNextStep(false)
+    if (pages.length === 0) onBack()
+  }
+
   const onBack = () => {
     // cancel
     if (pageIndex === 0) {
@@ -147,6 +154,7 @@ const ChatbotScreen = ({
             requestStart(sessionId, id)
           }
         })
+        .catch(onChatbotRequestFailed)
     } else {
       NotificationService.error(t("kyc.bot.error.missing_session_id"))
     }
@@ -170,6 +178,7 @@ const ChatbotScreen = ({
             break
         }
       })
+      .catch(onChatbotRequestFailed)
   }
 
   const restoreSession = (id?: string, chatbotId?: string, inputPages?: ChatbotPage[], shouldDeactivateLoading: boolean = true): Promise<ChatbotPage[]> => {
@@ -209,6 +218,7 @@ const ChatbotScreen = ({
           requestNextStep(chatbotCreateAnswer(newValue, recreatedAnswer), recreatedAnswer, chatbotId, newPages)
         }
       })
+      .catch(onChatbotRequestFailed)
   }
 
   const requestNextStep = (apiAnswer: ChatbotAPIAnswer, answer?: ChatbotAnswer, chatbotId?: string, inputPages?: ChatbotPage[]) => {
@@ -237,6 +247,7 @@ const ChatbotScreen = ({
         }
         setLoading(false)
       })
+      .catch(onChatbotRequestFailed)
   }
 
   const updateProgress = (pages: ChatbotPage[], pageIndex: number, isBack: boolean = false) => {

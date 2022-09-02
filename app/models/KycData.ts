@@ -1,5 +1,5 @@
 import { Country } from "./Country";
-import { AccountType, UserDetail } from "./User";
+import { AccountType } from "./User";
 
 export interface KycData {
   accountType: AccountType;

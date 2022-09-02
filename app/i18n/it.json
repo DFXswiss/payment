@@ -308,7 +308,7 @@
         "fiat": "Valuta",
         "deposit_address": "Indirizzo di deposito",
         "conflict": "Il percorso esiste già!",
-        "exchange_rate_warning": "Attenzione, compriamo questo bene su DEX e non possiamo garantire un tasso di cambio! I prezzi su DEX possono essere significativamente inferiori o superiori a quelli di altre borse, il che può anche avere un impatto negativo sul tasso di cambio.\n\nQuando si acquistano asset dToken, si noti che se si desidera scambiarli nuovamente in crypto token (DFI, dBTC, dETH ...), stablecoin (dUSDC, dUSDT) o venderli tramite DFX contro FIAT (EUR, USD, CHF ...) in un momento successivo, si applicherà una commissione di stabilizzazione DEX di circa il 29%. In caso di scambio successivo all'interno del dToken (dUSD, dTSLA, dAMZN, dCOIN ...), la suddetta commissione di stabilizzazione DEX non si applica.",
+        "exchange_rate_warning": "Attenzione, compriamo questo bene su DEX e non possiamo garantire un tasso di cambio! I prezzi su DEX possono essere significativamente inferiori o superiori a quelli di altre borse, il che può anche avere un impatto negativo sul tasso di cambio.\n\nQuando compri dToken, tieni presente che se in un secondo momento vorrai riconvertirli in criptovalute (DFI, dBTC, dETH...) o stablecoin (dUSDC, dUSDT) o venderli tramite DFX in cambio di FIAT (EUR, USD, FR...), verrà applicata la tariffa di stabilizzazione del DEX pari a circa 29%. In caso di ulteriore scambio con altri dToken (dUSD, dTSLA, dAMZN, dCOIN...), invece, la tariffa di stabilizzazione del DEX non verrà applicata",
         "history": "Storico delle transazioni",
         "no_tx": "Nessuna transazione di successo trovata!",
         "ref_bonus": "referral bonus",

@@ -58,6 +58,7 @@ const LoginScreen = () => {
   const passwordRef = useRef<TextInput>(null);
 
   const onSubmit = (direct: boolean) => (data: LoginData) => {
+    setIsProcessing(true);
     getSignMessage(data.userName)
       .then((sign) => {
         let signMessage = sign.message;
@@ -69,11 +70,13 @@ const LoginScreen = () => {
       })
       .catch(() => {
         setAddressEntered(false);
+        setIsProcessing(false);
         NotificationService.error(t("feedback.load_failed"));
       });
 
     if (!direct && !addressEntered) {
       setAddressEntered(true);
+      setIsProcessing(false);
       passwordRef.current?.focus();
       return;
     }

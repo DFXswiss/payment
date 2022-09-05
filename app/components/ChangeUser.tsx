@@ -7,38 +7,45 @@ import NotificationService from "../services/NotificationService";
 import SessionService from "../services/SessionService";
 import { Text, TouchableRipple } from "react-native-paper";
 import Colors from "../config/Colors";
+import Loading from "./util/Loading";
+import { CompactCell } from "../elements/Tables";
+import IconButton from "./util/IconButton";
 
 interface Props {
   user?: UserDetail;
-  onSubmit: () => void;
+  onChanged: () => void;
 }
 
-const ChangeUser = ({ user, onSubmit }: Props) => {
+const ChangeUser = ({ user, onChanged: onChanged }: Props) => {
   const { t } = useTranslation();
+  const [loadingAddress, setLoadingAddress] = useState<string>();
   const [linkedAddresses, setLinkedAddresses] = useState<LinkedAddress[]>([]);
 
   useEffect(() => {
-    const availableAddresses = user?.linkedAddresses ?? [];
-    setLinkedAddresses(availableAddresses);
+    if (user) setLinkedAddresses(user.linkedAddresses);
   }, []);
 
-  const changeTo = (linkedAddress?: LinkedAddress) => {
-    if (!linkedAddress || linkedAddress.address === user?.address) return;
+  const changeTo = (linkedAddress: LinkedAddress) => {
+    if (linkedAddress.address === user?.address) return;
 
     if (!linkedAddress.isSwitchable) {
       NotificationService.warn(t("feedback.change_user_security"));
       return;
     }
 
+    setLoadingAddress(linkedAddress.address);
+
     changeUser(linkedAddress)
       .then((token) => SessionService.tokenLogin(token))
       .catch(() => NotificationService.error(t("feedback.load_failed")))
-      .finally(onSubmit);
+      .finally(() => {
+        setLoadingAddress(undefined);
+        onChanged();
+      });
   };
 
   const textStyleFor = (linkedAddress: LinkedAddress, isAddress = false): TextStyle[] | undefined => {
-    const textStyles = [];
-    isAddress ? textStyles.push(styles.address) : textStyles.push(styles.blockchain);
+    const textStyles: TextStyle[] = [isAddress ? styles.address : styles.blockchain];
     if (linkedAddress.address === user?.address) textStyles.push(styles.current);
     else if (!linkedAddress.isSwitchable) textStyles.push(styles.disabled);
     return textStyles;
@@ -53,6 +60,11 @@ const ChangeUser = ({ user, onSubmit }: Props) => {
               <Text style={textStyleFor(item, true)}>{item.address}</Text>
               <Text style={textStyleFor(item)}>{item.blockchain}</Text>
             </View>
+            <IconButton
+              icon="chevron-right"
+              onPress={() => changeTo(item)}
+              isLoading={loadingAddress === item.address}
+            />
           </View>
         </TouchableRipple>
       ))}

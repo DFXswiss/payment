@@ -93,8 +93,9 @@ const BuyRouteEdit = ({
   });
 
   const getBuyTypes = (): BuyType[] => {
-    if (session?.blockchain === Blockchain.DEFICHAIN) return Object.values(BuyType);
-    return [BuyType.WALLET];
+    return session?.blockchain === Blockchain.DEFICHAIN || session?.blockchain == undefined
+      ? Object.values(BuyType)
+      : [BuyType.WALLET];
   };
 
   const getBuyTypePreselection = (): BuyType | undefined => {

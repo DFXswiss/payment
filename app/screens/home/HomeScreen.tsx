@@ -197,7 +197,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
             .then(([user, _, settings]) => {
               if (!cancelled()) {
                 setUser(user);
-                setIsChangeUserAvailable(user?.linkedAddresses !== undefined && user.linkedAddresses.length > 1);
+                setIsChangeUserAvailable(user?.linkedAddresses != undefined && user.linkedAddresses.length > 1);
                 setIsVotingOpen(settings.cfpVotingOpen);
               }
             })
@@ -229,7 +229,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       condition: Boolean(user.address),
       label: "model.user.address",
       value: user.address,
-      icon: "swap-horizontal",
+      icon: ((user as UserDetail).linkedAddresses?.length ?? 0) > 0 ? "swap-horizontal" : "",
       onPress: () => setIsChangeUser(true),
     },
     { condition: true, label: "model.user.mail", value: user.mail, emptyHint: t("model.user.add_mail") },
@@ -322,7 +322,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
           title={t("model.user.change")}
           style={{ width: 500 }}
         >
-          <ChangeUser user={user} onSubmit={() => setIsChangeUser(false)} />
+          <ChangeUser user={user} onChanged={() => setIsChangeUser(false)} />
         </DeFiModal>
       )}
 

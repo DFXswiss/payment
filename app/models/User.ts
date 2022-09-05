@@ -141,7 +141,7 @@ export interface UserDetail extends User {
   refCountActive: number;
   stakingBalance: number;
 
-  linkedAddresses?: LinkedAddress[];
+  linkedAddresses: LinkedAddress[];
 }
 
 export interface LinkedAddress {
@@ -202,7 +202,7 @@ export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
   refCountActive: dto.refCountActive,
   stakingBalance: dto.stakingBalance,
 
-  linkedAddresses: dto.linkedAddresses,
+  linkedAddresses: dto.linkedAddresses ?? [],
 });
 
 const toStringDto = (string: string): string | null => (string === "" ? null : string);

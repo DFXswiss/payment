@@ -308,7 +308,7 @@
         "fiat": "Monnaie",
         "deposit_address": "Adresse de dépôt",
         "conflict": "L'itinéraire existe déjà !",
-        "exchange_rate_warning": "Attention, nous achetons cet actif sur le DEX et ne pouvons pas garantir le taux de change ! Les prix sur le DEX peuvent être sensiblement plus bas ou plus élevés que sur d'autres échanges, ce qui peut également avoir un impact négatif sur le taux de change.\n\nAprès un achat de dTokens, veuillez noter que les échanger en retour contre des tokens crypto (DFI, dBTC, dETH, ...), des stable coins (dUSDC, dUSDT) ou les vendre via DFX contre des FIAT (EUR, USD, FR...) est une action sujette aux frais de stabilisation du DEX d'environ 29%. En cas d'échange avec d'autres dTokens (dUSD, dTSLA, dAMZN, dCOIN...), ces frais ne s'appliquent pas.",
+        "exchange_rate_warning": "Attention, nous achetons cet actif sur le DEX et ne pouvons pas garantir le taux de change ! Les prix sur le DEX peuvent être sensiblement plus bas ou plus élevés que sur d'autres échanges, ce qui peut également avoir un impact négatif sur le taux de change.\n\nAprès un achat de dTokens, veuillez noter que les échanger en retour contre des tokens crypto (DFI, dBTC, dETH, ...), des stable coins (dUSDC, dUSDT) ou les vendre via DFX contre des FIAT (EUR, USD, FR...) est une action sujette aux frais de stabilisation du DEX d'environ 12%. En cas d'échange avec d'autres dTokens (dUSD, dTSLA, dAMZN, dCOIN...), ces frais ne s'appliquent pas.",
         "history": "Historique des transactions",
         "no_tx": "Aucune transaction réussie trouvée !",
         "ref_bonus": "Bonus parrainage",

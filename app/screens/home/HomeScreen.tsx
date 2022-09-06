@@ -224,12 +224,12 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const annualBuyVolume = () => (buyRoutes ?? []).reduce((prev, curr) => prev + curr.annualVolume, 0);
   const sellVolume = () => (sellRoutes ?? []).reduce((prev, curr) => prev + curr.volume, 0);
 
-  const userData = (user: User) => [
+  const userData = (user: UserDetail) => [
     {
       condition: Boolean(user.address),
       label: "model.user.address",
       value: user.address,
-      icon: ((user as UserDetail).linkedAddresses?.length ?? 0) > 0 ? "swap-horizontal" : "",
+      icon: (user.linkedAddresses?.length ?? 0) > 0 ? "swap-horizontal" : "",
       onPress: () => setIsChangeUser(true),
     },
     { condition: true, label: "model.user.mail", value: user.mail, emptyHint: t("model.user.add_mail") },

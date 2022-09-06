@@ -292,7 +292,7 @@
         "fiat": "Moneda",
         "deposit_address": "Dirección de depósito",
         "conflict": "¡La ruta ya existe!",
-        "exchange_rate_warning": "¡Atención, nosotros compramos este activo en el Exchange descentralizado y no podemos garantizar una tasa de cambio específica. Los precios en el Exchange pueden ser significativamente más altos o bajos que en otros exchanges, lo que pudiera tener un impacto negativo en la tasa de cambio.\n\nAl comprar activos dTokens líquidos, por favor date cuenta de que si quieres cambiarlos a cripto tokens (DFI, dBTC, dETH...), monedas estables (dUSDC, dUSDT) o venderlos con DFX por FIAT (EUR, USD, FR...) más tarde, una tasa de estabilización del DEX de aproximadamente 29% se aplicará. Si el intercambio posterior es entre un dToken (dTSLA, dAMZN, dCOIN...), la mencionada tasa no se aplicará.",
+        "exchange_rate_warning": "¡Atención, nosotros compramos este activo en el Exchange descentralizado y no podemos garantizar una tasa de cambio específica. Los precios en el Exchange pueden ser significativamente más altos o bajos que en otros exchanges, lo que pudiera tener un impacto negativo en la tasa de cambio.\n\nAl comprar activos dTokens líquidos, por favor date cuenta de que si quieres cambiarlos a cripto tokens (DFI, dBTC, dETH...), monedas estables (dUSDC, dUSDT) o venderlos con DFX por FIAT (EUR, USD, FR...) más tarde, una tasa de estabilización del DEX de aproximadamente 12% se aplicará. Si el intercambio posterior es entre un dToken (dTSLA, dAMZN, dCOIN...), la mencionada tasa no se aplicará.",
         "history": "Historial de transacciones",
         "no_tx": "¡No se han encontrado transacciones exitosas!",
         "ref_bonus": "Bonificación de referidos",

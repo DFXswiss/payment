@@ -1,5 +1,6 @@
 import { Asset } from "./Asset";
 import { MinDeposit } from "./MinDeposit";
+import { Blockchain } from "./Blockchain";
 import { StakingRoute } from "./StakingRoute";
 
 export enum BuyType {
@@ -35,6 +36,8 @@ export interface BuyRoute {
   fee: number;
   refBonus: number;
   minDeposits: MinDeposit[];
+
+  blockchain?: Blockchain;
 }
 
 export const fromBuyRouteDto = (route: BuyRouteDto): BuyRoute => ({

@@ -7,8 +7,6 @@ import NotificationService from "../services/NotificationService";
 import SessionService from "../services/SessionService";
 import { Text, TouchableRipple } from "react-native-paper";
 import Colors from "../config/Colors";
-import Loading from "./util/Loading";
-import { CompactCell } from "../elements/Tables";
 import IconButton from "./util/IconButton";
 
 interface Props {
@@ -58,7 +56,7 @@ const ChangeUser = ({ user, onChanged: onChanged }: Props) => {
           <View style={styles.row}>
             <View style={styles.container}>
               <Text style={textStyleFor(item, true)}>{item.address}</Text>
-              <Text style={textStyleFor(item)}>{item.blockchain}</Text>
+              <Text style={textStyleFor(item)}>{item.blockchains.join(", ")}</Text>
             </View>
             <IconButton
               icon="chevron-right"

@@ -19,7 +19,7 @@ interface JWT {
   exp: number;
   iat: number;
   address: string;
-  blockchain: Blockchain;
+  blockchains: Blockchain[];
   role: UserRole;
 }
 
@@ -27,7 +27,7 @@ export class Session implements ISession {
   public accessToken?: string;
   public address?: string;
   public role?: UserRole;
-  public blockchain?: Blockchain;
+  public blockchains?: Blockchain[];
   public expires?: Date;
 
   public get isLoggedIn(): boolean {
@@ -48,7 +48,7 @@ export class Session implements ISession {
       const jwt: JWT = jwtDecode(this.accessToken);
       this.address = jwt.address;
       this.role = jwt.role;
-      this.blockchain = jwt.blockchain;
+      this.blockchains = jwt.blockchains ?? [Blockchain.DEFICHAIN];
       this.expires = new Date(jwt.exp * 1000);
     }
   }

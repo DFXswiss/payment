@@ -11,5 +11,5 @@ export interface AuthResponse {
 
 export interface ApiSignMessage {
   message: string;
-  blockchain: Blockchain;
+  blockchains: Blockchain[];
 }

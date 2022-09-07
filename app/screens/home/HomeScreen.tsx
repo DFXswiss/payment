@@ -229,7 +229,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       condition: Boolean(user.address),
       label: "model.user.address",
       value: user.address,
-      icon: (user.linkedAddresses?.length ?? 0) > 1 ? "swap-horizontal" : "",
+      icon: (user.linkedAddresses?.length ?? 0) > 1 ? "swap-horizontal" : undefined,
       onPress: () => setIsChangeUser(true),
     },
     { condition: true, label: "model.user.mail", value: user.mail, emptyHint: t("model.user.add_mail") },

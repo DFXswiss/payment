@@ -196,9 +196,9 @@ const RouteList = ({
 
     let promise: Promise<RouteHistoryAlias[]>;
 
-    if ("blockchain" in route) promise = getCryptoRouteHistory(route);
+    if ("bankUsage" in route) promise = getBuyRouteHistory(route);
     else if ("fiat" in route) promise = getSellRouteHistory(route);
-    else promise = getBuyRouteHistory(route);
+    else promise = getCryptoRouteHistory(route);
 
     promise.then(setRouteHistory).catch(() => {
       setIsRouteHistoryVisible(false);
@@ -359,25 +359,25 @@ const RouteList = ({
   ];
 
   const routeData = (route: RouteAlias) => {
-    if ("blockchain" in route) return cryptoRouteData(route);
+    if ("bankUsage" in route) return buyRouteData(route);
     else if ("fiat" in route) return sellRouteData(route);
     else if ("rewardType" in route) return stakingRouteData(route);
-    else return buyRouteData(route);
+    else return cryptoRouteData(route);
   };
 
   const deleteRoute = (route: RouteAlias): Promise<boolean | void> => {
-    if ("blockchain" in route) return deleteCryptoRoute(cryptoRoutes?.find((r) => r.id === route.id) as CryptoRoute);
+    if ("bankUsage" in route) return deleteBuyRoute(buyRoutes?.find((r) => r.id === route.id) as BuyRoute);
     else if ("fiat" in route) return deleteSellRoute(sellRoutes?.find((r) => r.id === route.id) as SellRoute);
     else if ("rewardType" in route)
       return deleteStakingRoute(stakingRoutes?.find((r) => r.id === route.id) as StakingRoute);
-    else return deleteBuyRoute(buyRoutes?.find((r) => r.id === route.id) as BuyRoute);
+    else return deleteCryptoRoute(cryptoRoutes?.find((r) => r.id === route.id) as CryptoRoute);
   };
 
   const isRouteLoading = (route: RouteAlias): boolean => {
-    if ("blockchain" in route) return isCryptoLoading[route.id];
+    if ("bankUsage" in route) return isBuyLoading[route.id];
     else if ("fiat" in route) return isSellLoading[route.id];
     else if ("rewardType" in route) return isStakingLoading[route.id];
-    else return isBuyLoading[route.id];
+    else return isCryptoLoading[route.id];
   };
 
   return (

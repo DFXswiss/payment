@@ -62,7 +62,7 @@ const LoginScreen = () => {
     getSignMessage(data.userName)
       .then((sign) => {
         let signMessage = sign.message;
-        if (sign.blockchain === Blockchain.DEFICHAIN) {
+        if (sign.blockchains.includes(Blockchain.DEFICHAIN)) {
           signMessage = `signmessage "${data.userName}" "${signMessage}"`;
           setIsSignCommand(true);
         }

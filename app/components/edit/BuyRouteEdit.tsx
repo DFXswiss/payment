@@ -41,6 +41,7 @@ const BuyRouteEdit = ({
   } = useForm<BuyRoute>();
   const type = useWatch({ control, name: "type" });
   const asset = useWatch({ control, name: "asset" });
+  const blockchain = useWatch({ control, name: "blockchain" });
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -85,17 +86,8 @@ const BuyRouteEdit = ({
     asset?.category === AssetCategory.STOCK ||
     (asset?.category === AssetCategory.POOL_PAIR && asset?.name.includes("DUSD"));
 
-  const rules: any = createRules({
-    type: Validations.Required,
-    asset: type === BuyType.WALLET && Validations.Required,
-    staking: type === BuyType.STAKING && Validations.Required,
-    iban: [Validations.Required, Validations.Iban(countries)],
-  });
-
   const getBuyTypes = (): BuyType[] => {
-    return session?.blockchain === Blockchain.DEFICHAIN || session?.blockchain == undefined
-      ? Object.values(BuyType)
-      : [BuyType.WALLET];
+    return session?.blockchains?.includes(Blockchain.DEFICHAIN) ? Object.values(BuyType) : [BuyType.WALLET];
   };
 
   const getBuyTypePreselection = (): BuyType | undefined => {
@@ -104,7 +96,7 @@ const BuyRouteEdit = ({
   };
 
   const getBuyableAssets = (values: Asset[]): Asset[] => {
-    return values.filter((a) => a.buyable);
+    return values.filter((a) => (blockchain ? a.blockchain === blockchain : true) && a.buyable);
   };
 
   const updateAssets = (values: Asset[]) => {
@@ -112,6 +104,22 @@ const BuyRouteEdit = ({
     const buyableAssets = getBuyableAssets(values);
     if (buyableAssets.length === 1) setValue("asset", buyableAssets[0]);
   };
+
+  const isBlockchainsEnabled = (): boolean => {
+    return getBlockchains().length > 1;
+  };
+
+  const getBlockchains = (): Blockchain[] => {
+    return session?.blockchains ?? [];
+  };
+
+  const rules: any = createRules({
+    type: Validations.Required,
+    asset: type === BuyType.WALLET && Validations.Required,
+    staking: type === BuyType.STAKING && Validations.Required,
+    iban: [Validations.Required, Validations.Iban(countries)],
+    blockchain: type === BuyType.WALLET && isBlockchainsEnabled() && Validations.Required,
+  });
 
   return isLoading ? (
     <Loading size="large" />
@@ -127,12 +135,25 @@ const BuyRouteEdit = ({
 
       {type === BuyType.WALLET && (
         <>
+          {isBlockchainsEnabled() && (
+            <>
+              <DeFiPicker
+                name="blockchain"
+                label={t("model.route.blockchain")}
+                items={getBlockchains()}
+                labelFunc={(i) => i}
+              />
+              <SpacerV />
+            </>
+          )}
+
           <DeFiPicker
             name="asset"
             label={t("model.route.asset")}
             items={getBuyableAssets(assets)}
             idFunc={(i) => i.id}
             labelFunc={(i) => i.name}
+            disabled={isBlockchainsEnabled() && blockchain == null}
           />
           {showAssetWarning() && (
             <>

@@ -1,3 +1,5 @@
+import { Blockchain } from "./Blockchain";
+
 export enum AssetType {
   COIN = "Coin",
   DAT = "DAT",
@@ -17,4 +19,5 @@ export interface Asset {
   buyable: boolean;
   sellable: boolean;
   category: AssetCategory;
+  blockchain: Blockchain;
 }

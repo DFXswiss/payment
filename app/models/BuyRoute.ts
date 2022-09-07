@@ -36,8 +36,6 @@ export interface BuyRoute {
   fee: number;
   refBonus: number;
   minDeposits: MinDeposit[];
-
-  blockchain?: Blockchain;
 }
 
 export const fromBuyRouteDto = (route: BuyRouteDto): BuyRoute => ({

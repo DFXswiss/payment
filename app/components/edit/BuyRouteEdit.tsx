@@ -87,7 +87,7 @@ const BuyRouteEdit = ({
     (asset?.category === AssetCategory.POOL_PAIR && asset?.name.includes("DUSD"));
 
   const getBuyTypes = (): BuyType[] => {
-    return session?.blockchains?.includes(Blockchain.DEFICHAIN) ? Object.values(BuyType) : [BuyType.WALLET];
+    return getBlockchains().includes(Blockchain.DEFICHAIN) ? Object.values(BuyType) : [BuyType.WALLET];
   };
 
   const getBuyTypePreselection = (): BuyType | undefined => {
@@ -96,7 +96,7 @@ const BuyRouteEdit = ({
   };
 
   const getBuyableAssets = (values: Asset[]): Asset[] => {
-    return values.filter((a) => (blockchain ? a.blockchain === blockchain : true) && a.buyable);
+    return values.filter((a) => a.blockchain === blockchain && a.buyable);
   };
 
   const updateAssets = (values: Asset[]) => {

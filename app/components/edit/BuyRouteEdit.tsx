@@ -38,7 +38,7 @@ const BuyRouteEdit = ({
     setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<BuyRoute>();
+  } = useForm<BuyRoute & { blockchain?: Blockchain }>();
   const type = useWatch({ control, name: "type" });
   const asset = useWatch({ control, name: "asset" });
   const blockchain = useWatch({ control, name: "blockchain" });

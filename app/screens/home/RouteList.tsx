@@ -196,9 +196,9 @@ const RouteList = ({
 
     let promise: Promise<RouteHistoryAlias[]>;
 
-    if ("bankUsage" in route) promise = getBuyRouteHistory(route);
+    if ("blockchain" in route) promise = getCryptoRouteHistory(route);
     else if ("fiat" in route) promise = getSellRouteHistory(route);
-    else promise = getCryptoRouteHistory(route);
+    else promise = getBuyRouteHistory(route);
 
     promise.then(setRouteHistory).catch(() => {
       setIsRouteHistoryVisible(false);
@@ -359,25 +359,25 @@ const RouteList = ({
   ];
 
   const routeData = (route: RouteAlias) => {
-    if ("bankUsage" in route) return buyRouteData(route);
+    if ("blockchain" in route) return cryptoRouteData(route);
     else if ("fiat" in route) return sellRouteData(route);
     else if ("rewardType" in route) return stakingRouteData(route);
-    else return cryptoRouteData(route);
+    else return buyRouteData(route);
   };
 
   const deleteRoute = (route: RouteAlias): Promise<boolean | void> => {
-    if ("bankUsage" in route) return deleteBuyRoute(buyRoutes?.find((r) => r.id === route.id) as BuyRoute);
+    if ("blockchain" in route) return deleteCryptoRoute(cryptoRoutes?.find((r) => r.id === route.id) as CryptoRoute);
     else if ("fiat" in route) return deleteSellRoute(sellRoutes?.find((r) => r.id === route.id) as SellRoute);
     else if ("rewardType" in route)
       return deleteStakingRoute(stakingRoutes?.find((r) => r.id === route.id) as StakingRoute);
-    else return deleteCryptoRoute(cryptoRoutes?.find((r) => r.id === route.id) as CryptoRoute);
+    else return deleteBuyRoute(buyRoutes?.find((r) => r.id === route.id) as BuyRoute);
   };
 
   const isRouteLoading = (route: RouteAlias): boolean => {
-    if ("bankUsage" in route) return isBuyLoading[route.id];
+    if ("blockchain" in route) return isCryptoLoading[route.id];
     else if ("fiat" in route) return isSellLoading[route.id];
     else if ("rewardType" in route) return isStakingLoading[route.id];
-    else return isCryptoLoading[route.id];
+    else return isBuyLoading[route.id];
   };
 
   return (

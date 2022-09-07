@@ -54,6 +54,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const [isKycDataEdit, setKycDataEdit] = useState<boolean>(false);
   const [showsKycStartDialog, setShowsKycStartDialog] = useState<boolean>(false);
   const [isFileUploading, setIsFileUploading] = useState(false);
+  const [showsLinkInstructions, setShowsLinkInstructions] = useState(false);
 
   useEffect(() => {
     // store and reset params
@@ -103,7 +104,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
 
     // start KYC
     setIsLoading(true);
-    postKyc(kycCode)
+    postKyc(kycInfo?.kycHash)
       .then((result) => {
         setKycInfo(result);
         continueKyc(result);

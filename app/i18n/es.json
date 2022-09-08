@@ -25,7 +25,7 @@
       "send": "Enviar",
       "start": "Inicio",
       "search": "Busque en",
-      "link": "Link"
+      "link": "Enlace"
     },
     "feedback": {
       "page_not_found": "¡Página no encontrada!",
@@ -377,8 +377,8 @@
         "existing_address": "Dirección existente",
         "new_address": "Dirección a vincular",
         "is_completed": "¿Está completa?",
-        "complete": "sí",
-        "incomplete": "no",
+        "complete": "Sí",
+        "incomplete": "No",
         "expiration": "Fecha de caducidad"
       }
     },

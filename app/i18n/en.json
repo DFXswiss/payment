@@ -394,8 +394,8 @@
         "existing_address": "Existing address",
         "new_address": "Address to be linked",
         "is_completed": "Is completed?",
-        "complete": "yes",
-        "incomplete": "no",
+        "complete": "Yes",
+        "incomplete": "No",
         "expiration": "Expiration date"
       }
     },

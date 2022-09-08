@@ -67,6 +67,9 @@ const LoginScreen = () => {
           setIsSignCommand(true);
         }
         setSignMessage(signMessage);
+        setAddressEntered(true);
+        passwordRef.current?.focus();
+        setIsProcessing(false);
       })
       .catch(() => {
         setAddressEntered(false);
@@ -75,9 +78,6 @@ const LoginScreen = () => {
       });
 
     if (!direct && !addressEntered) {
-      setAddressEntered(true);
-      setIsProcessing(false);
-      passwordRef.current?.focus();
       return;
     }
 

@@ -26,7 +26,7 @@
       "send": "Enviar",
       "start": "Início",
       "search": "Pesquisa",
-      "link": "Link"
+      "link": "Ligação"
     },
     "feedback": {
       "page_not_found": "Página não encontrada!",
@@ -391,8 +391,8 @@
         "existing_address": "Endereço existente",
         "new_address": "Endereço a ser ligado",
         "is_completed": "Está concluído?",
-        "complete": "sim",
-        "incomplete": "não",
+        "complete": "Sim",
+        "incomplete": "Não",
         "expiration": "Data de expiração"
       }
     },

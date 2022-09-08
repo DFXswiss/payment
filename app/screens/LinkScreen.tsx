@@ -33,6 +33,9 @@ const LinkScreen = () => {
   useEffect(() => {
     // get params
     const params = route.params as any;
+
+    nav.navigate(Routes.Link, { authentication: undefined });
+
     if (params && params.authentication) {
       getLinkAddress(params.authentication)
         .then(setLinkAddress)
@@ -78,7 +81,7 @@ const LinkScreen = () => {
       label: "model.link.is_completed",
       value: dto?.isCompleted ? t("model.link.complete") : t("model.link.incomplete"),
     },
-    { condition: true, label: "model.link.expiration", value: Moment(dto?.expiration).format("L") },
+    { condition: true, label: "model.link.expiration", value: Moment(dto?.expiration).format("L HH:mm") },
   ];
 
   return (

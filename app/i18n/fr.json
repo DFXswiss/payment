@@ -25,7 +25,7 @@
       "send": "Envoyer",
       "start": "Start",
       "search": "Recherche",
-      "link": "Link"
+      "link": "Lien"
     },
     "feedback": {
       "page_not_found": "Page non trouvée !",
@@ -394,8 +394,8 @@
         "existing_address": "Adresse existante",
         "new_address": "Adresse à relier",
         "is_completed": "Est-elle complétée ?",
-        "complete": "oui",
-        "incomplete": "non",
+        "complete": "Oui",
+        "incomplete": "Non",
         "expiration": "Date d'expiration"
       }
     },

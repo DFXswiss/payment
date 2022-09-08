@@ -53,6 +53,9 @@ const BuyRouteEdit = ({
     const buyTypePreselection = getBuyTypePreselection();
     if (buyTypePreselection) setValue("type", buyTypePreselection);
 
+    const blockchains = getBlockchains();
+    if (blockchains.length === 1) setValue("blockchain", blockchains[0]);
+
     Promise.all([getAssets(), getCountries()])
       .then(([a, c]) => {
         updateAssets(a);

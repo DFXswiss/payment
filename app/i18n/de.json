@@ -194,11 +194,11 @@
       "bot": {
         "sms_header": "Unser Verifikationspartner (KYC Spider) hat dir soeben einen SMS Code zugesendet.",
         "sms_code": "Bitte gebe diesen hier ein:",
-        "sms_placeholder": "Ihr SMS-Code",
+        "sms_placeholder": "Dein SMS-Code",
         "sms_help": "Solltest du den SMS Code nicht erhalten haben, wende dich bitte an ",
         "error": {
-          "missing_session_id": "Fehler: Bitte versuchen Sie es später noch einmal.",
-          "validation": "Fehler: Bitte überprüfen Sie Ihre Antwort.",
+          "missing_session_id": "Fehler: Bitte versuche es später noch einmal.",
+          "validation": "Fehler: Bitte überprüfe deine Antwort.",
           "wrong_sms": "Fehler: Falscher SMS-Code."
         }
       }
@@ -412,9 +412,9 @@
     },
     "link": {
       "header": "Informationen zur Verknüpfung der Adresse",
-      "instructions": "Es scheint, dass Sie bereits mit einer anderen Adresse verifiziert sind.\n\nBevor Sie unseren KYC-Prozess erneut durchführen, haben wir Ihnen eine E-Mail geschickt, um Ihre neue Adresse mit Ihrem verifizierten Konto zu verknüpfen.",
-      "success": "Ihre Adressen wurden erfolgreich verknüpft.",
-      "expired": "Ihre Link-Adressanforderung ist abgelaufen. Bitte erstellen Sie eine neue Anfrage, indem Sie versuchen, unseren KYC-Prozess zu durchlaufen."
+      "instructions": "Es scheint, dass du bereits mit einer anderen Adresse verifiziert bist.\n\nBevor du unseren KYC-Prozess erneut durchführst, haben wir dir eine E-Mail geschickt, um deine neue Adresse mit deinem verifizierten Konto zu verknüpfen.",
+      "success": "Deine Adressen wurden erfolgreich verknüpft.",
+      "expired": "Deine Link-Adressanforderung ist abgelaufen. Bitte erstelle eine neue Anfrage, indem du den KYC-Prozess neu startest."
     }
   }
 }

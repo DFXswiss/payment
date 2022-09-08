@@ -53,9 +53,6 @@ const BuyRouteEdit = ({
     const buyTypePreselection = getBuyTypePreselection();
     if (buyTypePreselection) setValue("type", buyTypePreselection);
 
-    const blockchains = getBlockchains();
-    if (blockchains.length === 1) setValue("blockchain", blockchains[0]);
-
     Promise.all([getAssets(), getCountries()])
       .then(([a, c]) => {
         updateAssets(a);
@@ -85,9 +82,13 @@ const BuyRouteEdit = ({
       .finally(() => setIsSaving(false));
   };
 
-  const showAssetWarning = (): boolean =>
-    asset?.category === AssetCategory.STOCK ||
-    (asset?.category === AssetCategory.POOL_PAIR && asset?.name.includes("DUSD"));
+  const showAssetWarning = (): boolean => {
+    console.log(asset);
+    return (
+      asset?.category === AssetCategory.STOCK ||
+      (asset?.category === AssetCategory.POOL_PAIR && asset?.name.includes("DUSD"))
+    );
+  };
 
   const getBuyTypes = (): BuyType[] => {
     return getBlockchains().includes(Blockchain.DEFICHAIN) ? Object.values(BuyType) : [BuyType.WALLET];
@@ -99,7 +100,7 @@ const BuyRouteEdit = ({
   };
 
   const getBuyableAssets = (values: Asset[]): Asset[] => {
-    return values.filter((a) => a.blockchain === blockchain && a.buyable);
+    return values.filter((a) => (blockchain ? a.blockchain === blockchain : true) && a.buyable);
   };
 
   const updateAssets = (values: Asset[]) => {

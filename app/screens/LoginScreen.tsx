@@ -58,26 +58,25 @@ const LoginScreen = () => {
   const passwordRef = useRef<TextInput>(null);
 
   const onSubmit = (direct: boolean) => (data: LoginData) => {
-    setIsProcessing(true);
-    getSignMessage(data.userName)
-      .then((sign) => {
-        let signMessage = sign.message;
-        if (sign.blockchains.includes(Blockchain.DEFICHAIN)) {
-          signMessage = `signmessage "${data.userName}" "${signMessage}"`;
-          setIsSignCommand(true);
-        }
-        setSignMessage(signMessage);
-        setAddressEntered(true);
-        passwordRef.current?.focus();
-        setIsProcessing(false);
-      })
-      .catch(() => {
-        setAddressEntered(false);
-        setIsProcessing(false);
-        NotificationService.error(t("feedback.load_failed"));
-      });
-
     if (!direct && !addressEntered) {
+      setIsProcessing(true);
+      getSignMessage(data.userName)
+        .then((sign) => {
+          let signMessage = sign.message;
+          if (sign.blockchains.includes(Blockchain.DEFICHAIN)) {
+            signMessage = `signmessage "${data.userName}" "${signMessage}"`;
+            setIsSignCommand(true);
+          }
+          setSignMessage(signMessage);
+          setAddressEntered(true);
+          passwordRef.current?.focus();
+          setIsProcessing(false);
+        })
+        .catch(() => {
+          setAddressEntered(false);
+          setIsProcessing(false);
+          NotificationService.error(t("feedback.load_failed"));
+        });
       return;
     }
 

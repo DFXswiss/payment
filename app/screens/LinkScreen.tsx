@@ -48,8 +48,9 @@ const LinkScreen = () => {
 
     if (!linkAddress) return;
 
-    if (new Date(linkAddress.expiration).getUTCDate() < new Date().getUTCDate()) {
+    if (new Date(linkAddress.expiration) < new Date()) {
       setShowsExpiration(true);
+      setIsProcessing(false);
       return;
     }
 

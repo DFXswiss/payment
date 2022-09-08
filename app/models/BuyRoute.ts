@@ -1,6 +1,5 @@
 import { Asset } from "./Asset";
 import { MinDeposit } from "./MinDeposit";
-import { Blockchain } from "./Blockchain";
 import { StakingRoute } from "./StakingRoute";
 
 export enum BuyType {

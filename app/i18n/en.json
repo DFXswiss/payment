@@ -412,7 +412,8 @@
     "link": {
       "header": "Link address request information",
       "instructions": "It seems you are already verified with another address.\n\nBefore you are doing our KYC process again, we sent you an email to link your new address to your verified account.",
-      "success": "Successfully linked your addresses."
+      "success": "Successfully linked your addresses.",
+      "expired": "Your link address request has expired. Please create a new request by attempting to go through our KYC process."
     }
   }
 }

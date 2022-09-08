@@ -82,13 +82,9 @@ const BuyRouteEdit = ({
       .finally(() => setIsSaving(false));
   };
 
-  const showAssetWarning = (): boolean => {
-    console.log(asset);
-    return (
-      asset?.category === AssetCategory.STOCK ||
-      (asset?.category === AssetCategory.POOL_PAIR && asset?.name.includes("DUSD"))
-    );
-  };
+  const showAssetWarning = (): boolean =>
+    asset?.category === AssetCategory.STOCK ||
+    (asset?.category === AssetCategory.POOL_PAIR && asset?.name.includes("DUSD"));
 
   const getBuyTypes = (): BuyType[] => {
     return getBlockchains().includes(Blockchain.DEFICHAIN) ? Object.values(BuyType) : [BuyType.WALLET];

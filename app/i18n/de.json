@@ -252,7 +252,7 @@
         "ref_commission_edit": "Ref-Provision bearbeiten",
         "ref_commission_info": "Verdiene bis zu 0,5% Provision auf jeden Kauf einer von dir geworbenen Person. Teile einfach Deinen Empfehlungslink mit Deinen Freunden, Deiner Familie und in den sozialen Medien.\nDu hast ebenso die Möglichkeit deinen Provisionsanteil zu Gunsten der geworbenen Kunden herunterzusetzen. Bitte beachte, dass der Provisionsanteil nur nach unten, und nicht nach oben abgeändert werden kann.",
         "ref_commission_hint": "Bist du sicher, dass du deine Provision auf {{fee}}% verkleinern möchtest? Dieser Schritt kann nicht mehr rückgängig gemacht werden.",
-        "change": "Adresse ändern"
+        "change": "Adresse wechseln"
       },
       "kyc": {
         "request": "Dein Konto muss zuerst mit dem Chatbot und Online Identifikation verifiziert werden.\nMöchtest du mit dem Chatbot starten?",
@@ -413,7 +413,8 @@
     "link": {
       "header": "Informationen zur Verknüpfung der Adresse",
       "instructions": "Es scheint, dass Sie bereits mit einer anderen Adresse verifiziert sind.\n\nBevor Sie unseren KYC-Prozess erneut durchführen, haben wir Ihnen eine E-Mail geschickt, um Ihre neue Adresse mit Ihrem verifizierten Konto zu verknüpfen.",
-      "success": "Ihre Adressen wurden erfolgreich verknüpft."
+      "success": "Ihre Adressen wurden erfolgreich verknüpft.",
+      "expired": "Ihre Link-Adressanforderung ist abgelaufen. Bitte erstellen Sie eine neue Anfrage, indem Sie versuchen, unseren KYC-Prozess zu durchlaufen."
     }
   }
 }

@@ -395,7 +395,8 @@
     "link": {
       "header": "Información sobre la solicitud de vinculación de la dirección",
       "instructions": "Parece que ya está verificado con otra dirección.\n\nAntes de hacer nuestro proceso de KYC de nuevo, le enviamos un correo electrónico para vincular su nueva dirección a su cuenta verificada.",
-      "success": "Ha vinculado con éxito sus direcciones."
+      "success": "Ha vinculado con éxito sus direcciones.",
+      "expired": "Su solicitud de dirección de enlace ha caducado. Por favor, cree una nueva solicitud intentando pasar por nuestro proceso de KYC."
     }
   }
 }

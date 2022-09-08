@@ -412,7 +412,8 @@
     "link": {
       "header": "Informazioni sulla richiesta di collegamento dell'indirizzo",
       "instructions": "Sembra che lei sia già verificato con un altro indirizzo.\n\nPrima di ripetere il processo KYC, le abbiamo inviato un'e-mail per collegare il suo nuovo indirizzo al suo conto verificato.",
-      "success": "Il collegamento dei vostri indirizzi è riuscito."
+      "success": "Il collegamento dei vostri indirizzi è riuscito.",
+      "expired": "La richiesta di indirizzo di collegamento è scaduta. Si prega di creare una nuova richiesta tentando di passare attraverso il nostro processo KYC."
     }
   }
 }

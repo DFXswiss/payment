@@ -409,7 +409,8 @@
     "link": {
       "header": "Link address request information",
       "instructions": "Parece que já está verificado com outro endereço.\n\nAntes de estar novamente a fazer o nosso processo KYC, enviámos-lhe um e-mail para ligar o seu novo endereço à sua conta verificada.",
-      "success": "Conseguimos estabelecer uma ligação bem sucedida entre os seus endereços."
+      "success": "Conseguimos estabelecer uma ligação bem sucedida entre os seus endereços.",
+      "expired": "O seu pedido de endereço de link expirou. Por favor, crie um novo pedido, tentando passar pelo nosso processo KYC."
     }
   }
 }

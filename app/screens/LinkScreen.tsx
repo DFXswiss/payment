@@ -28,6 +28,7 @@ const LinkScreen = () => {
   const [linkAddress, setLinkAddress] = useState<LinkAddressDto>();
   const [isProcessing, setIsProcessing] = useState(false);
   const [showsSuccess, setShowsSuccess] = useState(false);
+  const [showsExpiration, setShowsExpiration] = useState(false);
 
   useEffect(() => {
     // get params
@@ -46,6 +47,12 @@ const LinkScreen = () => {
     setIsProcessing(true);
 
     if (!linkAddress) return;
+
+    if (new Date(linkAddress.expiration).getUTCDate() < new Date().getUTCDate()) {
+      setShowsExpiration(true);
+      return;
+    }
+
     postLinkAddress(linkAddress.authentication)
       .then(() => setShowsSuccess(true))
       .catch(() => onLoadFailed())
@@ -83,6 +90,16 @@ const LinkScreen = () => {
             <Dialog visible={showsSuccess} onDismiss={() => setShowsSuccess(false)} style={AppStyles.dialog}>
               <Dialog.Content>
                 <Paragraph>{t("link.success")}</Paragraph>
+              </Dialog.Content>
+              <Dialog.Actions>
+                <DeFiButton onPress={() => goToHome()}>{t("action.ok")}</DeFiButton>
+              </Dialog.Actions>
+            </Dialog>
+          </Portal>
+          <Portal>
+            <Dialog visible={showsExpiration} onDismiss={() => setShowsExpiration(false)} style={AppStyles.dialog}>
+              <Dialog.Content>
+                <Paragraph>{t("link.expired")}</Paragraph>
               </Dialog.Content>
               <Dialog.Actions>
                 <DeFiButton onPress={() => goToHome()}>{t("action.ok")}</DeFiButton>

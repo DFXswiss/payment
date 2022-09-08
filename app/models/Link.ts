@@ -3,5 +3,5 @@ export interface LinkAddressDto {
   existingAddress: string;
   newAddress: string;
   isCompleted: boolean;
-  expiration: Date;
+  expiration: string;
 }

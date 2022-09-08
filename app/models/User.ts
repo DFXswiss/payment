@@ -75,7 +75,7 @@ export interface Fees {
 }
 
 export interface CfpVotes {
-  [number: number]: CfpVote | undefined;
+  [number: number]: CfpVote | undefined;
 }
 
 export interface UserDto {
@@ -126,7 +126,7 @@ export interface UserDetailDto extends UserDto {
   refCountActive: number;
   stakingBalance: number;
 
-  linkedAddresses?: LinkedAddress[];
+  linkedAddresses: LinkedAddress[];
 }
 
 export interface UserDetail extends User {
@@ -198,7 +198,7 @@ export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
   refCountActive: dto.refCountActive,
   stakingBalance: dto.stakingBalance,
 
-  linkedAddresses: dto.linkedAddresses ?? [],
+  linkedAddresses: dto.linkedAddresses,
 });
 
 const toStringDto = (string: string): string | null => (string === "" ? null : string);

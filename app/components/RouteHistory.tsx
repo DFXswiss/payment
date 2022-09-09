@@ -8,7 +8,8 @@ import { formatAmount, openUrl } from "../utils/Utils";
 import { useDevice } from "../hooks/useDevice";
 import IconButton from "./util/IconButton";
 import DeFiModal from "./util/DeFiModal";
-import { RouteHistoryAlias, RouteHistoryType } from "../models/RouteHistory";
+import { AmlCheck, RouteHistoryAlias, RouteHistoryType } from "../models/RouteHistory";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 enum DirectionType {
   INPUT,
@@ -75,8 +76,20 @@ const RouteHistory = ({ history }: Props) => {
     return formatAmountAndAsset(tx.outputAmount, tx.outputAsset, tx, DirectionType.OUTPUT);
   };
 
-  const amlCheckOf = (tx: RouteHistoryAlias): string => {
+  const amlCheckOf = (tx: RouteHistoryAlias, isDetail = false): string => {
     if (isInvalid(tx.amlCheck)) return invalidValue;
+    if (!device.SM && !isDetail) {
+      switch (tx.amlCheck) {
+        case AmlCheck.PASS:
+          return "\u{2705}";
+        case AmlCheck.FAIL:
+          return "\u{274C}";
+        case AmlCheck.PENDING:
+          return "\u{1F503}";
+        default:
+          return "\u{2753}";
+      }
+    }
     return t(`model.route.aml_check_${tx.amlCheck.toLowerCase()}`);
   };
 
@@ -103,7 +116,7 @@ const RouteHistory = ({ history }: Props) => {
     { condition: true, label: "model.route.date", value: dateOf(tx) },
     { condition: true, label: "model.route.input", value: inputOf(tx) },
     { condition: true, label: "model.route.output", value: outputOf(tx) },
-    { condition: true, label: "model.route.aml_check", value: amlCheckOf(tx) },
+    { condition: true, label: "model.route.aml_check", value: amlCheckOf(tx, true) },
     { condition: true, label: "model.route.status", value: statusOf(tx) },
     {
       condition: true,
@@ -121,15 +134,17 @@ const RouteHistory = ({ history }: Props) => {
             {data(transaction)
               .filter((d) => d.condition)
               .map((d) => (
-                <CompactRow key={d.label} style={d.icon ? styles.cleanEnd : {}}>
-                  <CompactCell style={styles.default}>{t(d.label)}</CompactCell>
-                  {d.value && <CompactCell style={styles.right}>{d.value}</CompactCell>}
-                  {d.icon && d.onPress && (
-                    <CompactCell style={{ flex: undefined }}>
-                      <IconButton icon={d.icon} onPress={d.onPress} />
-                    </CompactCell>
-                  )}
-                </CompactRow>
+                <TouchableOpacity onPress={d.onPress} key={d.label} disabled={!d.icon || device.SM}>
+                  <CompactRow style={d.icon ? styles.cleanEnd : {}}>
+                    <CompactCell style={styles.default}>{t(d.label)}</CompactCell>
+                    {d.value && <CompactCell style={styles.left}>{d.value}</CompactCell>}
+                    {d.icon && d.onPress && (
+                      <CompactCell style={{ flex: undefined }}>
+                        <IconButton icon={d.icon} onPress={device.SM ? d.onPress : undefined} />
+                      </CompactCell>
+                    )}
+                  </CompactRow>
+                </TouchableOpacity>
               ))}
           </DataTable>
         )}
@@ -140,34 +155,38 @@ const RouteHistory = ({ history }: Props) => {
           <CompactTitle style={styles.default}>{t("model.route.date")}</CompactTitle>
           {device.MD && (
             <>
-              <CompactTitle style={styles.right}>{t("model.route.input")}</CompactTitle>
-              <CompactTitle style={styles.right}>{t("model.route.output")}</CompactTitle>
+              <CompactTitle style={styles.left}>{t("model.route.input")}</CompactTitle>
+              <CompactTitle style={styles.left}>{t("model.route.output")}</CompactTitle>
             </>
           )}
-          <CompactTitle style={styles.right}>{t("model.route.aml_check")}</CompactTitle>
-          <CompactTitle style={styles.right}>{t("model.route.status")}</CompactTitle>
+          <CompactTitle style={device.SM ? styles.left : styles.leftSmall}>
+            {device.SM ? t("model.route.aml_check") : t("model.route.aml_check_short")}
+          </CompactTitle>
+          <CompactTitle style={styles.left}>{t("model.route.status")}</CompactTitle>
           <CompactTitle style={styles.icon}>{device.MD ? t("model.route.link") : ""}</CompactTitle>
         </CompactHeader>
         {history.map((entry, i) => (
-          <CompactRow style={[styles.row, styles.cleanEnd]} key={i}>
-            <CompactCell style={styles.default}>{dateOf(entry)}</CompactCell>
-            {device.MD && (
-              <>
-                <CompactCell style={styles.right}>{inputOf(entry)}</CompactCell>
-                <CompactCell style={styles.right}>{outputOf(entry)}</CompactCell>
-              </>
-            )}
-            <CompactCell style={styles.right}>{amlCheckOf(entry)}</CompactCell>
-            <CompactCell style={styles.right}>{statusOf(entry)}</CompactCell>
-            <CompactCell style={styles.icon}>
-              <IconButton
-                icon={device.MD ? iconOpenLink : iconShowDetail}
-                onPress={() => {
-                  device.MD ? openLink(entry) : showDetail(entry);
-                }}
-              />
-            </CompactCell>
-          </CompactRow>
+          <TouchableOpacity onPress={() => showDetail(entry)} key={i} disabled={device.SM}>
+            <CompactRow style={[styles.row, styles.cleanEnd]}>
+              <CompactCell style={styles.default}>{dateOf(entry)}</CompactCell>
+              {device.MD && (
+                <>
+                  <CompactCell style={styles.left}>{inputOf(entry)}</CompactCell>
+                  <CompactCell style={styles.left}>{outputOf(entry)}</CompactCell>
+                </>
+              )}
+              <CompactCell style={device.SM ? styles.left : styles.leftSmall}>{amlCheckOf(entry)}</CompactCell>
+              <CompactCell style={styles.left}>{statusOf(entry)}</CompactCell>
+              <CompactCell style={styles.icon}>
+                <IconButton
+                  icon={device.MD ? iconOpenLink : iconShowDetail}
+                  onPress={() => {
+                    device.MD ? openLink(entry) : showDetail(entry);
+                  }}
+                />
+              </CompactCell>
+            </CompactRow>
+          </TouchableOpacity>
         ))}
       </DataTable>
     </>
@@ -184,9 +203,13 @@ const styles = StyleSheet.create({
   default: {
     flex: 2,
   },
-  right: {
+  left: {
     flex: 2,
-    justifyContent: "flex-end",
+    justifyContent: "flex-start",
+  },
+  leftSmall: {
+    flex: 1,
+    justifyContent: "flex-start",
   },
   icon: {
     flex: 1,

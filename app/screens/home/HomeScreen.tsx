@@ -31,7 +31,7 @@ import { useDevice } from "../../hooks/useDevice";
 import useLoader from "../../hooks/useLoader";
 import { BuyRoute } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import { formatAmount, pickDocuments, resolve } from "../../utils/Utils";
+import { formatAmount, resolve } from "../../utils/Utils";
 import useAuthGuard from "../../hooks/useAuthGuard";
 import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
@@ -48,6 +48,7 @@ import { AppSettings } from "../../services/SettingsService";
 import { CryptoRoute } from "../../models/CryptoRoute";
 import KycDataEdit from "../../components/edit/KycDataEdit";
 import { KycData } from "../../models/KycData";
+import ChangeUser from "../../components/ChangeUser";
 
 const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSettings }) => {
   const { t } = useTranslation();
@@ -65,6 +66,8 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const [isStakingRouteEdit, setIsStakingRouteEdit] = useState(false);
   const [isCryptoRouteEdit, setIsCryptoRouteEdit] = useState(false);
   const [isRefFeeEdit, setIsRefFeeEdit] = useState(false);
+  const [isChangeUserAvailable, setIsChangeUserAvailable] = useState(false);
+  const [isChangeUser, setIsChangeUser] = useState(false);
 
   const [isVotingOpen, setIsVotingOpen] = useState(false);
   const [canVote, setCanVote] = useState(false);
@@ -194,6 +197,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
             .then(([user, _, settings]) => {
               if (!cancelled()) {
                 setUser(user);
+                setIsChangeUserAvailable(user?.linkedAddresses != undefined && user.linkedAddresses.length > 1);
                 setIsVotingOpen(settings.cfpVotingOpen);
               }
             })
@@ -220,8 +224,14 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const annualBuyVolume = () => (buyRoutes ?? []).reduce((prev, curr) => prev + curr.annualVolume, 0);
   const sellVolume = () => (sellRoutes ?? []).reduce((prev, curr) => prev + curr.volume, 0);
 
-  const userData = (user: User) => [
-    { condition: Boolean(user.address), label: "model.user.address", value: user.address },
+  const userData = (user: UserDetail) => [
+    {
+      condition: Boolean(user.address),
+      label: "model.user.address",
+      value: user.address,
+      icon: isChangeUserAvailable ? "swap-horizontal" : undefined,
+      onPress: () => setIsChangeUser(true),
+    },
     { condition: true, label: "model.user.mail", value: user.mail, emptyHint: t("model.user.add_mail") },
     { condition: Boolean(user.phone), label: "model.user.mobile_number", value: user.phone },
     { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef },
@@ -304,6 +314,17 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
           <UserEdit user={user} onUserChanged={onUserChanged} />
         )}
       </DeFiModal>
+
+      {isChangeUserAvailable && (
+        <DeFiModal
+          isVisible={isChangeUser}
+          setIsVisible={setIsChangeUser}
+          title={t("model.user.change")}
+          style={{ width: 500 }}
+        >
+          <ChangeUser user={user} onChanged={() => setIsChangeUser(false)} />
+        </DeFiModal>
+      )}
 
       <DeFiModal
         isVisible={isRefFeeEdit}

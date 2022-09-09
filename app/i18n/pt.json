@@ -25,7 +25,8 @@
       "upload": "Carregar",
       "send": "Enviar",
       "start": "Início",
-      "search": "Pesquisa"
+      "search": "Pesquisa",
+      "link": "Ligação"
     },
     "feedback": {
       "page_not_found": "Página não encontrada!",
@@ -41,7 +42,8 @@
       "copied": "Copiado!",
       "saved": "Salvo!",
       "pop_up_blocked": "Erro ao abrir! Por favor permitir janelas pop-up nas definições do navegador.",
-      "bank_tx_required": "Para utilizar esta função, deve primeiro concluir com êxito uma transacção bancária (compra ou venda)!"
+      "bank_tx_required": "Para utilizar esta função, deve primeiro concluir com êxito uma transacção bancária (compra ou venda)!",
+      "change_user_security": "A mudança para o endereço seleccionado é desactivada devido à segurança."
     },
     "validation": {
       "required": "Campo Obrigatório",
@@ -57,6 +59,7 @@
       "instruction_link": "https://defichain-wiki.com/wiki/DFX_manuelle_Registrierung",
       "sign_up": "Inscreva-se / registe-se",
       "signing_command": "Sinal de comando",
+      "signing_message": "Assine mensagem",
       "login_failed": "Login falhou!",
       "pattern_invalid": "O formato do endereço/assinatura é inválido Login falhou!",
       "signature_invalid": "Assinatura inválida!",
@@ -244,7 +247,8 @@
         "ref_commission": "Comissão de referência",
         "ref_commission_edit": "Editar a Comissão de Ref",
         "ref_commission_info": "Ganhe até 0,5% de comissão em cada compra feita por alguém que indicar. Basta partilhar o seu link de referência com os seus amigos, família e meios de comunicação social.\nTem também a opção de baixar a sua percentagem de comissão a favor dos clientes referidos. É favor notar que a percentagem de comissão só pode ser ajustada para baixo, e não para cima.",
-        "ref_commission_hint": "Tem a certeza de que quer reduzir a sua comissão para {{fee}}%? Este passo não pode ser desfeito."
+        "ref_commission_hint": "Tem a certeza de que quer reduzir a sua comissão para {{fee}}%? Este passo não pode ser desfeito.",
+        "change": "Alterar endereço"
       },
       "kyc": {
         "request": "A sua conta deve primeiro ser verificada com o chatbot e a identificação em linha.\nQuer começar com o chatbot?",
@@ -382,6 +386,14 @@
           ]
         },
         "regular": "Para transferências SEPA regulares"
+      },
+      "link": {
+        "existing_address": "Endereço existente",
+        "new_address": "Endereço a ser ligado",
+        "is_completed": "Está concluído?",
+        "complete": "Sim",
+        "incomplete": "Não",
+        "expiration": "Data de expiração"
       }
     },
     "specialVoting": {
@@ -393,6 +405,12 @@
       "explanation": "Cada usuário do DFI Staking Service da DFX recebe um voto ponderado com base em seu DFI investido. Existem dois mecanismos alternativos de votação para escolher. Escolhas:\n\n\n• Coletivo: DFX votará sim/não com todos os masternodes como um coletivo.\n\n\n• Proporcional: DFX votará sim/não/neutro com todos os masternodes proporcionais aos votos emitidos.",
       "description": "Visão coletiva:\n\nDependendo dos resultados da votação dos respectivos CFPs/DFIPs da comunidade DFX, a DFX vota com todos os masternodes para seus clientes.\n\n\nPCP:\n\n<= 50% - DFX vota \"não\" com todos os masternodes.\n> 50% - DFX vota \"sim\" com todos os masternodes\n\n\nDFIPs:\n\n<= 66,66 % - DFX vota \"não\" com todos os masternodes\n> 66,66 % - DFX vota \"sim\" com todos os masternodes\n\n\nA consideração coletiva só é aplicada desde que a DFX opere <10% dos masternodes DeFiChain para seus clientes. Se este limite for excedido, o DFX selecionará automaticamente a consideração proporcional\n\n\nConsideração Proporcional:\n\nDependendo dos resultados da votação dos respectivos CFPs/DFIPs da comunidade DFX, a DFX vota sim/não/neutro para seus clientes com todos os masternodes proporcionalmente aos votos emitidos",
       "neutral": "Sem preferência"
+    },
+    "link": {
+      "header": "Link address request information",
+      "instructions": "Parece que já está verificado com outro endereço.\n\nAntes de estar novamente a fazer o nosso processo KYC, enviámos-lhe um e-mail para ligar o seu novo endereço à sua conta verificada.",
+      "success": "Conseguimos estabelecer uma ligação bem sucedida entre os seus endereços.",
+      "expired": "O seu pedido de endereço de link expirou. Por favor, crie um novo pedido, tentando passar pelo nosso processo KYC."
     }
   }
 }

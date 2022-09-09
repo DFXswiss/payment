@@ -1,7 +1,7 @@
 import { History } from "../models/History";
 import { Statistic } from "../models/Statistic";
 import { Environment } from "../env/Environment";
-import { ApiError, AuthResponse } from "../models/ApiDto";
+import { ApiError, ApiSignMessage, AuthResponse } from "../models/ApiDto";
 import { Asset } from "../models/Asset";
 import { BuyRoute, BuyRouteDto, fromBuyRouteDto, toBuyRouteDto } from "../models/BuyRoute";
 import { CfpResult } from "../models/CfpResult";
@@ -14,6 +14,7 @@ import {
   fromUserDetailDto,
   fromUserDto,
   KycInfo,
+  LinkedAddress,
   NewUser,
   toUserDto,
   User,
@@ -34,6 +35,8 @@ import { CryptoRoute } from "../models/CryptoRoute";
 import { attachType, CryptoRouteHistory, RouteHistoryType } from "../models/RouteHistory";
 import { SellRouteHistory } from "../models/RouteHistory";
 import { BuyRouteHistory } from "../models/RouteHistory";
+import { LinkAddressDto } from "../models/Link";
+import { Blockchain } from "../models/Blockchain";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -52,6 +55,7 @@ const LanguageUrl = "language";
 const BankTxUrl = "bankTx";
 const StatisticUrl = "statistic";
 const SettingUrl = "setting/frontend";
+const LinkUrl = "link";
 
 // --- AUTH --- //
 export const signIn = (credentials?: Credentials): Promise<string> => {
@@ -60,6 +64,10 @@ export const signIn = (credentials?: Credentials): Promise<string> => {
 
 export const signUp = (user: NewUser): Promise<string> => {
   return fetchFrom<AuthResponse>(`${AuthUrl}/signUp`, "POST", user).then((resp) => resp.accessToken);
+};
+
+export const getSignMessage = (address: string): Promise<ApiSignMessage> => {
+  return fetchFrom<ApiSignMessage>(`${AuthUrl}/signMessage?address=${address}`);
 };
 
 // --- USER --- //
@@ -93,6 +101,10 @@ export const deleteApiKey = (): Promise<void> => {
 
 export const putApiKeyFilter = (types?: HistoryType[]): Promise<HistoryType[]> => {
   return fetchFrom<HistoryType[]>(`${UserUrl}/apiFilter/CT${toHistoryQuery(types)}`, "PUT");
+};
+
+export const changeUser = (info: LinkedAddress): Promise<string> => {
+  return fetchFrom<AuthResponse>(`${UserUrl}/change`, "POST", info).then((resp) => resp.accessToken);
 };
 
 // --- KYC --- //
@@ -224,6 +236,15 @@ export const getStatistic = (): Promise<Statistic> => {
 
 export const getCfpResults = (voting: string): Promise<CfpResult[]> => {
   return fetchFrom(`${StatisticUrl}/cfp/${voting}`);
+};
+
+// --- LINK --- //
+export const getLinkAddress = (authentication: string): Promise<LinkAddressDto> => {
+  return fetchFrom(`${LinkUrl}/${authentication}`);
+};
+
+export const postLinkAddress = (authentication: string): Promise<LinkAddressDto> => {
+  return fetchFrom(`${LinkUrl}/${authentication}`, "POST");
 };
 
 // --- MASTER DATA --- //

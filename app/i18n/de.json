@@ -25,7 +25,8 @@
       "upload": "Hochladen",
       "send": "Absenden",
       "start": "Start",
-      "search": "Suche"
+      "search": "Suche",
+      "link": "Verknüpfen"
     },
     "feedback": {
       "page_not_found": "Seite nicht gefunden!",
@@ -41,7 +42,8 @@
       "copied": "Kopiert!",
       "saved": "Gespeichert!",
       "pop_up_blocked": "Fehler beim Öffnen! Bitte erlaube Pop-up-Fenster in den Browser-Einstellungen.",
-      "bank_tx_required": "Um diese Funktion zu nutzen, musst du zunächst eine Banktransaktion (Kauf oder Verkauf) erfolgreich abschliessen!"
+      "bank_tx_required": "Um diese Funktion zu nutzen, musst du zunächst eine Banktransaktion (Kauf oder Verkauf) erfolgreich abschliessen!",
+      "change_user_security": "Der Wechsel zur ausgewählten Adresse ist aus Sicherheitsgründen deaktiviert."
     },
     "validation": {
       "required": "Pflichtfeld",
@@ -57,6 +59,7 @@
       "instruction_link": "https://defichain-wiki.com/wiki/DFX_manuelle_Registrierung",
       "sign_up": "Anmelden / Registrieren",
       "signing_command": "Befehl zum Signieren",
+      "signing_message": "Nachricht zum Signieren",
       "login_failed": "Login fehlgeschlagen!",
       "pattern_invalid": "Format der Adresse/Signatur ist ungültig!",
       "signature_invalid": "Ungültige Signatur!",
@@ -191,11 +194,11 @@
       "bot": {
         "sms_header": "Unser Verifikationspartner (KYC Spider) hat dir soeben einen SMS Code zugesendet.",
         "sms_code": "Bitte gebe diesen hier ein:",
-        "sms_placeholder": "Ihr SMS-Code",
+        "sms_placeholder": "Dein SMS-Code",
         "sms_help": "Solltest du den SMS Code nicht erhalten haben, wende dich bitte an ",
         "error": {
-          "missing_session_id": "Fehler: Bitte versuchen Sie es später noch einmal.",
-          "validation": "Fehler: Bitte überprüfen Sie Ihre Antwort.",
+          "missing_session_id": "Fehler: Bitte versuche es später noch einmal.",
+          "validation": "Fehler: Bitte überprüfe deine Antwort.",
           "wrong_sms": "Fehler: Falscher SMS-Code."
         }
       }
@@ -248,7 +251,8 @@
         "ref_commission": "Ref-Provision",
         "ref_commission_edit": "Ref-Provision bearbeiten",
         "ref_commission_info": "Verdiene bis zu 0,5% Provision auf jeden Kauf einer von dir geworbenen Person. Teile einfach Deinen Empfehlungslink mit Deinen Freunden, Deiner Familie und in den sozialen Medien.\nDu hast ebenso die Möglichkeit deinen Provisionsanteil zu Gunsten der geworbenen Kunden herunterzusetzen. Bitte beachte, dass der Provisionsanteil nur nach unten, und nicht nach oben abgeändert werden kann.",
-        "ref_commission_hint": "Bist du sicher, dass du deine Provision auf {{fee}}% verkleinern möchtest? Dieser Schritt kann nicht mehr rückgängig gemacht werden."
+        "ref_commission_hint": "Bist du sicher, dass du deine Provision auf {{fee}}% verkleinern möchtest? Dieser Schritt kann nicht mehr rückgängig gemacht werden.",
+        "change": "Adresse wechseln"
       },
       "kyc": {
         "request": "Dein Konto muss zuerst mit dem Chatbot und Online Identifikation verifiziert werden.\nMöchtest du mit dem Chatbot starten?",
@@ -386,6 +390,14 @@
           ]
         },
         "regular": "Für reguläre SEPA Überweisungen"
+      },
+      "link": {
+        "existing_address": "Bestehende Adresse",
+        "new_address": "Zu verknüpfende Adresse",
+        "is_completed": "Bereits durchgeführt?",
+        "complete": "Ja",
+        "incomplete": "Nein",
+        "expiration": "Ablaufdatum"
       }
     },
     "specialVoting": {
@@ -397,6 +409,12 @@
       "explanation": "Jeder Nutzer des DFI Stakingservice von DFX erhält eine gewichtete Stimme auf Basis der investierten DFI. Zur Wahl stehen zwei alternative Abstimmungsechanismen. Auswahlmöglichkeiten:\n\n\n• Kollektiv: DFX stimmt mit allen Masternodes als Kollektiv mit Ja/Nein ab\n\n\n• Proportional: DFX stimmt mit Ja/Nein/Neutral mit allen Masternodes im Verhältnis der abgegebenen Stimmen ab.",
       "description": "Kollektive Abstimmung: \n\nAbhängig von den Abstimmungsergebnissen der jeweiligen CFPs/DFIPs aus der DFX-Community stimmt DFX mit allen Masternodes für seine Kunden ab. \n\n\nCFPs:\n\n<= 50% - DFX stimmt mit allen Masternodes \"nein\".\n> 50% - DFX stimmt mit allen Masternodes \"ja\"\n\n\nDFIPs:\n\n<= 66,66 % - DFX stimmt mir allen Masternodes \"nein\"\n> 66,66 % - DFX stimmt mit allen Masternodes \"ja\"\n\n\nDie kollektive Abstimmung wird nur angewendet, solange DFX <10% der DeFiChain-Masternodes für seine Kunden betreibt. Wenn diese Schwelle überschritten wird, wählt DFX automatisch die proportionale Abstimmung.\n\n\nProportionale Abstimmung:\n\nAbhängig von den Abstimmungsergebnissen der jeweiligen CFPs/DFIPs aus der DFX-Community stimmt DFX für seine Kunden mit allen Masternodes proportional zu den abgegebenen Stimmen ja/nein/neutral ab.",
       "neutral": "Keine Präferenz"
+    },
+    "link": {
+      "header": "Informationen zur Verknüpfung der Adresse",
+      "instructions": "Es scheint, dass du bereits mit einer anderen Adresse verifiziert bist.\n\nBevor du unseren KYC-Prozess erneut durchführst, haben wir dir eine E-Mail geschickt, um deine neue Adresse mit deinem verifizierten Konto zu verknüpfen.",
+      "success": "Deine Adressen wurden erfolgreich verknüpft.",
+      "expired": "Deine Link-Adressanforderung ist abgelaufen. Bitte erstelle eine neue Anfrage, indem du den KYC-Prozess neu startest."
     }
   }
 }

@@ -19,6 +19,7 @@ import ButtonContainer from "../util/ButtonContainer";
 import { StakingRoute } from "../../models/StakingRoute";
 import { Country } from "../../models/Country";
 import Loading from "../util/Loading";
+import { Blockchain } from "../../models/Blockchain";
 
 const BuyRouteEdit = ({
   routes,
@@ -34,11 +35,13 @@ const BuyRouteEdit = ({
   const { t } = useTranslation();
   const {
     control,
+    setValue,
     handleSubmit,
     formState: { errors },
-  } = useForm<BuyRoute>();
+  } = useForm<BuyRoute & { blockchain?: Blockchain }>();
   const type = useWatch({ control, name: "type" });
   const asset = useWatch({ control, name: "asset" });
+  const blockchain = useWatch({ control, name: "blockchain" });
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -47,9 +50,12 @@ const BuyRouteEdit = ({
   const [countries, setCountries] = useState<Country[]>([]);
 
   useEffect(() => {
+    const buyTypePreselection = getBuyTypePreselection();
+    if (buyTypePreselection) setValue("type", buyTypePreselection);
+
     Promise.all([getAssets(), getCountries()])
       .then(([a, c]) => {
-        setAssets(a);
+        updateAssets(a);
         setCountries(c);
       })
       .catch(() => NotificationService.error(t("feedback.load_failed")))
@@ -80,11 +86,39 @@ const BuyRouteEdit = ({
     asset?.category === AssetCategory.STOCK ||
     (asset?.category === AssetCategory.POOL_PAIR && asset?.name.includes("DUSD"));
 
+  const getBuyTypes = (): BuyType[] => {
+    return getBlockchains().includes(Blockchain.DEFICHAIN) ? Object.values(BuyType) : [BuyType.WALLET];
+  };
+
+  const getBuyTypePreselection = (): BuyType | undefined => {
+    const availableBuyTypes = getBuyTypes();
+    return availableBuyTypes.length === 1 ? availableBuyTypes[0] : undefined;
+  };
+
+  const getBuyableAssets = (values: Asset[]): Asset[] => {
+    return values.filter((a) => (blockchain ? a.blockchain === blockchain : true) && a.buyable);
+  };
+
+  const updateAssets = (values: Asset[]) => {
+    setAssets(values);
+    const buyableAssets = getBuyableAssets(values);
+    if (buyableAssets.length === 1) setValue("asset", buyableAssets[0]);
+  };
+
+  const isBlockchainsEnabled = (): boolean => {
+    return getBlockchains().length > 1;
+  };
+
+  const getBlockchains = (): Blockchain[] => {
+    return session?.blockchains ?? [];
+  };
+
   const rules: any = createRules({
     type: Validations.Required,
     asset: type === BuyType.WALLET && Validations.Required,
     staking: type === BuyType.STAKING && Validations.Required,
     iban: [Validations.Required, Validations.Iban(countries)],
+    blockchain: type === BuyType.WALLET && isBlockchainsEnabled() && Validations.Required,
   });
 
   return isLoading ? (
@@ -94,19 +128,32 @@ const BuyRouteEdit = ({
       <DeFiPicker
         name="type"
         label={t("model.route.type")}
-        items={Object.values(BuyType)}
+        items={getBuyTypes()}
         labelFunc={(i) => t(`model.route.${i.toLowerCase()}`)}
       />
       <SpacerV />
 
       {type === BuyType.WALLET && (
         <>
+          {isBlockchainsEnabled() && (
+            <>
+              <DeFiPicker
+                name="blockchain"
+                label={t("model.route.blockchain")}
+                items={getBlockchains()}
+                labelFunc={(i) => i}
+              />
+              <SpacerV />
+            </>
+          )}
+
           <DeFiPicker
             name="asset"
             label={t("model.route.asset")}
-            items={assets.filter((a) => a.buyable)}
+            items={getBuyableAssets(assets)}
             idFunc={(i) => i.id}
             labelFunc={(i) => i.name}
+            disabled={isBlockchainsEnabled() && blockchain == null}
           />
           {showAssetWarning() && (
             <>

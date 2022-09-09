@@ -24,7 +24,8 @@
       "upload": "Upload",
       "send": "Send",
       "start": "Start",
-      "search": "Search"
+      "search": "Search",
+      "link": "Link"
     },
     "feedback": {
       "page_not_found": "Page not found!",
@@ -40,7 +41,8 @@
       "copied": "Copied!",
       "saved": "Saved!",
       "pop_up_blocked": "Error while opening! Please allow pop-up windows in the browser settings.",
-      "bank_tx_required": "To use this feature, you must first successfully complete a bank transaction (buy or sell)!"
+      "bank_tx_required": "To use this feature, you must first successfully complete a bank transaction (buy or sell)!",
+      "change_user_security": "Changing to selected address is deactivated due to security."
     },
     "validation": {
       "required": "Mandatory field",
@@ -56,6 +58,7 @@
       "instruction_link": "https://defichain-wiki.com/wiki/DFX_manual_registration",
       "sign_up": "Log in / Register",
       "signing_command": "Sign command",
+      "signing_message": "Sign message",
       "login_failed": "Login failed!",
       "pattern_invalid": "Format of the address/signature is invalid!",
       "signature_invalid": "Invalid signature!",
@@ -247,7 +250,8 @@
         "ref_commission": "Ref commission",
         "ref_commission_edit": "Edit ref commission",
         "ref_commission_info": "Earn up to 0.5% commission on every purchase of your referred person. Simply share your referral link with your friends, family and on social media.\nYou also have the option to lower your commission percentage in favor of the referred customers. Please note that the commission percentage can only be changed downwards, not upwards.",
-        "ref_commission_hint": "Are you sure you want to reduce your commission to {{fee}}%? This step cannot be undone."
+        "ref_commission_hint": "Are you sure you want to reduce your commission to {{fee}}%? This step cannot be undone.",
+        "change": "Change address"
       },
       "kyc": {
         "request": "Your account must first be verified with the chatbot and online identification.\nDo you want to start with the chatbot?",
@@ -385,6 +389,14 @@
           ]
         },
         "regular": "For regular SEPA transfers"
+      },
+      "link": {
+        "existing_address": "Existing address",
+        "new_address": "Address to be linked",
+        "is_completed": "Is completed?",
+        "complete": "Yes",
+        "incomplete": "No",
+        "expiration": "Expiration date"
       }
     },
     "specialVoting": {
@@ -396,6 +408,12 @@
       "explanation": "Each user of DFX's DFI Staking Service receives a weighted vote based on their DFI invested. There are two alternative voting mechanisms to choose from. Choices:\n\n\n• Collective: DFX shall vote yes/no with all masternodes as a collective.\n\n\n• Proportional: DFX shall vote yes/no/neutral with all masternodes proportionate to the votes cast.",
       "description": "Collective View: \n\nDepending on the voting results of the respective CFPs/DFIPs from the DFX community, DFX votes with all masternodes for its customers. \n\n\nCFPs:\n\n<= 50% - DFX votes \"no\" with all masternodes.\n> 50% - DFX votes \"yes\" with all masternodes\n\n\nDFIPs:\n\n<= 66,66 % - DFX votes \"no\" with all masternodes\n> 66,66 % - DFX votes \"yes\" with all masternodes\n\n\nCollective consideration is only applied as long as DFX operates <10% of DeFiChain masternodes for its customers. If this threshold is exceeded, DFX will automatically select proportional consideration\n\n\nProportional Consideration:\n\nDepending on the voting results of the respective CFPs/DFIPs from the DFX community, DFX votes yes/no/neutral for its customers with all masternodes proportionally to the votes cast",
       "neutral": "No preference"
+    },
+    "link": {
+      "header": "Link address request information",
+      "instructions": "It seems you are already verified with another address.\n\nBefore you are doing our KYC process again, we sent you an email to link your new address to your verified account.",
+      "success": "Successfully linked your addresses.",
+      "expired": "Your link address request has expired. Please create a new request by attempting to go through our KYC process."
     }
   }
 }

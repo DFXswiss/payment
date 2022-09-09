@@ -82,7 +82,7 @@ class ValidationsClass {
   public get Signature() {
     return {
       pattern: {
-        value: /^.{87}=$/,
+        value: Environment.signatureFormat,
         message: i18n.t("validation.pattern_invalid"),
       },
     };

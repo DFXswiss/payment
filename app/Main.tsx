@@ -21,6 +21,7 @@ import CfpScreen from "./screens/CfpScreen";
 import Colors from "./config/Colors";
 import KycScreen from "./screens/KycScreen";
 import SpecialVotingScreen from "./screens/SpecialVotingScreen";
+import LinkScreen from "./screens/LinkScreen";
 
 const DrawerContent = () => {
   const device = useDevice();
@@ -52,6 +53,7 @@ const Main = () => {
         [Routes.SpecialVoting]: "voting",
         [Routes.Admin]: "admin",
         [Routes.Kyc]: "kyc",
+        [Routes.Link]: "link",
         [Routes.NotFound]: "*",
       },
     },
@@ -64,6 +66,7 @@ const Main = () => {
     { route: Routes.SpecialVoting, screen: SpecialVotingScreen },
     { route: Routes.Admin, screen: AdminScreen },
     { route: Routes.Kyc, screen: KycScreen },
+    { route: Routes.Link, screen: LinkScreen },
     { route: Routes.NotFound, screen: NotFoundScreen },
   ];
 
@@ -91,7 +94,16 @@ const Main = () => {
             style={styles.snack}
             wrapperStyle={styles.snackWrapper}
           >
-            <Paragraph style={{ color: snackContent?.level === Level.SUCCESS ? Colors.Success : Colors.Error }}>
+            <Paragraph
+              style={{
+                color:
+                  snackContent?.level === Level.SUCCESS
+                    ? Colors.Success
+                    : snackContent?.level === Level.WARNING
+                    ? Colors.Yellow
+                    : Colors.Error,
+              }}
+            >
               {snackContent?.text}
             </Paragraph>
           </Snackbar>

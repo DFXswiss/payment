@@ -24,7 +24,8 @@
       "upload": "Télécharger",
       "send": "Envoyer",
       "start": "Start",
-      "search": "Recherche"
+      "search": "Recherche",
+      "link": "Lien"
     },
     "feedback": {
       "page_not_found": "Page non trouvée !",
@@ -40,7 +41,8 @@
       "copied": "Copié !",
       "saved": "Sauvegardé !",
       "pop_up_blocked": "Erreur d'ouverture ! Veuillez autoriser les fenêtres pop-up dans les paramètres de votre navigateur.",
-      "bank_tx_required": "Pour utiliser cette fonction, vous devez d'abord réussir une transaction bancaire (achat ou vente) !"
+      "bank_tx_required": "Pour utiliser cette fonction, vous devez d'abord réussir une transaction bancaire (achat ou vente) !",
+      "change_user_security": "La modification de l'adresse sélectionnée est désactivée pour des raisons de sécurité."
     },
     "validation": {
       "required": "Champ obligatoire",
@@ -56,6 +58,7 @@
       "instruction_link": "https://defichain-wiki.com/wiki/DFX_manual_registration",
       "sign_up": "Connexion / Inscription",
       "signing_command": "Commande de connexion",
+      "signing_message": "Signe message",
       "login_failed": "La connexion a échoué !",
       "pattern_invalid": "Le format de l'adresse/signature n'est pas valide !",
       "signature_invalid": "Signature invalide !",
@@ -247,7 +250,8 @@
         "ref_commission": "Commission de parrainage",
         "ref_commission_edit": "Modifier la commission de parrainage",
         "ref_commission_info": "Gagnez jusqu'à 0,5% de commission sur chaque achat fait par votre filleul. Il vous suffit de partager votre code de parrainage avec vos amis, votre famille et sur les réseaux sociaux.\nVous avez également la possibilité de diminuer votre pourcentage de commission en faveur des clients parrainés. Veuillez noter que le pourcentage de commission ne peut être modifié qu'à la baisse, et non à la hausse.",
-        "ref_commission_hint": "Êtes-vous sûr de vouloir réduire votre commission à {{fee}}%? Cette action est irréversible."
+        "ref_commission_hint": "Êtes-vous sûr de vouloir réduire votre commission à {{fee}}%? Cette action est irréversible.",
+        "change": "Changement d'adresse"
       },
       "kyc": {
         "request": "Votre compte doit d'abord être vérifié avec le chatbot et l'identification en ligne.\nVoulez-vous commencer avec le chatbot?",
@@ -385,6 +389,14 @@
           ]
         },
         "regular": "Pour les virements SEPA réguliers"
+      },
+      "link": {
+        "existing_address": "Adresse existante",
+        "new_address": "Adresse à relier",
+        "is_completed": "Est-elle complétée ?",
+        "complete": "Oui",
+        "incomplete": "Non",
+        "expiration": "Date d'expiration"
       }
     },
     "specialVoting": {
@@ -396,6 +408,12 @@
       "explanation": "Chaque utilisateur du service de jalonnement DFI de DFX reçoit un vote pondéré en fonction de son investissement DFI. Vous avez le choix entre deux mécanismes de vote alternatifs. Les choix:\n\n\n• Collectif : DFX votera oui/non avec tous les masternodes en tant que collectif.\n\n\n• Proportionnel : DFX votera oui/non/neutre avec tous les masternodes proportionnellement aux votes exprimés.",
       "description": "Vue collective :\n\nEn fonction des résultats des votes des CFP/DFIP respectifs de la communauté DFX, DFX vote avec tous les masternodes pour ses clients.\n\n\nCFP :\n\n<= 50% - DFX vote \"non\" avec tous les masternodes.\n> 50% - DFX vote \"oui\" avec tous les masternodes\n\n\nDFIP :\n\n<= 66,66 % - DFX vote \"non\" avec tous les masternodes\n> 66,66 % - DFX vote \"oui\" avec tous les masternodes\n\n\nLa considération collective n'est appliquée que tant que DFX exploite <10 % des masternodes DeFiChain pour ses clients. Si ce seuil est dépassé, DFX sélectionnera automatiquement la considération proportionnelle\n\n\nConsidération proportionnelle :\n\nEn fonction des résultats des votes des CFP/DFIP respectifs de la communauté DFX, DFX vote oui/non/neutre pour ses clients avec tous les masternodes proportionnellement aux votes exprimés",
       "neutral": "Pas de préférence"
+    },
+    "link": {
+      "header": "Informations sur la demande de liaison d'adresse",
+      "instructions": "Il semble que vous soyez déjà vérifié avec une autre adresse.\n\nAvant que vous ne refassiez notre processus KYC, nous vous avons envoyé un e-mail pour relier votre nouvelle adresse à votre compte vérifié.",
+      "success": "Vos adresses ont été liées avec succès.",
+      "expired": "Votre demande d'adresse de lien a expiré. Veuillez créer une nouvelle demande en essayant de passer par notre processus KYC."
     }
   }
 }

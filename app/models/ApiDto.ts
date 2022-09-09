@@ -1,3 +1,5 @@
+import { Blockchain } from "./Blockchain";
+
 export interface ApiError {
   statusCode: number;
   message: string;
@@ -5,4 +7,9 @@ export interface ApiError {
 
 export interface AuthResponse {
   accessToken: string;
+}
+
+export interface ApiSignMessage {
+  message: string;
+  blockchains: Blockchain[];
 }

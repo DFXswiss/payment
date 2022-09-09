@@ -1,5 +1,6 @@
 import i18n from "../i18n/i18n";
 import { formatAmount } from "../utils/Utils";
+import { Blockchain } from "./Blockchain";
 import { HistoryType } from "./HistoryType";
 import { Language } from "./Language";
 
@@ -74,7 +75,7 @@ export interface Fees {
 }
 
 export interface CfpVotes {
-  [number: number]: CfpVote | undefined;
+  [number: number]: CfpVote | undefined;
 }
 
 export interface UserDto {
@@ -124,6 +125,8 @@ export interface UserDetailDto extends UserDto {
   refCount: number;
   refCountActive: number;
   stakingBalance: number;
+
+  linkedAddresses: LinkedAddress[];
 }
 
 export interface UserDetail extends User {
@@ -135,6 +138,14 @@ export interface UserDetail extends User {
   refCount: number;
   refCountActive: number;
   stakingBalance: number;
+
+  linkedAddresses: LinkedAddress[];
+}
+
+export interface LinkedAddress {
+  address: string;
+  blockchains: Blockchain[];
+  isSwitchable: boolean;
 }
 
 export const fromUserDto = (user: UserDto): User => ({
@@ -186,6 +197,8 @@ export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
   refCount: dto.refCount,
   refCountActive: dto.refCountActive,
   stakingBalance: dto.stakingBalance,
+
+  linkedAddresses: dto.linkedAddresses,
 });
 
 const toStringDto = (string: string): string | null => (string === "" ? null : string);

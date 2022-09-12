@@ -346,6 +346,7 @@
         "new_crypto": "Nouvelle route crypto",
         "Blockchain": "Blockchain",
         "aml_check": "Contrôle AML",
+        "aml_check_short": "AML",
         "aml_check_pass": "Réussi",
         "aml_check_fail": "Échoué",
         "aml_check_pending": "En attente",

@@ -44,6 +44,7 @@ const LoginScreen = () => {
     handleSubmit,
     formState: { errors },
     setValue,
+    reset,
   } = useForm<LoginData>();
 
   const [isProcessing, setIsProcessing] = useState(false);
@@ -178,6 +179,15 @@ const LoginScreen = () => {
     });
   };
 
+  const addressValueHook = (value: string): string => {
+    if (addressEntered && signMessage) {
+      setAddressEntered(false);
+      setIsSignCommand(false);
+      reset();
+    }
+    return value;
+  };
+
   const params = route.params as any;
   const rules: any = createRules({
     userName: [Validations.Required, Validations.Address],
@@ -208,6 +218,7 @@ const LoginScreen = () => {
                   name="userName"
                   label={t("model.user.legacy_address")}
                   returnKeyType="next"
+                  valueHook={addressValueHook}
                   blurOnSubmit={false}
                   placeholder="8MVnL9PZ7yUoRMD4HAnTQn5DAHypYiv1yG"
                 />

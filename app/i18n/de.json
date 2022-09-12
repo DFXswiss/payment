@@ -242,7 +242,7 @@
         "organization_info": "Organisation",
         "organization_name": "Name der Organisation",
         "your_ref_data": "Dein Referral",
-        "own_ref": "Ref-Code zum Verteilen",
+        "ref_link": "Ref-Link",
         "copy_ref": "Ref-Link kopieren",
         "ref_count": "Ref-User",
         "ref_count_active": "Aktive Ref-User",

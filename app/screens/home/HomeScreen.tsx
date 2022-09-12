@@ -266,13 +266,17 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     },
   ];
 
+  const refLink = (user: UserDetail): string => {
+    return `${RefUrl}${user.ref}`;
+  };
+
   const refData = (user: UserDetail) => [
     {
       condition: Boolean(user.ref),
-      label: "model.user.own_ref",
-      value: user.ref,
+      label: "model.user.ref_link",
+      value: refLink(user),
       icon: "content-copy",
-      onPress: () => ClipboardService.copy(`${RefUrl}${user.ref}`),
+      onPress: () => ClipboardService.copy(refLink(user)),
     },
     {
       condition: Boolean(user.ref),
@@ -400,10 +404,10 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
                         d.condition && (
                           <TouchableOpacity onPress={d.onPress} key={d.label} disabled={!d.icon || device.SM}>
                             <CompactRow>
-                              <CompactCell multiLine style={{ flex: 3 }}>
+                              <CompactCell multiLine style={{ flex: 1 }}>
                                 {t(d.label)}
                               </CompactCell>
-                              <View style={{ flex: 2, flexDirection: "row" }}>
+                              <View style={{ flex: 1, flexDirection: "row" }}>
                                 <CompactCell>{d.value}</CompactCell>
                                 {d.icon && (
                                   <CompactCell style={{ flex: undefined }}>

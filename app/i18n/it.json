@@ -241,7 +241,7 @@
         "organization_info": "Organizzazione",
         "organization_name": "Nome dell'organizzazione",
         "your_ref_data": "Il tuo referral",
-        "own_ref": "Codice referral da distribuire",
+        "ref_link": "link di referral",
         "copy_ref": "Copiare il link del referral",
         "ref_count": "Utenti referral",
         "ref_count_active": "Utenti attivi del referral",

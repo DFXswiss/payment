@@ -225,7 +225,7 @@
         "organization_info": "Organización",
         "organization_name": "Nombre de la organización",
         "your_ref_data": "Tus referidos",
-        "own_ref": "Código de referidos para distribuir",
+        "ref_link": "Enlace de referidos",
         "copy_ref": "Copia el código de referidos",
         "ref_count": "Usuarios referidos",
         "ref_count_active": "Usuarios referidos activos",

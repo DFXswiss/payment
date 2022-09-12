@@ -423,7 +423,7 @@
       },
       "login_failed": {
         "title": "Login failed!",
-        "description": "Please try again"
+        "description": "Please try again to log in via DFX wallet"
       }
     }
   }

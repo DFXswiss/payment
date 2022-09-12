@@ -8,7 +8,7 @@ import { H1, H3 } from "../elements/Texts";
 import AppStyles from "../styles/AppStyles";
 
 export enum ErrorScreenType {
-  LOGIN_FAILED,
+  LOGIN_FAILED = "login_failed",
 }
 
 const ErrorScreen = () => {
@@ -26,29 +26,13 @@ const ErrorScreen = () => {
     });
   }, []);
 
-  const titleFor = (screenType?: ErrorScreenType): string => {
-    switch (screenType) {
-      case ErrorScreenType.LOGIN_FAILED:
-        return t("error.login_failed.title");
-      default:
-        return t("error.general.title");
-    }
-  };
-
-  const descriptionFor = (screenType?: ErrorScreenType): string => {
-    switch (screenType) {
-      case ErrorScreenType.LOGIN_FAILED:
-        return t("error.login_failed.description");
-      default:
-        return t("error.general.description");
-    }
-  };
+  const keyFor = (screenType?: ErrorScreenType): string => screenType ?? "general";
 
   return (
     <AppLayout>
       <View style={[AppStyles.container, AppStyles.alignCenter]}>
-        <H1 text={titleFor(screenType)} />
-        <H3 text={descriptionFor(screenType)} />
+        <H1 text={t(`error.${keyFor(screenType)}.title`)} />
+        <H3 text={t(`error.${keyFor(screenType)}.description`)} />
       </View>
     </AppLayout>
   );

@@ -22,6 +22,7 @@ import Colors from "./config/Colors";
 import KycScreen from "./screens/KycScreen";
 import SpecialVotingScreen from "./screens/SpecialVotingScreen";
 import LinkScreen from "./screens/LinkScreen";
+import ErrorScreen from "./screens/ErrorScreen";
 
 const DrawerContent = () => {
   const device = useDevice();
@@ -54,6 +55,7 @@ const Main = () => {
         [Routes.Admin]: "admin",
         [Routes.Kyc]: "kyc",
         [Routes.Link]: "link",
+        [Routes.Error]: "error",
         [Routes.NotFound]: "*",
       },
     },
@@ -67,6 +69,7 @@ const Main = () => {
     { route: Routes.Admin, screen: AdminScreen },
     { route: Routes.Kyc, screen: KycScreen },
     { route: Routes.Link, screen: LinkScreen },
+    { route: Routes.Error, screen: ErrorScreen },
     { route: Routes.NotFound, screen: NotFoundScreen },
   ];
 

@@ -415,6 +415,16 @@
       "instructions": "Sembra che lei sia già verificato con un altro indirizzo.\n\nPrima di ripetere il processo KYC, le abbiamo inviato un'e-mail per collegare il suo nuovo indirizzo al suo conto verificato.",
       "success": "Il collegamento dei vostri indirizzi è riuscito.",
       "expired": "La richiesta di indirizzo di collegamento è scaduta. Si prega di creare una nuova richiesta tentando di passare attraverso il nostro processo KYC."
+    },
+    "error": {
+      "general": {
+        "title": "Qualcosa è andato storto!",
+        "description": "Si prega di riprovare"
+      },
+      "login_failed": {
+        "title": "Login fallito!",
+        "description": "Si prega di riprovare ad effettuare il login tramite il DFX wallet"
+      }
     }
   }
 }

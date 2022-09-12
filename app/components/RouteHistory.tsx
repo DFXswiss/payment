@@ -76,9 +76,9 @@ const RouteHistory = ({ history }: Props) => {
     return formatAmountAndAsset(tx.outputAmount, tx.outputAsset, tx, DirectionType.OUTPUT);
   };
 
-  const amlCheckOf = (tx: RouteHistoryAlias, isDetail = false): string => {
+  const amlCheckOf = (tx: RouteHistoryAlias, useTranslatedValues = false): string => {
     if (isInvalid(tx.amlCheck)) return invalidValue;
-    if (!device.SM && !isDetail) {
+    if (!device.SM && !useTranslatedValues) {
       switch (tx.amlCheck) {
         case AmlCheck.PASS:
           return "\u{2705}";

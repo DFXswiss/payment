@@ -238,7 +238,7 @@
         "organization_info": "Organização",
         "organization_name": "Nome da organização",
         "your_ref_data": "A sua referência",
-        "own_ref": "Código de referência para distribuição",
+        "ref_link": "Código de referência",
         "copy_ref": "Cópia o código de referência",
         "ref_count": "Utilizador de código de referência",
         "ref_count_active": "Utilizador de código de referência activo",

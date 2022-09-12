@@ -416,6 +416,16 @@
       "instructions": "Es scheint, dass du bereits mit einer anderen Adresse verifiziert bist.\n\nBevor du unseren KYC-Prozess erneut durchführst, haben wir dir eine E-Mail geschickt, um deine neue Adresse mit deinem verifizierten Konto zu verknüpfen.",
       "success": "Deine Adressen wurden erfolgreich verknüpft.",
       "expired": "Deine Link-Adressanforderung ist abgelaufen. Bitte erstelle eine neue Anfrage, indem du den KYC-Prozess neu startest."
+    },
+    "error": {
+      "general": {
+        "title": "Etwas ist schief gelaufen!",
+        "description": "Bitte versuche es erneut"
+      },
+      "login_failed": {
+        "title": "Login fehlgeschlagen!",
+        "description": "Bitte versuche es erneut, sich über die DFX-Wallet anzumelden"
+      }
     }
   }
 }

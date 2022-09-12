@@ -10,4 +10,5 @@ export default {
   Kyc: `${PageTitle} - KYC`,
   Link: `${PageTitle} - Link`,
   NotFound: `${PageTitle} - NotFound`,
+  Error: `${PageTitle} - Error`,
 };

@@ -415,6 +415,16 @@
       "instructions": "Il semble que vous soyez déjà vérifié avec une autre adresse.\n\nAvant que vous ne refassiez notre processus KYC, nous vous avons envoyé un e-mail pour relier votre nouvelle adresse à votre compte vérifié.",
       "success": "Vos adresses ont été liées avec succès.",
       "expired": "Votre demande d'adresse de lien a expiré. Veuillez créer une nouvelle demande en essayant de passer par notre processus KYC."
+    },
+    "error": {
+      "general": {
+        "title": "Quelque chose a mal tourné !",
+        "description": "Veuillez réessayer"
+      },
+      "login_failed": {
+        "title": "La connexion a échoué !",
+        "description": "Veuillez réessayer de vous connecter via DFX wallet"
+      }
     }
   }
 }

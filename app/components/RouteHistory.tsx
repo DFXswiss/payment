@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { DataTable } from "react-native-paper";
 import { CompactCell, CompactHeader, CompactRow, CompactTitle } from "../elements/Tables";
 import Moment from "moment";
-import { formatAmount, openUrl } from "../utils/Utils";
+import { formatAmount, getSignificantDecimalDigitCount, openUrl } from "../utils/Utils";
 import { useDevice } from "../hooks/useDevice";
 import IconButton from "./util/IconButton";
 import DeFiModal from "./util/DeFiModal";
@@ -53,12 +53,9 @@ const RouteHistory = ({ history }: Props) => {
     tx: RouteHistoryAlias,
     direction: DirectionType
   ): string => {
-    // Krysh: only non fiat could be so small, that we need to use toFixed(8)
-    // 8 because on DeFiChain it is the last possible decimal to be shown
-    const useToFixed = ("" + amount).includes("e-");
-    const amountToBeUsed = useToFixed ? amount.toFixed(8) : amount;
-
-    return isFiatInput(tx, direction) ? `${formatAmount(amount)} ${asset}` : `${amountToBeUsed} ${asset}`;
+    return isFiatInput(tx, direction)
+      ? `${formatAmount(amount)} ${asset}`
+      : `${amount.toFixed(getSignificantDecimalDigitCount(amount))} ${asset}`;
   };
 
   const dateOf = (tx: RouteHistoryAlias): string => {

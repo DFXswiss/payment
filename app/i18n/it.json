@@ -319,6 +319,7 @@
         "fee": " Commissione",
         "reward_fee": "Commissione sulla ricompensa",
         "volume": "Volume",
+        "total_volume": "Volume totale",
         "annual_volume": "Volume annuale",
         "min_deposit": "Deposito minimo",
         "min_invest": "Investimento minimo",
@@ -358,7 +359,8 @@
         "status_complete": "Completato",
         "status_incomplete": "In corso",
         "tx_details": "Dettagli della transazione",
-        "tx_link": "Link alla transazione su defiscan.live"
+        "tx_link": "Link alla transazione su defiscan.live",
+        "statistics": "Statistiche"
       },
       "history": {
         "buy": "Operazioni di acquisto",

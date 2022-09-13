@@ -316,6 +316,7 @@
         "fee": "Taxa",
         "reward_fee": "Taxa de recompensa",
         "volume": "Volume",
+        "total_volume": "Volume total",
         "annual_volume": "Volume anual",
         "min_deposit": "Depósito min.",
         "min_invest": "Investimento min.",
@@ -355,7 +356,8 @@
         "status_complete": "Concluído",
         "status_incomplete": "Em curso",
         "tx_details": "Detalhes da transacção",
-        "tx_link": "Ligação à transacção em defiscan.live"
+        "tx_link": "Ligação à transacção em defiscan.live",
+        "statistics": "Estatísticas"
       },
       "history": {
         "buy": "Transacções de compra",

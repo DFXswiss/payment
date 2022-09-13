@@ -319,6 +319,7 @@
         "fee": "Fee",
         "reward_fee": "Reward fee",
         "volume": "Volume",
+        "total_volume": "Total volume",
         "annual_volume": "Annual volume",
         "min_deposit": "Min. deposit",
         "min_invest": "Min. investment",
@@ -358,7 +359,8 @@
         "status_complete": "Completed",
         "status_incomplete": "In progress",
         "tx_details": "Transaction details",
-        "tx_link": "Link to transaction on defiscan.live"
+        "tx_link": "Link to transaction on defiscan.live",
+        "statistics": "Statistics"
       },
       "history": {
         "buy": "Buy transactions",

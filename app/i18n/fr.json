@@ -319,6 +319,7 @@
         "fee": "Frais",
         "reward_fee": "Frais de récompense",
         "volume": "Volume",
+        "total_volume": "Volume total",
         "annual_volume": "Volume annuel",
         "min_deposit": "Dépôt min.",
         "min_invest": "Investissement min.",
@@ -358,7 +359,8 @@
         "status_complete": "Achevé",
         "status_incomplete": "En cours d'exécution",
         "tx_details": "Détails de la transaction",
-        "tx_link": "Lien vers la transaction sur defiscan.live"
+        "tx_link": "Lien vers la transaction sur defiscan.live",
+        "statistics": "Statistiques"
       },
       "history": {
         "buy": "Transactions d'achat",

@@ -56,18 +56,10 @@ export const toBase64 = (file: File): Promise<string | undefined> => {
 
 export const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
-var log10 = Math.log(10);
-export const getSignificantDecimalDigitCount = (num: number): number => {
-  const numAsString = String(num);
-  //remove decimal and make positive
-  const indexOf = numAsString.indexOf(".");
-  if (indexOf == -1) return 0;
-  const decimals = +numAsString.slice(indexOf);
-  let n = Math.abs(decimals * Math.pow(10, 8));
-  if (n == 0) return 0;
-  //kill the 0s at the end of n
-  while (n != 0 && n % 10 == 0) n /= 10;
-
-  //get number of digits, keep it in range of 0 to 8
-  return Math.min(Math.max(Math.floor(Math.log(n) / log10) - 1, 0), 8);
+export const formatAmountCrypto = (num: number): string => {
+  let r = (+num.toPrecision(6)).toFixed(6);
+  if (r.match(/\./)) {
+    r = r.replace(/\.?0+$/, "");
+  }
+  return r;
 };

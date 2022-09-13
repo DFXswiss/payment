@@ -303,6 +303,7 @@
         "fee": "Comisión",
         "reward_fee": "Comisión de recompensa",
         "volume": "Volumen",
+        "total_volume": "Volumen total",
         "annual_volume": "Volume anual",
         "min_deposit": "Depósito mínimo",
         "staking": "Hacer staking",
@@ -341,7 +342,8 @@
         "status_completado": "Completado",
         "status_incomplete": "En curso",
         "tx_details": "Detalles de la transacción",
-        "tx_link": "Enlace a la transacción en defiscan.live"
+        "tx_link": "Enlace a la transacción en defiscan.live",
+        "statistics": "Estadísticas"
       },
       "history": {
         "buy": "Operaciones de compra",

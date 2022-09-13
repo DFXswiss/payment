@@ -32,7 +32,7 @@ import { DeviceClass } from "../../utils/Device";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Session } from "../../services/AuthService";
 import withSession from "../../hocs/withSession";
-import { User, UserDetail } from "../../models/User";
+import { User, UserDetail, VolumeInformation } from "../../models/User";
 import { StakingRoute, PayoutType } from "../../models/StakingRoute";
 import StakingRouteEdit from "../../components/edit/StakingRouteEdit";
 import TransactionHistory from "./TransactionHistory";
@@ -45,11 +45,13 @@ import Colors from "../../config/Colors";
 import RouteHistory from "../../components/RouteHistory";
 import { RouteHistoryAlias } from "../../models/RouteHistory";
 import { MinDeposit } from "../../models/MinDeposit";
+import { Statistic } from "../../models/Statistic";
 
 interface Props {
-  user?: User;
+  user?: UserDetail;
   setUser: Dispatch<SetStateAction<UserDetail | undefined>>;
   session?: Session;
+  statistic?: Statistic;
   buyRoutes?: BuyRoute[];
   setBuyRoutes: Dispatch<SetStateAction<BuyRoute[] | undefined>>;
   sellRoutes?: SellRoute[];
@@ -90,6 +92,7 @@ const RouteList = ({
   user,
   setUser,
   session,
+  statistic,
   buyRoutes,
   setBuyRoutes,
   sellRoutes,
@@ -651,6 +654,8 @@ const RouteList = ({
               <SpacerV height={20} />
               <H3 text={t("model.route.sell")} />
 
+              {(user?.sellVolume.total ?? 0) > 0 && <VolumeInformationTable info={user?.sellVolume} />}
+
               <DataTable>
                 <CompactHeader>
                   <CompactTitle style={{ flex: 1 }}>{t("model.route.fiat")}</CompactTitle>
@@ -692,6 +697,8 @@ const RouteList = ({
               <View style={AppStyles.containerHorizontal}>
                 <H3 text={t("model.route.staking")} />
               </View>
+
+              <StakingInformationTable balance={user?.stakingBalance} statistic={statistic} />
 
               <DataTable>
                 <CompactHeader>
@@ -741,6 +748,8 @@ const RouteList = ({
                   <Text style={AppStyles.beta}> Beta</Text>
                 </View>
               </View>
+
+              {(user?.cryptoVolume.total ?? 0) > 0 && <VolumeInformationTable info={user?.cryptoVolume} />}
 
               <DataTable>
                 <CompactHeader>
@@ -861,6 +870,57 @@ const PaymentDetails = (): ReactElement => {
           <CopyLine text={`SWIFT/BIC: ${swift}`} copyText={swift} />
         </View>
       </View>
+    </>
+  );
+};
+
+const StakingInformationTable = ({ balance, statistic }: { balance?: number; statistic?: Statistic }): ReactElement => {
+  const { t } = useTranslation();
+
+  return (
+    <>
+      <SpacerV />
+      <DataTable>
+        <CompactHeader>
+          <CompactTitle>{t("model.route.statistics")}</CompactTitle>
+        </CompactHeader>
+        <CompactRow>
+          <CompactCell>{t("model.route.balance")}</CompactCell>
+          <CompactCell>{`${formatAmount(balance)} €`}</CompactCell>
+        </CompactRow>
+        <CompactRow>
+          <CompactCell>APR</CompactCell>
+          <CompactCell>{`${(statistic?.staking.yield.apr ?? 0) * 100}%`}</CompactCell>
+        </CompactRow>
+        <CompactRow>
+          <CompactCell>APY</CompactCell>
+          <CompactCell>{`${(statistic?.staking.yield.apy ?? 0) * 100}%`}</CompactCell>
+        </CompactRow>
+      </DataTable>
+      <SpacerV />
+    </>
+  );
+};
+
+const VolumeInformationTable = ({ info }: { info?: VolumeInformation }): ReactElement => {
+  const { t } = useTranslation();
+  return (
+    <>
+      <SpacerV />
+      <DataTable>
+        <CompactHeader>
+          <CompactTitle>{t("model.route.statistics")}</CompactTitle>
+        </CompactHeader>
+        <CompactRow>
+          <CompactCell>{t("model.route.total_volume")}</CompactCell>
+          <CompactCell>{`${formatAmount(info?.total)} €`}</CompactCell>
+        </CompactRow>
+        <CompactRow>
+          <CompactCell>{t("model.route.annual_volume")}</CompactCell>
+          <CompactCell>{`${formatAmount(info?.annual)} €`}</CompactCell>
+        </CompactRow>
+      </DataTable>
+      <SpacerV />
     </>
   );
 };

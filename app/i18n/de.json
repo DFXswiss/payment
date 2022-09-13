@@ -320,6 +320,7 @@
         "fee": "Gebühr",
         "reward_fee": "Reward-Gebühr",
         "volume": "Volumen",
+        "total_volume": "Gesamtvolumen",
         "annual_volume": "Jahresvolumen",
         "min_deposit": "Min. Einzahlung",
         "min_invest": "Min. Investment",
@@ -359,7 +360,8 @@
         "status_complete": "Abgeschlossen",
         "status_incomplete": "In Bearbeitung",
         "tx_details": "Transaktionsdetails",
-        "tx_link": "Link zur Transaktion auf defiscan.live"
+        "tx_link": "Link zur Transaktion auf defiscan.live",
+        "statistics": "Statistik"
       },
       "history": {
         "buy": "Kauf-Transaktionen",

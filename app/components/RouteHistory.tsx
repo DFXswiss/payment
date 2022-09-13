@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { DataTable } from "react-native-paper";
 import { CompactCell, CompactHeader, CompactRow, CompactTitle } from "../elements/Tables";
 import Moment from "moment";
-import { formatAmount, getSignificantDecimalDigitCount, openUrl } from "../utils/Utils";
+import { formatAmount, formatAmountCrypto, openUrl } from "../utils/Utils";
 import { useDevice } from "../hooks/useDevice";
 import IconButton from "./util/IconButton";
 import DeFiModal from "./util/DeFiModal";
@@ -53,9 +53,7 @@ const RouteHistory = ({ history }: Props) => {
     tx: RouteHistoryAlias,
     direction: DirectionType
   ): string => {
-    return isFiatInput(tx, direction)
-      ? `${formatAmount(amount)} ${asset}`
-      : `${amount.toFixed(getSignificantDecimalDigitCount(amount))} ${asset}`;
+    return isFiatInput(tx, direction) ? `${formatAmount(amount)} ${asset}` : `${formatAmountCrypto(amount)} ${asset}`;
   };
 
   const dateOf = (tx: RouteHistoryAlias): string => {

@@ -383,6 +383,17 @@ const RouteList = ({
     else return isBuyLoading[route.id];
   };
 
+  const volumeInfoData = (info?: VolumeInformation) => [
+    { label: t("model.route.total_volume"), value: `${formatAmount(info?.total)} €` },
+    { label: t("model.route.annual_volume"), value: `${formatAmount(info?.annual)} €` },
+  ];
+
+  const stakingInfoData = (balance?: number, statistics?: Statistic) => [
+    { label: t("model.route.balance"), value: `${formatAmount(balance)} €` },
+    { label: "APR", value: `${(statistic?.staking.yield.apr ?? 0) * 100}%` },
+    { label: "APY", value: `${(statistic?.staking.yield.apy ?? 0) * 100}%` },
+  ];
+
   return (
     <>
       <DeFiModal
@@ -613,6 +624,8 @@ const RouteList = ({
               <SpacerV />
               <H3 text={t("model.route.buy")} />
 
+              {(user?.buyVolume.total ?? 0) > 0 && <InfoTable data={volumeInfoData(user?.buyVolume)} />}
+
               <DataTable>
                 <CompactHeader>
                   <CompactTitle style={{ flex: 1 }}>{t("model.route.type")}</CompactTitle>
@@ -654,7 +667,7 @@ const RouteList = ({
               <SpacerV height={20} />
               <H3 text={t("model.route.sell")} />
 
-              {(user?.sellVolume.total ?? 0) > 0 && <VolumeInformationTable info={user?.sellVolume} />}
+              {(user?.sellVolume.total ?? 0) > 0 && <InfoTable data={volumeInfoData(user?.sellVolume)} />}
 
               <DataTable>
                 <CompactHeader>
@@ -698,7 +711,9 @@ const RouteList = ({
                 <H3 text={t("model.route.staking")} />
               </View>
 
-              <StakingInformationTable balance={user?.stakingBalance} statistic={statistic} />
+              {(user?.buyVolume.total ?? 0) > 0 && (
+                <InfoTable data={stakingInfoData(user?.stakingBalance, statistic)} />
+              )}
 
               <DataTable>
                 <CompactHeader>
@@ -749,7 +764,7 @@ const RouteList = ({
                 </View>
               </View>
 
-              {(user?.cryptoVolume.total ?? 0) > 0 && <VolumeInformationTable info={user?.cryptoVolume} />}
+              {(user?.cryptoVolume.total ?? 0) > 0 && <InfoTable data={volumeInfoData(user?.cryptoVolume)} />}
 
               <DataTable>
                 <CompactHeader>
@@ -874,35 +889,8 @@ const PaymentDetails = (): ReactElement => {
   );
 };
 
-const StakingInformationTable = ({ balance, statistic }: { balance?: number; statistic?: Statistic }): ReactElement => {
-  const { t } = useTranslation();
-
-  return (
-    <>
-      <SpacerV />
-      <DataTable>
-        <CompactHeader>
-          <CompactTitle>{t("model.route.statistics")}</CompactTitle>
-        </CompactHeader>
-        <CompactRow>
-          <CompactCell>{t("model.route.balance")}</CompactCell>
-          <CompactCell>{`${formatAmount(balance)} €`}</CompactCell>
-        </CompactRow>
-        <CompactRow>
-          <CompactCell>APR</CompactCell>
-          <CompactCell>{`${(statistic?.staking.yield.apr ?? 0) * 100}%`}</CompactCell>
-        </CompactRow>
-        <CompactRow>
-          <CompactCell>APY</CompactCell>
-          <CompactCell>{`${(statistic?.staking.yield.apy ?? 0) * 100}%`}</CompactCell>
-        </CompactRow>
-      </DataTable>
-      <SpacerV />
-    </>
-  );
-};
-
-const VolumeInformationTable = ({ info }: { info?: VolumeInformation }): ReactElement => {
+type InfoData = { label: string; value: string };
+const InfoTable = ({ data }: { data?: InfoData[] }): ReactElement => {
   const { t } = useTranslation();
   return (
     <>
@@ -911,14 +899,14 @@ const VolumeInformationTable = ({ info }: { info?: VolumeInformation }): ReactEl
         <CompactHeader>
           <CompactTitle>{t("model.route.statistics")}</CompactTitle>
         </CompactHeader>
-        <CompactRow>
-          <CompactCell>{t("model.route.total_volume")}</CompactCell>
-          <CompactCell>{`${formatAmount(info?.total)} €`}</CompactCell>
-        </CompactRow>
-        <CompactRow>
-          <CompactCell>{t("model.route.annual_volume")}</CompactCell>
-          <CompactCell>{`${formatAmount(info?.annual)} €`}</CompactCell>
-        </CompactRow>
+        {data?.map((entry) => {
+          return (
+            <CompactRow>
+              <CompactCell>{entry.label}</CompactCell>
+              <CompactCell>{entry.value}</CompactCell>
+            </CompactRow>
+          );
+        })}
       </DataTable>
       <SpacerV />
     </>

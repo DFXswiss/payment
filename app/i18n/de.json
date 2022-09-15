@@ -426,7 +426,7 @@
       },
       "login_failed": {
         "title": "Login fehlgeschlagen!",
-        "description": "Bitte versuche es erneut, sich über die DFX-Wallet anzumelden"
+        "description": "Bitte versuche es erneut, dich über die DFX-Wallet anzumelden"
       }
     }
   }

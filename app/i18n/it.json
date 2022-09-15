@@ -241,7 +241,7 @@
         "organization_info": "Organizzazione",
         "organization_name": "Nome dell'organizzazione",
         "your_ref_data": "Il tuo referral",
-        "own_ref": "Codice referral da distribuire",
+        "ref_link": "Link di referral",
         "copy_ref": "Copiare il link del referral",
         "ref_count": "Utenti referral",
         "ref_count_active": "Utenti attivi del referral",
@@ -319,6 +319,7 @@
         "fee": " Commissione",
         "reward_fee": "Commissione sulla ricompensa",
         "volume": "Volume",
+        "total_volume": "Volume totale",
         "annual_volume": "Volume annuale",
         "min_deposit": "Deposito minimo",
         "min_invest": "Investimento minimo",
@@ -358,7 +359,8 @@
         "status_complete": "Completato",
         "status_incomplete": "In corso",
         "tx_details": "Dettagli della transazione",
-        "tx_link": "Link alla transazione su defiscan.live"
+        "tx_link": "Link alla transazione su defiscan.live",
+        "statistics": "Statistiche"
       },
       "history": {
         "buy": "Operazioni di acquisto",
@@ -415,6 +417,16 @@
       "instructions": "Sembra che lei sia già verificato con un altro indirizzo.\n\nPrima di ripetere il processo KYC, le abbiamo inviato un'e-mail per collegare il suo nuovo indirizzo al suo conto verificato.",
       "success": "Il collegamento dei vostri indirizzi è riuscito.",
       "expired": "La richiesta di indirizzo di collegamento è scaduta. Si prega di creare una nuova richiesta tentando di passare attraverso il nostro processo KYC."
+    },
+    "error": {
+      "general": {
+        "title": "Qualcosa è andato storto!",
+        "description": "Si prega di riprovare"
+      },
+      "login_failed": {
+        "title": "Login fallito!",
+        "description": "Si prega di riprovare ad effettuare il login tramite il DFX wallet"
+      }
     }
   }
 }

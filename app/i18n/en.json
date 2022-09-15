@@ -241,7 +241,7 @@
         "organization_info": "Organization",
         "organization_name": "Organization name",
         "your_ref_data": "Your Referral",
-        "own_ref": "Ref code to distribute",
+        "ref_link": "Ref link",
         "copy_ref": "Copy ref code",
         "ref_count": "Ref users",
         "ref_count_active": "Active ref users",
@@ -319,6 +319,7 @@
         "fee": "Fee",
         "reward_fee": "Reward fee",
         "volume": "Volume",
+        "total_volume": "Total volume",
         "annual_volume": "Annual volume",
         "min_deposit": "Min. deposit",
         "min_invest": "Min. investment",
@@ -358,7 +359,8 @@
         "status_complete": "Completed",
         "status_incomplete": "In progress",
         "tx_details": "Transaction details",
-        "tx_link": "Link to transaction on defiscan.live"
+        "tx_link": "Link to transaction on defiscan.live",
+        "statistics": "Statistics"
       },
       "history": {
         "buy": "Buy transactions",
@@ -415,6 +417,16 @@
       "instructions": "It seems you are already verified with another address.\n\nBefore you are doing our KYC process again, we sent you an email to link your new address to your verified account.",
       "success": "Successfully linked your addresses.",
       "expired": "Your link address request has expired. Please create a new request by attempting to go through our KYC process."
+    },
+    "error": {
+      "general": {
+        "title": "Something went wrong!",
+        "description": "Please try again"
+      },
+      "login_failed": {
+        "title": "Login failed!",
+        "description": "Please try again to log in via DFX wallet"
+      }
     }
   }
 }

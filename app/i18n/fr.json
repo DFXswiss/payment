@@ -241,7 +241,7 @@
         "organization_info": "Organisme",
         "organization_name": "Nom de l'organisme",
         "your_ref_data": "Votre code de parrainage",
-        "own_ref": "Code de parrainage à distribuer",
+        "ref_link": "Lien de parrainage",
         "copy_ref": "Copier le code de parrainage",
         "ref_count": "Utilisateurs parrainés",
         "ref_count_active": "Utilisateurs parrainés actifs",
@@ -319,6 +319,7 @@
         "fee": "Frais",
         "reward_fee": "Frais de récompense",
         "volume": "Volume",
+        "total_volume": "Volume total",
         "annual_volume": "Volume annuel",
         "min_deposit": "Dépôt min.",
         "min_invest": "Investissement min.",
@@ -358,7 +359,8 @@
         "status_complete": "Achevé",
         "status_incomplete": "En cours d'exécution",
         "tx_details": "Détails de la transaction",
-        "tx_link": "Lien vers la transaction sur defiscan.live"
+        "tx_link": "Lien vers la transaction sur defiscan.live",
+        "statistics": "Statistiques"
       },
       "history": {
         "buy": "Transactions d'achat",
@@ -415,6 +417,16 @@
       "instructions": "Il semble que vous soyez déjà vérifié avec une autre adresse.\n\nAvant que vous ne refassiez notre processus KYC, nous vous avons envoyé un e-mail pour relier votre nouvelle adresse à votre compte vérifié.",
       "success": "Vos adresses ont été liées avec succès.",
       "expired": "Votre demande d'adresse de lien a expiré. Veuillez créer une nouvelle demande en essayant de passer par notre processus KYC."
+    },
+    "error": {
+      "general": {
+        "title": "Quelque chose a mal tourné !",
+        "description": "Veuillez réessayer"
+      },
+      "login_failed": {
+        "title": "La connexion a échoué !",
+        "description": "Veuillez réessayer de vous connecter via DFX wallet"
+      }
     }
   }
 }

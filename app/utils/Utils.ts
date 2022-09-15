@@ -55,3 +55,11 @@ export const toBase64 = (file: File): Promise<string | undefined> => {
 };
 
 export const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
+
+export const formatAmountCrypto = (num: number): string => {
+  let r = (+num.toPrecision(6)).toFixed(6);
+  if (r.match(/\./)) {
+    r = r.replace(/\.?0+$/, "");
+  }
+  return r;
+};

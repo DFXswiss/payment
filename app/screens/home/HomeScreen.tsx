@@ -19,7 +19,7 @@ import {
   UserDetail,
   UserStatus,
 } from "../../models/User";
-import { getRoutes, getSettings, getUserDetail } from "../../services/ApiService";
+import { getRoutes, getSettings, getStatistic, getUserDetail } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
@@ -49,6 +49,7 @@ import { CryptoRoute } from "../../models/CryptoRoute";
 import KycDataEdit from "../../components/edit/KycDataEdit";
 import { KycData } from "../../models/KycData";
 import ChangeUser from "../../components/ChangeUser";
+import { Statistic } from "../../models/Statistic";
 
 const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSettings }) => {
   const { t } = useTranslation();
@@ -60,6 +61,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const [sellRoutes, setSellRoutes] = useState<SellRoute[]>();
   const [stakingRoutes, setStakingRoutes] = useState<StakingRoute[]>();
   const [cryptoRoutes, setCryptoRoutes] = useState<CryptoRoute[]>();
+  const [statistic, setStatistic] = useState<Statistic>();
   const [isUserEdit, setIsUserEdit] = useState(false);
   const [isBuyRouteEdit, setIsBuyRouteEdit] = useState(false);
   const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
@@ -193,12 +195,13 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     (cancelled) => {
       if (session) {
         if (session.isLoggedIn) {
-          Promise.all([getUserDetail(), loadRoutes(), getSettings()])
-            .then(([user, _, settings]) => {
+          Promise.all([getUserDetail(), loadRoutes(), getSettings(), getStatistic()])
+            .then(([user, _, settings, statistic]) => {
               if (!cancelled()) {
                 setUser(user);
                 setIsChangeUserAvailable(user?.linkedAddresses != undefined && user.linkedAddresses.length > 1);
                 setIsVotingOpen(settings.cfpVotingOpen);
+                setStatistic(statistic);
               }
             })
             .catch((e: ApiError) =>
@@ -220,10 +223,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
 
   useAuthGuard(session);
 
-  const buyVolume = () => (buyRoutes ?? []).reduce((prev, curr) => prev + curr.volume, 0);
-  const annualBuyVolume = () => (buyRoutes ?? []).reduce((prev, curr) => prev + curr.annualVolume, 0);
-  const sellVolume = () => (sellRoutes ?? []).reduce((prev, curr) => prev + curr.volume, 0);
-
   const userData = (user: UserDetail) => [
     {
       condition: Boolean(user.address),
@@ -235,21 +234,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     { condition: true, label: "model.user.mail", value: user.mail, emptyHint: t("model.user.add_mail") },
     { condition: Boolean(user.phone), label: "model.user.mobile_number", value: user.phone },
     { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef },
-    {
-      condition: Boolean(buyVolume()),
-      label: "model.user.buy_volume",
-      value: `${formatAmount(buyVolume())} €`,
-    },
-    {
-      condition: Boolean(annualBuyVolume()),
-      label: "model.user.annual_buy_volume",
-      value: `${formatAmount(annualBuyVolume())} €`,
-    },
-    {
-      condition: Boolean(sellVolume()),
-      label: "model.user.sell_volume",
-      value: `${formatAmount(sellVolume())} €`,
-    },
     {
       condition: user.kycStatus != KycStatus.NA,
       label: "model.kyc.status",
@@ -266,13 +250,17 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     },
   ];
 
+  const refLink = (user: UserDetail): string => {
+    return `${RefUrl}${user.ref}`;
+  };
+
   const refData = (user: UserDetail) => [
     {
       condition: Boolean(user.ref),
-      label: "model.user.own_ref",
+      label: "model.user.ref_link",
       value: user.ref,
       icon: "content-copy",
-      onPress: () => ClipboardService.copy(`${RefUrl}${user.ref}`),
+      onPress: () => ClipboardService.copy(refLink(user)),
     },
     {
       condition: Boolean(user.ref),
@@ -427,6 +415,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
             <RouteList
               user={user}
               setUser={setUser}
+              statistic={statistic}
               buyRoutes={buyRoutes}
               setBuyRoutes={setBuyRoutes}
               sellRoutes={sellRoutes}

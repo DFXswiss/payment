@@ -238,7 +238,7 @@
         "organization_info": "Organização",
         "organization_name": "Nome da organização",
         "your_ref_data": "A sua referência",
-        "own_ref": "Código de referência para distribuição",
+        "ref_link": "Código de referência",
         "copy_ref": "Cópia o código de referência",
         "ref_count": "Utilizador de código de referência",
         "ref_count_active": "Utilizador de código de referência activo",
@@ -316,6 +316,7 @@
         "fee": "Taxa",
         "reward_fee": "Taxa de recompensa",
         "volume": "Volume",
+        "total_volume": "Volume total",
         "annual_volume": "Volume anual",
         "min_deposit": "Depósito min.",
         "min_invest": "Investimento min.",
@@ -355,7 +356,8 @@
         "status_complete": "Concluído",
         "status_incomplete": "Em curso",
         "tx_details": "Detalhes da transacção",
-        "tx_link": "Ligação à transacção em defiscan.live"
+        "tx_link": "Ligação à transacção em defiscan.live",
+        "statistics": "Estatísticas"
       },
       "history": {
         "buy": "Transacções de compra",
@@ -412,6 +414,16 @@
       "instructions": "Parece que já está verificado com outro endereço.\n\nAntes de estar novamente a fazer o nosso processo KYC, enviámos-lhe um e-mail para ligar o seu novo endereço à sua conta verificada.",
       "success": "Conseguimos estabelecer uma ligação bem sucedida entre os seus endereços.",
       "expired": "O seu pedido de endereço de link expirou. Por favor, crie um novo pedido, tentando passar pelo nosso processo KYC."
+    },
+    "error": {
+      "general": {
+        "title": "Algo correu mal!",
+        "description": "Por favor tente novamente"
+      },
+      "login_failed": {
+        "title": "O login falhou!",
+        "description": "Por favor tente fazer o login via DFX wallet novamente"
+      }
     }
   }
 }

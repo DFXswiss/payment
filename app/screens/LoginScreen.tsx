@@ -26,6 +26,7 @@ import Loading from "../components/util/Loading";
 import { getSignMessage } from "../services/ApiService";
 import NotificationService from "../services/NotificationService";
 import { Blockchain } from "../models/Blockchain";
+import { ErrorScreenType } from "./ErrorScreen";
 
 interface LoginData {
   userName: string;
@@ -142,7 +143,9 @@ const LoginScreen = () => {
 
       SessionService.tokenLogin(params?.token)
         .then(() => nav.navigate(Routes.Home))
-        .catch(() => {})
+        .catch(() => {
+          nav.navigate(Routes.Error, { screenType: ErrorScreenType.LOGIN_FAILED });
+        })
         .finally(() => {
           setIsProcessing(false);
           setIsAutoLogin(false);

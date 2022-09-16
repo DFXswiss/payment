@@ -389,7 +389,7 @@ const RouteList = ({
   ];
 
   const stakingInfoData = (balance?: number, statistic?: Statistic) => [
-    { label: t("model.route.balance"), value: `${formatAmount(balance)} €` },
+    { label: t("model.route.balance"), value: `${formatAmount(balance)} DFI` },
     { label: "APR", value: `${((statistic?.staking.yield.apr ?? 0) * 100).toFixed(2)}%` },
     { label: "APY", value: `${((statistic?.staking.yield.apy ?? 0) * 100).toFixed(2)}%` },
   ];

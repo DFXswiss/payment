@@ -388,10 +388,10 @@ const RouteList = ({
     { label: t("model.route.annual_volume"), value: `${formatAmount(info?.annual)} €` },
   ];
 
-  const stakingInfoData = (balance?: number, statistics?: Statistic) => [
+  const stakingInfoData = (balance?: number, statistic?: Statistic) => [
     { label: t("model.route.balance"), value: `${formatAmount(balance)} €` },
-    { label: "APR", value: `${(statistic?.staking.yield.apr ?? 0) * 100}%` },
-    { label: "APY", value: `${(statistic?.staking.yield.apy ?? 0) * 100}%` },
+    { label: "APR", value: `${((statistic?.staking.yield.apr ?? 0) * 100).toFixed(2)}%` },
+    { label: "APY", value: `${((statistic?.staking.yield.apy ?? 0) * 100).toFixed(2)}%` },
   ];
 
   return (

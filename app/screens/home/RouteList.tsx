@@ -825,13 +825,13 @@ const RouteList = ({
 };
 
 const PaymentDetails = (): ReactElement => {
-  // const instantIban = "LU11 6060 0020 0000 5040";
-  // const instantBic = "OLKILUL1";
+  const instantIban = "LU11 6060 0020 0000 5040";
+  const instantBic = "OLKILUL1";
   const iban = "CH68 0857 3177 9752 0181 4";
   const swift = "MAEBCHZZ";
 
-  // const instantItemsLength = 7;
-  // const itemHasPadding = (i: number) => i > 3;
+  const instantItemsLength = 7;
+  const itemHasPadding = (i: number) => i > 3;
 
   const device = useDevice();
   const { t } = useTranslation();
@@ -849,10 +849,6 @@ const PaymentDetails = (): ReactElement => {
       <SpacerV height={20} />
 
       <View style={device.SM && [AppStyles.containerHorizontal, styles.sepaContainer]}>
-        {/* 
-
-        DEACTIVATED DUE BEING DOWN, MAYBE RESTORED LATER
-        
         <View style={[styles.sepaItem, device.SM && { flexShrink: 1 }]}>
           <H4 text={t("model.sepa.instant.title")} style={{ color: Colors.Primary }} />
           <CopyLine text={`${t("model.route.iban")}: ${instantIban}`} copyText={instantIban} />
@@ -877,7 +873,7 @@ const PaymentDetails = (): ReactElement => {
           ))}
         </View>
 
-        <Spacer /> */}
+        <Spacer />
 
         <View style={[styles.sepaItem, device.SM && { flexShrink: 1 }]}>
           <H4 text={t("model.sepa.regular")} style={{ color: Colors.Primary }} />
@@ -901,7 +897,7 @@ const InfoTable = ({ data }: { data?: InfoData[] }): ReactElement => {
         </CompactHeader>
         {data?.map((entry) => {
           return (
-            <CompactRow>
+            <CompactRow key={entry.label}>
               <CompactCell>{entry.label}</CompactCell>
               <CompactCell>{entry.value}</CompactCell>
             </CompactRow>

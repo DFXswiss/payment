@@ -384,6 +384,7 @@
           "title": "Für SEPA Sofortüberweisungen",
           "items": [
             "Keine Zusatzgebühren seitens DFX",
+            "Kann nur mit einem verifizierten Account verwendet werden",
             "Verfügbar für Banken mit dem Service SEPA Sofortüberweisung",
             "Ausschließlich für Überweisungen in EUR möglich",
             "Gekaufte Assets auf der Wallet in wenigen Minuten",

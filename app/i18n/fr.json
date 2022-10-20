@@ -383,6 +383,7 @@
           "title": "Pour les virements instantanés SEPA",
           "items": [
             "Sans frais DFX supplémentaires",
+            "Ne peut être utilisé qu'avec un compte vérifié",
             "Avec les banques autorisant le virement SEPA instantané",
             "Possible pour les virements en EUR uniquement",
             "Les actifs achetés sont sur le wallet en quelques minutes",

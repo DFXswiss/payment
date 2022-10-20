@@ -383,6 +383,7 @@
           "title": "For SEPA Instant transfers",
           "items": [
             "No additional fees from DFX",
+            "Can only be used with a verified account",
             "Available for banks with SEPA Instant Service",
             "Only possible for transfers in EUR",
             "Purchased assets on the wallet within a few minutes",

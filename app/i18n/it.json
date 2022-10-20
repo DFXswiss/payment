@@ -383,6 +383,7 @@
           "title": "Per i trasferimenti istantanei SEPA",
           "items": [
             "Nessuna commissione aggiuntiva da parte di DFX",
+            "Può essere utilizzato solo con un account verificato",
             "Disponibile per le banche con il servizio SEPA Instant",
             "Possibile solo per trasferimenti in EUR",
             "Attività acquistate sul portafoglio entro pochi minuti",

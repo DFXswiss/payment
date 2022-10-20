@@ -32,7 +32,7 @@ import { DeviceClass } from "../../utils/Device";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Session } from "../../services/AuthService";
 import withSession from "../../hocs/withSession";
-import { User, UserDetail, VolumeInformation } from "../../models/User";
+import { kycCompleted, User, UserDetail, VolumeInformation } from "../../models/User";
 import { StakingRoute, PayoutType } from "../../models/StakingRoute";
 import StakingRouteEdit from "../../components/edit/StakingRouteEdit";
 import TransactionHistory from "./TransactionHistory";
@@ -819,18 +819,18 @@ const RouteList = ({
         </>
       )}
 
-      {activeBuyRoutes && activeBuyRoutes.length > 0 && <PaymentDetails />}
+      {activeBuyRoutes && activeBuyRoutes.length > 0 && <PaymentDetails user={user} />}
     </>
   );
 };
 
-const PaymentDetails = (): ReactElement => {
+const PaymentDetails = ({ user }: { user?: UserDetail }): ReactElement => {
   const instantIban = "LU11 6060 0020 0000 5040";
   const instantBic = "OLKILUL1";
   const iban = "CH68 0857 3177 9752 0181 4";
   const swift = "MAEBCHZZ";
 
-  const instantItemsLength = 7;
+  const instantItemsLength = 8;
   const itemHasPadding = (i: number) => i > 3;
 
   const device = useDevice();
@@ -849,31 +849,35 @@ const PaymentDetails = (): ReactElement => {
       <SpacerV height={20} />
 
       <View style={device.SM && [AppStyles.containerHorizontal, styles.sepaContainer]}>
-        <View style={[styles.sepaItem, device.SM && { flexShrink: 1 }]}>
-          <H4 text={t("model.sepa.instant.title")} style={{ color: Colors.Primary }} />
-          <CopyLine text={`${t("model.route.iban")}: ${instantIban}`} copyText={instantIban} />
-          <CopyLine text={`BIC: ${instantBic}`} copyText={instantBic} />
-          <SpacerV />
-          {[...Array(instantItemsLength).keys()].map((_, i) => (
-            <View
-              key={i}
-              style={[
-                AppStyles.containerHorizontal,
-                { alignItems: "flex-start" },
-                itemHasPadding(i) && { marginLeft: 20 },
-              ]}
-            >
-              <View>
-                <Text>-</Text>
-              </View>
-              <View style={{ marginLeft: 5, flexShrink: 1 }}>
-                <Text>{t(`model.sepa.instant.items.${i}`)}</Text>
-              </View>
+        {kycCompleted(user?.kycStatus) && (
+          <>
+            <View style={[styles.sepaItem, device.SM && { flexShrink: 1 }]}>
+              <H4 text={t("model.sepa.instant.title")} style={{ color: Colors.Primary }} />
+              <CopyLine text={`${t("model.route.iban")}: ${instantIban}`} copyText={instantIban} />
+              <CopyLine text={`BIC: ${instantBic}`} copyText={instantBic} />
+              <SpacerV />
+              {[...Array(instantItemsLength).keys()].map((_, i) => (
+                <View
+                  key={i}
+                  style={[
+                    AppStyles.containerHorizontal,
+                    { alignItems: "flex-start" },
+                    itemHasPadding(i) && { marginLeft: 20 },
+                  ]}
+                >
+                  <View>
+                    <Text>-</Text>
+                  </View>
+                  <View style={{ marginLeft: 5, flexShrink: 1 }}>
+                    <Text>{t(`model.sepa.instant.items.${i}`)}</Text>
+                  </View>
+                </View>
+              ))}
             </View>
-          ))}
-        </View>
 
-        <Spacer />
+            <Spacer />
+          </>
+        )}
 
         <View style={[styles.sepaItem, device.SM && { flexShrink: 1 }]}>
           <H4 text={t("model.sepa.regular")} style={{ color: Colors.Primary }} />

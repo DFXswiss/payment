@@ -17,20 +17,24 @@ import { createRules } from "../../utils/Utils";
 import { ApiError } from "../../models/ApiDto";
 import { Country } from "../../models/Country";
 import Loading from "../util/Loading";
+import { Blockchain } from "../../models/Blockchain";
+import { Session } from "../../services/AuthService";
 
 const SellRouteEdit = ({
   routes,
   onRouteCreated,
+  session,
 }: {
   routes?: SellRoute[];
   onRouteCreated: (route: SellRoute) => void;
+  session?: Session;
 }) => {
   const { t } = useTranslation();
   const {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<SellRoute>();
+  } = useForm<SellRoute & { blockchain?: Blockchain }>();
 
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
@@ -52,8 +56,13 @@ const SellRouteEdit = ({
     setIsSaving(true);
     setError(undefined);
 
+    if (!route.blockchain && getBlockchains().length === 1) {
+      route.blockchain = getBlockchains()[0];
+    }
     // re-activate the route, if it already existed
-    const existingRoute = routes?.find((r) => !r.active && r.fiat.id === route.fiat.id &&  r.iban.split(' ').join('') === route.iban.split(' ').join(''));
+    const existingRoute = routes?.find(
+      (r) => !r.active && r.fiat.id === route.fiat.id && r.iban.split(" ").join("") === route.iban.split(" ").join("")
+    );
     if (existingRoute) existingRoute.active = true;
 
     (existingRoute ? putSellRoute(existingRoute) : postSellRoute(route))
@@ -62,9 +71,18 @@ const SellRouteEdit = ({
       .finally(() => setIsSaving(false));
   };
 
+  const isBlockchainsEnabled = (): boolean => {
+    return getBlockchains().length > 1;
+  };
+
+  const getBlockchains = (): Blockchain[] => {
+    return session?.blockchains ?? [];
+  };
+
   const rules: any = createRules({
     fiat: Validations.Required,
     iban: [Validations.Required, Validations.Iban(countries)],
+    blockchain: isBlockchainsEnabled() && Validations.Required,
   });
 
   return isLoading ? (
@@ -79,6 +97,18 @@ const SellRouteEdit = ({
         labelFunc={(i) => i.name}
       />
       <SpacerV />
+
+      {isBlockchainsEnabled() && (
+        <>
+          <DeFiPicker
+            name="blockchain"
+            label={t("model.route.blockchain")}
+            items={getBlockchains()}
+            labelFunc={(i) => i}
+          />
+          <SpacerV />
+        </>
+      )}
 
       <Input name="iban" label={t("model.route.your_iban")} placeholder="DE89 3704 0044 0532 0130 00" />
       <SpacerV />

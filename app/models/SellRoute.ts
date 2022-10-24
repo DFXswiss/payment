@@ -1,3 +1,4 @@
+import { Blockchain } from "./Blockchain";
 import { Deposit } from "./Deposit";
 import { Fiat } from "./Fiat";
 import { MinDeposit } from "./MinDeposit";
@@ -26,6 +27,8 @@ export interface SellRoute {
   fee: number;
   isInUse: boolean;
   minDeposits: MinDeposit[];
+
+  blockchain?: Blockchain;
 }
 
 export const fromSellRouteDto = (route: SellRouteDto): SellRoute => ({

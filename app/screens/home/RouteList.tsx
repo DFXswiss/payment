@@ -499,7 +499,7 @@ const RouteList = ({
         title={t("model.route.new_sell")}
         style={{ width: 400 }}
       >
-        <SellRouteEdit routes={sellRoutes} onRouteCreated={onSellRouteCreated} />
+        <SellRouteEdit routes={sellRoutes} onRouteCreated={onSellRouteCreated} session={session} />
       </DeFiModal>
       <DeFiModal
         isVisible={isBuyRouteEdit}

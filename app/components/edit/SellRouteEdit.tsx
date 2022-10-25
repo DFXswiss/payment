@@ -58,8 +58,9 @@ const SellRouteEdit = ({
     setIsSaving(true);
     setError(undefined);
 
-    if (!route.blockchain && getBlockchains().length === 1) {
-      route.blockchain = getBlockchains()[0];
+    const blockchain = getBlockchainPreselection();
+    if (!route.blockchain && blockchain) {
+      route.blockchain = blockchain;
     }
 
     postSellRoute(route)

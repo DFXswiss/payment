@@ -22,12 +22,10 @@ import Loading from "../util/Loading";
 import { Blockchain } from "../../models/Blockchain";
 
 const BuyRouteEdit = ({
-  routes,
   onRouteCreated,
   stakingRoutes,
   session,
 }: {
-  routes?: BuyRoute[];
   onRouteCreated: (route: BuyRoute) => void;
   stakingRoutes?: StakingRoute[];
   session?: Session;
@@ -66,17 +64,7 @@ const BuyRouteEdit = ({
     setIsSaving(true);
     setError(undefined);
 
-    // re-activate the route, if it already existed
-    const existingRoute = routes?.find(
-      (r) =>
-        !r.active &&
-        (route.type !== BuyType.WALLET || r.asset?.id === route.asset?.id) &&
-        (route.type !== BuyType.STAKING || r.staking?.id === route.staking?.id) &&
-        r.iban.split(" ").join("") === route.iban.split(" ").join("")
-    );
-    if (existingRoute) existingRoute.active = true;
-
-    (existingRoute ? putBuyRoute(existingRoute) : postBuyRoute(route))
+    postBuyRoute(route)
       .then(onRouteCreated)
       .catch((error: ApiError) => setError(error.statusCode == 409 ? "model.route.conflict" : ""))
       .finally(() => setIsSaving(false));

@@ -199,8 +199,8 @@ const RouteList = ({
 
     let promise: Promise<RouteHistoryAlias[]>;
 
-    if ("blockchain" in route) promise = getCryptoRouteHistory(route);
-    else if ("fiat" in route) promise = getSellRouteHistory(route);
+    if ("fiat" in route) promise = getSellRouteHistory(route);
+    else if ("blockchain" in route) promise = getCryptoRouteHistory(route);
     else promise = getBuyRouteHistory(route);
 
     promise.then(setRouteHistory).catch(() => {
@@ -257,6 +257,7 @@ const RouteList = ({
   const sellRouteData = (route: SellRoute) => [
     { condition: true, label: "model.route.fiat", value: route.fiat?.name },
     { condition: true, label: "model.route.iban", value: route.iban },
+    { condition: true, label: "model.route.blockchain", value: route.blockchain },
     {
       condition: true,
       label: "model.route.deposit_address",
@@ -362,23 +363,24 @@ const RouteList = ({
   ];
 
   const routeData = (route: RouteAlias) => {
-    if ("blockchain" in route) return cryptoRouteData(route);
-    else if ("fiat" in route) return sellRouteData(route);
+    if ("fiat" in route) return sellRouteData(route);
+    else if ("blockchain" in route) return cryptoRouteData(route);
     else if ("rewardType" in route) return stakingRouteData(route);
     else return buyRouteData(route);
   };
 
   const deleteRoute = (route: RouteAlias): Promise<boolean | void> => {
-    if ("blockchain" in route) return deleteCryptoRoute(cryptoRoutes?.find((r) => r.id === route.id) as CryptoRoute);
-    else if ("fiat" in route) return deleteSellRoute(sellRoutes?.find((r) => r.id === route.id) as SellRoute);
+    if ("fiat" in route) return deleteSellRoute(sellRoutes?.find((r) => r.id === route.id) as SellRoute);
+    else if ("blockchain" in route)
+      return deleteCryptoRoute(cryptoRoutes?.find((r) => r.id === route.id) as CryptoRoute);
     else if ("rewardType" in route)
       return deleteStakingRoute(stakingRoutes?.find((r) => r.id === route.id) as StakingRoute);
     else return deleteBuyRoute(buyRoutes?.find((r) => r.id === route.id) as BuyRoute);
   };
 
   const isRouteLoading = (route: RouteAlias): boolean => {
-    if ("blockchain" in route) return isCryptoLoading[route.id];
-    else if ("fiat" in route) return isSellLoading[route.id];
+    if ("fiat" in route) return isSellLoading[route.id];
+    else if ("blockchain" in route) return isCryptoLoading[route.id];
     else if ("rewardType" in route) return isStakingLoading[route.id];
     else return isBuyLoading[route.id];
   };
@@ -499,7 +501,7 @@ const RouteList = ({
         title={t("model.route.new_sell")}
         style={{ width: 400 }}
       >
-        <SellRouteEdit routes={sellRoutes} onRouteCreated={onSellRouteCreated} session={session} />
+        <SellRouteEdit onRouteCreated={onSellRouteCreated} session={session} />
       </DeFiModal>
       <DeFiModal
         isVisible={isBuyRouteEdit}
@@ -507,12 +509,7 @@ const RouteList = ({
         title={t("model.route.new_buy")}
         style={{ width: 400 }}
       >
-        <BuyRouteEdit
-          routes={buyRoutes}
-          onRouteCreated={onBuyRouteCreated}
-          session={session}
-          stakingRoutes={activeStakingRoutes}
-        />
+        <BuyRouteEdit onRouteCreated={onBuyRouteCreated} session={session} stakingRoutes={activeStakingRoutes} />
       </DeFiModal>
       <DeFiModal
         isVisible={isCryptoRouteEdit}
@@ -521,7 +518,7 @@ const RouteList = ({
         style={{ width: 400 }}
         isBeta={true}
       >
-        <CryptoRouteEdit routes={cryptoRoutes} onRouteCreated={onCryptoRouteCreated} />
+        <CryptoRouteEdit onRouteCreated={onCryptoRouteCreated} />
       </DeFiModal>
 
       <DeFiModal
@@ -673,6 +670,9 @@ const RouteList = ({
                 <CompactHeader>
                   <CompactTitle style={{ flex: 1 }}>{t("model.route.fiat")}</CompactTitle>
                   {device.SM && <CompactTitle style={{ flex: 2 }}>{t("model.route.iban")}</CompactTitle>}
+                  {device.SM && (session?.blockchains?.length ?? 0) > 1 && (
+                    <CompactTitle style={{ flex: 1 }}>{t("model.route.blockchain")}</CompactTitle>
+                  )}
                   <CompactTitle style={{ flex: 2 }}>{t("model.route.deposit_address")}</CompactTitle>
                   <CompactTitle style={{ flex: undefined }}>
                     <Placeholders device={device} />
@@ -684,6 +684,9 @@ const RouteList = ({
                     <CompactRow>
                       <CompactCell style={{ flex: 1 }}>{route.fiat?.name}</CompactCell>
                       {device.SM && <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>}
+                      {device.SM && (session?.blockchains?.length ?? 0) > 1 && (
+                        <CompactCell style={{ flex: 1 }}>{route.blockchain}</CompactCell>
+                      )}
                       <CompactCell style={{ flex: 2 }}>{route.deposit?.address}</CompactCell>
                       <CompactCell style={{ flex: undefined }}>
                         {device.SM ? (

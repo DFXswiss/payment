@@ -48,13 +48,18 @@ export enum CfpVote {
   NEUTRAL = "Neutral",
 }
 
+export enum TradingPeriod {
+  DAY = "Day",
+  YEAR = "Year",
+}
+
 export interface KycInfo {
   kycStatus: KycStatus;
   kycState: KycState;
   kycDataComplete: boolean;
   kycHash: string;
   accountType: AccountType;
-  depositLimit: number;
+  tradingLimit: { limit: number; period: TradingPeriod };
   sessionUrl?: string;
   setupUrl?: string;
   blankedPhone?: string;
@@ -91,7 +96,7 @@ export interface UserDto {
   kycStatus: KycStatus;
   kycState: KycState;
   kycDataComplete: boolean;
-  depositLimit: number;
+  tradingLimit: { limit: number; period: TradingPeriod };
 
   apiKeyCT: string;
   apiFilterCT: HistoryType[];
@@ -110,7 +115,7 @@ export interface User {
   kycStatus: KycStatus;
   kycState: KycState;
   kycDataComplete: boolean;
-  depositLimit: number;
+  tradingLimit: { limit: number; period: TradingPeriod };
 
   apiKeyCT: string;
   apiFilterCT: HistoryType[];
@@ -171,7 +176,7 @@ export const fromUserDto = (user: UserDto): User => ({
   kycStatus: user.kycStatus,
   kycState: user.kycState,
   kycHash: user.kycHash,
-  depositLimit: user.depositLimit,
+  tradingLimit: user.tradingLimit,
   kycDataComplete: user.kycDataComplete,
 
   apiKeyCT: user.apiKeyCT,
@@ -191,7 +196,7 @@ export const toUserDto = (user: User): UserDto => ({
   kycStatus: user.kycStatus,
   kycState: user.kycState,
   kycHash: user.kycHash,
-  depositLimit: user.depositLimit,
+  tradingLimit: user.tradingLimit,
   kycDataComplete: user.kycDataComplete,
 
   apiKeyCT: user.apiKeyCT,
@@ -236,9 +241,7 @@ export const getKycStatusString = (user: User | KycInfo): string => {
 };
 
 export const getTradeLimit = (user: User | KycInfo): string => {
-  if (kycCompleted(user.kycStatus)) {
-    return `${formatAmount(user.depositLimit)} € ${i18n.t("model.user.per_year")}`;
-  } else {
-    return `${formatAmount(user.kycStatus === KycStatus.REJECTED ? 0 : 900)} € ${i18n.t("model.user.per_day")}`;
-  }
+  return `${formatAmount(user.tradingLimit.limit)} € ${i18n.t(
+    "model.user.per_" + user.tradingLimit.period.toLowerCase()
+  )}`;
 };

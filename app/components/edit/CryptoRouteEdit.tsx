@@ -18,13 +18,7 @@ import Form from "../form/Form";
 import ButtonContainer from "../util/ButtonContainer";
 import Loading from "../util/Loading";
 
-const CryptoRouteEdit = ({
-  routes,
-  onRouteCreated,
-}: {
-  routes?: CryptoRoute[];
-  onRouteCreated: (route: CryptoRoute) => void;
-}) => {
+const CryptoRouteEdit = ({ onRouteCreated }: { onRouteCreated: (route: CryptoRoute) => void }) => {
   const { t } = useTranslation();
   const {
     control,
@@ -48,15 +42,9 @@ const CryptoRouteEdit = ({
     setIsSaving(true);
     setError(undefined);
 
-    // re-activate the route, if it already existed
-    const existingRoute = routes?.find((r) => !r.active);
-    if (existingRoute) {
-      existingRoute.active = true;
-    }
-
     route.type = BuyType.WALLET;
 
-    (existingRoute ? putCryptoRoute(existingRoute) : postCryptoRoute(route))
+    postCryptoRoute(route)
       .then(onRouteCreated)
       .catch((error: ApiError) => setError(error.statusCode === 409 ? "model.route.conflict" : ""))
       .finally(() => setIsSaving(false));

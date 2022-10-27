@@ -17,19 +17,22 @@ import { createRules } from "../../utils/Utils";
 import { ApiError } from "../../models/ApiDto";
 import { Country } from "../../models/Country";
 import Loading from "../util/Loading";
+import { Blockchain } from "../../models/Blockchain";
+import { Session } from "../../services/AuthService";
 
 const SellRouteEdit = ({
-  routes,
   onRouteCreated,
+  session,
 }: {
-  routes?: SellRoute[];
   onRouteCreated: (route: SellRoute) => void;
+  session?: Session;
 }) => {
   const { t } = useTranslation();
   const {
     control,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm<SellRoute>();
 
   const [isLoading, setIsLoading] = useState(true);
@@ -39,6 +42,9 @@ const SellRouteEdit = ({
   const [countries, setCountries] = useState<Country[]>([]);
 
   useEffect(() => {
+    const blockchainPreselection = getBlockchainPreselection();
+    if (blockchainPreselection) setValue("blockchain", blockchainPreselection);
+
     Promise.all([getFiats(), getCountries()])
       .then(([f, c]) => {
         setFiats(f);
@@ -52,19 +58,33 @@ const SellRouteEdit = ({
     setIsSaving(true);
     setError(undefined);
 
-    // re-activate the route, if it already existed
-    const existingRoute = routes?.find((r) => !r.active && r.fiat.id === route.fiat.id &&  r.iban.split(' ').join('') === route.iban.split(' ').join(''));
-    if (existingRoute) existingRoute.active = true;
+    const blockchain = getBlockchainPreselection();
+    if (!route.blockchain && blockchain) {
+      route.blockchain = blockchain;
+    }
 
-    (existingRoute ? putSellRoute(existingRoute) : postSellRoute(route))
+    postSellRoute(route)
       .then(onRouteCreated)
       .catch((error: ApiError) => setError(error.statusCode == 409 ? "model.route.conflict" : ""))
       .finally(() => setIsSaving(false));
   };
 
+  const isBlockchainsEnabled = (): boolean => {
+    return getBlockchains().length > 1;
+  };
+
+  const getBlockchainPreselection = (): Blockchain | undefined => {
+    return !isBlockchainsEnabled() && getBlockchains().length > 0 ? getBlockchains()[0] : undefined;
+  };
+
+  const getBlockchains = (): Blockchain[] => {
+    return session?.blockchains ?? [];
+  };
+
   const rules: any = createRules({
     fiat: Validations.Required,
     iban: [Validations.Required, Validations.Iban(countries)],
+    blockchain: isBlockchainsEnabled() && Validations.Required,
   });
 
   return isLoading ? (
@@ -77,6 +97,15 @@ const SellRouteEdit = ({
         items={fiats.filter((f) => f.enable)}
         idFunc={(i) => i.id}
         labelFunc={(i) => i.name}
+      />
+      <SpacerV />
+
+      <DeFiPicker
+        name="blockchain"
+        label={t("model.route.blockchain")}
+        items={getBlockchains()}
+        labelFunc={(i) => i}
+        disabled={!isBlockchainsEnabled()}
       />
       <SpacerV />
 

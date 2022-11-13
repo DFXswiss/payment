@@ -173,19 +173,6 @@
     "admin": {
       "title": "Administrador"
     },
-    "kyc": {
-      "bot": {
-        "sms_header": "Nuestro socio de verificación (KYC Spider) le ha enviado un código SMS",
-        "sms_code": "Por favor, introdúzcalo aquí:",
-        "sms_placeholder": "Su código SMS",
-        "sms_help": "Si no ha recibido el código SMS, póngase en contacto con ",
-        "error": {
-          "missing_session_id": "Error: Por favor, inténtelo de nuevo más tarde",
-          "validation": "Error: Por favor, compruebe su respuesta.",
-          "wrong_sms": "Error: Código SMS erróneo."
-        }
-      }
-    },
     "model": {
       "user": {
         "edit": "Edita la información del usuario",
@@ -238,6 +225,7 @@
         "change": "Cambiar la dirección"
       },
       "kyc": {
+        "title": "DFX KYC",
         "request": "Su cuenta debe ser verificada primero con el chatbot y la identificación en línea.\n¿Desea comenzar con el chatbot?",
         "request_business": "Por favor, cargue el extracto de su organización del registro mercantil.\nDespués, su cuenta debe ser verificada con el chatbot y la identificación en línea.",
         "status": "Estado KYC (identificación personal)",
@@ -276,7 +264,18 @@
         "inheritance_future": "Herencia futura",
         "other_future": "Otros",
         "fund_origin_text": "Origen de los fondos (texto libre)",
-        "document_proof": "Pruebas documentales"
+        "document_proof": "Pruebas documentales",
+        "bot": {
+          "sms_header": "Nuestro socio de verificación (KYC Spider) le ha enviado un código SMS",
+          "sms_code": "Por favor, introdúzcalo aquí:",
+          "sms_placeholder": "Su código SMS",
+          "sms_help": "Si no ha recibido el código SMS, póngase en contacto con ",
+          "error": {
+            "missing_session_id": "Error: Por favor, inténtelo de nuevo más tarde",
+            "validation": "Error: Por favor, compruebe su respuesta.",
+            "wrong_sms": "Error: Código SMS erróneo."
+          }
+        }
       },
       "route": {
         "routes": "Rutas de pago",

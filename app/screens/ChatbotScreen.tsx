@@ -1,29 +1,46 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { Keyboard, Linking, ScrollView, StyleSheet, TouchableOpacity, useWindowDimensions, View } from "react-native";
-import { IconButton, Text, TextInput } from 'react-native-paper';
-import AnswerDatePicker from '../components/chatbot/AnswerDatePicker';
-import AnswerList from '../components/chatbot/AnswerList';
-import AnswerTextbox from '../components/chatbot/AnswerTextbox';
-import Loading from '../components/util/Loading';
-import Colors from '../config/Colors';
-import Routes from '../config/Routes';
-import { DeFiButton } from '../elements/Buttons';
-import { SpacerV } from '../elements/Spacers';
-import { H2, H3 } from '../elements/Texts';
-import withSettings from '../hocs/withSettings';
-import { ChatbotAnswer, ChatbotAPIAnswer, ChatbotElement, ChatbotPage, ChatbotStatus } from '../models/ChatbotData';
-import { chatbotCreateAnswer, chatbotFeedQuestion, chatbotFillAnswerWithData, chatbotIsEdit, chatbotLocalize, chatbotRestorePages, chatbotShouldSendAnswer, chatbotStart } from '../services/chatbot/ChatbotUtils';
-import { getAuthenticationInfo, getStatus, getUpdate, nextStep, postSMSCode, requestSkip, requestSMSCode } from '../services/chatbot/ChatbotService';
-import NotificationService from '../services/NotificationService';
-import { AppSettings } from '../services/SettingsService';
-import AppStyles from '../styles/AppStyles';
+import { IconButton, Text, TextInput } from "react-native-paper";
+import AnswerDatePicker from "../components/chatbot/AnswerDatePicker";
+import AnswerList from "../components/chatbot/AnswerList";
+import AnswerTextbox from "../components/chatbot/AnswerTextbox";
+import Loading from "../components/util/Loading";
+import Colors from "../config/Colors";
+import Routes from "../config/Routes";
+import { DeFiButton } from "../elements/Buttons";
+import { SpacerV } from "../elements/Spacers";
+import { H2, H3 } from "../elements/Texts";
+import withSettings from "../hocs/withSettings";
+import { ChatbotAnswer, ChatbotAPIAnswer, ChatbotElement, ChatbotPage, ChatbotStatus } from "../models/ChatbotData";
+import {
+  chatbotCreateAnswer,
+  chatbotFeedQuestion,
+  chatbotFillAnswerWithData,
+  chatbotIsEdit,
+  chatbotLocalize,
+  chatbotRestorePages,
+  chatbotShouldSendAnswer,
+  chatbotStart,
+} from "../services/chatbot/ChatbotUtils";
+import {
+  getAuthenticationInfo,
+  getStatus,
+  getUpdate,
+  nextStep,
+  postSMSCode,
+  requestSkip,
+  requestSMSCode,
+} from "../services/chatbot/ChatbotService";
+import NotificationService from "../services/NotificationService";
+import { AppSettings } from "../services/SettingsService";
+import AppStyles from "../styles/AppStyles";
 
 const ChatbotScreen = ({
   settings,
   sessionUrl,
-  onFinish
+  onFinish,
 }: {
   settings?: AppSettings;
   sessionUrl: string;
@@ -44,228 +61,236 @@ const ChatbotScreen = ({
   const [progress, setProgress] = useState<number>(0);
   const [isFinished, setFinished] = useState<boolean>(false);
 
-  const supportEmail = "support@dfx.swiss"
-  const {height} = useWindowDimensions()
-  const scrollViewRef = useRef<ScrollView>(null)
+  const supportEmail = "support@dfx.swiss";
+  const { height } = useWindowDimensions();
+  const scrollViewRef = useRef<ScrollView>(null);
 
   useEffect(() => {
     if (sessionId === undefined) {
-      const id = extractSessionId(sessionUrl)
-      setSessionId(id)
+      const id = extractSessionId(sessionUrl);
+      setSessionId(id);
       getAuthenticationInfo(id)
         .then(() => {
-          requestSMS(id)
+          requestSMS(id);
         })
-        .catch(onLoadFailed)
+        .catch(onLoadFailed);
     }
-  }, [settings])
+  }, [settings]);
 
   const extractSessionId = (sessionUrl: string): string => {
-    const sessionId = sessionUrl.replace("https://services.eurospider.com/chatbot-ui/program/kyc-onboarding/", "")
-    return sessionId.split("?")[0]
-  }
+    const sessionId = sessionUrl.replace("https://services.eurospider.com/chatbot-ui/program/kyc-onboarding/", "");
+    return sessionId.split("?")[0];
+  };
 
   const onLoadFailed = () => {
     NotificationService.error(t("feedback.load_failed"));
     nav.navigate(Routes.Home);
-  }
+  };
 
   const onChatbotRequestFailed = () => {
     NotificationService.error(t("feedback.load_failed"));
-    setLoading(false)
-    setRequestingNextStep(false)
-    if (pages.length === 0) onBack()
-  }
+    setLoading(false);
+    setRequestingNextStep(false);
+    if (pages.length === 0) onBack();
+  };
 
   const onBack = () => {
     // cancel
     if (pageIndex === 0) {
-      nav.navigate(Routes.Home)
+      nav.navigate(Routes.Home);
     }
     // back
     else {
-      const newPageIndex = pageIndex - 1
-      setPageIndex(newPageIndex)
-      updateProgress(pages, newPageIndex, true)
-      setAnswer(pages[newPageIndex].answer)
-      resetScrollView()
+      const newPageIndex = pageIndex - 1;
+      setPageIndex(newPageIndex);
+      updateProgress(pages, newPageIndex, true);
+      setAnswer(pages[newPageIndex].answer);
+      resetScrollView();
     }
-  }
+  };
 
   const onNext = (pages: ChatbotPage[], isFinished: boolean, inputAnswer?: ChatbotAnswer) => {
     if (inputAnswer === undefined) {
-      inputAnswer = answer
+      inputAnswer = answer;
     }
     if (isFinished) {
-      setFinished(true)
-      onFinish()
-      setPageIndex(pageIndex + 1)
-      setProgress(1)
+      setFinished(true);
+      onFinish();
+      setPageIndex(pageIndex + 1);
+      setProgress(1);
     } else {
       // check if we need to request next step
       if (inputAnswer !== undefined && chatbotShouldSendAnswer(inputAnswer)) {
         if (chatbotIsEdit(inputAnswer)) {
-          requestEditAnswer(inputAnswer.value, inputAnswer.timestamp, chatbotId)
+          requestEditAnswer(inputAnswer.value, inputAnswer.timestamp, chatbotId);
         } else {
-          requestNextStep(chatbotCreateAnswer(inputAnswer.value, inputAnswer), answer, chatbotId)
+          requestNextStep(chatbotCreateAnswer(inputAnswer.value, inputAnswer), answer, chatbotId);
         }
       } else if (pageIndex + 1 < pages.length) {
-        const newPageIndex = pageIndex + 1
-        setPageIndex(newPageIndex)
-        setAnswer(pages[newPageIndex].answer)
-        updateProgress(pages, newPageIndex)
-        resetScrollView()
+        const newPageIndex = pageIndex + 1;
+        setPageIndex(newPageIndex);
+        setAnswer(pages[newPageIndex].answer);
+        updateProgress(pages, newPageIndex);
+        resetScrollView();
       }
     }
-  }
+  };
 
   const resetScrollView = () => {
-    scrollViewRef.current?.scrollTo({x: 0, y: 0, animated: false})
-  }
+    scrollViewRef.current?.scrollTo({ x: 0, y: 0, animated: false });
+  };
 
   const requestSMS = (id?: string) => {
     if (id !== undefined) {
-      requestSMSCode(id)
+      requestSMSCode(id);
     } else {
-      NotificationService.error(t("kyc.bot.error.missing_session_id"))
+      NotificationService.error(t("model.kyc.bot.error.missing_session_id"));
     }
-  }
+  };
 
   const updateSMSCode = (code: string) => {
-    setSMSCode(code)
+    setSMSCode(code);
     if (code.length === 4) {
-      submitSMSCode(sessionId, code)
-      Keyboard.dismiss()
+      submitSMSCode(sessionId, code);
+      Keyboard.dismiss();
     }
-  }
+  };
 
   const submitSMSCode = (id?: string, code?: string) => {
     if (id !== undefined && code !== undefined) {
-      setRequestingNextStep(true)
+      setRequestingNextStep(true);
       postSMSCode(id, code)
         .then((id) => {
           if (id === "false") {
-            NotificationService.error(t("kyc.bot.error.wrong_sms"))
+            NotificationService.error(t("model.kyc.bot.error.wrong_sms"));
             // wait a short amount of time to avoid screen flickering due to fast network request
-            setTimeout(() => setRequestingNextStep(false), 1000)
+            setTimeout(() => setRequestingNextStep(false), 1000);
           } else {
-            setChatbotId(id)
-            setSMSCompleted(true)
-            requestStart(sessionId, id)
+            setChatbotId(id);
+            setSMSCompleted(true);
+            requestStart(sessionId, id);
           }
         })
-        .catch(onChatbotRequestFailed)
+        .catch(onChatbotRequestFailed);
     } else {
-      NotificationService.error(t("kyc.bot.error.missing_session_id"))
+      NotificationService.error(t("model.kyc.bot.error.missing_session_id"));
     }
-  }
+  };
 
   const requestStart = (id?: string, chatbotId?: string) => {
-    setLoading(true)
+    setLoading(true);
     getStatus(id, chatbotId)
       .then((status) => {
         switch (status) {
           case ChatbotStatus.INITIAL:
             // fresh start we need to trigger first question
-            requestNextStep(chatbotStart(), undefined, chatbotId)
-            break
+            requestNextStep(chatbotStart(), undefined, chatbotId);
+            break;
           case ChatbotStatus.STARTED:
             // already started, need to call update and parse existing pages
-            restoreSession(id, chatbotId)
-            break
+            restoreSession(id, chatbotId);
+            break;
           default:
-            requestNextStep(chatbotStart(), undefined, chatbotId)
-            break
+            requestNextStep(chatbotStart(), undefined, chatbotId);
+            break;
         }
       })
-      .catch(onChatbotRequestFailed)
-  }
+      .catch(onChatbotRequestFailed);
+  };
 
-  const restoreSession = (id?: string, chatbotId?: string, inputPages?: ChatbotPage[], shouldDeactivateLoading: boolean = true): Promise<ChatbotPage[]> => {
+  const restoreSession = (
+    id?: string,
+    chatbotId?: string,
+    inputPages?: ChatbotPage[],
+    shouldDeactivateLoading: boolean = true
+  ): Promise<ChatbotPage[]> => {
     if (inputPages === undefined) {
-      inputPages = pages
+      inputPages = pages;
     }
-    return getUpdate(id, chatbotId)
-      .then((question) => {
-        const restoredPages = chatbotRestorePages(question, inputPages, settings?.language)
+    return getUpdate(id, chatbotId).then((question) => {
+      const restoredPages = chatbotRestorePages(question, inputPages, settings?.language);
 
-        setPages(restoredPages)
-        setAnswer(restoredPages[restoredPages.length - 1].answer)
-        // jump to last index
-        setPageIndex(restoredPages.length - 1)
-        if (shouldDeactivateLoading) {
-          setLoading(false)
-          setRequestingNextStep(false)
-        }
-        return restoredPages
-      })
-  }
+      setPages(restoredPages);
+      setAnswer(restoredPages[restoredPages.length - 1].answer);
+      // jump to last index
+      setPageIndex(restoredPages.length - 1);
+      if (shouldDeactivateLoading) {
+        setLoading(false);
+        setRequestingNextStep(false);
+      }
+      return restoredPages;
+    });
+  };
 
   const requestEditAnswer = (newValue: string, timestamp: number, chatbotId?: string) => {
-    setRequestingNextStep(true)
-    setLoading(true)
+    setRequestingNextStep(true);
+    setLoading(true);
     requestSkip(timestamp, sessionId, chatbotId)
       .then(() => {
         // request update to restore all pages from KYC spider
-        return restoreSession(sessionId, chatbotId, [], false)
-          
+        return restoreSession(sessionId, chatbotId, [], false);
       })
       .then((newPages) => {
         // given answer is not attached to any page anymore, because of recreation of all pages
         // therefore get recreated pages' last page answer object and fill that with correct values via requestNextStep
-        const recreatedAnswer = newPages[newPages.length-1].answer
+        const recreatedAnswer = newPages[newPages.length - 1].answer;
         if (recreatedAnswer !== undefined) {
-          requestNextStep(chatbotCreateAnswer(newValue, recreatedAnswer), recreatedAnswer, chatbotId, newPages)
+          requestNextStep(chatbotCreateAnswer(newValue, recreatedAnswer), recreatedAnswer, chatbotId, newPages);
         }
       })
-      .catch(onChatbotRequestFailed)
-  }
+      .catch(onChatbotRequestFailed);
+  };
 
-  const requestNextStep = (apiAnswer: ChatbotAPIAnswer, answer?: ChatbotAnswer, chatbotId?: string, inputPages?: ChatbotPage[]) => {
-    setRequestingNextStep(true)
+  const requestNextStep = (
+    apiAnswer: ChatbotAPIAnswer,
+    answer?: ChatbotAnswer,
+    chatbotId?: string,
+    inputPages?: ChatbotPage[]
+  ) => {
+    setRequestingNextStep(true);
     if (inputPages === undefined) {
-      inputPages = pages
+      inputPages = pages;
     }
     nextStep(sessionId, chatbotId, apiAnswer)
       .then((question) => {
-        setRequestingNextStep(false)
+        setRequestingNextStep(false);
         if (answer !== undefined) {
-          chatbotFillAnswerWithData(question, answer)
+          chatbotFillAnswerWithData(question, answer);
         }
-        const [newPages, isFinished, help, autoAnswer] = chatbotFeedQuestion(question, inputPages, settings?.language)
+        const [newPages, isFinished, help, autoAnswer] = chatbotFeedQuestion(question, inputPages, settings?.language);
         if (autoAnswer !== undefined) {
-          requestNextStep(chatbotCreateAnswer(autoAnswer.value, autoAnswer), autoAnswer, chatbotId, newPages)
+          requestNextStep(chatbotCreateAnswer(autoAnswer.value, autoAnswer), autoAnswer, chatbotId, newPages);
         } else if (help !== undefined) {
-          NotificationService.error(help)
+          NotificationService.error(help);
         } else {
           if (newPages.length > 0) {
-            setPages(newPages)
-            onNext(newPages, isFinished, answer)
+            setPages(newPages);
+            onNext(newPages, isFinished, answer);
           } else {
-            NotificationService.error(t("kyc.bot.error.validation"))
+            NotificationService.error(t("model.kyc.bot.error.validation"));
           }
         }
-        setLoading(false)
+        setLoading(false);
       })
-      .catch(onChatbotRequestFailed)
-  }
+      .catch(onChatbotRequestFailed);
+  };
 
   const updateProgress = (pages: ChatbotPage[], pageIndex: number, isBack: boolean = false) => {
     if (pageIndex <= 0) {
-      setProgress(0)
+      setProgress(0);
     }
     // Krysh: there are always around 20 questions. might be more in some cases.
     // current page / max pages
-    const newProgress = Math.max(pageIndex, 1) / Math.max(pages.length, 20)
+    const newProgress = Math.max(pageIndex, 1) / Math.max(pages.length, 20);
     // on back allow lower progress to previous one
     if (isBack) {
-      setProgress(newProgress)
-    } 
+      setProgress(newProgress);
+    }
     // otherwise only higher progress are allowed, to avoid any confusion for users
     else if (newProgress > progress) {
-      setProgress(newProgress)
+      setProgress(newProgress);
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -276,26 +301,39 @@ const ChatbotScreen = ({
         <View style={styles.container}>
           <View>
             <SpacerV height={20} />
-            <H2 text={t("kyc.bot.sms_header")} />
+            <H2 text={t("model.kyc.bot.sms_header")} />
             <SpacerV />
             <View style={[AppStyles.containerHorizontal, styles.header]}>
-              <H3 text={t("kyc.bot.sms_code")} />
-              <IconButton color={Colors.Primary} icon="reload" onPress={() => { requestSMS(sessionId) }} />
+              <H3 text={t("model.kyc.bot.sms_code")} />
+              <IconButton
+                color={Colors.Primary}
+                icon="reload"
+                onPress={() => {
+                  requestSMS(sessionId);
+                }}
+              />
             </View>
             <SpacerV />
-            <TextInput 
-              value={smsCode} 
-              onChangeText={updateSMSCode} 
-              onSubmitEditing={() => submitSMSCode(sessionId, smsCode)} 
-              placeholder={t("kyc.bot.sms_placeholder")} 
-              keyboardType="numeric" />
+            <TextInput
+              value={smsCode}
+              onChangeText={updateSMSCode}
+              onSubmitEditing={() => submitSMSCode(sessionId, smsCode)}
+              placeholder={t("model.kyc.bot.sms_placeholder")}
+              keyboardType="numeric"
+            />
             <SpacerV />
-            <Text style={{ color: Colors.Grey }}>{t("kyc.bot.sms_help")}</Text>
-            <TouchableOpacity onPress={async () => await Linking.openURL('mailto:' + supportEmail)}>
+            <Text style={{ color: Colors.Grey }}>{t("model.kyc.bot.sms_help")}</Text>
+            <TouchableOpacity onPress={async () => await Linking.openURL("mailto:" + supportEmail)}>
               <Text style={AppStyles.link}>{supportEmail}</Text>
             </TouchableOpacity>
             <SpacerV height={20} />
-            <DeFiButton mode="contained" loading={isRequestNextStep} onPress={() => { submitSMSCode(sessionId, smsCode) }}>
+            <DeFiButton
+              mode="contained"
+              loading={isRequestNextStep}
+              onPress={() => {
+                submitSMSCode(sessionId, smsCode);
+              }}
+            >
               {t("action.next")}
             </DeFiButton>
           </View>
@@ -306,21 +344,27 @@ const ChatbotScreen = ({
         <View style={styles.container}>
           {/* BACK & PROGRESS */}
           <View style={styles.progressHeader}>
-            <IconButton color={Colors.Primary} icon="arrow-left" onPress={() => { onBack() }} />
+            <IconButton
+              color={Colors.Primary}
+              icon="arrow-left"
+              onPress={() => {
+                onBack();
+              }}
+            />
             {/* <SpacerH />
             <View style={styles.progressBar}>
               <ProgressBar color={Colors.Primary} progress={progress} />
             </View> */}
           </View>
           <SpacerV />
-          <ScrollView ref={scrollViewRef} contentContainerStyle={{flex: 1}}>
+          <ScrollView ref={scrollViewRef} contentContainerStyle={{ flex: 1 }}>
             {/* HEADER */}
             {pages[pageIndex].header !== undefined && (
               <>
                 {height > 667 ? (
-                  <H2 text={ chatbotLocalize(pages[pageIndex].header, settings?.language, pages[pageIndex].answer) } />
+                  <H2 text={chatbotLocalize(pages[pageIndex].header, settings?.language, pages[pageIndex].answer)} />
                 ) : (
-                  <H3 text={ chatbotLocalize(pages[pageIndex].header, settings?.language, pages[pageIndex].answer) } />
+                  <H3 text={chatbotLocalize(pages[pageIndex].header, settings?.language, pages[pageIndex].answer)} />
                 )}
               </>
             )}
@@ -328,9 +372,9 @@ const ChatbotScreen = ({
             {/* BODY */}
             {pages[pageIndex].body !== undefined && (
               <View>
-                <Text>{ chatbotLocalize(pages[pageIndex].body, settings?.language) }</Text>
+                <Text>{chatbotLocalize(pages[pageIndex].body, settings?.language)}</Text>
                 {pages[pageIndex].bodyHasSupportLink && (
-                  <TouchableOpacity onPress={async () => await Linking.openURL('mailto:' + supportEmail)}>
+                  <TouchableOpacity onPress={async () => await Linking.openURL("mailto:" + supportEmail)}>
                     <Text style={AppStyles.link}>{supportEmail}</Text>
                   </TouchableOpacity>
                 )}
@@ -339,15 +383,15 @@ const ChatbotScreen = ({
             )}
             {/* ANSWER PART */}
             {pages[pageIndex].answer !== undefined && (
-              <View style={{flex: 1}}>
+              <View style={{ flex: 1 }}>
                 {/* TEXT INPUT */}
                 {pages[pageIndex].answer?.element === ChatbotElement.TEXTBOX && (
                   <AnswerTextbox
                     answer={pages[pageIndex].answer}
-                    onSubmit={(answer, shouldTriggerNext) => { 
-                      setAnswer(answer) 
+                    onSubmit={(answer, shouldTriggerNext) => {
+                      setAnswer(answer);
                       if (shouldTriggerNext) {
-                        onNext(pages, false)
+                        onNext(pages, false);
                       }
                     }}
                   />
@@ -356,7 +400,9 @@ const ChatbotScreen = ({
                 {pages[pageIndex].answer?.element === ChatbotElement.LIST && (
                   <AnswerList
                     answer={pages[pageIndex].answer}
-                    onSubmit={answer => { setAnswer(answer) }}
+                    onSubmit={(answer) => {
+                      setAnswer(answer);
+                    }}
                     language={settings?.language}
                   />
                 )}
@@ -364,10 +410,10 @@ const ChatbotScreen = ({
                 {pages[pageIndex].answer?.element === ChatbotElement.DATE && (
                   <AnswerDatePicker
                     answer={pages[pageIndex].answer}
-                    onSubmit={(answer, shouldTriggerNext) => { 
-                      setAnswer(answer) 
+                    onSubmit={(answer, shouldTriggerNext) => {
+                      setAnswer(answer);
                       if (shouldTriggerNext) {
-                        onNext(pages, false)
+                        onNext(pages, false);
                       }
                     }}
                   />
@@ -379,7 +425,13 @@ const ChatbotScreen = ({
           {!isFinished && (
             <View>
               <SpacerV height={20} />
-              <DeFiButton mode="contained" loading={isRequestNextStep} onPress={() => { onNext(pages, false) }}>
+              <DeFiButton
+                mode="contained"
+                loading={isRequestNextStep}
+                onPress={() => {
+                  onNext(pages, false);
+                }}
+              >
                 {pageIndex === 0 ? t("action.start") : t("action.next")}
               </DeFiButton>
             </View>
@@ -392,18 +444,18 @@ const ChatbotScreen = ({
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'column',
-    justifyContent: 'space-between',
+    flexDirection: "column",
+    justifyContent: "space-between",
     flex: 1,
   },
   header: {
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
   },
   progressHeader: {
     flexGrow: 0,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   progressBar: {
     flex: 1,

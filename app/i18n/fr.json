@@ -189,19 +189,6 @@
     "admin": {
       "title": "Admin"
     },
-    "kyc": {
-      "bot": {
-        "sms_header": "Notre partenaire de vérification de compte (KYC Spider) vous a envoyé un code par SMS.",
-        "sms_code": "Veuillez entre le code ici :",
-        "sms_placeholder": "Votre code SMS",
-        "sms_help": "Si vous n'avez pas reçu le code SMS, veuillez nous contacter sur",
-        "error": {
-          "missing_session_id": "Erreur : Please try again later.",
-          "validation": "Erreur : Veuillez vérifier votre réponse.",
-          "wrong_sms": "Erreur : Code SMS erroné."
-        }
-      }
-    },
     "model": {
       "user": {
         "edit": "Modifier les données personnelles",
@@ -254,6 +241,7 @@
         "change": "Changement d'adresse"
       },
       "kyc": {
+        "title": "DFX KYC",
         "request": "Votre compte doit d'abord être vérifié avec le chatbot et l'identification en ligne.\nVoulez-vous commencer avec le chatbot?",
         "request_business": "Veuillez télécharger l'extrait du registre du commerce de votre organisation.\nEnsuite, votre compte devra être vérifié avec le chatbot et l'identification en ligne.",
         "status": "Statut KYC",
@@ -292,7 +280,18 @@
         "inheritance_future": "Héritage Future",
         "other_future": "Autre",
         "fund_origin_text": "Origine des fonds (texte libre)",
-        "document_proof": "Preuve de document"
+        "document_proof": "Preuve de document",
+        "bot": {
+          "sms_header": "Notre partenaire de vérification de compte (KYC Spider) vous a envoyé un code par SMS.",
+          "sms_code": "Veuillez entre le code ici :",
+          "sms_placeholder": "Votre code SMS",
+          "sms_help": "Si vous n'avez pas reçu le code SMS, veuillez nous contacter sur",
+          "error": {
+            "missing_session_id": "Erreur : Please try again later.",
+            "validation": "Erreur : Veuillez vérifier votre réponse.",
+            "wrong_sms": "Erreur : Code SMS erroné."
+          }
+        }
       },
       "route": {
         "routes": "Itinéraires de paiement",

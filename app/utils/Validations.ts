@@ -21,7 +21,7 @@ class ValidationsClass {
       iban = iban.split(" ").join("");
 
       // check country
-      const allowedCountries = countries.filter((c) => c.enable).map((c) => c.symbol.toLowerCase());
+      const allowedCountries = countries.map((c) => c.symbol.toLowerCase());
       if (iban.length >= 2 && !allowedCountries.find((c) => iban.toLowerCase().startsWith(c))) {
         return "validation.iban_country_invalid";
       }

@@ -36,7 +36,6 @@ import { attachType, CryptoRouteHistory, RouteHistoryType } from "../models/Rout
 import { SellRouteHistory } from "../models/RouteHistory";
 import { BuyRouteHistory } from "../models/RouteHistory";
 import { LinkAddressDto } from "../models/Link";
-import { Blockchain } from "../models/Blockchain";
 
 const BaseUrl = Environment.api.baseUrl;
 const AuthUrl = "auth";
@@ -126,6 +125,11 @@ export const postLimit = (request: LimitRequest, code?: string): Promise<LimitRe
 
 export const postFounderCertificate = (files: File[], code?: string): Promise<void> => {
   return postFiles(`${KycUrl}/${code}/incorporationCertificate`, files);
+};
+
+export const getKycCountries = (code?: string): Promise<Country[]> => {
+  const url = code ? `${KycUrl}/${code}/countries` : `${KycUrl}/countries`;
+  return fetchFrom<Country[]>(url).then((countries) => countries.sort((a, b) => (a.name > b.name ? 1 : -1)));
 };
 
 // --- VOTING --- //

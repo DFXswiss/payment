@@ -8,7 +8,7 @@ import { Alert } from "../../elements/Texts";
 import { ApiError } from "../../models/ApiDto";
 import { Asset, AssetCategory } from "../../models/Asset";
 import { BuyRoute, BuyType } from "../../models/BuyRoute";
-import { getAssets, getCountries, postBuyRoute, putBuyRoute } from "../../services/ApiService";
+import { getAssets, getKycCountries, postBuyRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import { createRules } from "../../utils/Utils";
 import Validations from "../../utils/Validations";
@@ -51,7 +51,7 @@ const BuyRouteEdit = ({
     const buyTypePreselection = getBuyTypePreselection();
     if (buyTypePreselection) setValue("type", buyTypePreselection);
 
-    Promise.all([getAssets(), getCountries()])
+    Promise.all([getAssets(), getKycCountries()])
       .then(([a, c]) => {
         updateAssets(a);
         setCountries(c);

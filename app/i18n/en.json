@@ -189,19 +189,6 @@
     "admin": {
       "title": "Admin"
     },
-    "kyc": {
-      "bot": {
-        "sms_header": "Our verification partner (KYC Spider) has sent you a SMS code.",
-        "sms_code": "Please enter it here:",
-        "sms_placeholder": "Your SMS code",
-        "sms_help": "If you have not received the SMS code, please contact ",
-        "error": {
-          "missing_session_id": "Error: Please try again later.",
-          "validation": "Error: Please check your answer.",
-          "wrong_sms": "Error: Wrong SMS code."
-        }
-      }
-    },
     "model": {
       "user": {
         "edit": "Edit user data",
@@ -254,6 +241,7 @@
         "change": "Change address"
       },
       "kyc": {
+        "title": "DFX KYC",
         "request": "Your account must first be verified with the chatbot and online identification.\nDo you want to start with the chatbot?",
         "request_business": "Please upload your organization's certificate of incorporation.\nAfter that, your account must be verified with the chatbot and online identification.",
         "status": "KYC status",
@@ -292,7 +280,18 @@
         "inheritance_future": "Future inheritance",
         "other_future": "Other",
         "fund_origin_text": "Origin of funds (free text)",
-        "document_proof": "Document proof"
+        "document_proof": "Document proof",
+        "bot": {
+          "sms_header": "Our verification partner (KYC Spider) has sent you a SMS code.",
+          "sms_code": "Please enter it here:",
+          "sms_placeholder": "Your SMS code",
+          "sms_help": "If you have not received the SMS code, please contact ",
+          "error": {
+            "missing_session_id": "Error: Please try again later.",
+            "validation": "Error: Please check your answer.",
+            "wrong_sms": "Error: Wrong SMS code."
+          }
+        }
       },
       "route": {
         "routes": "Payment Routes",

@@ -186,19 +186,6 @@
     "admin": {
       "title": "Admin"
     },
-    "kyc": {
-      "bot": {
-        "sms_header": "O nosso parceiro de verificação (KYC Spider) enviou-lhe um código SMS",
-        "sms_code": "Por favor introduza-o aqui:",
-        "sms_placeholder": "O seu código SMS",
-        "sms_help": "Se não tiver recebido o código SMS, por favor contacte",
-        "error": {
-          "missing_session_id": "Erro: Por favor, tente novamente mais tarde",
-          "validation": "Erro: Por favor, verifique a sua resposta",
-          "wrong_sms": "Erro: Código SMS errado."
-        }
-      }
-    },
     "model": {
       "user": {
         "edit": "Editar dados do utilizador",
@@ -251,6 +238,7 @@
         "change": "Alterar endereço"
       },
       "kyc": {
+        "title": "DFX KYC",
         "request": "A sua conta deve primeiro ser verificada com o chatbot e a identificação em linha.\nQuer começar com o chatbot?",
         "request_business": "Por favor, carregue o extracto do registo comercial da sua organização.\nDepois disso, a sua conta deve ser verificada com o chatbot e identificação online.",
         "status": "KYC Status",
@@ -289,7 +277,18 @@
         "inheritance_future": "Herança futura",
         "other_future": "Outros",
         "fund_origin_text": "Origem dos fundos (texto livre)",
-        "document_proof": "Prova documental"
+        "document_proof": "Prova documental",
+        "bot": {
+          "sms_header": "O nosso parceiro de verificação (KYC Spider) enviou-lhe um código SMS",
+          "sms_code": "Por favor introduza-o aqui:",
+          "sms_placeholder": "O seu código SMS",
+          "sms_help": "Se não tiver recebido o código SMS, por favor contacte",
+          "error": {
+            "missing_session_id": "Erro: Por favor, tente novamente mais tarde",
+            "validation": "Erro: Por favor, verifique a sua resposta",
+            "wrong_sms": "Erro: Código SMS errado."
+          }
+        }
       },
       "route": {
         "routes": "Rotas de pagamento",

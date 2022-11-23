@@ -189,19 +189,6 @@
     "admin": {
       "title": "Admin"
     },
-    "kyc": {
-      "bot": {
-        "sms_header": "Il nostro partner di verifica (KYC Spider) ti ha inviato un codice SMS",
-        "sms_code": "Si prega di inserirlo qui:",
-        "sms_placeholder": "Il vostro codice SMS",
-        "sms_help": "Se non avete ricevuto il codice SMS, contattate ",
-        "error": {
-          "missing_session_id": "Errore: Si prega di riprovare più tardi",
-          "validation": "Errore: Si prega di controllare la risposta",
-          "wrong_sms": "Errore: Codice SMS errato."
-        }
-      }
-    },
     "model": {
       "user": {
         "edit": "Modificare i dati dell'utente",
@@ -254,6 +241,7 @@
         "change": "Cambiamento di indirizzo"
       },
       "kyc": {
+        "title": "DFX KYC",
         "request": "Il tuo account deve prima essere verificato con il chatbot e con l'identificazione online.\nVuoi iniziare con il chatbot?",
         "request_business": "Si prega di caricare l'estratto del registro commerciale della vostra organizzazione.\nDopo di che, il tuo account deve essere verificato con il chatbot e l'identificazione online.",
         "status": "Stato del KYC",
@@ -292,7 +280,18 @@
         "inheritance_future": "Eredità futura",
         "other_future": "Altro",
         "fund_origin_text": "Origine dei fondi (testo libero)",
-        "document_proof": "Prova dei documenti"
+        "document_proof": "Prova dei documenti",
+        "bot": {
+          "sms_header": "Il nostro partner di verifica (KYC Spider) ti ha inviato un codice SMS",
+          "sms_code": "Si prega di inserirlo qui:",
+          "sms_placeholder": "Il vostro codice SMS",
+          "sms_help": "Se non avete ricevuto il codice SMS, contattate ",
+          "error": {
+            "missing_session_id": "Errore: Si prega di riprovare più tardi",
+            "validation": "Errore: Si prega di controllare la risposta",
+            "wrong_sms": "Errore: Codice SMS errato."
+          }
+        }
       },
       "route": {
         "routes": "Modalità di pagamento",

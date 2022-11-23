@@ -5,7 +5,7 @@ import { StyleSheet, View } from "react-native";
 import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { Country } from "../../models/Country";
 import { AccountType, KycInfo, UserDetail } from "../../models/User";
-import { getCountries, putKycData } from "../../services/ApiService";
+import { getKycCountries, putKycData } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
@@ -50,7 +50,7 @@ const KycDataEdit = ({ code, kycInfo, kycData, user, onChanged }: Props) => {
   const [countries, setCountries] = useState<Country[]>([]);
 
   useEffect(() => {
-    getCountries()
+    getKycCountries(code)
       .then(setCountries)
       .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));
@@ -124,7 +124,7 @@ const KycDataEdit = ({ code, kycInfo, kycData, user, onChanged }: Props) => {
       <DeFiPicker
         name="country"
         label={t("model.user.country")}
-        items={countries.filter((c) => c.enable)}
+        items={countries}
         idFunc={(i) => i.id}
         labelFunc={(i) => i.name}
       />
@@ -150,7 +150,7 @@ const KycDataEdit = ({ code, kycInfo, kycData, user, onChanged }: Props) => {
           <DeFiPicker
             name="organizationCountry"
             label={t("model.user.country")}
-            items={countries.filter((c) => c.enable)}
+            items={countries}
             idFunc={(i) => i.id}
             labelFunc={(i) => i.name}
           />

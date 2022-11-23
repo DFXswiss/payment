@@ -5,7 +5,7 @@ import { SpacerV } from "../../elements/Spacers";
 import { Alert } from "../../elements/Texts";
 import { Fiat } from "../../models/Fiat";
 import { SellRoute } from "../../models/SellRoute";
-import { getCountries, getFiats, postSellRoute, putSellRoute } from "../../services/ApiService";
+import { getFiats, getKycCountries, postSellRoute } from "../../services/ApiService";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
 import Input from "../form/Input";
@@ -45,7 +45,7 @@ const SellRouteEdit = ({
     const blockchainPreselection = getBlockchainPreselection();
     if (blockchainPreselection) setValue("blockchain", blockchainPreselection);
 
-    Promise.all([getFiats(), getCountries()])
+    Promise.all([getFiats(), getKycCountries()])
       .then(([f, c]) => {
         setFiats(f);
         setCountries(c);

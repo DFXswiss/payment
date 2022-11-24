@@ -338,7 +338,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
         </View>
       )}
 
-      {!settings?.isIframe && <SpacerV height={30} />}
+      {!settings?.headless && <SpacerV height={30} />}
 
       {isLoading && <Loading size="large" />}
 

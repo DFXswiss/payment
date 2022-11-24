@@ -26,7 +26,7 @@ class SessionServiceClass {
   public tokenLogin(token: string): Promise<void> {
     return this.updateSession(token)
       .then(() => SettingsService.Settings)
-      .then((s) => (s.isIframe ? this.updateUserLanguage() : this.updateLanguageSetting()))
+      .then((s) => (s.headless ? this.updateUserLanguage() : this.updateLanguageSetting()))
       .catch((e) => {
         AuthService.deleteSession();
         throw e;

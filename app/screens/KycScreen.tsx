@@ -23,7 +23,7 @@ import { pickDocuments, sleep } from "../utils/Utils";
 import KycInit from "../components/KycInit";
 import { SpacerV } from "../elements/Spacers";
 import { H2 } from "../elements/Texts";
-import { AppSettings } from "../services/SettingsService";
+import SettingsService, { AppSettings } from "../services/SettingsService";
 import withSettings from "../hocs/withSettings";
 import { DataTable, Dialog, Paragraph, Portal } from "react-native-paper";
 import { CompactRow, CompactCell } from "../elements/Tables";
@@ -59,10 +59,17 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   useEffect(() => {
     // store and reset params
     const params = route.params as any;
+    SettingsService.updateSettings({ headless: params?.headless });
     if (!params?.code) return onLoadFailed();
 
     setInputParams(params);
-    nav.navigate(Routes.Kyc, { code: undefined, autostart: undefined, phone: undefined, mail: undefined });
+    nav.navigate(Routes.Kyc, {
+      code: undefined,
+      autostart: undefined,
+      phone: undefined,
+      mail: undefined,
+      headless: undefined,
+    });
 
     // get KYC info
     getKyc(params?.code)
@@ -264,7 +271,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
             </Portal>
 
             <View>
-              {!settings?.isIframe && <SpacerV height={30} />}
+              {!settings?.headless && <SpacerV height={30} />}
 
               <H2 text={t("model.kyc.title")} />
               <SpacerV />

@@ -236,9 +236,6 @@
         "ref_volume": "Ref-Volumen",
         "ref_bonus": "Ref-Bonus",
         "ref_commission": "Ref-Provision",
-        "ref_commission_edit": "Ref-Provision bearbeiten",
-        "ref_commission_info": "Verdiene bis zu 0,5% Provision auf jeden Kauf einer von dir geworbenen Person. Teile einfach Deinen Empfehlungslink mit Deinen Freunden, Deiner Familie und in den sozialen Medien.\nDu hast ebenso die Möglichkeit deinen Provisionsanteil zu Gunsten der geworbenen Kunden herunterzusetzen. Bitte beachte, dass der Provisionsanteil nur nach unten, und nicht nach oben abgeändert werden kann.",
-        "ref_commission_hint": "Bist du sicher, dass du deine Provision auf {{fee}}% verkleinern möchtest? Dieser Schritt kann nicht mehr rückgängig gemacht werden.",
         "change": "Adresse wechseln"
       },
       "kyc": {
@@ -315,7 +312,6 @@
         "exchange_rate_warning": "Achtung, wir kaufen dieses Asset auf der DEX und können keinen Wechselkurs garantieren! Die Preise auf der DEX können deutlich tiefer oder höher als auf anderen Exchanges sein, was sich auch negativ auf den Wechselkurs auswirken kann.\n\nBitte beachte beim Kauf von dToken Assets, dass wenn du diese zu einem späteren Zeitpunkt wieder in Crypto-Token (DFI, dBTC, dETH...), Stablecoins (dUSDC, dUSDT) tauschen, oder über DFX gegen FIAT (EUR, USD, FR...) verkaufen möchtest, in diesem Zug eine DEX Stabilisierungsgebühr in Höhe von aktuell ca. 12% anfällt. Bei einem späteren Tausch innerhalb der dToken (dUSD, dTSLA, dAMZN, dCOIN …) fällt die vorgenannte DEX Stablisierungsgebühr nicht an.",
         "history": "Transaktions-Historie",
         "no_tx": "Keine erfolgreichen Transaktionen gefunden!",
-        "ref_bonus": "Ref-Bonus",
         "fee": "Gebühr",
         "reward_fee": "Reward-Gebühr",
         "volume": "Volumen",

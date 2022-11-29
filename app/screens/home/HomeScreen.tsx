@@ -39,7 +39,6 @@ import ClipboardService from "../../services/ClipboardService";
 import { ApiError } from "../../models/ApiDto";
 import IconButton from "../../components/util/IconButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import RefFeeEdit from "../../components/edit/RefFeeEdit";
 import { navigate } from "../../utils/NavigationHelper";
 import Routes from "../../config/Routes";
 import { StakingRoute } from "../../models/StakingRoute";
@@ -67,7 +66,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
   const [isStakingRouteEdit, setIsStakingRouteEdit] = useState(false);
   const [isCryptoRouteEdit, setIsCryptoRouteEdit] = useState(false);
-  const [isRefFeeEdit, setIsRefFeeEdit] = useState(false);
   const [isChangeUserAvailable, setIsChangeUserAvailable] = useState(false);
   const [isChangeUser, setIsChangeUser] = useState(false);
 
@@ -166,11 +164,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       mail: user?.mail ?? "",
     });
 
-  const onRefFeeChanged = (fee: number): void => {
-    if (user) user.refFeePercent = fee;
-    setIsRefFeeEdit(false);
-  };
-
   const reset = (): void => {
     setLoading(true);
     setUser(undefined);
@@ -266,8 +259,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       condition: Boolean(user.ref),
       label: "model.user.ref_commission",
       value: `${user.refFeePercent}%`,
-      icon: "chevron-right",
-      onPress: () => setIsRefFeeEdit(true),
     },
     { condition: Boolean(user.refCount), label: "model.user.ref_count", value: user.refCount },
     {
@@ -313,19 +304,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
           <ChangeUser user={user} onChanged={() => setIsChangeUser(false)} />
         </DeFiModal>
       )}
-
-      <DeFiModal
-        isVisible={isRefFeeEdit}
-        setIsVisible={setIsRefFeeEdit}
-        title={t("model.user.ref_commission_edit")}
-        style={{ width: 400 }}
-      >
-        <RefFeeEdit
-          currentRefFee={user?.refFeePercent ?? 0}
-          onRefFeeChanged={onRefFeeChanged}
-          onCancel={() => setIsRefFeeEdit(false)}
-        />
-      </DeFiModal>
 
       {isVotingOpen && canVote && (
         <View onLayout={(event) => setVotingImageWidth(event.nativeEvent.layout.width)}>

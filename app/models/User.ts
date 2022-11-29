@@ -75,7 +75,6 @@ export interface NewUser {
 
 export interface Fees {
   buy: number;
-  refBonus: number;
   sell: number;
 }
 

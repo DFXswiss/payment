@@ -232,9 +232,6 @@
         "ref_volume": "Volume de referência",
         "ref_bonus": "Bónus de referência",
         "ref_commission": "Comissão de referência",
-        "ref_commission_edit": "Editar a Comissão de Ref",
-        "ref_commission_info": "Ganhe até 0,5% de comissão em cada compra feita por alguém que indicar. Basta partilhar o seu link de referência com os seus amigos, família e meios de comunicação social.\nTem também a opção de baixar a sua percentagem de comissão a favor dos clientes referidos. É favor notar que a percentagem de comissão só pode ser ajustada para baixo, e não para cima.",
-        "ref_commission_hint": "Tem a certeza de que quer reduzir a sua comissão para {{fee}}%? Este passo não pode ser desfeito.",
         "change": "Alterar endereço"
       },
       "kyc": {
@@ -311,7 +308,6 @@
         "exchange_rate_warning": "Atenção, compramos este bem no DEX e não podemos garantir uma taxa de câmbio! Os preços no DEX podem ser significativamente inferiores ou superiores aos de outras bolsas, o que também pode ter um impacto negativo sobre a taxa de câmbio.\n\nAo comprar activos dToken, note que se quiser trocá-los de novo em fichas criptográficas (DFI, dBTC, dETH ...), moedas estáveis (dUSDC, dUSDT) ou vendê-los via DFX contra FIAT (EUR, USD, CHF ...) num momento posterior, será aplicada uma taxa de estabilização DEX de cerca de 12%. No caso de uma troca posterior dentro do dToken (dUSD, dTSLA, dAMZN, dCOIN ...), a referida taxa de estabilização DEX não se aplica.",
         "history": "Histórico das transacções",
         "no_tx": "Não foram encontradas transacções bem sucedidas!",
-        "ref_bonus": "bónus de referência",
         "fee": "Taxa",
         "reward_fee": "Taxa de recompensa",
         "volume": "Volume",

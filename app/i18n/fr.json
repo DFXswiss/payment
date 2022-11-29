@@ -235,9 +235,6 @@
         "ref_volume": "Volume de parrainage",
         "ref_bonus": "Bonus de parrainage",
         "ref_commission": "Commission de parrainage",
-        "ref_commission_edit": "Modifier la commission de parrainage",
-        "ref_commission_info": "Gagnez jusqu'à 0,5% de commission sur chaque achat fait par votre filleul. Il vous suffit de partager votre code de parrainage avec vos amis, votre famille et sur les réseaux sociaux.\nVous avez également la possibilité de diminuer votre pourcentage de commission en faveur des clients parrainés. Veuillez noter que le pourcentage de commission ne peut être modifié qu'à la baisse, et non à la hausse.",
-        "ref_commission_hint": "Êtes-vous sûr de vouloir réduire votre commission à {{fee}}%? Cette action est irréversible.",
         "change": "Changement d'adresse"
       },
       "kyc": {
@@ -314,7 +311,6 @@
         "exchange_rate_warning": "Attention, nous achetons cet actif sur le DEX et ne pouvons pas garantir le taux de change ! Les prix sur le DEX peuvent être sensiblement plus bas ou plus élevés que sur d'autres échanges, ce qui peut également avoir un impact négatif sur le taux de change.\n\nAprès un achat de dTokens, veuillez noter que les échanger en retour contre des tokens crypto (DFI, dBTC, dETH, ...), des stable coins (dUSDC, dUSDT) ou les vendre via DFX contre des FIAT (EUR, USD, FR...) est une action sujette aux frais de stabilisation du DEX d'environ 12%. En cas d'échange avec d'autres dTokens (dUSD, dTSLA, dAMZN, dCOIN...), ces frais ne s'appliquent pas.",
         "history": "Historique des transactions",
         "no_tx": "Aucune transaction réussie trouvée !",
-        "ref_bonus": "Bonus parrainage",
         "fee": "Frais",
         "reward_fee": "Frais de récompense",
         "volume": "Volume",

@@ -235,9 +235,6 @@
         "ref_volume": "Ref volume",
         "ref_bonus": "Ref bonus",
         "ref_commission": "Ref commission",
-        "ref_commission_edit": "Edit ref commission",
-        "ref_commission_info": "Earn up to 0.5% commission on every purchase of your referred person. Simply share your referral link with your friends, family and on social media.\nYou also have the option to lower your commission percentage in favor of the referred customers. Please note that the commission percentage can only be changed downwards, not upwards.",
-        "ref_commission_hint": "Are you sure you want to reduce your commission to {{fee}}%? This step cannot be undone.",
         "change": "Change address"
       },
       "kyc": {
@@ -314,7 +311,6 @@
         "exchange_rate_warning": "Attention, we buy this asset on DEX and cannot guarantee an exchange rate! Prices on DEX can be significantly lower or higher than on other exchanges, which can also have a negative impact on the exchange rate.\n\nWhen buying dToken assets, please note that if you want to exchange them back into crypto tokens (DFI, dBTC, dETH...), stablecoins (dUSDC, dUSDT) or sell them via DFX against FIAT (EUR, USD, FR...) at a later point in time, a DEX stabilization fee of roughly 12% will apply. In case of a later exchange within the dToken (dUSD, dTSLA, dAMZN, dCOIN ...), the aforementioned DEX stabilization fee does not apply.",
         "history": "Transaction history",
         "no_tx": "No successful transactions found!",
-        "ref_bonus": "ref bonus",
         "fee": "Fee",
         "reward_fee": "Reward fee",
         "volume": "Volume",

@@ -86,10 +86,6 @@ export const putUserLanguage = (language: Language): Promise<void> => {
   return AuthService.Session.then((session) => fetchFrom<void>(UserUrl, "PUT", { address: session.address, language }));
 };
 
-export const updateRefFee = (fee: number): Promise<void> => {
-  return fetchFrom(UserUrl, "PUT", { refFeePercent: fee });
-};
-
 export const generateApiKey = (types?: HistoryType[]): Promise<ApiKey> => {
   return fetchFrom<ApiKey>(`${UserUrl}/apiKey/CT${toHistoryQuery(types)}`, "POST");
 };

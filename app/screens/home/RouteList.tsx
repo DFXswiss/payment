@@ -237,7 +237,7 @@ const RouteList = ({
     {
       condition: true,
       label: "model.route.fee",
-      value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
+      value: `${route.fee}%`,
     },
     {
       condition: true,
@@ -349,7 +349,7 @@ const RouteList = ({
     {
       condition: true,
       label: "model.route.fee",
-      value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
+      value: `${route.fee}%`,
     },
     { condition: true, label: "model.route.min_deposit", value: `${formatMinDeposit(route.minDeposits)}` },
     {

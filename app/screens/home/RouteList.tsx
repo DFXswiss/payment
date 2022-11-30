@@ -265,7 +265,7 @@ const RouteList = ({
       icon: "content-copy",
       onPress: () => ClipboardService.copy(route.deposit?.address),
     },
-    { condition: true, label: "model.route.fee", value: `${route.fee}%` },
+    { condition: route.fee, label: "model.route.fee", value: `${route.fee}%` },
     {
       condition: true,
       label: "model.route.min_deposit",

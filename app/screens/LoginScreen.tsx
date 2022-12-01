@@ -124,9 +124,9 @@ const LoginScreen = () => {
     setIsOldSignature(false);
 
     // update settings
-    const isIframe = Boolean(params?.iframe);
+    const headless = Boolean(params?.headless);
     const language = params?.lang?.toUpperCase();
-    SettingsService.updateSettings({ isIframe }).then(() => {
+    SettingsService.updateSettings({ headless }).then(() => {
       if (language) SettingsService.updateSettings({ language });
     });
 
@@ -177,7 +177,7 @@ const LoginScreen = () => {
       signature: undefined,
       walletId: undefined,
       code: undefined,
-      iframe: undefined,
+      headless: undefined,
       token: undefined,
     });
   };

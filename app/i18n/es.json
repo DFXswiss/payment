@@ -219,9 +219,6 @@
         "ref_volume": "Volumen de referidos",
         "ref_bonus": "Bonificación de referidos",
         "ref_commission": "Comisión de referidos",
-        "ref_commission_edit": "Edita la comisión de referidos",
-        "ref_commission_info": "Gana hasta un 0.5% de comisión en cada compra de uno de tus referidos. Simplemente comparte el enlace con el código de referidos a tus amigos, familia y redes sociales. Tu tienes también la opción de rebajar el porcentaje de tu comisión en favor de tus referidos. Date cuenta de que el porcentaje de comisión sólo se puede reducir, no subir.",
-        "ref_commission_hint": "¿Estás seguro de que quieres reducir tu comisión a {{fee}}%? Este paso no se puede rehacer.",
         "change": "Cambiar la dirección"
       },
       "kyc": {
@@ -298,7 +295,6 @@
         "exchange_rate_warning": "¡Atención, nosotros compramos este activo en el Exchange descentralizado y no podemos garantizar una tasa de cambio específica. Los precios en el Exchange pueden ser significativamente más altos o bajos que en otros exchanges, lo que pudiera tener un impacto negativo en la tasa de cambio.\n\nAl comprar activos dTokens líquidos, por favor date cuenta de que si quieres cambiarlos a cripto tokens (DFI, dBTC, dETH...), monedas estables (dUSDC, dUSDT) o venderlos con DFX por FIAT (EUR, USD, FR...) más tarde, una tasa de estabilización del DEX de aproximadamente 12% se aplicará. Si el intercambio posterior es entre un dToken (dTSLA, dAMZN, dCOIN...), la mencionada tasa no se aplicará.",
         "history": "Historial de transacciones",
         "no_tx": "¡No se han encontrado transacciones exitosas!",
-        "ref_bonus": "Bonificación de referidos",
         "fee": "Comisión",
         "reward_fee": "Comisión de recompensa",
         "volume": "Volumen",

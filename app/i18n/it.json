@@ -235,9 +235,6 @@
         "ref_volume": "Volume del referral",
         "ref_bonus": "Ref bonus",
         "ref_commission": "Commissione del refererral",
-        "ref_commission_edit": "Modificare la commissione del referral",
-        "ref_commission_info": "Guadagna fino allo 0,5% di commissione su ogni acquisto della persona da te riferita. Basta condividere il tuo referral link con amici, familiari e sui social media. Hai anche la possibilità di ridurre la tua percentuale di commissione a favore dei clienti referenziati. Si prega di notare che la percentuale di commissione può essere modificata solo verso il basso, non verso l'alto.",
-        "ref_commission_hint": "Sei sicuro di voler ridurre la tua commissione a {{fee}}%? Questo passo non può essere annullato.",
         "change": "Cambiamento di indirizzo"
       },
       "kyc": {
@@ -314,7 +311,6 @@
         "exchange_rate_warning": "Attenzione, compriamo questo bene su DEX e non possiamo garantire un tasso di cambio! I prezzi su DEX possono essere significativamente inferiori o superiori a quelli di altre borse, il che può anche avere un impatto negativo sul tasso di cambio.\n\nQuando compri dToken, tieni presente che se in un secondo momento vorrai riconvertirli in criptovalute (DFI, dBTC, dETH...) o stablecoin (dUSDC, dUSDT) o venderli tramite DFX in cambio di FIAT (EUR, USD, FR...), verrà applicata la tariffa di stabilizzazione del DEX pari a circa 12%. In caso di ulteriore scambio con altri dToken (dUSD, dTSLA, dAMZN, dCOIN...), invece, la tariffa di stabilizzazione del DEX non verrà applicata",
         "history": "Storico delle transazioni",
         "no_tx": "Nessuna transazione di successo trovata!",
-        "ref_bonus": "referral bonus",
         "fee": " Commissione",
         "reward_fee": "Commissione sulla ricompensa",
         "volume": "Volume",

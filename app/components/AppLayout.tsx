@@ -8,11 +8,11 @@ import { AppSettings } from "../services/SettingsService";
 import AppStyles from "../styles/AppStyles";
 import Header from "./Header";
 
-interface AppLayoutProps { 
-  settings?: AppSettings; 
-  preventScrolling?: boolean; 
-  removeHeaderSpace?: boolean, 
-  children: ReactNode 
+interface AppLayoutProps {
+  settings?: AppSettings;
+  preventScrolling?: boolean;
+  removeHeaderSpace?: boolean;
+  children: ReactNode;
 }
 
 const AppLayout = ({ settings, preventScrolling, removeHeaderSpace, children }: AppLayoutProps) => {
@@ -35,12 +35,10 @@ const AppLayout = ({ settings, preventScrolling, removeHeaderSpace, children }: 
         >
           <View style={[AppStyles.container, styles.container]}>
             <View style={[AppStyles.container, styles.appContainer]}>
-              {!settings?.isIframe && (
+              {!settings?.headless && (
                 <>
                   <Header></Header>
-                  {!removeHeaderSpace && (
-                    <SpacerV height={20} />
-                  )}
+                  {!removeHeaderSpace && <SpacerV height={20} />}
                 </>
               )}
               {children}

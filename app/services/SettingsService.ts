@@ -11,12 +11,12 @@ import Moment from "moment";
 const SettingsKey = "settings";
 const DefaultSettings: Partial<AppSettings> = {
   language: Environment.defaultLanguage,
-  isIframe: false,
+  headless: false,
 };
 
 export interface AppSettings {
   language: string;
-  isIframe: boolean;
+  headless: boolean;
 }
 
 class SettingsServiceClass {
@@ -33,7 +33,9 @@ class SettingsServiceClass {
     getLanguages()
       .then((languages) => (this.Languages = languages.filter((l) => l.enable)))
       .then(() => this.Settings)
-      .then((settings) => this.Languages.find((l) => l.symbol == settings.language)?.symbol ?? Environment.defaultLanguage)
+      .then(
+        (settings) => this.Languages.find((l) => l.symbol == settings.language)?.symbol ?? Environment.defaultLanguage
+      )
       .then((currentLanguage) => this.updateSettings({ language: currentLanguage }))
       .catch(() => NotificationService.error(i18n.t("feedback.load_failed")));
   }
@@ -43,8 +45,7 @@ class SettingsServiceClass {
   }
 
   public get Settings(): Promise<AppSettings> {
-    return StorageService.getValue<AppSettings>(SettingsKey)
-      .then((settings) => ({ ...DefaultSettings, ...settings }));
+    return StorageService.getValue<AppSettings>(SettingsKey).then((settings) => ({ ...DefaultSettings, ...settings }));
   }
 
   public get Language(): Promise<Language | undefined> {

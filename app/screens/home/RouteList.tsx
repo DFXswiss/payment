@@ -237,7 +237,7 @@ const RouteList = ({
     {
       condition: true,
       label: "model.route.fee",
-      value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
+      value: `${route.fee}%`,
     },
     {
       condition: true,
@@ -265,7 +265,7 @@ const RouteList = ({
       icon: "content-copy",
       onPress: () => ClipboardService.copy(route.deposit?.address),
     },
-    { condition: true, label: "model.route.fee", value: `${route.fee}%` },
+    { condition: route.fee, label: "model.route.fee", value: `${route.fee}%` },
     {
       condition: true,
       label: "model.route.min_deposit",
@@ -349,7 +349,7 @@ const RouteList = ({
     {
       condition: true,
       label: "model.route.fee",
-      value: `${route.fee}%` + (route.refBonus ? ` (${route.refBonus}% ${t("model.route.ref_bonus")})` : ""),
+      value: `${route.fee}%`,
     },
     { condition: true, label: "model.route.min_deposit", value: `${formatMinDeposit(route.minDeposits)}` },
     {

@@ -133,7 +133,7 @@ const StakingRouteEdit = ({
       <DeFiPicker
         name="rewardType"
         label={t("model.route.reward")}
-        items={Object.values(PayoutType)}
+        items={[PayoutType.WALLET]}
         labelFunc={(i) => t(`model.route.${i.toLowerCase()}`)}
       />
       <SpacerV />
@@ -168,7 +168,7 @@ const StakingRouteEdit = ({
       <DeFiPicker
         name="paybackType"
         label={t("model.route.payback")}
-        items={Object.values(PayoutType)}
+        items={[PayoutType.WALLET]}
         labelFunc={(i) => t(`model.route.${i.toLowerCase()}`)}
       />
       {route != null && route.paybackType !== paybackType && (

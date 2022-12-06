@@ -15,7 +15,6 @@ import {
   kycInProgress,
   KycState,
   KycStatus,
-  User,
   UserDetail,
   UserStatus,
 } from "../../models/User";
@@ -132,8 +131,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   };
 
   const onUserChanged = (newUser: UserDetail) => {
-    // reload all routes (may impact fee)
-    if (user?.usedRef !== newUser.usedRef) loadRoutes();
+    loadRoutes();
 
     setUser(newUser);
     setIsUserEdit(false);
@@ -226,7 +224,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     },
     { condition: true, label: "model.user.mail", value: user.mail, emptyHint: t("model.user.add_mail") },
     { condition: Boolean(user.phone), label: "model.user.mobile_number", value: user.phone },
-    { condition: Boolean(user.usedRef), label: "model.user.used_ref", value: user.usedRef },
     {
       condition: user.kycStatus != KycStatus.NA,
       label: "model.kyc.status",

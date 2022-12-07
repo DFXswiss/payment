@@ -219,7 +219,7 @@ const LoginScreen = () => {
               >
                 <Input
                   name="userName"
-                  label={t("model.user.legacy_address")}
+                  label={t("model.user.blockchain_address")}
                   returnKeyType="next"
                   valueHook={addressValueHook}
                   blurOnSubmit={false}

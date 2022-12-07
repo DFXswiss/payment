@@ -201,7 +201,7 @@
         "personal": "Personal account",
         "business": "Business account",
         "soleproprietorship": "Sole proprietorship",
-        "legacy_address": "Legacy address",
+        "blockchain_address": "Blockchain address",
         "address": "ID",
         "signature": "Signature",
         "name": "Name",

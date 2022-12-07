@@ -185,7 +185,7 @@
         "personal": "Cuenta personal",
         "business": "Cuenta de negocios",
         "soleproprietorship": "Cuenta de autónomo",
-        "legacy_address": "Cuenta de patrimonio",
+        "blockchain_address": "Dirección Blockchain",
         "address": "Identificador",
         "signature": "Firma",
         "name": "Nombre",

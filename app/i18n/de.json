@@ -202,7 +202,7 @@
         "personal": "Privatkonto",
         "business": "Geschäftskonto",
         "soleproprietorship": "Einzelunternehmen",
-        "legacy_address": "Legacy Adresse",
+        "blockchain_address": "Blockchain-Adresse",
         "address": "ID",
         "signature": "Signatur",
         "name": "Name",

@@ -201,7 +201,7 @@
         "personal": "Conto privato",
         "business": "Conto commerciale",
         "soleproprietorship": "Impresa individuale",
-        "legacy_address": "Legacy address",
+        "blockchain_address": "Indirizzo Blockchain",
         "address": "ID",
         "signature": "Firma",
         "name": "Nome",

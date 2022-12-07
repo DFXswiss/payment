@@ -201,7 +201,7 @@
         "personal": "Compte privé",
         "business": "Compte professionnel",
         "soleproprietorship": "Travailleur indépendant",
-        "legacy_address": "Adresse légale",
+        "blockchain_address": "Adresse Blockchain",
         "address": "ID",
         "signature": "Signature",
         "name": "Nom",

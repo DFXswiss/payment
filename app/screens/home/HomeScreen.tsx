@@ -131,8 +131,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   };
 
   const onUserChanged = (newUser: UserDetail) => {
-    loadRoutes();
-
     setUser(newUser);
     setIsUserEdit(false);
   };

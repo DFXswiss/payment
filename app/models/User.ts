@@ -24,7 +24,6 @@ export enum KycStatus {
   ONLINE_ID = "OnlineId",
   VIDEO_ID = "VideoId",
   CHECK = "Check",
-  MANUAL = "Manual",
   COMPLETED = "Completed",
   REJECTED = "Rejected",
 }
@@ -88,7 +87,6 @@ export interface UserDto {
   mail: string | null;
   phone: string;
   language: Language;
-  usedRef: string | null;
   status: UserStatus;
 
   kycHash: string;
@@ -107,7 +105,6 @@ export interface User {
   mail: string;
   phone: string;
   language: Language;
-  usedRef: string;
   status: UserStatus;
 
   kycHash: string;
@@ -169,7 +166,6 @@ export const fromUserDto = (user: UserDto): User => ({
   mail: user.mail ?? "",
   phone: user.phone,
   language: user.language,
-  usedRef: user.usedRef ?? "",
   status: user.status,
 
   kycStatus: user.kycStatus,
@@ -189,7 +185,6 @@ export const toUserDto = (user: User): UserDto => ({
   mail: toStringDto(user.mail),
   phone: user.phone,
   language: user.language,
-  usedRef: toStringDto(user.usedRef),
   status: user.status,
 
   kycStatus: user.kycStatus,
@@ -223,8 +218,7 @@ const toStringDto = (string: string): string | null => (string === "" ? null : s
 
 export const kycNotStarted = (kycStatus?: KycStatus) => [KycStatus.NA].includes(kycStatus ?? KycStatus.NA);
 
-export const kycCompleted = (kycStatus?: KycStatus) =>
-  [KycStatus.MANUAL, KycStatus.COMPLETED].includes(kycStatus ?? KycStatus.NA);
+export const kycCompleted = (kycStatus?: KycStatus) => [KycStatus.COMPLETED].includes(kycStatus ?? KycStatus.NA);
 
 export const kycInProgress = (kycStatus?: KycStatus) =>
   [KycStatus.CHATBOT, KycStatus.ONLINE_ID, KycStatus.VIDEO_ID].includes(kycStatus ?? KycStatus.NA);

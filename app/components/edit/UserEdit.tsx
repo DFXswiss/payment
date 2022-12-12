@@ -44,8 +44,7 @@ const UserEdit = ({ user, onUserChanged }: Props) => {
   };
 
   const rules: any = createRules({
-    mail: [Validations.Mail],
-    usedRef: Validations.Ref,
+    mail: [Validations.Mail]
   });
 
   return (
@@ -59,10 +58,6 @@ const UserEdit = ({ user, onUserChanged }: Props) => {
         wrap={!device.SM}
         country={country?.symbol}
       />
-      <SpacerV />
-
-      <Input name="usedRef" label={t("model.user.used_ref")} placeholder="xxx-xxx" />
-      <SpacerV />
 
       {error != null && (
         <>

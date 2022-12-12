@@ -246,7 +246,6 @@
         "onlineid": "identification en ligne",
         "videoid": "identification en vidéo",
         "check": "Données en cours de révision",
-        "manual": "Vérification terminée",
         "completed": "Vérification terminée",
         "rejected": "Vérification refusée",
         "na": "En cours",

@@ -24,7 +24,6 @@ export enum KycStatus {
   ONLINE_ID = "OnlineId",
   VIDEO_ID = "VideoId",
   CHECK = "Check",
-  MANUAL = "Manual",
   COMPLETED = "Completed",
   REJECTED = "Rejected",
 }
@@ -219,8 +218,7 @@ const toStringDto = (string: string): string | null => (string === "" ? null : s
 
 export const kycNotStarted = (kycStatus?: KycStatus) => [KycStatus.NA].includes(kycStatus ?? KycStatus.NA);
 
-export const kycCompleted = (kycStatus?: KycStatus) =>
-  [KycStatus.MANUAL, KycStatus.COMPLETED].includes(kycStatus ?? KycStatus.NA);
+export const kycCompleted = (kycStatus?: KycStatus) => [KycStatus.COMPLETED].includes(kycStatus ?? KycStatus.NA);
 
 export const kycInProgress = (kycStatus?: KycStatus) =>
   [KycStatus.CHATBOT, KycStatus.ONLINE_ID, KycStatus.VIDEO_ID].includes(kycStatus ?? KycStatus.NA);

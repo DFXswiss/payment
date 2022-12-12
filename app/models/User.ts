@@ -88,7 +88,6 @@ export interface UserDto {
   mail: string | null;
   phone: string;
   language: Language;
-  usedRef: string | null;
   status: UserStatus;
 
   kycHash: string;
@@ -107,7 +106,6 @@ export interface User {
   mail: string;
   phone: string;
   language: Language;
-  usedRef: string;
   status: UserStatus;
 
   kycHash: string;
@@ -169,7 +167,6 @@ export const fromUserDto = (user: UserDto): User => ({
   mail: user.mail ?? "",
   phone: user.phone,
   language: user.language,
-  usedRef: user.usedRef ?? "",
   status: user.status,
 
   kycStatus: user.kycStatus,
@@ -189,7 +186,6 @@ export const toUserDto = (user: User): UserDto => ({
   mail: toStringDto(user.mail),
   phone: user.phone,
   language: user.language,
-  usedRef: toStringDto(user.usedRef),
   status: user.status,
 
   kycStatus: user.kycStatus,

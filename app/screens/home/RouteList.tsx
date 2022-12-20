@@ -565,11 +565,6 @@ const RouteList = ({
                 {t("model.route.sell")}
               </DeFiButton>
             </View>
-            <View style={AppStyles.ml10}>
-              <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)}>
-                {t("model.route.staking")}
-              </DeFiButton>
-            </View>
             {session?.isBetaUser && (
               <View style={AppStyles.ml10}>
                 <DeFiButton mode="contained" onPress={() => setIsCryptoRouteEdit(true)}>
@@ -595,12 +590,8 @@ const RouteList = ({
           </View>
           <SpacerV />
           <View style={AppStyles.containerHorizontal}>
-            <DeFiButton mode="contained" onPress={() => setIsStakingRouteEdit(true)} style={{ flex: 1 }}>
-              {t("model.route.staking")}
-            </DeFiButton>
             {session?.isBetaUser && (
               <>
-                <SpacerH />
                 <DeFiButton mode="contained" onPress={() => setIsCryptoRouteEdit(true)} style={{ flex: 1 }}>
                   {t("model.route.crypto")}
                 </DeFiButton>

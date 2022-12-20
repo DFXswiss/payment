@@ -94,7 +94,7 @@ const SellRouteEdit = ({
       <DeFiPicker
         name="fiat"
         label={t("model.route.fiat")}
-        items={fiats.filter((f) => f.enable)}
+        items={fiats.filter((f) => f.buyable)}
         idFunc={(i) => i.id}
         labelFunc={(i) => i.name}
       />

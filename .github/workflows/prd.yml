@@ -2,7 +2,7 @@ name: PRD CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   workflow_dispatch:
 
 jobs:
@@ -11,20 +11,20 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.PRD_CREDENTIALS }}
-      
+
       - name: Node setup
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v3
         with:
           node-version: 14.x
 
       - name: Expo setup
-        uses: expo/expo-github-action@v5
+        uses: expo/expo-github-action@v7
         with:
           expo-version: 4.x
 
@@ -52,8 +52,8 @@ jobs:
         with:
           inlineScript: |
             az cdn endpoint purge --content-paths  "/*" --profile-name cdnp-dfx-pay-prd --name cdne-dfx-pay-prd --resource-group rg-dfx-pay-prd
-      
+
       - name: Logout
         run: |
-              az logout
+          az logout
         if: always()

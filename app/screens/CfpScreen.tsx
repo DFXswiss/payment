@@ -23,7 +23,7 @@ import NotificationService from "../services/NotificationService";
 import AppStyles from "../styles/AppStyles";
 import { openUrl } from "../utils/Utils";
 
-const DfxCfpNumbers: number[] = [];
+const DfxCfpNumbers: string[] = [];
 
 const CfpScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
@@ -33,7 +33,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
   const [canVote, setCanVote] = useState(false);
   const [isVotingOpen, setIsVotingOpen] = useState(false);
   const [votes, setVotes] = useState<CfpVotes | undefined>();
-  const [isSaving, setIsSaving] = useState<{ number: Number; vote: CfpVote } | undefined>();
+  const [isSaving, setIsSaving] = useState<{ number: string; vote: CfpVote } | undefined>();
 
   useAuthGuard(session);
 
@@ -62,7 +62,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
     };
   };
 
-  const onVote = (number: number, vote: CfpVote) => {
+  const onVote = (number: string, vote: CfpVote) => {
     setVotes((votes) => {
       votes = { ...(votes ?? {}), [number]: votes?.[number] === vote ? undefined : vote };
 
@@ -111,8 +111,7 @@ const CfpScreen = ({ session }: { session?: Session }) => {
 
             {cfpResults
               ?.filter((r) => cfpFilter === "all" || DfxCfpNumbers.includes(r.number))
-              ?.sort((a, b) => a.number - b.number)
-              .map((result) => (
+              ?.map((result) => (
                 <View key={result.number} style={{ width: "100%" }}>
                   <H3 text={result.title} style={AppStyles.center} />
 

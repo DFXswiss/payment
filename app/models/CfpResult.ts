@@ -18,7 +18,7 @@ interface Vote {
 }
 
 export interface CfpResult {
-  number: number;
+  number: string;
   title: string;
   type: VotingType;
   dfiAmount: number;

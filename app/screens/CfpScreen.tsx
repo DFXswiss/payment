@@ -160,37 +160,6 @@ const CfpScreen = ({ session }: { session?: Session }) => {
                       </View>
                     )}
                   </View>
-
-                  {canVote && (
-                    <>
-                      <SpacerV />
-                      <Text style={[AppStyles.center, AppStyles.b]}>{t("cfp.your_vote")}</Text>
-                      <View style={[AppStyles.containerHorizontalWrap, styles.voteContainer]}>
-                        <RadioButton
-                          label={t("cfp.yes")}
-                          onPress={() => onVote(result.number, CfpVote.YES)}
-                          checked={votes?.[result.number] === CfpVote.YES}
-                          disabled={!isVotingOpen}
-                          loading={isSaving?.number === result.number && isSaving.vote === CfpVote.YES}
-                        />
-                        <RadioButton
-                          label={t("cfp.no")}
-                          onPress={() => onVote(result.number, CfpVote.NO)}
-                          checked={votes?.[result.number] === CfpVote.NO}
-                          disabled={!isVotingOpen}
-                          loading={isSaving?.number === result.number && isSaving.vote === CfpVote.NO}
-                        />
-                        <RadioButton
-                          label={t("cfp.neutral")}
-                          onPress={() => onVote(result.number, CfpVote.NEUTRAL)}
-                          checked={votes?.[result.number] === CfpVote.NEUTRAL}
-                          disabled={!isVotingOpen}
-                          loading={isSaving?.number === result.number && isSaving.vote === CfpVote.NEUTRAL}
-                        />
-                      </View>
-                    </>
-                  )}
-
                   <SpacerV height={50} />
                 </View>
               ))}

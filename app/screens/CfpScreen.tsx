@@ -4,7 +4,7 @@ import { StyleSheet, View } from "react-native";
 import { StackedBarChart } from "react-native-chart-kit";
 import { AbstractChartConfig } from "react-native-chart-kit/dist/AbstractChart";
 import { StackedBarChartData } from "react-native-chart-kit/dist/StackedBarChart";
-import { DataTable, Text } from "react-native-paper";
+import { DataTable } from "react-native-paper";
 import AppLayout from "../components/AppLayout";
 import Loading from "../components/util/Loading";
 import Colors from "../config/Colors";
@@ -16,8 +16,7 @@ import { H1, H3 } from "../elements/Texts";
 import withSession from "../hocs/withSession";
 import useAuthGuard from "../hooks/useAuthGuard";
 import { CfpResult } from "../models/CfpResult";
-import { CfpVote, CfpVotes } from "../models/User";
-import { getCfpResults, getCfpVotes, getSettings, getUserDetail, putCfpVotes } from "../services/ApiService";
+import { getCfpResults } from "../services/ApiService";
 import { Session } from "../services/AuthService";
 import NotificationService from "../services/NotificationService";
 import AppStyles from "../styles/AppStyles";
@@ -30,21 +29,12 @@ const CfpScreen = ({ session }: { session?: Session }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [cfpFilter, setCfpFilter] = useState<"all" | "dfx">("all");
   const [cfpResults, setCfpResults] = useState<CfpResult[]>();
-  const [canVote, setCanVote] = useState(false);
-  const [isVotingOpen, setIsVotingOpen] = useState(false);
-  const [votes, setVotes] = useState<CfpVotes | undefined>();
-  const [isSaving, setIsSaving] = useState<{ number: string; vote: CfpVote } | undefined>();
 
   useAuthGuard(session);
 
   useEffect(() => {
-    Promise.all([getCfpResults("latest"), getCfpVotes(), getUserDetail(), getSettings()])
-      .then(([results, votes, userDetail, settings]) => {
-        setCfpResults(results);
-        setVotes(votes);
-        setCanVote(userDetail.stakingBalance >= 100);
-        setIsVotingOpen(settings.cfpVotingOpen);
-      })
+    getCfpResults("latest")
+      .then((results) => setCfpResults(results))
       .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));
   }, []);
@@ -60,17 +50,6 @@ const CfpScreen = ({ session }: { session?: Session }) => {
       data: [[], [result.totalVotes.yes, result.totalVotes.neutral, result.totalVotes.no]],
       barColors: [Colors.Success, Colors.LightGrey, Colors.Error],
     };
-  };
-
-  const onVote = (number: string, vote: CfpVote) => {
-    setVotes((votes) => {
-      votes = { ...(votes ?? {}), [number]: votes?.[number] === vote ? undefined : vote };
-
-      setIsSaving({ number, vote });
-      putCfpVotes(votes).finally(() => setIsSaving(undefined));
-
-      return votes;
-    });
   };
 
   const config: AbstractChartConfig = {

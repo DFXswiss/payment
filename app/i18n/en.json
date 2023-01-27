@@ -171,9 +171,9 @@
     },
     "cfp": {
       "link": "CFP",
-      "title": "Current DeFiChain CFPs",
-      "all": "All CFPs",
-      "dfx_only": "DFX CFPs only",
+      "title": "Current DeFiChain proposals",
+      "all": "All proposals",
+      "dfx_only": "DFX proposals only",
       "yes": "Yes",
       "neutral": "Neutral",
       "no": "No",

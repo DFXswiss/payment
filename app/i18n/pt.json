@@ -350,7 +350,7 @@
         "status_complete": "Concluído",
         "status_incomplete": "Em curso",
         "tx_details": "Detalhes da transacção",
-        "tx_link": "Ligação à transacção em defiscan.live",
+        "tx_link": "Ligação à transacção",
         "statistics": "Estatísticas"
       },
       "history": {

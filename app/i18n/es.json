@@ -336,7 +336,7 @@
         "status_completado": "Completado",
         "status_incomplete": "En curso",
         "tx_details": "Detalles de la transacción",
-        "tx_link": "Enlace a la transacción en defiscan.live",
+        "tx_link": "Enlace a la transacción",
         "statistics": "Estadísticas"
       },
       "history": {

@@ -353,7 +353,7 @@
         "status_complete": "Completato",
         "status_incomplete": "In corso",
         "tx_details": "Dettagli della transazione",
-        "tx_link": "Link alla transazione su defiscan.live",
+        "tx_link": "Link alla transazione",
         "statistics": "Statistiche"
       },
       "history": {

@@ -18,7 +18,7 @@ import {
   UserDetail,
   UserStatus,
 } from "../../models/User";
-import { getRoutes, getSettings, getStatistic, getUserDetail } from "../../services/ApiService";
+import { getRoutes, getStatistic, getUserDetail } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
@@ -184,12 +184,11 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     (cancelled) => {
       if (session) {
         if (session.isLoggedIn) {
-          Promise.all([getUserDetail(), loadRoutes(), getSettings(), getStatistic()])
-            .then(([user, _, settings, statistic]) => {
+          Promise.all([getUserDetail(), loadRoutes(), getStatistic()])
+            .then(([user, _, statistic]) => {
               if (!cancelled()) {
                 setUser(user);
                 setIsChangeUserAvailable(user?.linkedAddresses != undefined && user.linkedAddresses.length > 1);
-                setIsVotingOpen(settings.cfpVotingOpen);
                 setStatistic(statistic);
               }
             })
@@ -298,17 +297,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
         >
           <ChangeUser user={user} onChanged={() => setIsChangeUser(false)} />
         </DeFiModal>
-      )}
-
-      {isVotingOpen && canVote && (
-        <View onLayout={(event) => setVotingImageWidth(event.nativeEvent.layout.width)}>
-          <TouchableOpacity onPress={() => navigate(Routes.Cfp)}>
-            <Image
-              style={{ width: votingImageWidth, height: votingImageWidth / 3 }}
-              source={require("../../assets/cfp_voting.svg")}
-            />
-          </TouchableOpacity>
-        </View>
       )}
 
       {!settings?.headless && <SpacerV height={30} />}

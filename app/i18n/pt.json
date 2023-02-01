@@ -166,23 +166,6 @@
         }
       ]
     },
-    "cfp": {
-      "link": "CFP",
-      "title": "CFP (Proposta de Fundo Comunitário) actuais de DeFiChain",
-      "all": "Todos CFPs",
-      "dfx_only": "CFPs apenas de DFX",
-      "yes": "Sim",
-      "neutral": "Neutro",
-      "no": "Não",
-      "votes": "Votos",
-      "voting": "Votação",
-      "vote_turnout": "Participação nas votações",
-      "current_result": "Resultado actual",
-      "approved": "aprovado",
-      "not approved": "não aprovado",
-      "read_proposal": "Ler proposta",
-      "your_vote": "O seu voto"
-    },
     "admin": {
       "title": "Admin"
     },
@@ -393,16 +376,6 @@
         "incomplete": "Não",
         "expiration": "Data de expiração"
       }
-    },
-    "specialVoting": {
-      "title": "Votação: Lógica de votação DFX Masternode CFP/DFIP",
-      "ended": "Obrigado pelo seu voto. Em breve apresentaremos os resultados!",
-      "link": "DFX-Votação",
-      "collectively": "Coletivo",
-      "proportionally": "Proporcional",
-      "explanation": "Cada usuário do DFI Staking Service da DFX recebe um voto ponderado com base em seu DFI investido. Existem dois mecanismos alternativos de votação para escolher. Escolhas:\n\n\n• Coletivo: DFX votará sim/não com todos os masternodes como um coletivo.\n\n\n• Proporcional: DFX votará sim/não/neutro com todos os masternodes proporcionais aos votos emitidos.",
-      "description": "Visão coletiva:\n\nDependendo dos resultados da votação dos respectivos CFPs/DFIPs da comunidade DFX, a DFX vota com todos os masternodes para seus clientes.\n\n\nPCP:\n\n<= 50% - DFX vota \"não\" com todos os masternodes.\n> 50% - DFX vota \"sim\" com todos os masternodes\n\n\nDFIPs:\n\n<= 66,66 % - DFX vota \"não\" com todos os masternodes\n> 66,66 % - DFX vota \"sim\" com todos os masternodes\n\n\nA consideração coletiva só é aplicada desde que a DFX opere <10% dos masternodes DeFiChain para seus clientes. Se este limite for excedido, o DFX selecionará automaticamente a consideração proporcional\n\n\nConsideração Proporcional:\n\nDependendo dos resultados da votação dos respectivos CFPs/DFIPs da comunidade DFX, a DFX vota sim/não/neutro para seus clientes com todos os masternodes proporcionalmente aos votos emitidos",
-      "neutral": "Sem preferência"
     },
     "link": {
       "header": "Link address request information",

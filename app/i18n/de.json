@@ -170,23 +170,6 @@
         }
       ]
     },
-    "cfp": {
-      "link": "CFP",
-      "title": "Aktuelle DeFiChain Proposals",
-      "all": "Alle Proposals",
-      "dfx_only": "Nur DFX Proposals",
-      "yes": "Ja",
-      "neutral": "Neutral",
-      "no": "Nein",
-      "votes": "Stimmen",
-      "voting": "Abstimmung",
-      "vote_turnout": "Stimmbeteiligung",
-      "current_result": "Aktuelles Resultat",
-      "approved": "Angenommen",
-      "not approved": "Nicht angenommen",
-      "read_proposal": "Proposal lesen",
-      "your_vote": "Deine Stimme"
-    },
     "admin": {
       "title": "Admin"
     },
@@ -397,16 +380,6 @@
         "incomplete": "Nein",
         "expiration": "Ablaufdatum"
       }
-    },
-    "specialVoting": {
-      "title": "DFX Masternode CFP/DFIP Abstimmungslogik",
-      "ended": "Vielen Dank für deine Stimme. Die Ergebnisse präsentieren wir in Kürze!",
-      "link": "DFX-Abstimmung",
-      "collectively": "Kollektiv",
-      "proportionally": "Proportional",
-      "explanation": "Jeder Nutzer des DFI Stakingservice von DFX erhält eine gewichtete Stimme auf Basis der investierten DFI. Zur Wahl stehen zwei alternative Abstimmungsechanismen. Auswahlmöglichkeiten:\n\n\n• Kollektiv: DFX stimmt mit allen Masternodes als Kollektiv mit Ja/Nein ab\n\n\n• Proportional: DFX stimmt mit Ja/Nein/Neutral mit allen Masternodes im Verhältnis der abgegebenen Stimmen ab.",
-      "description": "Kollektive Abstimmung: \n\nAbhängig von den Abstimmungsergebnissen der jeweiligen CFPs/DFIPs aus der DFX-Community stimmt DFX mit allen Masternodes für seine Kunden ab. \n\n\nCFPs:\n\n<= 50% - DFX stimmt mit allen Masternodes \"nein\".\n> 50% - DFX stimmt mit allen Masternodes \"ja\"\n\n\nDFIPs:\n\n<= 66,66 % - DFX stimmt mir allen Masternodes \"nein\"\n> 66,66 % - DFX stimmt mit allen Masternodes \"ja\"\n\n\nDie kollektive Abstimmung wird nur angewendet, solange DFX <10% der DeFiChain-Masternodes für seine Kunden betreibt. Wenn diese Schwelle überschritten wird, wählt DFX automatisch die proportionale Abstimmung.\n\n\nProportionale Abstimmung:\n\nAbhängig von den Abstimmungsergebnissen der jeweiligen CFPs/DFIPs aus der DFX-Community stimmt DFX für seine Kunden mit allen Masternodes proportional zu den abgegebenen Stimmen ja/nein/neutral ab.",
-      "neutral": "Keine Präferenz"
     },
     "link": {
       "header": "Informationen zur Verknüpfung der Adresse",

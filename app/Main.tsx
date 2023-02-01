@@ -17,10 +17,8 @@ import { useDevice } from "./hooks/useDevice";
 import NotificationService, { Level, Notification } from "./services/NotificationService";
 import AppStyles from "./styles/AppStyles";
 import AdminScreen from "./screens/AdminScreen";
-import CfpScreen from "./screens/CfpScreen";
 import Colors from "./config/Colors";
 import KycScreen from "./screens/KycScreen";
-import SpecialVotingScreen from "./screens/SpecialVotingScreen";
 import LinkScreen from "./screens/LinkScreen";
 import ErrorScreen from "./screens/ErrorScreen";
 
@@ -50,7 +48,6 @@ const Main = () => {
         [Routes.Home]: "/",
         [Routes.Login]: "login",
         [Routes.Gtc]: "legal",
-        [Routes.Cfp]: "cfp",
         [Routes.SpecialVoting]: "voting",
         [Routes.Admin]: "admin",
         [Routes.Kyc]: "kyc",
@@ -64,8 +61,6 @@ const Main = () => {
     { route: Routes.Home, screen: HomeScreen },
     { route: Routes.Login, screen: LoginScreen },
     { route: Routes.Gtc, screen: GtcScreen },
-    { route: Routes.Cfp, screen: CfpScreen },
-    { route: Routes.SpecialVoting, screen: SpecialVotingScreen },
     { route: Routes.Admin, screen: AdminScreen },
     { route: Routes.Kyc, screen: KycScreen },
     { route: Routes.Link, screen: LinkScreen },

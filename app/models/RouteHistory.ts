@@ -26,6 +26,7 @@ interface RouteHistory {
   outputAmount: number;
   outputAsset: string;
   txId: string;
+  txUrl: string;
   date: Date;
   amlCheck: AmlCheck;
   isComplete: boolean;

@@ -41,12 +41,6 @@ export enum AccountType {
   SOLE_PROPRIETORSHIP = "SoleProprietorship",
 }
 
-export enum CfpVote {
-  YES = "Yes",
-  NO = "No",
-  NEUTRAL = "Neutral",
-}
-
 export enum TradingPeriod {
   DAY = "Day",
   YEAR = "Year",
@@ -75,10 +69,6 @@ export interface NewUser {
 export interface Fees {
   buy: number;
   sell: number;
-}
-
-export interface CfpVotes {
-  [number: string]: CfpVote | undefined;
 }
 
 export interface UserDto {

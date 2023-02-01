@@ -4,13 +4,11 @@ import { Environment } from "../env/Environment";
 import { ApiError, ApiSignMessage, AuthResponse } from "../models/ApiDto";
 import { Asset } from "../models/Asset";
 import { BuyRoute, BuyRouteDto, fromBuyRouteDto, toBuyRouteDto } from "../models/BuyRoute";
-import { CfpResult } from "../models/CfpResult";
 import { Country } from "../models/Country";
 import { Fiat } from "../models/Fiat";
 import { Language } from "../models/Language";
 import { fromSellRouteDto, SellRoute, SellRouteDto, toSellRouteDto } from "../models/SellRoute";
 import {
-  CfpVotes,
   fromUserDetailDto,
   fromUserDto,
   KycInfo,
@@ -27,7 +25,6 @@ import { StakingRoute } from "../models/StakingRoute";
 import { RoutesDto, fromRoutesDto, Routes } from "../models/Route";
 import { LimitRequest } from "../models/LimitRequest";
 import { KycData, toKycDataDto } from "../models/KycData";
-import { Settings } from "../models/Settings";
 import { HistoryType } from "../models/HistoryType";
 import { fromStakingBatchDto, StakingBatch, StakingBatchDto } from "../models/StakingBatch";
 import { ApiKey } from "../models/ApiKey";
@@ -128,19 +125,6 @@ export const getKycCountries = (code?: string): Promise<Country[]> => {
   return fetchFrom<Country[]>(url).then((countries) => countries.sort((a, b) => (a.name > b.name ? 1 : -1)));
 };
 
-// --- VOTING --- //
-export const getSettings = (): Promise<Settings> => {
-  return fetchFrom<Settings>(SettingUrl);
-};
-
-export const getCfpVotes = (): Promise<CfpVotes> => {
-  return fetchFrom<CfpVotes>(`${UserUrl}/cfpVotes`);
-};
-
-export const putCfpVotes = (votes: CfpVotes): Promise<CfpVotes> => {
-  return fetchFrom<CfpVotes>(`${UserUrl}/cfpVotes`, "PUT", votes);
-};
-
 // --- PAYMENT ROUTES --- //
 export const getRoutes = (): Promise<Routes> => {
   return fetchFrom<RoutesDto>(RouteUrl).then(fromRoutesDto);
@@ -232,10 +216,6 @@ export const postSepaFiles = (files: File[]): Promise<void> => {
 // --- STATISTIC --- //
 export const getStatistic = (): Promise<Statistic> => {
   return fetchFrom<Statistic>(StatisticUrl);
-};
-
-export const getCfpResults = (voting: string): Promise<CfpResult[]> => {
-  return fetchFrom(`${StatisticUrl}/cfp/${voting}`);
 };
 
 // --- LINK --- //

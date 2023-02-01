@@ -98,15 +98,6 @@ const RouteHistory = ({ history }: Props) => {
     setShowsDetail(true);
   };
 
-  const defiscanTxLink = (tx: RouteHistoryAlias): string => {
-    return `https://defiscan.live/transactions/${tx.txId}`;
-  };
-
-  const openLink = async (tx: RouteHistoryAlias) => {
-    const link = defiscanTxLink(tx);
-    openUrl(link);
-  };
-
   const data = (tx: RouteHistoryAlias) => [
     { condition: true, label: "model.route.date", value: dateOf(tx) },
     { condition: true, label: "model.route.input", value: inputOf(tx) },
@@ -117,7 +108,7 @@ const RouteHistory = ({ history }: Props) => {
       condition: true,
       label: "model.route.tx_link",
       icon: iconOpenLink,
-      onPress: () => openLink(tx),
+      onPress: () => openUrl(tx.txUrl),
     },
   ];
 
@@ -176,7 +167,7 @@ const RouteHistory = ({ history }: Props) => {
                 <IconButton
                   icon={device.MD ? iconOpenLink : iconShowDetail}
                   onPress={() => {
-                    device.MD ? openLink(entry) : showDetail(entry);
+                    device.MD ? openUrl(entry.txUrl) : showDetail(entry);
                   }}
                 />
               </CompactCell>

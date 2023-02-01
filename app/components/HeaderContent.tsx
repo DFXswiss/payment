@@ -55,12 +55,6 @@ const HeaderContent = ({ session, settings }: { session?: Session; settings?: Ap
           <DeFiButton onPress={() => navigate(Routes.Home)} style={styles.button} compact>
             {t("general.overview")}
           </DeFiButton>
-          <DeFiButton onPress={() => navigate(Routes.Cfp)} style={styles.button} compact>
-            {t("cfp.link")}
-          </DeFiButton>
-          {/* <DeFiButton onPress={() => navigate(Routes.SpecialVoting)} style={styles.button} compact>
-            {t("specialVoting.link")}
-          </DeFiButton> */}
         </>
       )}
 

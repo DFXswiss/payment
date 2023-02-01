@@ -68,10 +68,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const [isChangeUserAvailable, setIsChangeUserAvailable] = useState(false);
   const [isChangeUser, setIsChangeUser] = useState(false);
 
-  const [isVotingOpen, setIsVotingOpen] = useState(false);
-  const [canVote, setCanVote] = useState(false);
-  const [votingImageWidth, setVotingImageWidth] = useState(0);
-
   const sellRouteEdit = (update: SetStateAction<boolean>) => {
     if (resolve(update, isSellRouteEdit) && !user?.kycDataComplete) {
       setIsUserEdit(true);

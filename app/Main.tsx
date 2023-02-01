@@ -48,7 +48,6 @@ const Main = () => {
         [Routes.Home]: "/",
         [Routes.Login]: "login",
         [Routes.Gtc]: "legal",
-        [Routes.SpecialVoting]: "voting",
         [Routes.Admin]: "admin",
         [Routes.Kyc]: "kyc",
         [Routes.Link]: "link",

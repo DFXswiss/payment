@@ -65,7 +65,7 @@ const PhoneNumber = ({
     return getNumber(currentNumber.code, number?.replace(" ", ""));
   };
   const getNumber = (code?: PhoneCode, number?: string) => {
-    return join([code?.dialCode, number], " ");
+    return join([code?.dialCode, number], "");
   };
 
   useEffect(() => {

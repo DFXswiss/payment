@@ -18,8 +18,9 @@ import {
   KycState,
   KycStatus,
   kycNotStarted,
+  kycInReview,
 } from "../models/User";
-import { pickDocuments, sleep } from "../utils/Utils";
+import { openUrl, pickDocuments, sleep } from "../utils/Utils";
 import KycInit from "../components/KycInit";
 import { SpacerV } from "../elements/Spacers";
 import { H2 } from "../elements/Texts";
@@ -82,7 +83,12 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
       .catch(onLoadFailed);
   }, []);
 
+  const continueAllowed = (info?: KycInfo): boolean =>
+    ![KycState.REVIEW, KycState.FAILED].includes(info?.kycState ?? KycState.NA);
+
   const continueKyc = (info?: KycInfo, params?: any) => {
+    if (!continueAllowed(info)) return;
+
     if (!info?.kycDataComplete) {
       setKycData({ accountType: AccountType.PERSONAL, ...params });
       setKycDataEdit(true);
@@ -90,16 +96,29 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
       setShowsKycStartDialog(true);
     } else if (kycInProgress(info?.kycStatus)) {
       if (!info?.sessionUrl) return NotificationService.error(t("feedback.load_failed"));
+
       setIsKycInProgress(true);
 
-      // load iframe
       if (info?.kycStatus !== KycStatus.CHATBOT) {
-        setIsLoading(true);
-        setTimeout(() => setIsLoading(false), 2000);
+        startIdent();
       }
     } else if (kycCompleted(info?.kycStatus)) {
       setIsLimitRequest(true);
     }
+  };
+
+  const startIdent = () => {
+    // load iframe
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 2000);
+
+    // poll for completion
+    setInterval(() => {
+      getKyc(kycInfo?.kycHash).then((info) => {
+        if (kycInReview(info.kycStatus)) setIsKycInProgress(false);
+        setKycInfo(info);
+      });
+    }, 1000);
   };
 
   const startKyc = async () => {
@@ -180,6 +199,8 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
       .finally(() => setIsFileUploading(false));
   };
 
+  const onComplete = () => openUrl((route.params as any)?.redirect_uri ?? "https://dfx.swiss", false);
+
   const continueLabel = (): string => {
     if (kycCompleted(kycInfo?.kycStatus)) return "model.kyc.increase_limit";
     else if (kycNotStarted(kycInfo?.kycStatus)) return "action.start";
@@ -231,6 +252,26 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
               <Iframe src={kycInfo.sessionUrl} />
             )}
           </View>
+        ) : kycInReview(kycInfo?.kycStatus) ? (
+          <>
+            <View>
+              {!settings?.headless && <SpacerV height={30} />}
+
+              <H2 text={t("model.kyc.review_title")} />
+              <SpacerV />
+
+              <Paragraph>{t(`model.kyc.review_text`)}</Paragraph>
+
+              <SpacerV />
+              {continueAllowed(kycInfo) && (
+                <ButtonContainer>
+                  <DeFiButton mode="contained" onPress={onComplete}>
+                    {t("action.ok")}
+                  </DeFiButton>
+                </ButtonContainer>
+              )}
+            </View>
+          </>
         ) : (
           <>
             <Portal>
@@ -300,7 +341,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
                 )}
               </DataTable>
               <SpacerV />
-              {kycInfo.kycState !== KycState.REVIEW && (
+              {continueAllowed(kycInfo) && (
                 <ButtonContainer>
                   <DeFiButton mode="contained" onPress={() => continueKyc(kycInfo, inputParams)}>
                     {t(continueLabel())}

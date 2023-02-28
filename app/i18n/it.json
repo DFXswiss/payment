@@ -270,7 +270,9 @@
             "validation": "Errore: Si prega di controllare la risposta",
             "wrong_sms": "Errore: Codice SMS errato."
           }
-        }
+        },
+        "review_title": "Dati in revisione",
+        "review_text": "I dati vengono controllati. Questa operazione richiede solitamente dai 5 ai 10 minuti. Una volta terminato, vi invieremo un'e-mail."
       },
       "route": {
         "routes": "Modalità di pagamento",

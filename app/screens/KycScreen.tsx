@@ -263,13 +263,11 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
               <Paragraph>{t(`model.kyc.review_text`)}</Paragraph>
 
               <SpacerV />
-              {continueAllowed(kycInfo) && (
-                <ButtonContainer>
-                  <DeFiButton mode="contained" onPress={onComplete}>
-                    {t("action.ok")}
-                  </DeFiButton>
-                </ButtonContainer>
-              )}
+              <ButtonContainer>
+                <DeFiButton mode="contained" onPress={onComplete}>
+                  {t("action.ok")}
+                </DeFiButton>
+              </ButtonContainer>
             </View>
           </>
         ) : (

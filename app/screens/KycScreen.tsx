@@ -100,24 +100,26 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
       setIsKycInProgress(true);
 
       if (info?.kycStatus !== KycStatus.CHATBOT) {
-        startIdent();
+        startIdent(info);
       }
     } else if (kycCompleted(info?.kycStatus)) {
       setIsLimitRequest(true);
     }
   };
 
-  const startIdent = () => {
+  const startIdent = (info: KycInfo) => {
     // load iframe
     setIsLoading(true);
     setTimeout(() => setIsLoading(false), 2000);
 
     // poll for completion
     setInterval(() => {
-      getKyc(kycInfo?.kycHash).then((info) => {
-        if (kycInReview(info.kycStatus)) setIsKycInProgress(false);
-        setKycInfo(info);
-      });
+      getKyc(info.kycHash)
+        .then((i) => {
+          if (kycInReview(i.kycStatus)) setIsKycInProgress(false);
+          setKycInfo(i);
+        })
+        .catch(console.error);
     }, 1000);
   };
 

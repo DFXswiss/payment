@@ -115,7 +115,6 @@ export interface UserDetailDto extends UserDto {
   paidRefCredit: number;
   refCount: number;
   refCountActive: number;
-  stakingBalance: number;
   buyVolume: VolumeInformation;
   sellVolume: VolumeInformation;
   cryptoVolume: VolumeInformation;
@@ -131,7 +130,6 @@ export interface UserDetail extends User {
   paidRefCredit: number;
   refCount: number;
   refCountActive: number;
-  stakingBalance: number;
   buyVolume: VolumeInformation;
   sellVolume: VolumeInformation;
   cryptoVolume: VolumeInformation;
@@ -196,7 +194,6 @@ export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
   paidRefCredit: dto.paidRefCredit,
   refCount: dto.refCount,
   refCountActive: dto.refCountActive,
-  stakingBalance: dto.stakingBalance,
   buyVolume: dto.buyVolume,
   sellVolume: dto.sellVolume,
   cryptoVolume: dto.cryptoVolume,

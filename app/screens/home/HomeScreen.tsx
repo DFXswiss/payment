@@ -1,6 +1,6 @@
 import React, { useState, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
-import { View, Image } from "react-native";
+import { View } from "react-native";
 import DeFiModal from "../../components/util/DeFiModal";
 import Loading from "../../components/util/Loading";
 import UserEdit from "../../components/edit/UserEdit";
@@ -16,9 +16,8 @@ import {
   KycState,
   KycStatus,
   UserDetail,
-  UserStatus,
 } from "../../models/User";
-import { getRoutes, getStatistic, getUserDetail } from "../../services/ApiService";
+import { getRoutes, getUserDetail } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
 import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
@@ -40,14 +39,12 @@ import IconButton from "../../components/util/IconButton";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { navigate } from "../../utils/NavigationHelper";
 import Routes from "../../config/Routes";
-import { StakingRoute } from "../../models/StakingRoute";
 import withSettings from "../../hocs/withSettings";
 import { AppSettings } from "../../services/SettingsService";
 import { CryptoRoute } from "../../models/CryptoRoute";
 import KycDataEdit from "../../components/edit/KycDataEdit";
 import { KycData } from "../../models/KycData";
 import ChangeUser from "../../components/ChangeUser";
-import { Statistic } from "../../models/Statistic";
 
 const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSettings }) => {
   const { t } = useTranslation();
@@ -57,13 +54,10 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   const [user, setUser] = useState<UserDetail>();
   const [buyRoutes, setBuyRoutes] = useState<BuyRoute[]>();
   const [sellRoutes, setSellRoutes] = useState<SellRoute[]>();
-  const [stakingRoutes, setStakingRoutes] = useState<StakingRoute[]>();
   const [cryptoRoutes, setCryptoRoutes] = useState<CryptoRoute[]>();
-  const [statistic, setStatistic] = useState<Statistic>();
   const [isUserEdit, setIsUserEdit] = useState(false);
   const [isBuyRouteEdit, setIsBuyRouteEdit] = useState(false);
   const [isSellRouteEdit, setIsSellRouteEdit] = useState(false);
-  const [isStakingRouteEdit, setIsStakingRouteEdit] = useState(false);
   const [isCryptoRouteEdit, setIsCryptoRouteEdit] = useState(false);
   const [isChangeUserAvailable, setIsChangeUserAvailable] = useState(false);
   const [isChangeUser, setIsChangeUser] = useState(false);
@@ -89,23 +83,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       return false;
     }
     return true;
-  };
-
-  const stakingRouteEdit = (update: SetStateAction<boolean>) => {
-    if (resolve(update, isStakingRouteEdit)) {
-      // bank TX required
-      if (user?.status !== UserStatus.ACTIVE) return NotificationService.error(t("feedback.bank_tx_required"));
-
-      // check if user has KYC
-      if (!areKycChecksSuccessful()) {
-        return;
-      }
-    } else {
-      // reload all routes after close (may impact sell routes)
-      loadRoutes();
-    }
-
-    setIsStakingRouteEdit(update);
   };
 
   const cryptoRouteEdit = (update: SetStateAction<boolean>) => {
@@ -161,7 +138,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     setUser(undefined);
     setBuyRoutes(undefined);
     setSellRoutes(undefined);
-    setStakingRoutes(undefined);
     setCryptoRoutes(undefined);
     setIsUserEdit(false);
   };
@@ -170,7 +146,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     return getRoutes().then((routes) => {
       setBuyRoutes(routes.buy);
       setSellRoutes(routes.sell);
-      setStakingRoutes(routes.staking);
       setCryptoRoutes(routes.crypto);
     });
   };
@@ -179,12 +154,11 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     (cancelled) => {
       if (session) {
         if (session.isLoggedIn) {
-          Promise.all([getUserDetail(), loadRoutes(), getStatistic()])
-            .then(([user, _, statistic]) => {
+          Promise.all([getUserDetail(), loadRoutes()])
+            .then(([user, _]) => {
               if (!cancelled()) {
                 setUser(user);
                 setIsChangeUserAvailable(user?.linkedAddresses != undefined && user.linkedAddresses.length > 1);
-                setStatistic(statistic);
               }
             })
             .catch((e: ApiError) =>
@@ -371,21 +345,16 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
             <RouteList
               user={user}
               setUser={setUser}
-              statistic={statistic}
               buyRoutes={buyRoutes}
               setBuyRoutes={setBuyRoutes}
               sellRoutes={sellRoutes}
               setSellRoutes={setSellRoutes}
-              stakingRoutes={stakingRoutes}
-              setStakingRoutes={setStakingRoutes}
               cryptoRoutes={cryptoRoutes}
               setCryptoRoutes={setCryptoRoutes}
               isBuyRouteEdit={isBuyRouteEdit}
               setIsBuyRouteEdit={setIsBuyRouteEdit}
               isSellRouteEdit={isSellRouteEdit && !isUserEdit}
               setIsSellRouteEdit={sellRouteEdit}
-              isStakingRouteEdit={isStakingRouteEdit}
-              setIsStakingRouteEdit={stakingRouteEdit}
               isCryptoRouteEdit={isCryptoRouteEdit}
               setIsCryptoRouteEdit={cryptoRouteEdit}
             />

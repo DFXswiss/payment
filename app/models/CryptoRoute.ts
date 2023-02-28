@@ -2,17 +2,14 @@ import { Asset } from "./Asset";
 import { Blockchain } from "./Blockchain";
 import { Deposit } from "./Deposit";
 import { MinDeposit } from "./MinDeposit";
-import { StakingRoute } from "./StakingRoute";
 
 export interface CryptoRoute {
   id: string;
   active: boolean;
   fee: number;
-  type: string;
   blockchain: Blockchain;
   deposit: Deposit;
-  asset?: Asset;
-  staking?: StakingRoute;
+  asset: Asset;
   volume: number;
   annualVolume: number;
   minDeposits: MinDeposit[];

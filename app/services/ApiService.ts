@@ -21,12 +21,10 @@ import {
   UserDto,
 } from "../models/User";
 import AuthService, { Credentials, Session } from "./AuthService";
-import { StakingRoute } from "../models/StakingRoute";
 import { RoutesDto, fromRoutesDto, Routes } from "../models/Route";
 import { LimitRequest } from "../models/LimitRequest";
 import { KycData, toKycDataDto } from "../models/KycData";
 import { HistoryType } from "../models/HistoryType";
-import { fromStakingBatchDto, StakingBatch, StakingBatchDto } from "../models/StakingBatch";
 import { ApiKey } from "../models/ApiKey";
 import { CryptoRoute } from "../models/CryptoRoute";
 import { attachType, CryptoRouteHistory, RouteHistoryType } from "../models/RouteHistory";
@@ -41,7 +39,6 @@ const KycUrl = "kyc";
 const BuyUrl = "buy";
 const RouteUrl = "route";
 const SellUrl = "sell";
-const StakingUrl = "staking";
 const CryptoRouteUrl = "cryptoRoute";
 const HistoryUrl = "history";
 const AssetUrl = "asset";
@@ -50,7 +47,6 @@ const CountryUrl = "country";
 const LanguageUrl = "language";
 const BankTxUrl = "bankTx";
 const StatisticUrl = "statistic";
-const SettingUrl = "setting/frontend";
 const LinkUrl = "link";
 
 // --- AUTH --- //
@@ -163,24 +159,6 @@ export const putSellRoute = (route: SellRoute): Promise<SellRoute> => {
 export const getSellRouteHistory = (route: SellRoute): Promise<SellRouteHistory[]> => {
   return fetchFrom<SellRouteHistory[]>(`${SellUrl}/${route.id}/history`).then((history) =>
     attachType(RouteHistoryType.SELL, history)
-  );
-};
-
-export const getStakingRoutes = (): Promise<StakingRoute[]> => {
-  return fetchFrom<StakingRoute[]>(StakingUrl);
-};
-
-export const postStakingRoute = (route: StakingRoute): Promise<StakingRoute> => {
-  return fetchFrom<StakingRoute>(StakingUrl, "POST", route);
-};
-
-export const putStakingRoute = (route: StakingRoute): Promise<StakingRoute> => {
-  return fetchFrom<StakingRoute>(`${StakingUrl}/${route.id}`, "PUT", route);
-};
-
-export const getStakingBatches = (route: StakingRoute): Promise<StakingBatch[]> => {
-  return fetchFrom<StakingBatchDto[]>(`${StakingUrl}/${route?.id}/batches`).then((dtoList) =>
-    dtoList.map((dto) => fromStakingBatchDto(dto))
   );
 };
 

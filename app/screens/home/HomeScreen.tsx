@@ -154,6 +154,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       autostart: "1",
       phone: user?.phone ?? "",
       mail: user?.mail ?? "",
+      redirect_uri: window.location.origin,
     });
 
   const reset = (): void => {

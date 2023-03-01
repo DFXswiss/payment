@@ -267,7 +267,9 @@
             "validation": "Erro: Por favor, verifique a sua resposta",
             "wrong_sms": "Erro: Código SMS errado."
           }
-        }
+        },
+        "review_title": "Dados em revisão",
+        "review_text": "Os seus dados serão verificados. Isto leva normalmente 5 a 10 minutos. Uma vez feito, enviar-lhe-emos um e-mail."
       },
       "route": {
         "routes": "Rotas de pagamento",

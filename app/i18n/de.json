@@ -271,7 +271,9 @@
             "validation": "Fehler: Bitte überprüfe deine Antwort.",
             "wrong_sms": "Fehler: Falscher SMS-Code."
           }
-        }
+        },
+        "review_title": "Daten werden geprüft",
+        "review_text": "Deine Daten werden geprüft. Dies dauert in der Regel 5 bis 10 Minuten. Sobald erledigt senden wir Dir eine E-Mail."
       },
       "route": {
         "routes": "Payment Routen",

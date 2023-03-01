@@ -254,7 +254,9 @@
             "validation": "Error: Por favor, compruebe su respuesta.",
             "wrong_sms": "Error: Código SMS erróneo."
           }
-        }
+        },
+        "review_title": "Datos en revisión",
+        "review_text": "Sus datos serán revisados. Esto suele tardar entre 5 y 10 minutos. Una vez hecho esto, le enviaremos un correo electrónico."
       },
       "route": {
         "routes": "Rutas de pago",

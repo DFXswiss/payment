@@ -210,6 +210,8 @@ export const kycNotStarted = (kycStatus?: KycStatus) => [KycStatus.NA].includes(
 
 export const kycCompleted = (kycStatus?: KycStatus) => [KycStatus.COMPLETED].includes(kycStatus ?? KycStatus.NA);
 
+export const kycInReview = (kycStatus?: KycStatus) => [KycStatus.CHECK].includes(kycStatus ?? KycStatus.NA);
+
 export const kycInProgress = (kycStatus?: KycStatus) =>
   [KycStatus.CHATBOT, KycStatus.ONLINE_ID, KycStatus.VIDEO_ID].includes(kycStatus ?? KycStatus.NA);
 

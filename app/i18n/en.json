@@ -270,7 +270,9 @@
             "validation": "Error: Please check your answer.",
             "wrong_sms": "Error: Wrong SMS code."
           }
-        }
+        },
+        "review_title": "Data in Review",
+        "review_text": "Your data will be checked. This usually takes 5 to 10 minutes. Once done we will send you an email."
       },
       "route": {
         "routes": "Payment Routes",

@@ -270,7 +270,9 @@
             "validation": "Erreur : Veuillez vérifier votre réponse.",
             "wrong_sms": "Erreur : Code SMS erroné."
           }
-        }
+        },
+        "review_title": "Données en cours de révision",
+        "review_text": "Vos données vont être vérifiées. Cela prend généralement 5 à 10 minutes. Une fois cette opération terminée, nous vous enverrons un e-mail."
       },
       "route": {
         "routes": "Itinéraires de paiement",

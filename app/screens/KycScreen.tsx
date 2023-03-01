@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AppLayout from "../components/AppLayout";
 import Iframe from "../components/util/Iframe";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -15,7 +15,6 @@ import {
   kycCompleted,
   kycInProgress,
   KycInfo,
-  KycState,
   KycStatus,
   kycNotStarted,
   kycInReview,
@@ -58,6 +57,8 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const [isFileUploading, setIsFileUploading] = useState(false);
   const [showsLinkInstructions, setShowsLinkInstructions] = useState(false);
   const [showsReviewHint, setShowsReviewHint] = useState(false);
+
+  const intervalRef = useRef<NodeJS.Timer>();
 
   useEffect(() => {
     // store and reset params
@@ -115,10 +116,15 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     setTimeout(() => setIsLoading(false), 2000);
 
     // poll for completion
-    setInterval(() => {
+    intervalRef.current = setInterval(() => {
       getKyc(info.kycHash)
         .then((i) => {
-          if (!kycInProgress(i.kycStatus) || !kycStepInProgress(i.kycState)) setIsKycInProgress(false);
+          if (!kycInProgress(i.kycStatus) || !kycStepInProgress(i.kycState)) {
+            setIsKycInProgress(false);
+
+            // clear the interval
+            intervalRef.current && clearInterval(intervalRef.current);
+          }
           if (kycInReview(i.kycStatus, i.kycState)) setShowsReviewHint(true);
 
           setKycInfo(i);

@@ -319,10 +319,7 @@ const RouteList = ({
               <ButtonContainer>
                 <DeFiButton
                   loading={isRouteLoading(detailRoute)}
-                  onPress={() => {
-                    deleteRoute(detailRoute).then(() => setDetailRoute(undefined));
-                  }}
-                  disabled={"isInUse" in detailRoute && detailRoute.isInUse}
+                  onPress={() => deleteRoute(detailRoute).then(() => setDetailRoute(undefined))}
                 >
                   {t("action.delete")}
                 </DeFiButton>

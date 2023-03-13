@@ -41,8 +41,7 @@
       "copied": "¡Copiada!",
       "saved": "¡Salvado!",
       "pop_up_blocked": "¡Error mientras se abría! Por favor permite las ventanas emergentes en los ajustes de tu buscador.",
-      "bank_tx_required": "Para utilizar esta función, primero debe completar con éxito una transacción bancaria (compra o venta).",
-      "change_user_security": "El cambio a la dirección seleccionada está desactivado por seguridad."
+      "bank_tx_required": "Para utilizar esta función, primero debe completar con éxito una transacción bancaria (compra o venta)."
     },
     "validation": {
       "required": "Campo obligatorio",

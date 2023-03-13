@@ -42,8 +42,7 @@
       "copied": "Copiado!",
       "saved": "Salvo!",
       "pop_up_blocked": "Erro ao abrir! Por favor permitir janelas pop-up nas definições do navegador.",
-      "bank_tx_required": "Para utilizar esta função, deve primeiro concluir com êxito uma transacção bancária (compra ou venda)!",
-      "change_user_security": "A mudança para o endereço seleccionado é desactivada devido à segurança."
+      "bank_tx_required": "Para utilizar esta função, deve primeiro concluir com êxito uma transacção bancária (compra ou venda)!"
     },
     "validation": {
       "required": "Campo Obrigatório",

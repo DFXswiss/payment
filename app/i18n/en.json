@@ -41,8 +41,7 @@
       "copied": "Copied!",
       "saved": "Saved!",
       "pop_up_blocked": "Error while opening! Please allow pop-up windows in the browser settings.",
-      "bank_tx_required": "To use this feature, you must first successfully complete a bank transaction (buy or sell)!",
-      "change_user_security": "Changing to selected address is deactivated due to security."
+      "bank_tx_required": "To use this feature, you must first successfully complete a bank transaction (buy or sell)!"
     },
     "validation": {
       "required": "Mandatory field",

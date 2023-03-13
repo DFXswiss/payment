@@ -145,7 +145,6 @@ export interface VolumeInformation {
 export interface LinkedAddress {
   address: string;
   blockchains: Blockchain[];
-  isSwitchable: boolean;
 }
 
 export const fromUserDto = (user: UserDto): User => ({

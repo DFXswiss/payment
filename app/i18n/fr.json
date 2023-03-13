@@ -41,8 +41,7 @@
       "copied": "Copié !",
       "saved": "Sauvegardé !",
       "pop_up_blocked": "Erreur d'ouverture ! Veuillez autoriser les fenêtres pop-up dans les paramètres de votre navigateur.",
-      "bank_tx_required": "Pour utiliser cette fonction, vous devez d'abord réussir une transaction bancaire (achat ou vente) !",
-      "change_user_security": "La modification de l'adresse sélectionnée est désactivée pour des raisons de sécurité."
+      "bank_tx_required": "Pour utiliser cette fonction, vous devez d'abord réussir une transaction bancaire (achat ou vente) !"
     },
     "validation": {
       "required": "Champ obligatoire",

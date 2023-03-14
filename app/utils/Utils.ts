@@ -19,7 +19,8 @@ export const createRules = (rules: any): any => {
   return rules;
 };
 
-export const openUrl = (url: string, newTab = true): void => {
+export const openUrl = (url: string | undefined, newTab = true): void => {
+  if (!url) return;
   if (Platform.OS == "web" && newTab) {
     const newWindow = window.open(url, "_blank");
 
@@ -52,6 +53,10 @@ export const toBase64 = (file: File): Promise<string | undefined> => {
     reader.onload = () => resolve(reader.result ? (reader.result as string) : undefined);
     reader.onerror = (e) => reject(e);
   });
+};
+
+export const round = (amount: number, decimals: number): number => {
+  return Math.round(amount * Math.pow(10, decimals)) / Math.pow(10, decimals);
 };
 
 export const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";

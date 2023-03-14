@@ -30,7 +30,7 @@ import { useDevice } from "../../hooks/useDevice";
 import useLoader from "../../hooks/useLoader";
 import { BuyRoute } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import { formatAmount, resolve } from "../../utils/Utils";
+import { formatAmount, openUrl, resolve } from "../../utils/Utils";
 import useAuthGuard from "../../hooks/useAuthGuard";
 import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
@@ -334,6 +334,34 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
               </DataTable>
               <SpacerV />
 
+              {user.bsLink && (
+                <>
+                  <SpacerV height={50} />
+                  <H2 text={t("model.user.vip_title")} />
+                  <SpacerV />
+                  <DataTable>
+                          <TouchableOpacity onPress={ () => openUrl(user.bsLink)} key={'model.user.vip_description'} disabled={!'open-in-new'  || device.SM}>
+                            <CompactRow>
+                              <CompactCell multiLine style={{ flex: 3 }}>
+                                {t('model.user.vip_description')}
+                              </CompactCell>
+                            </CompactRow>
+                            <CompactRow>
+                            <CompactCell multiLine style={{ flex: 3 }}>
+                                {t('model.user.vip_link')}
+                              </CompactCell>
+                            <View style={{ flex: 2, flexDirection: "row" }}>
+                                {'open-in-new' && (
+                                  <CompactCell style={{ flex: undefined }}>
+                                    <IconButton icon={'open-in-new'} onPress={device.SM ? () => openUrl(user.bsLink) : undefined} />
+                                  </CompactCell>
+                                )}
+                              </View>
+                              </CompactRow>
+                          </TouchableOpacity>
+                  </DataTable>
+                </>
+              )}
               {refData(user).some((d) => d.condition) && (
                 <>
                   <SpacerV height={50} />

@@ -218,7 +218,10 @@
         "ref_volume": "Volume de parrainage",
         "ref_bonus": "Bonus de parrainage",
         "ref_commission": "Commission de parrainage",
-        "change": "Changement d'adresse"
+        "change": "Changement d'adresse",
+        "vip_title": "Welcome to the Black Squad",
+        "vip_description": "The Black Squad is an elite group for major investors on DFX and gives you a direct voice channel to DFX leadership.",
+        "vip_link": "The Black Squad gathers in a Telegram group - just follow the link:"
       },
       "kyc": {
         "title": "DFX KYC",
@@ -330,6 +333,7 @@
         "aml_check_pass": "Réussi",
         "aml_check_fail": "Échoué",
         "aml_check_pending": "En attente",
+        "price": "Change",
         "link": "Lien",
         "input": "Input",
         "output": "Output",

@@ -351,7 +351,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
                                 {t('model.user.vip_link')}
                               </CompactCell>
                             <View style={{ flex: 2, flexDirection: "row" }}>
-                                {'open-in-new' && (
+                                {(
                                   <CompactCell style={{ flex: undefined }}>
                                     <IconButton icon={'open-in-new'} onPress={device.SM ? () => openUrl(user.bsLink) : undefined} />
                                   </CompactCell>

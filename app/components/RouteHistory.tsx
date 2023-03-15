@@ -80,7 +80,7 @@ const RouteHistory = ({ history }: Props) => {
   };
 
   const priceOf = (tx: RouteHistoryAlias): string => {
-    return formatPrice(tx.inputAmount,tx.outputAmount,tx.inputAsset, tx.outputAsset, tx);
+    return formatPrice(tx.inputAmount,tx.outputAmount, tx);
   };
 
   

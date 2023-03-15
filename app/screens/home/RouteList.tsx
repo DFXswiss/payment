@@ -338,6 +338,7 @@ const RouteList = ({
         "model.route." + route.staking?.paybackType.toLowerCase()
       )}`,
     },
+    { condition: true, label: "model.route.blockchain", value: route.asset?.blockchain },
     { condition: true, label: "model.route.iban", value: route.iban },
     {
       condition: true,

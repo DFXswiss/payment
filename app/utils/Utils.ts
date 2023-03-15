@@ -19,8 +19,7 @@ export const createRules = (rules: any): any => {
   return rules;
 };
 
-export const openUrl = (url: string | undefined, newTab = true): void => {
-  if (!url) return;
+export const openUrl = (url: string, newTab = true): void => {
   if (Platform.OS == "web" && newTab) {
     const newWindow = window.open(url, "_blank");
 

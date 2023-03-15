@@ -119,7 +119,7 @@ export interface UserDetailDto extends UserDto {
   buyVolume: VolumeInformation;
   sellVolume: VolumeInformation;
   cryptoVolume: VolumeInformation;
-  bsLink: string;
+  bsLink?: string;
 
   linkedAddresses: LinkedAddress[];
 }

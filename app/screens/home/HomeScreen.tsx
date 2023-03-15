@@ -1,6 +1,6 @@
 import React, { useState, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
-import { View, Image } from "react-native";
+import { View } from "react-native";
 import DeFiModal from "../../components/util/DeFiModal";
 import Loading from "../../components/util/Loading";
 import UserEdit from "../../components/edit/UserEdit";
@@ -24,7 +24,7 @@ import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
 import AppLayout from "../../components/AppLayout";
 import NotificationService from "../../services/NotificationService";
-import { DataTable, Text } from "react-native-paper";
+import { DataTable, Paragraph, Text } from "react-native-paper";
 import { CompactCell, CompactRow } from "../../elements/Tables";
 import { useDevice } from "../../hooks/useDevice";
 import useLoader from "../../hooks/useLoader";
@@ -156,6 +156,11 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       mail: user?.mail ?? "",
       redirect_uri: window.location.origin,
     });
+
+  const onBsLinkClick = () => {
+    if (!user?.bsLink) return;
+    openUrl(user.bsLink);
+  };
 
   const reset = (): void => {
     setLoading(true);
@@ -332,36 +337,20 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
                     )
                 )}
               </DataTable>
-              <SpacerV />
 
               {user.bsLink && (
                 <>
                   <SpacerV height={50} />
                   <H2 text={t("model.user.vip_title")} />
                   <SpacerV />
-                  <DataTable>
-                          <TouchableOpacity onPress={ () => openUrl(user.bsLink)} key={'model.user.vip_description'} disabled={!'open-in-new'  || device.SM}>
-                            <CompactRow>
-                              <CompactCell multiLine style={{ flex: 3 }}>
-                                {t('model.user.vip_description')}
-                              </CompactCell>
-                            </CompactRow>
-                            <CompactRow>
-                            <CompactCell multiLine style={{ flex: 3 }}>
-                                {t('model.user.vip_link')}
-                              </CompactCell>
-                            <View style={{ flex: 2, flexDirection: "row" }}>
-                                {(
-                                  <CompactCell style={{ flex: undefined }}>
-                                    <IconButton icon={'open-in-new'} onPress={device.SM ? () => openUrl(user.bsLink) : undefined} />
-                                  </CompactCell>
-                                )}
-                              </View>
-                              </CompactRow>
-                          </TouchableOpacity>
-                  </DataTable>
+                  <Paragraph>{t("model.user.vip_description")}</Paragraph>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Paragraph>{t("model.user.vip_link")}</Paragraph>
+                    <IconButton icon={"open-in-new"} onPress={onBsLinkClick} />
+                  </View>
                 </>
               )}
+
               {refData(user).some((d) => d.condition) && (
                 <>
                   <SpacerV height={50} />

@@ -119,6 +119,7 @@ export interface UserDetailDto extends UserDto {
   buyVolume: VolumeInformation;
   sellVolume: VolumeInformation;
   cryptoVolume: VolumeInformation;
+  bsLink?: string;
 
   linkedAddresses: LinkedAddress[];
 }
@@ -135,7 +136,7 @@ export interface UserDetail extends User {
   buyVolume: VolumeInformation;
   sellVolume: VolumeInformation;
   cryptoVolume: VolumeInformation;
-
+  bsLink?: string;
   linkedAddresses: LinkedAddress[];
 }
 
@@ -200,7 +201,7 @@ export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
   buyVolume: dto.buyVolume,
   sellVolume: dto.sellVolume,
   cryptoVolume: dto.cryptoVolume,
-
+  bsLink: dto.bsLink,
   linkedAddresses: dto.linkedAddresses,
 });
 

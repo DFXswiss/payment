@@ -54,6 +54,10 @@ export const toBase64 = (file: File): Promise<string | undefined> => {
   });
 };
 
+export const round = (amount: number, decimals: number): number => {
+  return Math.round(amount * Math.pow(10, decimals)) / Math.pow(10, decimals);
+};
+
 export const formatAmount = (amount?: number): string => amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ") ?? "";
 
 export const formatAmountCrypto = (num: number): string => {

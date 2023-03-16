@@ -1,6 +1,6 @@
 import React, { useState, SetStateAction } from "react";
 import { useTranslation } from "react-i18next";
-import { View, Image } from "react-native";
+import { View } from "react-native";
 import DeFiModal from "../../components/util/DeFiModal";
 import Loading from "../../components/util/Loading";
 import UserEdit from "../../components/edit/UserEdit";
@@ -24,13 +24,13 @@ import { Session } from "../../services/AuthService";
 import RouteList from "./RouteList";
 import AppLayout from "../../components/AppLayout";
 import NotificationService from "../../services/NotificationService";
-import { DataTable, Text } from "react-native-paper";
+import { DataTable, Paragraph, Text } from "react-native-paper";
 import { CompactCell, CompactRow } from "../../elements/Tables";
 import { useDevice } from "../../hooks/useDevice";
 import useLoader from "../../hooks/useLoader";
 import { BuyRoute } from "../../models/BuyRoute";
 import { SellRoute } from "../../models/SellRoute";
-import { formatAmount, resolve } from "../../utils/Utils";
+import { formatAmount, openUrl, resolve } from "../../utils/Utils";
 import useAuthGuard from "../../hooks/useAuthGuard";
 import Colors from "../../config/Colors";
 import { Environment } from "../../env/Environment";
@@ -156,6 +156,11 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       mail: user?.mail ?? "",
       redirect_uri: window.location.origin,
     });
+
+  const onBsLinkClick = () => {
+    if (!user?.bsLink) return;
+    openUrl(user.bsLink);
+  };
 
   const reset = (): void => {
     setLoading(true);
@@ -332,7 +337,19 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
                     )
                 )}
               </DataTable>
-              <SpacerV />
+
+              {user.bsLink && (
+                <>
+                  <SpacerV height={50} />
+                  <H2 text={t("model.user.vip_title")} />
+                  <SpacerV />
+                  <Paragraph>{t("model.user.vip_description")}</Paragraph>
+                  <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Paragraph>{t("model.user.vip_link")}</Paragraph>
+                    <IconButton icon={"open-in-new"} onPress={onBsLinkClick} />
+                  </View>
+                </>
+              )}
 
               {refData(user).some((d) => d.condition) && (
                 <>

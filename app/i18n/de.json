@@ -219,7 +219,10 @@
         "ref_volume": "Referral Volumen",
         "ref_bonus": "Referral Bonus",
         "ref_commission": "Referral Provision",
-        "change": "Adresse wechseln"
+        "change": "Adresse wechseln",
+        "vip_title": "Herzlich willkommen in der Black Squad",
+        "vip_description": "Die Black Squad ist eine elitäre Gruppe für Großinvestoren über DFX und ermöglicht dir einen direkten Sprachkanal zur Führungsebene von DFX.",
+        "vip_link":"Die Black Squad versammelt sich in einer Telegram-Gruppe - folge einfach dem Link:"
       },
       "kyc": {
         "title": "DFX KYC",
@@ -331,6 +334,7 @@
         "aml_check_pass": "Bestanden",
         "aml_check_fail": "Gescheitert",
         "aml_check_pending": "Ausstehend",
+        "price": "Wechselkurs",
         "link": "Link",
         "input": "Input",
         "output": "Output",

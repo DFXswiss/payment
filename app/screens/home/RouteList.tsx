@@ -338,6 +338,7 @@ const RouteList = ({
         "model.route." + route.staking?.paybackType.toLowerCase()
       )}`,
     },
+    { condition: true, label: "model.route.blockchain", value: route.asset?.blockchain },
     { condition: true, label: "model.route.iban", value: route.iban },
     {
       condition: true,
@@ -753,9 +754,6 @@ const RouteList = ({
               <SpacerV height={20} />
               <View style={AppStyles.containerHorizontal}>
                 <H3 text={t("model.route.crypto")} />
-                <View style={AppStyles.betaContainer}>
-                  <Text style={AppStyles.beta}> Beta</Text>
-                </View>
               </View>
 
               {(user?.cryptoVolume.total ?? 0) > 0 && <InfoTable data={volumeInfoData(user?.cryptoVolume)} />}

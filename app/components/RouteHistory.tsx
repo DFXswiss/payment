@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import { DataTable } from "react-native-paper";
 import { CompactCell, CompactHeader, CompactRow, CompactTitle } from "../elements/Tables";
 import Moment from "moment";
-import { formatAmount, formatAmountCrypto, openUrl } from "../utils/Utils";
+import { formatAmount, formatAmountCrypto, openUrl, round } from "../utils/Utils";
 import { useDevice } from "../hooks/useDevice";
 import IconButton from "./util/IconButton";
 import DeFiModal from "./util/DeFiModal";
@@ -56,6 +56,14 @@ const RouteHistory = ({ history }: Props) => {
     return isFiatInput(tx, direction) ? `${formatAmount(amount)} ${asset}` : `${formatAmountCrypto(amount)} ${asset}`;
   };
 
+  const formatPrice = (
+    inputAmount: number,
+    outputAmount: number,
+    tx: RouteHistoryAlias
+  ): string => {
+    return tx.type == RouteHistoryType.BUY ? `${formatAmount(round(inputAmount/outputAmount,2))}` : `${formatAmount(round(outputAmount/inputAmount,2))}`;
+  };
+
   const dateOf = (tx: RouteHistoryAlias): string => {
     if (isInvalid(tx.date)) return invalidValue;
     return Moment(tx.date).format(dateFormat());
@@ -70,6 +78,12 @@ const RouteHistory = ({ history }: Props) => {
     if (isInvalid(tx.outputAmount) || isInvalid(tx.outputAsset)) return invalidValue;
     return formatAmountAndAsset(tx.outputAmount, tx.outputAsset, tx, DirectionType.OUTPUT);
   };
+
+  const priceOf = (tx: RouteHistoryAlias): string => {
+    return formatPrice(tx.inputAmount,tx.outputAmount, tx);
+  };
+
+  
 
   const amlCheckOf = (tx: RouteHistoryAlias, useTranslatedValues = false): string => {
     if (isInvalid(tx.amlCheck)) return invalidValue;
@@ -102,6 +116,7 @@ const RouteHistory = ({ history }: Props) => {
     { condition: true, label: "model.route.date", value: dateOf(tx) },
     { condition: true, label: "model.route.input", value: inputOf(tx) },
     { condition: true, label: "model.route.output", value: outputOf(tx) },
+    { condition: true, label: "model.route.price", value: priceOf(tx) },
     { condition: true, label: "model.route.aml_check", value: amlCheckOf(tx, true) },
     { condition: true, label: "model.route.status", value: statusOf(tx) },
     {
@@ -143,6 +158,7 @@ const RouteHistory = ({ history }: Props) => {
             <>
               <CompactTitle style={styles.left}>{t("model.route.input")}</CompactTitle>
               <CompactTitle style={styles.left}>{t("model.route.output")}</CompactTitle>
+              <CompactTitle style={styles.left}>{t("model.route.price")}</CompactTitle>
             </>
           )}
           <CompactTitle style={device.SM ? styles.left : styles.leftSmall}>
@@ -159,6 +175,7 @@ const RouteHistory = ({ history }: Props) => {
                 <>
                   <CompactCell style={styles.left}>{inputOf(entry)}</CompactCell>
                   <CompactCell style={styles.left}>{outputOf(entry)}</CompactCell>
+                  <CompactCell style={styles.left}>{priceOf(entry)}</CompactCell>
                 </>
               )}
               <CompactCell style={device.SM ? styles.left : styles.leftSmall}>{amlCheckOf(entry)}</CompactCell>

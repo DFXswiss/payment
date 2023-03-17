@@ -447,7 +447,7 @@ const RouteList = ({
 
               <DataTable>
                 <CompactHeader>
-                  <CompactTitle style={{ flex: 1 }}>{t("model.route.type")}</CompactTitle>
+                  <CompactTitle style={{ flex: 1 }}>{t("model.route.blockchain")}</CompactTitle>
                   <CompactTitle style={{ flex: 1 }}>{t("model.route.asset")}</CompactTitle>
                   {device.SM && <CompactTitle style={{ flex: 2 }}>{t("model.route.iban")}</CompactTitle>}
                   <CompactTitle style={{ flex: 2 }}>{t("model.route.bank_usage")}</CompactTitle>
@@ -459,6 +459,7 @@ const RouteList = ({
                 {activeBuyRoutes.map((route) => (
                   <TouchableOpacity key={route.id} onPress={() => setDetailRoute(route)} disabled={device.SM}>
                     <CompactRow>
+                      <CompactCell style={{ flex: 1 }}>{route.asset?.blockchain}</CompactCell>
                       <CompactCell style={{ flex: 1 }}>{route.asset?.name}</CompactCell>
                       {device.SM && <CompactCell style={{ flex: 2 }}>{route.iban}</CompactCell>}
                       <CompactCell style={{ flex: 2 }}>{route.bankUsage}</CompactCell>

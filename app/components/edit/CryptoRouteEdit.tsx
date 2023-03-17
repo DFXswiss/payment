@@ -7,9 +7,8 @@ import { Alert } from "../../elements/Texts";
 import { ApiError } from "../../models/ApiDto";
 import { Asset } from "../../models/Asset";
 import { Blockchain } from "../../models/Blockchain";
-import { BuyType } from "../../models/BuyRoute";
 import { CryptoRoute } from "../../models/CryptoRoute";
-import { getAssets, postCryptoRoute, putCryptoRoute } from "../../services/ApiService";
+import { getAssets, postCryptoRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import { createRules } from "../../utils/Utils";
 import Validations from "../../utils/Validations";
@@ -41,8 +40,6 @@ const CryptoRouteEdit = ({ onRouteCreated }: { onRouteCreated: (route: CryptoRou
   const onSubmit = (route: CryptoRoute) => {
     setIsSaving(true);
     setError(undefined);
-
-    route.type = BuyType.WALLET;
 
     postCryptoRoute(route)
       .then(onRouteCreated)

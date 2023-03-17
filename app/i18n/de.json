@@ -42,8 +42,7 @@
       "copied": "Kopiert!",
       "saved": "Gespeichert!",
       "pop_up_blocked": "Fehler beim Öffnen! Bitte erlaube Pop-up-Fenster in den Browser-Einstellungen.",
-      "bank_tx_required": "Um diese Funktion zu nutzen, musst du zunächst eine Banktransaktion (Kauf oder Verkauf) erfolgreich abschliessen!",
-      "change_user_security": "Der Wechsel zur ausgewählten Adresse ist aus Sicherheitsgründen deaktiviert."
+      "bank_tx_required": "Um diese Funktion zu nutzen, musst du zunächst eine Banktransaktion (Kauf oder Verkauf) erfolgreich abschliessen!"
     },
     "validation": {
       "required": "Pflichtfeld",
@@ -222,7 +221,7 @@
         "change": "Adresse wechseln",
         "vip_title": "Herzlich willkommen in der Black Squad",
         "vip_description": "Die Black Squad ist eine elitäre Gruppe für Großinvestoren über DFX und ermöglicht dir einen direkten Sprachkanal zur Führungsebene von DFX.",
-        "vip_link":"Die Black Squad versammelt sich in einer Telegram-Gruppe - folge einfach dem Link:"
+        "vip_link": "Die Black Squad versammelt sich in einer Telegram-Gruppe - folge einfach dem Link:"
       },
       "kyc": {
         "title": "DFX KYC",
@@ -305,27 +304,6 @@
         "total_volume": "Gesamtvolumen",
         "annual_volume": "Jahresvolumen",
         "min_deposit": "Min. Einzahlung",
-        "min_invest": "Min. Investment",
-        "staking": "Staking",
-        "new_staking": "Neue Stakingroute",
-        "edit_staking": "Stakingroute bearbeiten",
-        "edit_payback": "Diese Änderung wirkt sich erst auf zukünftige Batches aus!",
-        "reward": "Reward",
-        "payback": "Rückzahlung",
-        "reinvest": "Reinvest",
-        "wallet": "Wallet",
-        "bankaccount": "Bankkonto",
-        "reward_sell": "Reward-Verkaufsroute",
-        "payback_sell": "Rückzahlungs-Verkaufsroute",
-        "reward_asset": "Reward-Asset",
-        "payback_asset": "Rückzahlungs-Asset",
-        "payback_date": "Rückzahlungs-Periode",
-        "days": "Tage",
-        "balance": "Guthaben",
-        "rewards": "Rewards",
-        "type": "Typ",
-        "amount": "Betrag",
-        "output_date": "Enddatum",
         "crypto": "Krypto",
         "new_crypto": "Neue Krypto-Route",
         "blockchain": "Blockchain",

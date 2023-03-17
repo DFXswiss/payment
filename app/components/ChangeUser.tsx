@@ -26,11 +26,6 @@ const ChangeUser = ({ user, onChanged: onChanged }: Props) => {
   const changeTo = (linkedAddress: LinkedAddress) => {
     if (linkedAddress.address === user?.address) return;
 
-    if (!linkedAddress.isSwitchable) {
-      NotificationService.warn(t("feedback.change_user_security"));
-      return;
-    }
-
     setLoadingAddress(linkedAddress.address);
 
     changeUser(linkedAddress)
@@ -45,7 +40,6 @@ const ChangeUser = ({ user, onChanged: onChanged }: Props) => {
   const textStyleFor = (linkedAddress: LinkedAddress, isAddress = false): TextStyle[] | undefined => {
     const textStyles: TextStyle[] = [isAddress ? styles.address : styles.blockchain];
     if (linkedAddress.address === user?.address) textStyles.push(styles.current);
-    else if (!linkedAddress.isSwitchable) textStyles.push(styles.disabled);
     return textStyles;
   };
 
@@ -93,9 +87,6 @@ const styles = StyleSheet.create({
   current: {
     color: Colors.Primary,
     fontWeight: "bold",
-  },
-  disabled: {
-    color: Colors.LightGrey,
   },
 });
 

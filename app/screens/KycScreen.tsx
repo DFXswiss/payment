@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import AppLayout from "../components/AppLayout";
 import Iframe from "../components/util/Iframe";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -15,11 +15,12 @@ import {
   kycCompleted,
   kycInProgress,
   KycInfo,
-  KycState,
   KycStatus,
   kycNotStarted,
+  kycInReview,
+  kycStepInProgress,
 } from "../models/User";
-import { pickDocuments, sleep } from "../utils/Utils";
+import { openUrl, pickDocuments, sleep } from "../utils/Utils";
 import KycInit from "../components/KycInit";
 import { SpacerV } from "../elements/Spacers";
 import { H2 } from "../elements/Texts";
@@ -55,6 +56,9 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const [showsKycStartDialog, setShowsKycStartDialog] = useState<boolean>(false);
   const [isFileUploading, setIsFileUploading] = useState(false);
   const [showsLinkInstructions, setShowsLinkInstructions] = useState(false);
+  const [showsReviewHint, setShowsReviewHint] = useState(false);
+
+  const intervalRef = useRef<NodeJS.Timer>();
 
   useEffect(() => {
     // store and reset params
@@ -82,7 +86,12 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
       .catch(onLoadFailed);
   }, []);
 
+  const continueAllowed = (info?: KycInfo): boolean =>
+    kycStepInProgress(info?.kycState) && !kycInReview(info?.kycStatus);
+
   const continueKyc = (info?: KycInfo, params?: any) => {
+    if (!continueAllowed(info)) return;
+
     if (!info?.kycDataComplete) {
       setKycData({ accountType: AccountType.PERSONAL, ...params });
       setKycDataEdit(true);
@@ -90,16 +99,38 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
       setShowsKycStartDialog(true);
     } else if (kycInProgress(info?.kycStatus)) {
       if (!info?.sessionUrl) return NotificationService.error(t("feedback.load_failed"));
+
       setIsKycInProgress(true);
 
-      // load iframe
       if (info?.kycStatus !== KycStatus.CHATBOT) {
-        setIsLoading(true);
-        setTimeout(() => setIsLoading(false), 2000);
+        startIdent(info);
       }
     } else if (kycCompleted(info?.kycStatus)) {
       setIsLimitRequest(true);
     }
+  };
+
+  const startIdent = (info: KycInfo) => {
+    // load iframe
+    setIsLoading(true);
+    setTimeout(() => setIsLoading(false), 2000);
+
+    // poll for completion
+    intervalRef.current = setInterval(() => {
+      getKyc(info.kycHash)
+        .then((i) => {
+          if (!kycInProgress(i.kycStatus) || !kycStepInProgress(i.kycState)) {
+            setIsKycInProgress(false);
+
+            // clear the interval
+            intervalRef.current && clearInterval(intervalRef.current);
+          }
+          if (kycInReview(i.kycStatus, i.kycState)) setShowsReviewHint(true);
+
+          setKycInfo(i);
+        })
+        .catch(console.error);
+    }, 1000);
   };
 
   const startKyc = async () => {
@@ -180,6 +211,8 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
       .finally(() => setIsFileUploading(false));
   };
 
+  const onComplete = () => openUrl((route.params as any)?.redirect_uri ?? "https://dfx.swiss", false);
+
   const continueLabel = (): string => {
     if (kycCompleted(kycInfo?.kycStatus)) return "model.kyc.increase_limit";
     else if (kycNotStarted(kycInfo?.kycStatus)) return "action.start";
@@ -231,6 +264,24 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
               <Iframe src={kycInfo.sessionUrl} />
             )}
           </View>
+        ) : showsReviewHint ? (
+          <>
+            <View>
+              {!settings?.headless && <SpacerV height={30} />}
+
+              <H2 text={t("model.kyc.review_title")} />
+              <SpacerV />
+
+              <Paragraph>{t(`model.kyc.review_text`)}</Paragraph>
+
+              <SpacerV />
+              <ButtonContainer>
+                <DeFiButton mode="contained" onPress={onComplete}>
+                  {t("action.ok")}
+                </DeFiButton>
+              </ButtonContainer>
+            </View>
+          </>
         ) : (
           <>
             <Portal>
@@ -300,7 +351,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
                 )}
               </DataTable>
               <SpacerV />
-              {kycInfo.kycState !== KycState.REVIEW && (
+              {continueAllowed(kycInfo) && (
                 <ButtonContainer>
                   <DeFiButton mode="contained" onPress={() => continueKyc(kycInfo, inputParams)}>
                     {t(continueLabel())}

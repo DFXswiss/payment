@@ -214,7 +214,10 @@
         "ref_volume": "Volume de referência",
         "ref_bonus": "Bónus de referência",
         "ref_commission": "Comissão de referência",
-        "change": "Alterar endereço"
+        "change": "Alterar endereço",
+        "vip_title": "Welcome to the Black Squad",
+        "vip_description": "The Black Squad is an elite group for major investors on DFX and gives you a direct voice channel to DFX leadership.",
+        "vip_link": "The Black Squad gathers in a Telegram group - just follow the link:"
       },
       "kyc": {
         "title": "DFX KYC",
@@ -266,7 +269,9 @@
             "validation": "Erro: Por favor, verifique a sua resposta",
             "wrong_sms": "Erro: Código SMS errado."
           }
-        }
+        },
+        "review_title": "Dados em revisão",
+        "review_text": "Os seus dados serão verificados. Isto leva normalmente 5 a 10 minutos. Uma vez feito, enviar-lhe-emos um e-mail."
       },
       "route": {
         "routes": "Rotas de pagamento",
@@ -324,6 +329,7 @@
         "aml_check_pass": "Aprovado",
         "aml_check_fail": "Falha",
         "aml_check_pending": "Está pendente",
+        "price": "Taxa de câmbio",
         "link": "Ligação",
         "input": "Input",
         "output": "Output",

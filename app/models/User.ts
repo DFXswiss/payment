@@ -118,6 +118,7 @@ export interface UserDetailDto extends UserDto {
   buyVolume: VolumeInformation;
   sellVolume: VolumeInformation;
   cryptoVolume: VolumeInformation;
+  bsLink?: string;
 
   linkedAddresses: LinkedAddress[];
 }
@@ -133,7 +134,7 @@ export interface UserDetail extends User {
   buyVolume: VolumeInformation;
   sellVolume: VolumeInformation;
   cryptoVolume: VolumeInformation;
-
+  bsLink?: string;
   linkedAddresses: LinkedAddress[];
 }
 
@@ -196,7 +197,7 @@ export const fromUserDetailDto = (dto: UserDetailDto): UserDetail => ({
   buyVolume: dto.buyVolume,
   sellVolume: dto.sellVolume,
   cryptoVolume: dto.cryptoVolume,
-
+  bsLink: dto.bsLink,
   linkedAddresses: dto.linkedAddresses,
 });
 
@@ -206,8 +207,14 @@ export const kycNotStarted = (kycStatus?: KycStatus) => [KycStatus.NA].includes(
 
 export const kycCompleted = (kycStatus?: KycStatus) => [KycStatus.COMPLETED].includes(kycStatus ?? KycStatus.NA);
 
+export const kycInReview = (kycStatus?: KycStatus, kycState?: KycState) =>
+  [KycStatus.CHECK].includes(kycStatus ?? KycStatus.NA) || [KycState.REVIEW].includes(kycState ?? KycState.NA);
+
 export const kycInProgress = (kycStatus?: KycStatus) =>
   [KycStatus.CHATBOT, KycStatus.ONLINE_ID, KycStatus.VIDEO_ID].includes(kycStatus ?? KycStatus.NA);
+
+export const kycStepInProgress = (kycState?: KycState) =>
+  ![KycState.REVIEW, KycState.FAILED].includes(kycState ?? KycState.NA);
 
 export const getKycStatusString = (user: User | KycInfo): string => {
   if (kycInProgress(user.kycStatus)) {

@@ -12,7 +12,6 @@ export interface SellRouteDto {
   annualVolume: number;
   active: boolean;
   fee: number;
-  isInUse: boolean;
   minDeposits: MinDeposit[];
 
   blockchain: Blockchain;
@@ -27,7 +26,6 @@ export interface SellRoute {
   annualVolume: number;
   active: boolean;
   fee: number;
-  isInUse: boolean;
   minDeposits: MinDeposit[];
 
   blockchain: Blockchain;
@@ -42,7 +40,6 @@ export const fromSellRouteDto = (route: SellRouteDto): SellRoute => ({
   volume: route.volume,
   annualVolume: route.annualVolume,
   fee: route.fee,
-  isInUse: route.isInUse,
   minDeposits: route.minDeposits,
 
   blockchain: route.blockchain,
@@ -57,7 +54,6 @@ export const toSellRouteDto = (route: SellRoute): SellRouteDto => ({
   volume: route.volume,
   annualVolume: route.annualVolume,
   fee: route.fee,
-  isInUse: route.isInUse,
   minDeposits: route.minDeposits,
 
   blockchain: route.blockchain,

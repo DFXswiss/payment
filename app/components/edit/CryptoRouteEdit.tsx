@@ -78,7 +78,7 @@ const CryptoRouteEdit = ({
     asset: Validations.Required,
     targetBlockchain: [
       isBlockchainsEnabled() && Validations.Required,
-      Validations.Custom((b) => (b == sourceBlockchain ? "model.route.same_blockchain" : true)),
+      Validations.Custom((b) => (b == sourceBlockchain ? "model.route.blockchain_same" : true)),
     ],
   });
 
@@ -88,7 +88,7 @@ const CryptoRouteEdit = ({
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
       <DeFiPicker
         name="blockchain"
-        label={t("model.route.source_blockchain")}
+        label={t("model.route.blockchain_source")}
         items={Object.values(Blockchain)
           .filter((b) => allowedCryptoBlockchains.includes(b))
           .filter((b) => (isBlockchainsEnabled() ? true : b !== session?.blockchains?.[0]))}
@@ -100,7 +100,7 @@ const CryptoRouteEdit = ({
         <>
           <DeFiPicker
             name="targetBlockchain"
-            label={t("model.route.target_blockchain")}
+            label={t("model.route.blockchain_target")}
             items={getBlockchains().filter((b) => b !== sourceBlockchain)}
             labelFunc={(i) => i}
           />
@@ -110,7 +110,7 @@ const CryptoRouteEdit = ({
 
       <DeFiPicker
         name="asset"
-        label={t("model.route.target_asset")}
+        label={t("model.route.asset_target")}
         items={getBuyableAssets(assets)}
         idFunc={(i) => i.id}
         labelFunc={(i) => i.name}

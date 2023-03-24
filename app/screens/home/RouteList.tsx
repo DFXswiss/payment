@@ -39,6 +39,7 @@ import Colors from "../../config/Colors";
 import RouteHistory from "../../components/RouteHistory";
 import { RouteHistoryAlias } from "../../models/RouteHistory";
 import { MinDeposit } from "../../models/MinDeposit";
+import { allowedCryptoBlockchains } from "../../models/Blockchain";
 
 interface Props {
   user?: UserDetail;
@@ -351,9 +352,8 @@ const RouteList = ({
         setIsVisible={setIsCryptoRouteEdit}
         title={t("model.route.new_crypto")}
         style={{ width: 400 }}
-        isBeta={true}
       >
-        <CryptoRouteEdit onRouteCreated={onCryptoRouteCreated} />
+        <CryptoRouteEdit onRouteCreated={onCryptoRouteCreated} session={session} />
       </DeFiModal>
 
       <DeFiModal
@@ -400,13 +400,15 @@ const RouteList = ({
                 {t("model.route.sell")}
               </DeFiButton>
             </View>
-            {session?.isBetaUser && (
-              <View style={AppStyles.ml10}>
-                <DeFiButton mode="contained" onPress={() => setIsCryptoRouteEdit(true)}>
-                  {t("model.route.crypto")}
-                </DeFiButton>
-              </View>
-            )}
+            <View style={AppStyles.ml10}>
+              <DeFiButton
+                mode="contained"
+                disabled={!allowedCryptoBlockchains.some((b) => session?.blockchains?.includes(b))}
+                onPress={() => setIsCryptoRouteEdit(true)}
+              >
+                {t("model.route.crypto")}
+              </DeFiButton>
+            </View>
           </>
         )}
       </View>
@@ -425,13 +427,14 @@ const RouteList = ({
           </View>
           <SpacerV />
           <View style={AppStyles.containerHorizontal}>
-            {session?.isBetaUser && (
-              <>
-                <DeFiButton mode="contained" onPress={() => setIsCryptoRouteEdit(true)} style={{ flex: 1 }}>
-                  {t("model.route.crypto")}
-                </DeFiButton>
-              </>
-            )}
+            <DeFiButton
+              mode="contained"
+              disabled={!allowedCryptoBlockchains.some((b) => session?.blockchains?.includes(b))}
+              onPress={() => setIsCryptoRouteEdit(true)}
+              style={{ flex: 1 }}
+            >
+              {t("model.route.crypto")}
+            </DeFiButton>
           </View>
         </>
       )}

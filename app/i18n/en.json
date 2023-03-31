@@ -329,7 +329,7 @@
         "staking": "Staking transactions",
         "ref": "Referral rewards",
         "lm": "Liquidity mining rewards",
-        "ct_link": "Cointracking Link",
+        "ct_link": "Cointracking Link (read rights)",
         "ct_website": "Cointracking homepage",
         "ct_text": "You can link your DFX account to your Cointracking account.",
         "ct_filter_text": "Current import filter",

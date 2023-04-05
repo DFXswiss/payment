@@ -39,6 +39,7 @@ import Colors from "../../config/Colors";
 import RouteHistory from "../../components/RouteHistory";
 import { RouteHistoryAlias } from "../../models/RouteHistory";
 import { MinDeposit } from "../../models/MinDeposit";
+import { AllowedCryptoBlockchains } from "../../models/Blockchain";
 
 interface Props {
   user?: UserDetail;
@@ -176,6 +177,7 @@ const RouteList = ({
   };
 
   const cryptoRouteData = (route: CryptoRoute) => [
+    { condition: true, label: "model.route.deposit_blockchain", value: route.blockchain },
     {
       condition: true,
       label: "model.route.deposit_address",
@@ -183,8 +185,8 @@ const RouteList = ({
       icon: "content-copy",
       onPress: () => ClipboardService.copy(route.deposit?.address),
     },
-    { condition: true, label: "model.route.blockchain", value: route.blockchain },
-    { condition: true, label: "model.route.asset", value: route.asset.name },
+    { condition: true, label: "model.route.target_blockchain", value: route.asset.blockchain },
+    { condition: true, label: "model.route.target_asset", value: route.asset.name },
     {
       condition: true,
       label: "model.route.fee",
@@ -351,9 +353,8 @@ const RouteList = ({
         setIsVisible={setIsCryptoRouteEdit}
         title={t("model.route.new_crypto")}
         style={{ width: 400 }}
-        isBeta={true}
       >
-        <CryptoRouteEdit onRouteCreated={onCryptoRouteCreated} />
+        <CryptoRouteEdit onRouteCreated={onCryptoRouteCreated} session={session} />
       </DeFiModal>
 
       <DeFiModal
@@ -400,13 +401,15 @@ const RouteList = ({
                 {t("model.route.sell")}
               </DeFiButton>
             </View>
-            {session?.isBetaUser && (
-              <View style={AppStyles.ml10}>
-                <DeFiButton mode="contained" onPress={() => setIsCryptoRouteEdit(true)}>
-                  {t("model.route.crypto")}
-                </DeFiButton>
-              </View>
-            )}
+            <View style={AppStyles.ml10}>
+              <DeFiButton
+                mode="contained"
+                disabled={!AllowedCryptoBlockchains.some((b) => session?.blockchains?.includes(b))}
+                onPress={() => setIsCryptoRouteEdit(true)}
+              >
+                {t("model.route.crypto")}
+              </DeFiButton>
+            </View>
           </>
         )}
       </View>
@@ -425,13 +428,14 @@ const RouteList = ({
           </View>
           <SpacerV />
           <View style={AppStyles.containerHorizontal}>
-            {session?.isBetaUser && (
-              <>
-                <DeFiButton mode="contained" onPress={() => setIsCryptoRouteEdit(true)} style={{ flex: 1 }}>
-                  {t("model.route.crypto")}
-                </DeFiButton>
-              </>
-            )}
+            <DeFiButton
+              mode="contained"
+              disabled={!AllowedCryptoBlockchains.some((b) => session?.blockchains?.includes(b))}
+              onPress={() => setIsCryptoRouteEdit(true)}
+              style={{ flex: 1 }}
+            >
+              {t("model.route.crypto")}
+            </DeFiButton>
           </View>
         </>
       )}
@@ -538,9 +542,9 @@ const RouteList = ({
 
               <DataTable>
                 <CompactHeader>
-                  <CompactTitle style={{ flex: 1 }}>{t("model.route.blockchain")}</CompactTitle>
-                  <CompactTitle style={{ flex: 1 }}>{t("model.route.asset")}</CompactTitle>
+                  <CompactTitle style={{ flex: 1 }}>{t("model.route.deposit_blockchain")}</CompactTitle>
                   {device.SM && <CompactTitle style={{ flex: 2 }}>{t("model.route.deposit_address")}</CompactTitle>}
+                  <CompactTitle style={{ flex: 1 }}>{t("model.route.target_asset")}</CompactTitle>
                   <CompactTitle style={{ flex: undefined }}>
                     <Placeholders device={device} />
                   </CompactTitle>
@@ -549,8 +553,8 @@ const RouteList = ({
                   <TouchableOpacity key={route.id} onPress={() => setDetailRoute(route)} disabled={device.SM}>
                     <CompactRow>
                       <CompactCell style={{ flex: 1 }}>{route.blockchain}</CompactCell>
-                      <CompactCell style={{ flex: 1 }}>{route.asset?.name}</CompactCell>
                       {device.SM && <CompactCell style={{ flex: 2 }}>{route.deposit?.address}</CompactCell>}
+                      <CompactCell style={{ flex: 1 }}>{route.asset?.name}</CompactCell>
                       <CompactCell style={{ flex: undefined }}>
                         {device.SM ? (
                           <>

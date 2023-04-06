@@ -15,13 +15,15 @@ import ButtonContainer from "../util/ButtonContainer";
 import { createRules } from "../../utils/Utils";
 import { ApiError } from "../../models/ApiDto";
 import { KycData } from "../../models/KycData";
+import { Paragraph } from "react-native-paper";
 
 interface Props {
   user?: UserDetail;
   onUserChanged: (user: UserDetail) => void;
+  onClose: () => void;
 }
 
-const UserEdit = ({ user, onUserChanged }: Props) => {
+const UserEdit = ({ user, onUserChanged, onClose }: Props) => {
   const { t } = useTranslation();
   const device = useDevice();
   const {
@@ -32,22 +34,37 @@ const UserEdit = ({ user, onUserChanged }: Props) => {
   const country = useWatch({ control, name: "country" });
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string>();
+  const [showMergeHint, setShowMergeHint] = useState(false);
 
   const onSubmit = (updatedUser: User & KycData) => {
     setIsSaving(true);
     setError(undefined);
 
     putUser(updatedUser)
-      .then(onUserChanged)
+      .then((r) => {
+        onUserChanged(r.user);
+        r.userExists ? setShowMergeHint(true) : onClose();
+      })
       .catch((error: ApiError) => setError(error.statusCode === 409 ? "feedback.mail_error" : ""))
       .finally(() => setIsSaving(false));
   };
 
   const rules: any = createRules({
-    mail: [Validations.Mail]
+    mail: [Validations.Mail],
   });
 
-  return (
+  return showMergeHint ? (
+    <>
+      <Paragraph>{t("model.user.merge")}</Paragraph>
+      <SpacerV />
+
+      <ButtonContainer>
+        <DeFiButton mode="contained" onPress={onClose}>
+          {t("action.ok")}
+        </DeFiButton>
+      </ButtonContainer>
+    </>
+  ) : (
     <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
       <Input name="mail" label={t("model.user.mail")} valueHook={(v: string) => v.trim()} />
       <SpacerV />

@@ -105,7 +105,6 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
 
   const onUserChanged = (newUser: UserDetail) => {
     setUser(newUser);
-    setIsUserEdit(false);
   };
 
   const onKycDataChanged = (newKycData: KycData, info: KycInfo) => {
@@ -194,7 +193,14 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
       icon: isChangeUserAvailable ? "swap-horizontal" : undefined,
       onPress: () => setIsChangeUser(true),
     },
-    { condition: true, label: "model.user.mail", value: user.mail, emptyHint: t("model.user.add_mail") },
+    {
+      condition: true,
+      label: "model.user.mail",
+      value: user.mail,
+      emptyHint: t("model.user.add_mail"),
+      icon: user.mail ? undefined : "email-edit-outline",
+      onPress: () => setIsUserEdit(true),
+    },
     { condition: Boolean(user.phone), label: "model.user.mobile_number", value: user.phone },
     {
       condition: user.kycStatus != KycStatus.NA,
@@ -259,7 +265,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
           // kycHash is auto-generated and therefore should never be null
           <KycDataEdit code={user?.kycHash ?? ""} user={user} onChanged={onKycDataChanged} />
         ) : (
-          <UserEdit user={user} onUserChanged={onUserChanged} />
+          <UserEdit user={user} onUserChanged={onUserChanged} onClose={() => setIsUserEdit(false)} />
         )}
       </DeFiModal>
 

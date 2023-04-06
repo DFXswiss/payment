@@ -71,8 +71,11 @@ export const getUserDetail = (): Promise<UserDetail> => {
   return fetchFrom<UserDetailDto>(`${UserUrl}/detail`).then(fromUserDetailDto);
 };
 
-export const putUser = (user: User): Promise<UserDetail> => {
-  return fetchFrom<UserDetailDto>(UserUrl, "PUT", toUserDto(user)).then(fromUserDetailDto);
+export const putUser = (user: User): Promise<{ user: UserDetail; userExists: boolean }> => {
+  return fetchFrom<Response>(UserUrl, "PUT", toUserDto(user), undefined, true).then(async (r) => ({
+    user: fromUserDetailDto(await r.json()),
+    userExists: r.status === 202,
+  }));
 };
 
 export const putUserLanguage = (language: Language): Promise<void> => {
@@ -235,14 +238,15 @@ const fetchFrom = <T>(
   url: string,
   method: "GET" | "PUT" | "POST" | "DELETE" = "GET",
   data?: any,
-  noJson?: boolean
+  noJson?: boolean,
+  rawResponse?: boolean
 ): Promise<T> => {
   return (
     AuthService.Session.then((session) => buildInit(method, session, data, noJson))
       .then((init) => fetch(`${BaseUrl}/${url}`, init))
       .then((response) => {
         if (response.ok) {
-          return response.json().catch(() => undefined);
+          return rawResponse ? response : response.json().catch(() => undefined);
         }
         return response.json().then((body) => {
           throw body;

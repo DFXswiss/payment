@@ -220,7 +220,8 @@
         "change": "Changement d'adresse",
         "vip_title": "Welcome to the Black Squad",
         "vip_description": "The Black Squad is an elite group for major investors on DFX and gives you a direct voice channel to DFX leadership.",
-        "vip_link": "The Black Squad gathers in a Telegram group - just follow the link:"
+        "vip_link": "The Black Squad gathers in a Telegram group - just follow the link:",
+        "merge": "Il semble que vous ayez déjà un compte chez DFX. Nous venons de vous envoyer un e-mail. Cliquez sur le lien envoyé pour ajouter cette adresse à votre compte existant. De cette façon, vous n'aurez pas besoin de refaire le KYC.\n\nSi vous ne souhaitez pas lier cette adresse à votre compte, ignorez simplement l'e-mail."
       },
       "kyc": {
         "title": "DFX KYC",

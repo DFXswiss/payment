@@ -319,6 +319,7 @@
         "date": "Datum",
         "status": "Status",
         "status_complete": "Abgeschlossen",
+        "status_waitingforlowerfee": "Abwarten auf geringere Fee",
         "status_incomplete": "In Bearbeitung",
         "tx_details": "Transaktionsdetails",
         "tx_link": "Link zur Transaktion",

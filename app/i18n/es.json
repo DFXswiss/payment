@@ -302,6 +302,7 @@
         "date": "Fecha",
         "status": "Estado",
         "status_completado": "Completado",
+        "status_waitingforlowerfee": "Esperar a una tasa más baja",
         "status_incomplete": "En curso",
         "tx_details": "Detalles de la transacción",
         "tx_link": "Enlace a la transacción",

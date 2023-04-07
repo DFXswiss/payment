@@ -315,6 +315,7 @@
         "date": "Data",
         "status": "Estado",
         "status_complete": "Concluído",
+        "status_waitingforlowerfee": "Esperar por taxa mais baixa",
         "status_incomplete": "Em curso",
         "tx_details": "Detalhes da transacção",
         "tx_link": "Ligação à transacção",

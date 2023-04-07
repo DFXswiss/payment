@@ -318,6 +318,7 @@
         "date": "Date",
         "status": "Status",
         "status_complete": "Completed",
+        "status_waitingforlowerfee": "Waiting for lower fee",
         "status_incomplete": "In progress",
         "tx_details": "Transaction details",
         "tx_link": "Link to transaction",

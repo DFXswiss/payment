@@ -318,6 +318,7 @@
         "date": "Date",
         "status": "Statut",
         "status_complete": "Achevé",
+        "status_waitingforlowerfee": "Attendre une fée moindre",
         "status_incomplete": "En cours d'exécution",
         "tx_details": "Détails de la transaction",
         "tx_link": "Lien vers la transaction",

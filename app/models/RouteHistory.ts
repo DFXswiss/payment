@@ -10,6 +10,12 @@ export enum AmlCheck {
   PENDING = "Pending",
 }
 
+export enum PaymentStatus {
+  MISSING_LIQUIDITY = "MissingLiquidity",
+  WAITING_FOR_LOWER_FEE = "WaitingForLowerFee",
+  COMPLETE = "Complete",
+}
+
 export type RouteHistoryAlias = BuyRouteHistory | SellRouteHistory | CryptoRouteHistory;
 
 export function attachType(type: RouteHistoryType, routes: RouteHistoryAlias[]): RouteHistoryAlias[] {
@@ -30,6 +36,7 @@ interface RouteHistory {
   date: Date;
   amlCheck: AmlCheck;
   isComplete: boolean;
+  status?: RouteHistoryStatus;
 }
 
 export interface BuyRouteHistory extends RouteHistory {}

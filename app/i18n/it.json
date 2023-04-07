@@ -318,6 +318,7 @@
         "date": "Data",
         "status": "Stato",
         "status_complete": "Completato",
+        "status_waitingforlowerfee": "Attendere una tariffa più bassa",
         "status_incomplete": "In corso",
         "tx_details": "Dettagli della transazione",
         "tx_link": "Link alla transazione",

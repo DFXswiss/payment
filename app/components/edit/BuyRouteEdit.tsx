@@ -8,15 +8,13 @@ import { Alert } from "../../elements/Texts";
 import { ApiError } from "../../models/ApiDto";
 import { Asset, AssetCategory } from "../../models/Asset";
 import { BuyRoute } from "../../models/BuyRoute";
-import { getAssets, getKycCountries, postBuyRoute } from "../../services/ApiService";
+import { getAssets, postBuyRoute } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import { createRules } from "../../utils/Utils";
 import Validations from "../../utils/Validations";
 import DeFiPicker from "../form/DeFiPicker";
 import Form from "../form/Form";
-import Input from "../form/Input";
 import ButtonContainer from "../util/ButtonContainer";
-import { Country } from "../../models/Country";
 import Loading from "../util/Loading";
 import { Blockchain } from "../../models/Blockchain";
 
@@ -41,14 +39,10 @@ const BuyRouteEdit = ({
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string>();
   const [assets, setAssets] = useState<Asset[]>([]);
-  const [countries, setCountries] = useState<Country[]>([]);
 
   useEffect(() => {
-    Promise.all([getAssets(), getKycCountries()])
-      .then(([a, c]) => {
-        updateAssets(a);
-        setCountries(c);
-      })
+    getAssets()
+      .then(updateAssets)
       .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));
   }, []);
@@ -88,7 +82,6 @@ const BuyRouteEdit = ({
   const rules: any = createRules({
     type: Validations.Required,
     asset: Validations.Required,
-    iban: [Validations.Required, Validations.Iban(countries)],
     blockchain: isBlockchainsEnabled() && Validations.Required,
   });
 
@@ -122,9 +115,6 @@ const BuyRouteEdit = ({
           <SpacerV />
         </>
       )}
-      <SpacerV />
-
-      <Input name="iban" label={t("model.route.your_iban")} placeholder="DE89 3704 0044 0532 0130 00" />
       <SpacerV />
 
       {error != null && (

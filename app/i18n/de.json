@@ -221,7 +221,8 @@
         "change": "Adresse wechseln",
         "vip_title": "Herzlich willkommen in der Black Squad",
         "vip_description": "Die Black Squad ist eine elitäre Gruppe für Großinvestoren über DFX und ermöglicht dir einen direkten Sprachkanal zur Führungsebene von DFX.",
-        "vip_link": "Die Black Squad versammelt sich in einer Telegram-Gruppe - folge einfach dem Link:"
+        "vip_link": "Die Black Squad versammelt sich in einer Telegram-Gruppe - folge einfach dem Link:",
+        "merge": "Wie es aussieht, hast du bereits ein Konto bei DFX. Wir haben dir gerade eine E-Mail geschickt. Klicke auf den gesendeten Link, um diese Adresse zu deinem bestehenden Konto hinzuzufügen. Auf diese Weise musst du KYC nicht erneut durchlaufen.\n\nWenn du diese Adresse nicht mit deinem Konto verknüpfen möchtest, ignoriere die E-Mail einfach."
       },
       "kyc": {
         "title": "DFX KYC",
@@ -334,7 +335,7 @@
         "staking": "Staking-Transaktionen",
         "ref": "Referral-Rewards",
         "lm": "Liquidity-Mining-Rewards",
-        "ct_link": "Cointracking-Verknüpfung",
+        "ct_link": "Cointracking-Verknüpfung (Leserechte)",
         "ct_website": "Cointracking Homepage",
         "ct_text": "Du kannst dein DFX-Konto mit deinem Cointracking-Konto verknüpfen.",
         "ct_filter_text": "Aktueller Importfilter",

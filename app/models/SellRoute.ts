@@ -5,7 +5,7 @@ import { MinDeposit } from "./MinDeposit";
 
 export interface SellRouteDto {
   id: string;
-  fiat: Fiat;
+  currency: Fiat;
   deposit: Deposit;
   iban: string;
   volume: number;
@@ -33,7 +33,7 @@ export interface SellRoute {
 
 export const fromSellRouteDto = (route: SellRouteDto): SellRoute => ({
   id: route.id,
-  fiat: route.fiat,
+  fiat: route.currency,
   deposit: route.deposit,
   iban: route.iban.replace(/(.{4})/g, "$1 "),
   active: route.active,
@@ -47,7 +47,7 @@ export const fromSellRouteDto = (route: SellRouteDto): SellRoute => ({
 
 export const toSellRouteDto = (route: SellRoute): SellRouteDto => ({
   id: route.id,
-  fiat: route.fiat,
+  currency: route.fiat,
   deposit: route.deposit,
   iban: route.iban.split(" ").join(""),
   active: route.active,

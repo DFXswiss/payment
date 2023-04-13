@@ -36,7 +36,7 @@ interface RouteHistory {
   date: Date;
   amlCheck: AmlCheck;
   isComplete: boolean;
-  status?: RouteHistoryStatus;
+  status: PaymentStatus;
 }
 
 export interface BuyRouteHistory extends RouteHistory {}

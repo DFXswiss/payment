@@ -100,13 +100,7 @@ const RouteHistory = ({ history }: Props) => {
 
   const statusOf = (tx: RouteHistoryAlias): string => {
     if (isInvalid(tx.status)) return invalidValue;
-    switch (tx.status) {
-      case PaymentStatus.COMPLETE:
-      case PaymentStatus.WAITING_FOR_LOWER_FEE:
-        return t(`model.route.status_${tx.status.toLowerCase()}`);
-      default:
-        return t("model.route.status_incomplete");
-    }
+    return t(`model.route.status_${tx.status.toLowerCase()}`);
   };
 
   const showDetail = (tx: RouteHistoryAlias) => {

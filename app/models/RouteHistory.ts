@@ -11,8 +11,8 @@ export enum AmlCheck {
 }
 
 export enum PaymentStatus {
-  MISSING_LIQUIDITY = "MissingLiquidity",
-  WAITING_FOR_LOWER_FEE = "WaitingForLowerFee",
+  PENDING = "Pending",
+  FEE_TOO_HIGH = "FeeTooHigh",
   COMPLETE = "Complete",
 }
 

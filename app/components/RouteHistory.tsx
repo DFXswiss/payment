@@ -10,6 +10,7 @@ import IconButton from "./util/IconButton";
 import DeFiModal from "./util/DeFiModal";
 import { AmlCheck, RouteHistoryAlias, RouteHistoryType } from "../models/RouteHistory";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import BigNumber from "bignumber.js";
 
 enum DirectionType {
   INPUT,
@@ -61,7 +62,7 @@ const RouteHistory = ({ history }: Props) => {
     outputAmount: number,
     tx: RouteHistoryAlias
   ): string => {
-    return tx.type == RouteHistoryType.BUY ? `${formatAmount(round(inputAmount/outputAmount,2))}` : `${formatAmount(round(outputAmount/inputAmount,2))}`;
+    return  tx.type == RouteHistoryType.CRYPTO ? `${formatAmount(new BigNumber(inputAmount/outputAmount).precision(5).toNumber())}` :  tx.type == RouteHistoryType.BUY ? `${formatAmount(round(inputAmount/outputAmount,2))}` : `${formatAmount(round(outputAmount/inputAmount,2))}`;
   };
 
   const dateOf = (tx: RouteHistoryAlias): string => {

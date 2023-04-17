@@ -1,7 +1,7 @@
 import { Blockchain } from "./Blockchain";
 import { Deposit } from "./Deposit";
 import { Fiat } from "./Fiat";
-import { MinDeposit } from "./MinDeposit";
+import { MinAmount } from "./MinAmount";
 
 export interface SellRouteDto {
   id: string;
@@ -12,8 +12,8 @@ export interface SellRouteDto {
   annualVolume: number;
   active: boolean;
   fee: number;
-  minDeposits: MinDeposit[];
-
+  minDeposits: MinAmount[];
+  minFee: MinAmount;
   blockchain: Blockchain;
 }
 
@@ -26,8 +26,8 @@ export interface SellRoute {
   annualVolume: number;
   active: boolean;
   fee: number;
-  minDeposits: MinDeposit[];
-
+  minDeposits: MinAmount[];
+  minFee: MinAmount;
   blockchain: Blockchain;
 }
 
@@ -41,7 +41,7 @@ export const fromSellRouteDto = (route: SellRouteDto): SellRoute => ({
   annualVolume: route.annualVolume,
   fee: route.fee,
   minDeposits: route.minDeposits,
-
+  minFee: route.minFee,
   blockchain: route.blockchain,
 });
 
@@ -55,6 +55,6 @@ export const toSellRouteDto = (route: SellRoute): SellRouteDto => ({
   annualVolume: route.annualVolume,
   fee: route.fee,
   minDeposits: route.minDeposits,
-
+  minFee: route.minFee,
   blockchain: route.blockchain,
 });

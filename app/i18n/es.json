@@ -307,7 +307,8 @@
         "date": "Fecha",
         "status": "Estado",
         "status_completado": "Completado",
-        "status_incomplete": "En curso",
+        "status_feetoohigh": "Tasa excesiva",
+        "status_pending": "En curso",
         "tx_details": "Detalles de la transacción",
         "tx_link": "Enlace a la transacción",
         "statistics": "Estadísticas"

@@ -320,7 +320,8 @@
         "date": "Data",
         "status": "Estado",
         "status_complete": "Concluído",
-        "status_incomplete": "Em curso",
+        "status_feetoohigh": "Tarifa demasiado alta",
+        "status_pending": "Em curso",
         "tx_details": "Detalhes da transacção",
         "tx_link": "Ligação à transacção",
         "statistics": "Estatísticas"

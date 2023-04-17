@@ -57,12 +57,12 @@ const RouteHistory = ({ history }: Props) => {
     return isFiatInput(tx, direction) ? `${formatAmount(amount)} ${asset}` : `${formatAmountCrypto(amount)} ${asset}`;
   };
 
-  const formatPrice = (
-    inputAmount: number,
-    outputAmount: number,
-    tx: RouteHistoryAlias
-  ): string => {
-    return  tx.type == RouteHistoryType.CRYPTO ? `${formatAmount(new BigNumber(inputAmount/outputAmount).precision(5).toNumber())}` :  tx.type == RouteHistoryType.BUY ? `${formatAmount(round(inputAmount/outputAmount,2))}` : `${formatAmount(round(outputAmount/inputAmount,2))}`;
+  const formatPrice = (inputAmount: number, outputAmount: number, tx: RouteHistoryAlias): string => {
+    return tx.type == RouteHistoryType.CRYPTO
+      ? `${formatAmount(new BigNumber(inputAmount / outputAmount).precision(5).toNumber())}`
+      : tx.type == RouteHistoryType.BUY
+      ? `${formatAmount(round(inputAmount / outputAmount, 2))}`
+      : `${formatAmount(round(outputAmount / inputAmount, 2))}`;
   };
 
   const dateOf = (tx: RouteHistoryAlias): string => {
@@ -81,10 +81,8 @@ const RouteHistory = ({ history }: Props) => {
   };
 
   const priceOf = (tx: RouteHistoryAlias): string => {
-    return formatPrice(tx.inputAmount,tx.outputAmount, tx);
+    return formatPrice(tx.inputAmount, tx.outputAmount, tx);
   };
-
-  
 
   const amlCheckOf = (tx: RouteHistoryAlias, useTranslatedValues = false): string => {
     if (isInvalid(tx.amlCheck)) return invalidValue;
@@ -104,8 +102,8 @@ const RouteHistory = ({ history }: Props) => {
   };
 
   const statusOf = (tx: RouteHistoryAlias): string => {
-    if (isInvalid(tx.isComplete)) return invalidValue;
-    return tx.isComplete ? t("model.route.status_complete") : t("model.route.status_incomplete");
+    if (isInvalid(tx.status)) return invalidValue;
+    return t(`model.route.status_${tx.status.toLowerCase()}`);
   };
 
   const showDetail = (tx: RouteHistoryAlias) => {

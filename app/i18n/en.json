@@ -323,7 +323,8 @@
         "date": "Date",
         "status": "Status",
         "status_complete": "Completed",
-        "status_incomplete": "In progress",
+        "status_feetoohigh": "Fee too high",
+        "status_pending": "In progress",
         "tx_details": "Transaction details",
         "tx_link": "Link to transaction",
         "statistics": "Statistics"

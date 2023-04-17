@@ -323,7 +323,8 @@
         "date": "Data",
         "status": "Stato",
         "status_complete": "Completato",
-        "status_incomplete": "In corso",
+        "status_feetoohigh": "Tassa troppo alta",
+        "status_pending": "In corso",
         "tx_details": "Dettagli della transazione",
         "tx_link": "Link alla transazione",
         "statistics": "Statistiche"

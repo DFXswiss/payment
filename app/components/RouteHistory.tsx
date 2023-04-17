@@ -8,7 +8,7 @@ import { formatAmount, formatAmountCrypto, openUrl, round } from "../utils/Utils
 import { useDevice } from "../hooks/useDevice";
 import IconButton from "./util/IconButton";
 import DeFiModal from "./util/DeFiModal";
-import { AmlCheck, RouteHistoryAlias, RouteHistoryType } from "../models/RouteHistory";
+import { AmlCheck, RouteHistoryAlias, PaymentStatus, RouteHistoryType } from "../models/RouteHistory";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 enum DirectionType {
@@ -56,12 +56,10 @@ const RouteHistory = ({ history }: Props) => {
     return isFiatInput(tx, direction) ? `${formatAmount(amount)} ${asset}` : `${formatAmountCrypto(amount)} ${asset}`;
   };
 
-  const formatPrice = (
-    inputAmount: number,
-    outputAmount: number,
-    tx: RouteHistoryAlias
-  ): string => {
-    return tx.type == RouteHistoryType.BUY ? `${formatAmount(round(inputAmount/outputAmount,2))}` : `${formatAmount(round(outputAmount/inputAmount,2))}`;
+  const formatPrice = (inputAmount: number, outputAmount: number, tx: RouteHistoryAlias): string => {
+    return tx.type == RouteHistoryType.BUY
+      ? `${formatAmount(round(inputAmount / outputAmount, 2))}`
+      : `${formatAmount(round(outputAmount / inputAmount, 2))}`;
   };
 
   const dateOf = (tx: RouteHistoryAlias): string => {
@@ -80,10 +78,8 @@ const RouteHistory = ({ history }: Props) => {
   };
 
   const priceOf = (tx: RouteHistoryAlias): string => {
-    return formatPrice(tx.inputAmount,tx.outputAmount, tx);
+    return formatPrice(tx.inputAmount, tx.outputAmount, tx);
   };
-
-  
 
   const amlCheckOf = (tx: RouteHistoryAlias, useTranslatedValues = false): string => {
     if (isInvalid(tx.amlCheck)) return invalidValue;
@@ -103,8 +99,8 @@ const RouteHistory = ({ history }: Props) => {
   };
 
   const statusOf = (tx: RouteHistoryAlias): string => {
-    if (isInvalid(tx.isComplete)) return invalidValue;
-    return tx.isComplete ? t("model.route.status_complete") : t("model.route.status_incomplete");
+    if (isInvalid(tx.status)) return invalidValue;
+    return t(`model.route.status_${tx.status.toLowerCase()}`);
   };
 
   const showDetail = (tx: RouteHistoryAlias) => {

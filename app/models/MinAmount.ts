@@ -1,4 +1,4 @@
-export interface MinDeposit {
+export interface MinAmount {
   amount: number;
   asset: string;
 }

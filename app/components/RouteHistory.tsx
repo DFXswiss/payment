@@ -8,8 +8,9 @@ import { formatAmount, formatAmountCrypto, openUrl, round } from "../utils/Utils
 import { useDevice } from "../hooks/useDevice";
 import IconButton from "./util/IconButton";
 import DeFiModal from "./util/DeFiModal";
-import { AmlCheck, RouteHistoryAlias, PaymentStatus, RouteHistoryType } from "../models/RouteHistory";
+import { AmlCheck, RouteHistoryAlias, RouteHistoryType } from "../models/RouteHistory";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import BigNumber from "bignumber.js";
 
 enum DirectionType {
   INPUT,
@@ -57,7 +58,9 @@ const RouteHistory = ({ history }: Props) => {
   };
 
   const formatPrice = (inputAmount: number, outputAmount: number, tx: RouteHistoryAlias): string => {
-    return tx.type == RouteHistoryType.BUY
+    return tx.type == RouteHistoryType.CRYPTO
+      ? `${formatAmount(new BigNumber(inputAmount / outputAmount).precision(5).toNumber())}`
+      : tx.type == RouteHistoryType.BUY
       ? `${formatAmount(round(inputAmount / outputAmount, 2))}`
       : `${formatAmount(round(outputAmount / inputAmount, 2))}`;
   };

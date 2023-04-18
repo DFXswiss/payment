@@ -12,6 +12,7 @@
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/native": "^5.9.4",
+    "bignumber.js": "^9.1.1",
     "country-code-lookup": "^0.0.19",
     "expo": "~41.0.1",
     "expo-clipboard": "~1.0.2",

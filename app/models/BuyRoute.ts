@@ -1,5 +1,5 @@
 import { Asset } from "./Asset";
-import { MinDeposit } from "./MinDeposit";
+import { MinAmount } from "./MinAmount";
 
 export interface BuyRouteDto {
   id: string;
@@ -9,7 +9,8 @@ export interface BuyRouteDto {
   annualVolume: number;
   active: boolean;
   fee: number;
-  minDeposits: MinDeposit[];
+  minDeposits: MinAmount[];
+  minFee: MinAmount;
 }
 
 export interface BuyRoute {
@@ -20,7 +21,8 @@ export interface BuyRoute {
   annualVolume: number;
   active: boolean;
   fee: number;
-  minDeposits: MinDeposit[];
+  minDeposits: MinAmount[];
+  minFee: MinAmount;
 }
 
 export const fromBuyRouteDto = (route: BuyRouteDto): BuyRoute => ({
@@ -32,6 +34,7 @@ export const fromBuyRouteDto = (route: BuyRouteDto): BuyRoute => ({
   annualVolume: route.annualVolume,
   fee: route.fee,
   minDeposits: route.minDeposits,
+  minFee: route.minFee,
 });
 
 export const toBuyRouteDto = (route: BuyRoute): BuyRouteDto => ({
@@ -43,4 +46,5 @@ export const toBuyRouteDto = (route: BuyRoute): BuyRouteDto => ({
   annualVolume: route.annualVolume,
   fee: route.fee,
   minDeposits: route.minDeposits,
+  minFee: route.minFee,
 });

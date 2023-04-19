@@ -190,7 +190,7 @@ const RouteList = ({
     {
       condition: true,
       label: "model.route.fee",
-      value: `${route.fee}%` + (route.minFee?.amount > 0 ? ` min. ${route.minFee.amount} ${route.minFee.asset}` : ""),
+      value: `${route.fee}%` + (route.minFee?.amount > 0 ? ` (min. ${route.minFee.amount}${route.minFee.asset})` : ""),
     },
     {
       condition: true,
@@ -221,7 +221,7 @@ const RouteList = ({
     {
       condition: route.fee != null,
       label: "model.route.fee",
-      value: `${route.fee}%` + (route.minFee?.amount > 0 ? ` min. ${route.minFee.amount} ${route.minFee.asset}` : ""),
+      value: `${route.fee}%` + (route.minFee?.amount > 0 ? ` (min. ${route.minFee.amount}${route.minFee.asset})` : ""),
     },
     {
       condition: true,
@@ -250,7 +250,7 @@ const RouteList = ({
     {
       condition: true,
       label: "model.route.fee",
-      value: `${route.fee}%` + (route.minFee?.amount > 0 ? ` min. ${route.minFee.amount} ${route.minFee.asset}` : ""),
+      value: `${route.fee}%` + (route.minFee?.amount > 0 ? ` (min. ${route.minFee.amount}${route.minFee.asset})` : ""),
     },
     { condition: true, label: "model.route.min_deposit", value: `${formatMinAmount(route.minDeposits)}` },
     {

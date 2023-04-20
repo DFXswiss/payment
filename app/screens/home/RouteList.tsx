@@ -38,7 +38,7 @@ import CryptoRouteEdit from "../../components/edit/CryptoRouteEdit";
 import Colors from "../../config/Colors";
 import RouteHistory from "../../components/RouteHistory";
 import { RouteHistoryAlias } from "../../models/RouteHistory";
-import { MinDeposit } from "../../models/MinDeposit";
+import { MinAmount } from "../../models/MinAmount";
 import { AllowedCryptoBlockchains } from "../../models/Blockchain";
 
 interface Props {
@@ -172,8 +172,8 @@ const RouteList = ({
     });
   };
 
-  const formatMinDeposit = (minDeposits: MinDeposit[]): string => {
-    return minDeposits.map((d) => `${d.amount} ${d.asset}`).join(" / ");
+  const formatMinAmount = (minAmounts: MinAmount[]): string => {
+    return minAmounts.map((d) => `${d.amount} ${d.asset}`).join(" / ");
   };
 
   const cryptoRouteData = (route: CryptoRoute) => [
@@ -190,12 +190,12 @@ const RouteList = ({
     {
       condition: true,
       label: "model.route.fee",
-      value: `${route.fee}%`,
+      value: `${route.fee}%` + (route.minFee?.amount > 0 ? ` (min. ${route.minFee.amount} ${route.minFee.asset})` : ""),
     },
     {
       condition: true,
       label: "model.route.min_deposit",
-      value: `${formatMinDeposit(route.minDeposits)}`,
+      value: `${formatMinAmount(route.minDeposits)}`,
     },
     {
       condition: true,
@@ -218,11 +218,15 @@ const RouteList = ({
       icon: "content-copy",
       onPress: () => ClipboardService.copy(route.deposit?.address),
     },
-    { condition: route.fee != null, label: "model.route.fee", value: `${route.fee}%` },
+    {
+      condition: route.fee != null,
+      label: "model.route.fee",
+      value: `${route.fee}%` + (route.minFee?.amount > 0 ? ` (min. ${route.minFee.amount} ${route.minFee.asset})` : ""),
+    },
     {
       condition: true,
       label: "model.route.min_deposit",
-      value: `${formatMinDeposit(route.minDeposits)}`,
+      value: `${formatMinAmount(route.minDeposits)}`,
     },
     {
       condition: true,
@@ -246,9 +250,9 @@ const RouteList = ({
     {
       condition: true,
       label: "model.route.fee",
-      value: `${route.fee}%`,
+      value: `${route.fee}%` + (route.minFee?.amount > 0 ? ` (min. ${route.minFee.amount} ${route.minFee.asset})` : ""),
     },
-    { condition: true, label: "model.route.min_deposit", value: `${formatMinDeposit(route.minDeposits)}` },
+    { condition: true, label: "model.route.min_deposit", value: `${formatMinAmount(route.minDeposits)}` },
     {
       condition: true,
       label: "model.route.volume",

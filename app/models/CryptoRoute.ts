@@ -1,7 +1,7 @@
 import { Asset } from "./Asset";
 import { Blockchain } from "./Blockchain";
 import { Deposit } from "./Deposit";
-import { MinDeposit } from "./MinDeposit";
+import { MinAmount } from "./MinAmount";
 
 export interface CryptoRoute {
   id: string;
@@ -12,5 +12,6 @@ export interface CryptoRoute {
   asset: Asset;
   volume: number;
   annualVolume: number;
-  minDeposits: MinDeposit[];
+  minDeposits: MinAmount[];
+  minFee: MinAmount;
 }

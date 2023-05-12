@@ -9,11 +9,11 @@ export enum Blockchain {
   CARDANO = "Cardano",
 }
 
-export const AllowedCryptoBlockchainsInput = [
+export const AllowedCryptoBlockchainsTarget = [
   Blockchain.BITCOIN,
   Blockchain.ETHEREUM,
   Blockchain.BINANCE_SMART_CHAIN,
   Blockchain.ARBITRUM,
 ];
 
-export const AllowedCryptoBlockchainsOutput = [Blockchain.BITCOIN, Blockchain.DEFICHAIN];
+export const AllowedCryptoBlockchainsSource = [Blockchain.BITCOIN, Blockchain.DEFICHAIN];

@@ -39,7 +39,7 @@ import Colors from "../../config/Colors";
 import RouteHistory from "../../components/RouteHistory";
 import { RouteHistoryAlias } from "../../models/RouteHistory";
 import { MinAmount } from "../../models/MinAmount";
-import { AllowedCryptoBlockchainsInput } from "../../models/Blockchain";
+import { AllowedCryptoBlockchainsSource } from "../../models/Blockchain";
 
 interface Props {
   user?: UserDetail;
@@ -407,7 +407,7 @@ const RouteList = ({
             <View style={AppStyles.ml10}>
               <DeFiButton
                 mode="contained"
-                disabled={!AllowedCryptoBlockchainsInput.some((b) => session?.blockchains?.includes(b))}
+                disabled={!AllowedCryptoBlockchainsSource.some((b) => session?.blockchains?.includes(b))}
                 onPress={() => setIsCryptoRouteEdit(true)}
               >
                 {t("model.route.crypto")}
@@ -433,7 +433,7 @@ const RouteList = ({
           <View style={AppStyles.containerHorizontal}>
             <DeFiButton
               mode="contained"
-              disabled={!AllowedCryptoBlockchainsInput.some((b) => session?.blockchains?.includes(b))}
+              disabled={!AllowedCryptoBlockchainsSource.some((b) => session?.blockchains?.includes(b))}
               onPress={() => setIsCryptoRouteEdit(true)}
               style={{ flex: 1 }}
             >

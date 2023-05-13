@@ -6,7 +6,7 @@ import { SpacerV } from "../../elements/Spacers";
 import { Alert } from "../../elements/Texts";
 import { ApiError } from "../../models/ApiDto";
 import { Asset, AssetCategory } from "../../models/Asset";
-import { AllowedCryptoBlockchains, Blockchain } from "../../models/Blockchain";
+import { AllowedCryptoBlockchainsTarget, AllowedCryptoBlockchainsSource, Blockchain } from "../../models/Blockchain";
 import { CryptoRoute } from "../../models/CryptoRoute";
 import { getAssets, postCryptoRoute } from "../../services/ApiService";
 import { Session } from "../../services/AuthService";
@@ -90,7 +90,7 @@ const CryptoRouteEdit = ({
         name="blockchain"
         label={t("model.route.deposit_blockchain")}
         items={Object.values(Blockchain)
-          .filter((b) => AllowedCryptoBlockchains.includes(b))
+          .filter((b) => AllowedCryptoBlockchainsSource.includes(b))
           .filter((b) => (isBlockchainsEnabled() ? true : b !== session?.blockchains?.[0]))}
         labelFunc={(i) => i}
       />
@@ -101,7 +101,9 @@ const CryptoRouteEdit = ({
           <DeFiPicker
             name="targetBlockchain"
             label={t("model.route.target_blockchain")}
-            items={getBlockchains().filter((b) => b !== sourceBlockchain)}
+            items={getBlockchains()
+              .filter((b) => b !== sourceBlockchain)
+              .filter((b) => AllowedCryptoBlockchainsTarget.includes(b))}
             labelFunc={(i) => i}
           />
           <SpacerV />

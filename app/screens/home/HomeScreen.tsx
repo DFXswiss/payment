@@ -16,6 +16,7 @@ import {
   KycState,
   KycStatus,
   UserDetail,
+  UserStatus,
 } from "../../models/User";
 import { getRoutes, getUserDetail } from "../../services/ApiService";
 import AppStyles from "../../styles/AppStyles";
@@ -89,6 +90,12 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
     if (resolve(update, isCryptoRouteEdit)) {
       // check if user has KYC
       if (!areKycChecksSuccessful()) {
+        return;
+      }
+
+      // check if user is active
+      if (user?.status !== UserStatus.ACTIVE) {
+        NotificationService.error(t("feedback.bank_tx_required"));
         return;
       }
     }

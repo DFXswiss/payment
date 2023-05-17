@@ -31,6 +31,7 @@ const BuyRouteEdit = ({
     setValue,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<BuyRoute & { blockchain?: Blockchain }>();
   const asset = useWatch({ control, name: "asset" });
   const blockchain = useWatch({ control, name: "blockchain" });
@@ -46,6 +47,10 @@ const BuyRouteEdit = ({
       .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));
   }, []);
+
+  useEffect(() => {
+    reset({ blockchain: blockchain, asset: undefined });
+  }, [blockchain]);
 
   const onSubmit = (route: BuyRoute) => {
     setIsSaving(true);

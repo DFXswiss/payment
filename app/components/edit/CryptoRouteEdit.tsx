@@ -30,6 +30,7 @@ const CryptoRouteEdit = ({
     control,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<CryptoRoute & { targetBlockchain: Blockchain }>();
   const asset = useWatch({ control, name: "asset" });
   const targetBlockchain = useWatch({ control, name: "targetBlockchain" });
@@ -46,6 +47,10 @@ const CryptoRouteEdit = ({
       .catch(() => NotificationService.error(t("feedback.load_failed")))
       .finally(() => setIsLoading(false));
   }, []);
+
+  useEffect(() => {
+    reset({ blockchain: sourceBlockchain, targetBlockchain: targetBlockchain, asset: undefined });
+  }, [targetBlockchain]);
 
   const onSubmit = (route: CryptoRoute) => {
     setIsSaving(true);

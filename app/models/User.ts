@@ -57,6 +57,7 @@ export interface KycInfo {
   setupUrl?: string;
   blankedPhone?: string;
   blankedMail?: string;
+  language: Language;
 }
 
 export interface NewUser {

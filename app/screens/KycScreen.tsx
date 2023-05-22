@@ -79,6 +79,8 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     getKyc(params?.code)
       .then((result) => {
         setKycInfo(result);
+        if (result.language) SettingsService.updateSettings({ language: result.language.symbol });
+
         setIsLoading(false);
 
         if (params?.autostart) continueKyc(result, params);

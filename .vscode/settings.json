@@ -2,7 +2,7 @@
   "files.exclude": {
     "node_modules": true
   },
-  "cSpell.words": ["libphonenumber", "soleproprietorship"],
+  "cSpell.words": ["libphonenumber", "lnurl", "soleproprietorship"],
   "prettier.printWidth": 120,
   "editor.formatOnSave": true
 }

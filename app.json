@@ -6,23 +6,21 @@
     "orientation": "portrait",
     "icon": "./app/assets/icon.png",
     "splash": {
-      "image": "./app/assets/splash.png",
+      "image": "./app/assets/favicon-96x96.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "usesIcloudStorage": true,
       "supportsTablet": true
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./app/assets/adaptive-icon.png",
+        "foregroundImage": "./app/assets/favicon-96x96.png",
         "backgroundColor": "#FFFFFF"
       }
     },

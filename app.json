@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "DeFi Exchange",
-    "slug": "defi-exchange",
+    "name": "DFX.swiss Payment",
+    "slug": "payment",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/favicon-96x96.png",

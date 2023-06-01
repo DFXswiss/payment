@@ -27,6 +27,7 @@ import { getSignMessage } from "../services/ApiService";
 import NotificationService from "../services/NotificationService";
 import { Blockchain } from "../models/Blockchain";
 import { ErrorScreenType } from "./ErrorScreen";
+import { useAlby } from "../hooks/useAlby";
 
 interface LoginData {
   userName: string;
@@ -39,6 +40,7 @@ const LoginScreen = () => {
   const nav = useNavigation();
   const route = useRoute();
   const { t } = useTranslation();
+  const { isInstalled: isAlbyInstalled, enable: enableAlby, signMessage: signMessageWithAlby } = useAlby();
 
   const {
     control,
@@ -63,13 +65,28 @@ const LoginScreen = () => {
     if (!direct && !addressEntered) {
       setIsProcessing(true);
       getSignMessage(data.userName)
-        .then((sign) => {
+        .then(async (sign) => {
           let signMessage = sign.message;
+
+          // DeFiChain special case
           if (sign.blockchains.includes(Blockchain.DEFICHAIN)) {
             signMessage = `signmessage "${data.userName}" "${signMessage}"`;
             setIsSignCommand(true);
           }
+
           setSignMessage(signMessage);
+
+          // Lightning Alby login
+          if (sign.blockchains.includes(Blockchain.LIGHTNING) && isAlbyInstalled) {
+            const info = await enableAlby();
+            if (info && !info.node.alias?.includes("getalby.com")) {
+              const signature = await signMessageWithAlby(signMessage);
+              setValue("password", signature);
+
+              return handleSubmit(onSubmit(true))();
+            }
+          }
+
           setAddressEntered(true);
           passwordRef.current?.focus();
           setIsProcessing(false);

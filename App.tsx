@@ -4,7 +4,7 @@ import Main from "./app/Main";
 
 const App = () => (
   <>
-    <meta name="og:title" content="DFX.swiss" />
+    <meta name="alby:name" content="DFX.swiss" />
     <Main />
   </>
 );

@@ -1,12 +1,10 @@
-const PageTitle = "DFX";
-
 export default {
-  Home: `${PageTitle} - Home`,
-  Login: `${PageTitle} - Login`,
-  Gtc: `${PageTitle} - Legal`,
-  Admin: `${PageTitle} - Admin`,
-  Kyc: `${PageTitle} - KYC`,
-  Link: `${PageTitle} - Link`,
-  NotFound: `${PageTitle} - NotFound`,
-  Error: `${PageTitle} - Error`,
+  Home: `home`,
+  Login: `login`,
+  Gtc: `gtc`,
+  Admin: `admin`,
+  Kyc: `kyc`,
+  Link: `link`,
+  NotFound: `not-found`,
+  Error: `error`,
 };

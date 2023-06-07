@@ -9,6 +9,7 @@
     },
     "action": {
       "login": "Connexion",
+      "login_with": "Connexion avec {{provider}}",
       "logout": "Déconnexion",
       "edit": "Modifier",
       "save": "Enregistrer",

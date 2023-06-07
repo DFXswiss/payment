@@ -9,6 +9,7 @@
     },
     "action": {
       "login": "Accesso",
+      "login_with": "Accesso con {{provider}}",
       "logout": "Logout",
       "edit": "Modifica",
       "save": "Salva",

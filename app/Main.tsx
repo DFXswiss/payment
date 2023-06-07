@@ -113,7 +113,7 @@ const Main = () => {
                 key={screen.route}
                 name={screen.route}
                 component={screen.screen}
-                options={{ unmountOnBlur: true }}
+                options={{ unmountOnBlur: true, title: "Payment | DFX.swiss" }}
               />
             ))}
           </drawer.Navigator>

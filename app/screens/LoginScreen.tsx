@@ -19,7 +19,7 @@ import { Text } from "react-native-paper";
 import SettingsService from "../services/SettingsService";
 import { DeFiButton } from "../elements/Buttons";
 import ButtonContainer from "../components/util/ButtonContainer";
-import { createRules } from "../utils/Utils";
+import { createRules, openUrl } from "../utils/Utils";
 import { ApiError } from "../models/ApiDto";
 import StorageService from "../services/StorageService";
 import Loading from "../components/util/Loading";
@@ -28,6 +28,7 @@ import NotificationService from "../services/NotificationService";
 import { Blockchain } from "../models/Blockchain";
 import { ErrorScreenType } from "./ErrorScreen";
 import { useAlby } from "../hooks/useAlby";
+import { Environment } from "../env/Environment";
 
 interface LoginData {
   userName: string;
@@ -55,7 +56,6 @@ const LoginScreen = () => {
   const [addressEntered, setAddressEntered] = useState(false);
   const [signCommandCopied, setSignCommandCopied] = useState(false);
   const [isAutoLogin, setIsAutoLogin] = useState(false);
-  const [isOldSignature, setIsOldSignature] = useState(false);
   const [isSignCommand, setIsSignCommand] = useState(false);
   const [signMessage, setSignMessage] = useState<string>();
 
@@ -79,7 +79,8 @@ const LoginScreen = () => {
           // Lightning Alby login
           if (sign.blockchains.includes(Blockchain.LIGHTNING) && isAlbyInstalled) {
             const info = await enableAlby();
-            if (info && !info.node.alias?.includes("getalby.com")) {
+            if (info) {
+              setIsAutoLogin(true);
               const signature = await signMessageWithAlby(signMessage);
               setValue("password", signature);
 
@@ -137,9 +138,6 @@ const LoginScreen = () => {
   };
 
   useEffect(() => {
-    // TODO: remove at some point ...
-    setIsOldSignature(false);
-
     // update settings
     const headless = Boolean(params?.headless);
     const language = params?.lang?.toUpperCase();
@@ -169,19 +167,16 @@ const LoginScreen = () => {
         });
     }
 
-    // deprecated login with address & signature (TODO: remove)
-    if (params?.address && params?.signature) {
+    if (params?.address) {
       setValue("userName", params.address);
-      setValue("password", params.signature);
+
       setIsAutoLogin(true);
 
-      // TODO: remove at some point ...
-      if (params?.signature?.length != 88) {
-        setIsOldSignature(true);
-        setAddressEntered(true);
-      } else {
-        handleSubmit(onSubmit(true))();
-      }
+      // deprecated login with address & signature (TODO: remove)
+      params.signature && setValue("password", params.signature);
+      const directLogin = params.signature != null;
+
+      handleSubmit(onSubmit(directLogin))();
     }
 
     resetParams();
@@ -213,6 +208,23 @@ const LoginScreen = () => {
     userName: [Validations.Required, Validations.Address],
     password: addressEntered && [Validations.Required, Validations.Signature],
   });
+
+  const loginWithAlby = async () => {
+    setIsProcessing(true);
+
+    const info = await enableAlby();
+    if (info?.node?.pubkey) {
+      // log in with pub key
+      setValue("userName", `LNNID${info.node.pubkey.toUpperCase()}`);
+      return handleSubmit(onSubmit(false))();
+    } else if (info?.node?.alias?.includes("getalby.com")) {
+      // log in with Alby
+      return openUrl(`${Environment.api.baseUrl}/alby?redirect_uri=${window.location.origin}/login`, false);
+    }
+
+    setIsProcessing(false);
+    NotificationService.error(t("feedback.load_failed"));
+  };
 
   return (
     <AppLayout>
@@ -277,12 +289,6 @@ const LoginScreen = () => {
                     <SpacerV />
                   </>
                 )}
-                {isOldSignature && (
-                  <>
-                    <Alert label={t("session.old_signature")} />
-                    <SpacerV />
-                  </>
-                )}
                 <ButtonContainer>
                   <DeFiButton mode="contained" loading={isProcessing} onPress={handleSubmit(onSubmit(false))}>
                     {t(addressEntered ? "action.login" : "action.next")}
@@ -290,6 +296,16 @@ const LoginScreen = () => {
                 </ButtonContainer>
               </Form>
             </View>
+            {isAlbyInstalled && (
+              <>
+                <SpacerV height={50} />
+                <ButtonContainer>
+                  <DeFiButton mode="contained" onPress={loginWithAlby}>
+                    {t("action.login_with", { provider: "Alby" })}
+                  </DeFiButton>
+                </ButtonContainer>
+              </>
+            )}
           </>
         )}
       </View>

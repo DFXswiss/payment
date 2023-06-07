@@ -9,6 +9,7 @@
     },
     "action": {
       "login": "Iniciar sesión",
+      "login_with": "Iniciar sesión con {{provider}}",
       "logout": "Cerrar sesión",
       "edit": "Editar",
       "save": "Guardar",

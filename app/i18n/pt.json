@@ -10,6 +10,7 @@
     },
     "action": {
       "login": "Login",
+      "login_with": "Login com {{provider}}",
       "logout": "Logout",
       "edit": "Editar",
       "save": "Guardar",

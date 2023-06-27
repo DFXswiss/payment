@@ -15,6 +15,7 @@ export const AllowedCryptoBlockchainsTarget = [
   Blockchain.ETHEREUM,
   Blockchain.BINANCE_SMART_CHAIN,
   Blockchain.ARBITRUM,
+  Blockchain.OPTIMISM,
   Blockchain.LIGHTNING,
 ];
 

@@ -28,8 +28,6 @@ const RouteHistory = ({ history }: Props) => {
   const [transaction, setTransaction] = useState<RouteHistoryAlias>();
 
   const invalidValue = "-";
-  // Krysh: I would love to take external link here. But that is not available in MaterialCommunityIcons
-  // and I am not quite sure, if we should introduce other icon sets like Feather
   const iconOpenLink = "export";
   const iconShowDetail = "chevron-right";
 
@@ -81,7 +79,7 @@ const RouteHistory = ({ history }: Props) => {
   };
 
   const priceOf = (tx: RouteHistoryAlias): string => {
-    return formatPrice(tx.inputAmount, tx.outputAmount, tx);
+    return tx.inputAmount && tx.outputAmount ? formatPrice(tx.inputAmount, tx.outputAmount, tx) : invalidValue;
   };
 
   const amlCheckOf = (tx: RouteHistoryAlias, useTranslatedValues = false): string => {
@@ -112,16 +110,16 @@ const RouteHistory = ({ history }: Props) => {
   };
 
   const data = (tx: RouteHistoryAlias) => [
-    { condition: true, label: "model.route.date", value: dateOf(tx) },
-    { condition: true, label: "model.route.input", value: inputOf(tx) },
-    { condition: true, label: "model.route.output", value: outputOf(tx) },
-    { condition: true, label: "model.route.price", value: priceOf(tx) },
-    { condition: true, label: "model.route.aml_check", value: amlCheckOf(tx, true) },
-    { condition: true, label: "model.route.status", value: statusOf(tx) },
+    { label: "model.route.date", value: dateOf(tx) },
+    { label: "model.route.input", value: inputOf(tx) },
+    { label: "model.route.output", value: outputOf(tx) },
+    { label: "model.route.price", value: priceOf(tx) },
+    { label: "model.route.aml_check", value: amlCheckOf(tx, true) },
+    { label: "model.route.status", value: statusOf(tx) },
     {
-      condition: true,
       label: "model.route.tx_link",
-      icon: iconOpenLink,
+      value: tx.txUrl ? "" : invalidValue,
+      icon: tx.txUrl ? iconOpenLink : undefined,
       onPress: () => openUrl(tx.txUrl),
     },
   ];
@@ -131,21 +129,19 @@ const RouteHistory = ({ history }: Props) => {
       <DeFiModal isVisible={showsDetail} setIsVisible={setShowsDetail} title={t("model.route.tx_details")}>
         {transaction && (
           <DataTable>
-            {data(transaction)
-              .filter((d) => d.condition)
-              .map((d) => (
-                <TouchableOpacity onPress={d.onPress} key={d.label} disabled={!d.icon || device.SM}>
-                  <CompactRow style={d.icon ? styles.cleanEnd : {}}>
-                    <CompactCell style={styles.default}>{t(d.label)}</CompactCell>
-                    {d.value && <CompactCell style={styles.left}>{d.value}</CompactCell>}
-                    {d.icon && d.onPress && (
-                      <CompactCell style={{ flex: undefined }}>
-                        <IconButton icon={d.icon} onPress={device.SM ? d.onPress : undefined} />
-                      </CompactCell>
-                    )}
-                  </CompactRow>
-                </TouchableOpacity>
-              ))}
+            {data(transaction).map((d) => (
+              <TouchableOpacity onPress={d.onPress} key={d.label} disabled={!d.icon || device.SM}>
+                <CompactRow style={d.icon ? styles.cleanEnd : {}}>
+                  <CompactCell style={styles.default}>{t(d.label)}</CompactCell>
+                  {d.value && <CompactCell style={styles.left}>{d.value}</CompactCell>}
+                  {d.icon && d.onPress && (
+                    <CompactCell style={{ flex: undefined }}>
+                      <IconButton icon={d.icon} onPress={device.SM ? d.onPress : undefined} />
+                    </CompactCell>
+                  )}
+                </CompactRow>
+              </TouchableOpacity>
+            ))}
           </DataTable>
         )}
       </DeFiModal>
@@ -180,12 +176,15 @@ const RouteHistory = ({ history }: Props) => {
               <CompactCell style={device.SM ? styles.left : styles.leftSmall}>{amlCheckOf(entry)}</CompactCell>
               <CompactCell style={styles.left}>{statusOf(entry)}</CompactCell>
               <CompactCell style={styles.icon}>
-                <IconButton
-                  icon={device.MD ? iconOpenLink : iconShowDetail}
-                  onPress={() => {
-                    device.MD ? openUrl(entry.txUrl) : showDetail(entry);
-                  }}
-                />
+                {device.MD ? (
+                  entry.txUrl ? (
+                    <IconButton icon={iconOpenLink} onPress={() => openUrl(entry.txUrl)} />
+                  ) : (
+                    invalidValue
+                  )
+                ) : (
+                  <IconButton icon={iconShowDetail} onPress={() => showDetail(entry)} />
+                )}
               </CompactCell>
             </CompactRow>
           </TouchableOpacity>

@@ -2,7 +2,6 @@
 param location string = 'westeurope'
 param env string = 'dev'
 
-
 // --- VARIABLES --- //
 var systemName = 'dfx-pay'
 
@@ -10,7 +9,6 @@ var cdnProfileName = 'cdnp-${systemName}-${env}'
 var cdnEndpointName = 'cdne-${systemName}-${env}'
 var storageAccountName = replace('st-${systemName}-${env}', '-', '')
 var siteHostName = '${storageAccountName}.z6.web.${environment().suffixes.storage}'
-
 
 // --- RESOURCES --- //
 resource cdnProfile 'Microsoft.Cdn/profiles@2020-09-01' = {
@@ -42,6 +40,22 @@ resource cdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
     ]
     deliveryPolicy: {
       rules: [
+        {
+          name: 'Global'
+          order: 0
+          conditions: []
+          actions: [
+            {
+              name: 'ModifyRequestHeader'
+              parameters: {
+                '@odata.type': '#Microsoft.Azure.Cdn.Models.DeliveryRuleHeaderActionParameters'
+                headerAction: 'Append'
+                headerName: 'X-Frame-Options'
+                value: 'deny'
+              }
+            }
+          ]
+        }
         {
           name: 'HttpToHttps'
           order: 1

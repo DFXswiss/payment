@@ -370,7 +370,6 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
-    justifyContent: "space-between",
     flex: 1,
   },
   hiddenIframe: {

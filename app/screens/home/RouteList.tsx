@@ -575,17 +575,6 @@ const RouteList = ({
               </DataTable>
             </>
           )}
-
-          {
-            <>
-              <SpacerV height={20} />
-              <ButtonContainer>
-                <DeFiButton mode="contained" onPress={() => setIsHistoryVisible(true)}>
-                  {t("model.route.history")}
-                </DeFiButton>
-              </ButtonContainer>
-            </>
-          }
         </>
       ) : (
         <>
@@ -593,6 +582,17 @@ const RouteList = ({
           <Text style={AppStyles.i}>{t("model.route.none")}</Text>
         </>
       )}
+
+      {
+        <>
+          <SpacerV height={20} />
+          <ButtonContainer>
+            <DeFiButton mode="contained" onPress={() => setIsHistoryVisible(true)}>
+              {t("model.route.history")}
+            </DeFiButton>
+          </ButtonContainer>
+        </>
+      }
 
       {activeBuyRoutes && activeBuyRoutes.length > 0 && <PaymentDetails user={user} />}
     </>

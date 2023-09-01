@@ -41,22 +41,6 @@ resource cdnEndpoint 'Microsoft.Cdn/profiles/endpoints@2020-09-01' = {
     deliveryPolicy: {
       rules: [
         {
-          name: 'Global'
-          order: 0
-          conditions: []
-          actions: [
-            {
-              name: 'ModifyRequestHeader'
-              parameters: {
-                '@odata.type': '#Microsoft.Azure.Cdn.Models.DeliveryRuleHeaderActionParameters'
-                headerAction: 'Append'
-                headerName: 'X-Frame-Options'
-                value: 'deny'
-              }
-            }
-          ]
-        }
-        {
           name: 'HttpToHttps'
           order: 1
           conditions: [

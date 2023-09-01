@@ -150,13 +150,13 @@ const LoginScreen = () => {
     setValue("refCode", params?.code);
 
     // token login
-    if (params?.token) {
+    if (params?.token || params?.session) {
       setIsAutoLogin(true);
       setIsProcessing(true);
 
       resetParams();
 
-      SessionService.tokenLogin(params?.token)
+      SessionService.tokenLogin(params?.token ?? params?.session)
         .then(() => nav.navigate(Routes.Home))
         .catch(() => {
           nav.navigate(Routes.Error, { screenType: ErrorScreenType.LOGIN_FAILED });
@@ -191,6 +191,7 @@ const LoginScreen = () => {
       code: undefined,
       headless: undefined,
       token: undefined,
+      session: undefined,
     });
   };
 
@@ -219,7 +220,9 @@ const LoginScreen = () => {
       return handleSubmit(onSubmit(false))();
     } else if (info?.node?.alias?.includes("getalby.com")) {
       // log in with Alby
-      return openUrl(`${Environment.api.baseUrl}/alby?redirect_uri=${window.location.origin}/login`, false);
+      const url = new URL(`${Environment.api.baseUrl}/auth/alby`);
+      url.searchParams.set("redirectUri", `${window.location.origin}/login`);
+      return openUrl(url.toString(), false);
     }
 
     setIsProcessing(false);

@@ -19,4 +19,4 @@ export const AllowedCryptoBlockchainsTarget = [
   Blockchain.LIGHTNING,
 ];
 
-export const AllowedCryptoBlockchainsSource = [Blockchain.BITCOIN, Blockchain.DEFICHAIN, Blockchain.LIGHTNING];
+export const AllowedCryptoBlockchainsSource = [Blockchain.BITCOIN, Blockchain.LIGHTNING];

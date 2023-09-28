@@ -3,7 +3,7 @@ import { useForm, useWatch } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { SpacerV } from "../../elements/Spacers";
 import { User, UserDetail } from "../../models/User";
-import { putUser } from "../../services/ApiService";
+import { deleteAccount, deleteWallet, putUser } from "../../services/ApiService";
 import Form from "../form/Form";
 import Input from "../form/Input";
 import PhoneNumber from "../form/PhoneNumber";
@@ -15,7 +15,10 @@ import ButtonContainer from "../util/ButtonContainer";
 import { createRules } from "../../utils/Utils";
 import { ApiError } from "../../models/ApiDto";
 import { KycData } from "../../models/KycData";
-import { Paragraph } from "react-native-paper";
+import { Divider, Paragraph } from "react-native-paper";
+import Colors from "../../config/Colors";
+import NotificationService from "../../services/NotificationService";
+import SessionService from "../../services/SessionService";
 
 interface Props {
   user?: UserDetail;
@@ -35,6 +38,8 @@ const UserEdit = ({ user, onUserChanged, onClose }: Props) => {
   const [isSaving, setIsSaving] = useState(false);
   const [error, setError] = useState<string>();
   const [showMergeHint, setShowMergeHint] = useState(false);
+  const [showDeleteWalletHint, setShowDeleteWalletHint] = useState(false);
+  const [showDeleteAccountHint, setShowDeleteAccountHint] = useState(false);
 
   const onSubmit = (updatedUser: User & KycData) => {
     setIsSaving(true);
@@ -49,46 +54,106 @@ const UserEdit = ({ user, onUserChanged, onClose }: Props) => {
       .finally(() => setIsSaving(false));
   };
 
+  const onWalletDelete = () => onDelete(deleteWallet);
+  const onAccountDelete = () => onDelete(deleteAccount);
+
+  const onDelete = (method: () => Promise<void>) => {
+    setIsSaving(true);
+    method()
+      .then(() => SessionService.logout())
+      .catch(() => NotificationService.error(t("feedback.delete_failed")))
+      .finally(() => setIsSaving(false));
+  };
+
   const rules: any = createRules({
     mail: [Validations.Mail],
   });
 
-  return showMergeHint ? (
+  if (showMergeHint) {
+    return (
+      <>
+        <Paragraph>{t("model.user.merge")}</Paragraph>
+        <SpacerV />
+
+        <ButtonContainer>
+          <DeFiButton mode="contained" onPress={onClose}>
+            {t("action.ok")}
+          </DeFiButton>
+        </ButtonContainer>
+      </>
+    );
+  }
+
+  if (showDeleteWalletHint) {
+    return (
+      <>
+        <Paragraph>{t("model.user.delete_wallet_hint")}</Paragraph>
+        <SpacerV />
+
+        <ButtonContainer>
+          <DeFiButton mode="contained" color={Colors.Grey} onPress={() => setShowDeleteWalletHint(false)}>
+            {t("action.abort")}
+          </DeFiButton>
+          <DeFiButton mode="contained" loading={isSaving} onPress={onWalletDelete}>
+            {t("action.ok")}
+          </DeFiButton>
+        </ButtonContainer>
+      </>
+    );
+  }
+
+  if (showDeleteAccountHint) {
+    return (
+      <>
+        <Paragraph>{t("model.user.delete_account_hint")}</Paragraph>
+        <SpacerV />
+
+        <ButtonContainer>
+          <DeFiButton mode="contained" color={Colors.Grey} onPress={() => setShowDeleteAccountHint(false)}>
+            {t("action.abort")}
+          </DeFiButton>
+          <DeFiButton mode="contained" loading={isSaving} onPress={onAccountDelete}>
+            {t("action.ok")}
+          </DeFiButton>
+        </ButtonContainer>
+      </>
+    );
+  }
+
+  return (
     <>
-      <Paragraph>{t("model.user.merge")}</Paragraph>
-      <SpacerV />
+      <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
+        <Input name="mail" label={t("model.user.mail")} valueHook={(v: string) => v.trim()} />
+        <SpacerV />
+        <PhoneNumber
+          name="phone"
+          label={t("model.user.mobile_number")}
+          placeholder="1761212112"
+          wrap={!device.SM}
+          country={country?.symbol}
+        />
+        {error != null && (
+          <>
+            <Alert label={`${t("feedback.save_failed")} ${error ? t(error) : ""}`} />
+            <SpacerV />
+          </>
+        )}
+        <ButtonContainer>
+          <DeFiButton mode="contained" loading={isSaving} onPress={handleSubmit(onSubmit)}>
+            {t("action.save")}
+          </DeFiButton>
+        </ButtonContainer>
+      </Form>
+
+      <SpacerV height={20} />
+      <Divider style={{ backgroundColor: Colors.LightGrey }} />
+      <SpacerV height={20} />
 
       <ButtonContainer>
-        <DeFiButton mode="contained" onPress={onClose}>
-          {t("action.ok")}
-        </DeFiButton>
+        <DeFiButton onPress={() => setShowDeleteWalletHint(true)}>{t("model.user.delete_wallet")}</DeFiButton>
+        <DeFiButton onPress={() => setShowDeleteAccountHint(true)}>{t("model.user.delete_account")}</DeFiButton>
       </ButtonContainer>
     </>
-  ) : (
-    <Form control={control} rules={rules} errors={errors} disabled={isSaving} onSubmit={handleSubmit(onSubmit)}>
-      <Input name="mail" label={t("model.user.mail")} valueHook={(v: string) => v.trim()} />
-      <SpacerV />
-      <PhoneNumber
-        name="phone"
-        label={t("model.user.mobile_number")}
-        placeholder="1761212112"
-        wrap={!device.SM}
-        country={country?.symbol}
-      />
-
-      {error != null && (
-        <>
-          <Alert label={`${t("feedback.save_failed")} ${error ? t(error) : ""}`} />
-          <SpacerV />
-        </>
-      )}
-
-      <ButtonContainer>
-        <DeFiButton mode="contained" loading={isSaving} onPress={handleSubmit(onSubmit)}>
-          {t("action.save")}
-        </DeFiButton>
-      </ButtonContainer>
-    </Form>
   );
 };
 

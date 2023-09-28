@@ -98,6 +98,14 @@ export const changeUser = (info: LinkedAddress): Promise<string> => {
   return fetchFrom<AuthResponse>(`${UserUrl}/change`, "POST", info).then((resp) => resp.accessToken);
 };
 
+export const deleteWallet = (): Promise<void> => {
+  return fetchFrom<void>(`${UserUrl}`, "DELETE");
+};
+
+export const deleteAccount = (): Promise<void> => {
+  return fetchFrom<void>(`${UserUrl}/account`, "DELETE");
+};
+
 // --- KYC --- //
 export const putKycData = (data: KycData, code?: string): Promise<KycInfo> => {
   return fetchFrom<KycInfo>(`${KycUrl}/${code}/data`, "PUT", toKycDataDto(data));

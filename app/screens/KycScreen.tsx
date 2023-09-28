@@ -37,6 +37,7 @@ import Colors from "../config/Colors";
 import { KycData } from "../models/KycData";
 import KycDataEdit from "../components/edit/KycDataEdit";
 import { ApiError } from "../models/ApiDto";
+import Sizes from "../config/Sizes";
 
 const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const { t } = useTranslation();
@@ -57,6 +58,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const [isFileUploading, setIsFileUploading] = useState(false);
   const [showsLinkInstructions, setShowsLinkInstructions] = useState(false);
   const [showsReviewHint, setShowsReviewHint] = useState(false);
+  const [iframeWidth, setIframeWidth] = useState(Sizes.AppWidth);
 
   const intervalRef = useRef<NodeJS.Timer>();
 
@@ -252,10 +254,10 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
 
       {kycInfo &&
         (isKycInProgress && kycInfo.sessionUrl ? (
-          <View style={styles.container}>
+          <View style={styles.container} onLayout={(e) => setIframeWidth(e.nativeEvent.layout.width)}>
             {kycInfo.setupUrl && (
               <View style={styles.hiddenIframe}>
-                <Iframe src={kycInfo.setupUrl} />
+                <Iframe src={kycInfo.setupUrl} width={iframeWidth} />
               </View>
             )}
             {kycInfo.kycStatus === KycStatus.CHATBOT ? (
@@ -263,7 +265,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
                 <ChatbotScreen sessionUrl={kycInfo.sessionUrl} onFinish={onChatBotFinished} />
               </View>
             ) : (
-              <Iframe src={kycInfo.sessionUrl} />
+              <Iframe src={kycInfo.sessionUrl} width={iframeWidth} />
             )}
           </View>
         ) : showsReviewHint ? (

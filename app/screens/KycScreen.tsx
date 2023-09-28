@@ -257,7 +257,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
           <View style={styles.container} onLayout={(e) => setIframeWidth(e.nativeEvent.layout.width)}>
             {kycInfo.setupUrl && (
               <View style={styles.hiddenIframe}>
-                <Iframe src={kycInfo.setupUrl} width={iframeWidth} />
+                <Iframe src={kycInfo.setupUrl} width={iframeWidth} height={800} />
               </View>
             )}
             {kycInfo.kycStatus === KycStatus.CHATBOT ? (
@@ -265,7 +265,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
                 <ChatbotScreen sessionUrl={kycInfo.sessionUrl} onFinish={onChatBotFinished} />
               </View>
             ) : (
-              <Iframe src={kycInfo.sessionUrl} width={iframeWidth} />
+              <Iframe src={kycInfo.sessionUrl} width={iframeWidth} height={900} />
             )}
           </View>
         ) : showsReviewHint ? (

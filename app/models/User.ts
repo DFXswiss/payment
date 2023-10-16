@@ -229,6 +229,8 @@ export const getKycStatusString = (user: User | KycInfo): string => {
 
 export const getTradeLimit = (user: User | KycInfo): string => {
   return user.tradingLimit
-    ? `${formatAmount(user.tradingLimit.limit)} € ${i18n.t("model.user.per_" + user.tradingLimit.period.toLowerCase())}`
+    ? `${formatAmount(user.tradingLimit.limit)} CHF ${i18n.t(
+        "model.user.per_" + user.tradingLimit.period.toLowerCase()
+      )}`
     : "";
 };

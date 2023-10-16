@@ -200,11 +200,11 @@ const RouteList = ({
     {
       condition: true,
       label: "model.route.volume",
-      value: `${formatAmount(route.volume)} €`,
+      value: `${formatAmount(route.volume)} CHF`,
       icon: route.volume > 0 ? "chevron-right" : undefined,
       onPress: () => fetchHistory(route),
     },
-    { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
+    { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} CHF` },
   ];
 
   const sellRouteData = (route: SellRoute) => [
@@ -231,7 +231,7 @@ const RouteList = ({
     {
       condition: true,
       label: "model.route.volume",
-      value: `${formatAmount(route.volume)} €`,
+      value: `${formatAmount(route.volume)} CHF`,
       icon: route.volume > 0 ? "chevron-right" : undefined,
       onPress: () => fetchHistory(route),
     },
@@ -256,11 +256,11 @@ const RouteList = ({
     {
       condition: true,
       label: "model.route.volume",
-      value: `${formatAmount(route.volume)} €`,
+      value: `${formatAmount(route.volume)} CHF`,
       icon: route.volume > 0 ? "chevron-right" : undefined,
       onPress: () => fetchHistory(route),
     },
-    { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} €` },
+    { condition: true, label: "model.route.annual_volume", value: `${formatAmount(route.annualVolume)} CHF` },
   ];
 
   const routeData = (route: RouteAlias) => {
@@ -283,8 +283,8 @@ const RouteList = ({
   };
 
   const volumeInfoData = (info?: VolumeInformation) => [
-    { label: t("model.route.total_volume"), value: `${formatAmount(info?.total)} €` },
-    { label: t("model.route.annual_volume"), value: `${formatAmount(info?.annual)} €` },
+    { label: t("model.route.total_volume"), value: `${formatAmount(info?.total)} CHF` },
+    { label: t("model.route.annual_volume"), value: `${formatAmount(info?.annual)} CHF` },
   ];
 
   return (

@@ -2,7 +2,7 @@
   "files.exclude": {
     "node_modules": true
   },
-  "cSpell.words": ["alby", "libphonenumber", "lnurl", "soleproprietorship", "webln"],
+  "cSpell.words": ["alby", "libphonenumber", "lnurl", "monero", "soleproprietorship", "webln"],
   "prettier.printWidth": 120,
   "editor.formatOnSave": true
 }

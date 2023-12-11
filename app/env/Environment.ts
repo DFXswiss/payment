@@ -23,4 +23,5 @@ export const Environment = {
     baseUrl: "http://localhost:3000/v1",
     refUrl: "http://localhost:3000/app?code=",
   },
+  services: "http://localhost:3001",
 };

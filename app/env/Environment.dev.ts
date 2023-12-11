@@ -23,4 +23,5 @@ export const Environment = {
     baseUrl: "https://dev.api.dfx.swiss/v1",
     refUrl: "https://dev.api.dfx.swiss/app?code=",
   },
+  services: "https://dev.services.dfx.swiss",
 };

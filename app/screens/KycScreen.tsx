@@ -38,6 +38,7 @@ import { KycData } from "../models/KycData";
 import KycDataEdit from "../components/edit/KycDataEdit";
 import { ApiError } from "../models/ApiDto";
 import Sizes from "../config/Sizes";
+import { Environment } from "../env/Environment";
 
 const KycScreen = ({ settings }: { settings?: AppSettings }) => {
   const { t } = useTranslation();
@@ -67,6 +68,8 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     const params = route.params as any;
     SettingsService.updateSettings({ headless: params?.headless });
     if (!params?.code) return onLoadFailed();
+
+    openUrl(`${Environment.services}/kyc?code=${params.code}`, false);
 
     setInputParams(params);
     nav.navigate(Routes.Kyc, {

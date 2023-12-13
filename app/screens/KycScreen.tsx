@@ -69,7 +69,9 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
     SettingsService.updateSettings({ headless: params?.headless });
     if (!params?.code) return onLoadFailed();
 
-    openUrl(`${Environment.services}/kyc?code=${params.code}`, false);
+    let url = `${Environment.services}/kyc?code=${params.code}`;
+    params.headless && (url += "&headless=true");
+    openUrl(url, false);
 
     setInputParams(params);
     nav.navigate(Routes.Kyc, {

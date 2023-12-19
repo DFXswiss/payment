@@ -210,25 +210,6 @@ const LoginScreen = () => {
     password: addressEntered && [Validations.Required, Validations.Signature],
   });
 
-  const loginWithAlby = async () => {
-    setIsProcessing(true);
-
-    const info = await enableAlby();
-    if (info?.node?.pubkey) {
-      // log in with pub key
-      setValue("userName", `LNNID${info.node.pubkey.toUpperCase()}`);
-      return handleSubmit(onSubmit(false))();
-    } else if (info?.node?.alias?.includes("getalby.com")) {
-      // log in with Alby
-      const url = new URL(`${Environment.api.baseUrl}/auth/alby`);
-      url.searchParams.set("redirectUri", `${window.location.origin}/login`);
-      return openUrl(url.toString(), false);
-    }
-
-    setIsProcessing(false);
-    NotificationService.error(t("feedback.load_failed"));
-  };
-
   return (
     <AppLayout>
       <View style={[AppStyles.container, AppStyles.alignCenter]}>
@@ -299,16 +280,14 @@ const LoginScreen = () => {
                 </ButtonContainer>
               </Form>
             </View>
-            {isAlbyInstalled && (
-              <>
-                <SpacerV height={50} />
-                <ButtonContainer>
-                  <DeFiButton mode="contained" onPress={loginWithAlby}>
-                    {t("action.login_with", { provider: "Alby" })}
-                  </DeFiButton>
-                </ButtonContainer>
-              </>
-            )}
+
+            <SpacerV height={50} />
+
+            <ButtonContainer>
+              <DeFiButton mode="contained" onPress={() => openUrl(`${Environment.services}/my-dfx`, false)}>
+                {t("action.login_with", { provider: "Wallet" })}
+              </DeFiButton>
+            </ButtonContainer>
           </>
         )}
       </View>

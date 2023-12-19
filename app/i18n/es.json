@@ -372,7 +372,7 @@
       },
       "login_failed": {
         "title": "Error en el inicio de sesión.",
-        "description": "Por favor, intente iniciar sesión a través de DFX wallet de nuevo"
+        "description": "Por favor, intente iniciar sesión a través de la billetera de nuevo"
       }
     }
   }

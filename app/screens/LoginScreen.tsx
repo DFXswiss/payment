@@ -285,7 +285,7 @@ const LoginScreen = () => {
 
             <ButtonContainer>
               <DeFiButton mode="contained" onPress={() => openUrl(`${Environment.services}/my-dfx`, false)}>
-                {t("action.login_with", { provider: "Wallet" })}
+                {t("action.login_with", { provider: "Services" })}
               </DeFiButton>
             </ButtonContainer>
           </>

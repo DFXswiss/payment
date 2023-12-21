@@ -8,15 +8,23 @@ export enum Blockchain {
   ARBITRUM = "Arbitrum",
   POLYGON = "Polygon",
   CARDANO = "Cardano",
+  MONERO = "Monero",
 }
 
 export const AllowedCryptoBlockchainsTarget = [
   Blockchain.BITCOIN,
+  Blockchain.LIGHTNING,
   Blockchain.ETHEREUM,
   Blockchain.BINANCE_SMART_CHAIN,
   Blockchain.ARBITRUM,
   Blockchain.OPTIMISM,
-  Blockchain.LIGHTNING,
+  Blockchain.MONERO,
 ];
 
-export const AllowedCryptoBlockchainsSource = [Blockchain.BITCOIN, Blockchain.LIGHTNING];
+export const AllowedCryptoBlockchainsSource = [
+  Blockchain.BITCOIN,
+  Blockchain.LIGHTNING,
+  Blockchain.ETHEREUM,
+  Blockchain.ARBITRUM,
+  Blockchain.OPTIMISM,
+];

@@ -222,7 +222,7 @@
         "vip_title": "Welcome to the Black Squad",
         "vip_description": "The Black Squad is an elite group for major investors on DFX and gives you a direct voice channel to DFX leadership.",
         "vip_link": "The Black Squad gathers in a Telegram group - just follow the link:",
-        "merge": "Sembra che tu abbia già un account con DFX. Le abbiamo appena inviato un'e-mail. Clicca sul link inviato per aggiungere questo indirizzo al tuo conto esistente. In questo modo non sarà necessario ripetere la procedura KYC.\n\nSe non volete collegare questo indirizzo al vostro conto, ignorate semplicemente l'e-mail.",
+        "merge": "Sembra che tu abbia già un account con DFX. Le abbiamo appena inviato un'e-mail. Fare clic sul link inviato per confermare il tuo indirizzo e-mail.",
         "delete_wallet": "Disattivare il portafoglio",
         "delete_wallet_hint": "Sei sicuro di voler disattivare questo portafoglio per l'uso su DFX? Non sarà più possibile utilizzarlo con DFX.",
         "delete_account": "Elimina conto",

@@ -71,7 +71,7 @@ const KycScreen = ({ settings }: { settings?: AppSettings }) => {
 
     let url = `${Environment.services}/kyc?code=${params.code}`;
     params.headless && (url += "&headless=true");
-    params.redirect_uri && (url += `&kyc-redirect=${params.redirect_uri}`);
+    params.redirect_uri && (url += `&kyc-redirect=${encodeURIComponent(params.redirect_uri)}`);
     openUrl(url, false);
 
     setInputParams(params);

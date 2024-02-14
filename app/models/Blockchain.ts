@@ -18,6 +18,7 @@ export const AllowedCryptoBlockchainsTarget = [
   Blockchain.BINANCE_SMART_CHAIN,
   Blockchain.ARBITRUM,
   Blockchain.OPTIMISM,
+  Blockchain.POLYGON,
   Blockchain.MONERO,
 ];
 
@@ -27,4 +28,5 @@ export const AllowedCryptoBlockchainsSource = [
   Blockchain.ETHEREUM,
   Blockchain.ARBITRUM,
   Blockchain.OPTIMISM,
+  Blockchain.POLYGON,
 ];

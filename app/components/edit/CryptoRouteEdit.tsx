@@ -81,10 +81,7 @@ const CryptoRouteEdit = ({
   const rules: any = createRules({
     blockchain: Validations.Required,
     asset: Validations.Required,
-    targetBlockchain: [
-      isBlockchainsEnabled() && Validations.Required,
-      Validations.Custom((b) => (b == sourceBlockchain ? "model.route.blockchain_same" : true)),
-    ],
+    targetBlockchain: isBlockchainsEnabled() && Validations.Required,
   });
 
   return isLoading ? (
@@ -106,9 +103,7 @@ const CryptoRouteEdit = ({
           <DeFiPicker
             name="targetBlockchain"
             label={t("model.route.target_blockchain")}
-            items={getBlockchains()
-              .filter((b) => b !== sourceBlockchain)
-              .filter((b) => AllowedCryptoBlockchainsTarget.includes(b))}
+            items={getBlockchains().filter((b) => AllowedCryptoBlockchainsTarget.includes(b))}
             labelFunc={(i) => i}
           />
           <SpacerV />

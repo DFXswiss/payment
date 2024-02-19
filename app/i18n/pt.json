@@ -312,7 +312,6 @@
         "blockchain": "Blockchain",
         "target_blockchain": "Destino blockchain",
         "deposit_blockchain": "Depósito blockchain",
-        "blockchain_same": "Blockchain idêntica",
         "aml_check": "Verificação AML",
         "aml_check_short": "AML",
         "aml_check_pass": "Aprovado",

@@ -316,7 +316,6 @@
         "blockchain": "Blockchain",
         "target_blockchain": "Ziel-Blockchain",
         "deposit_blockchain": "Deposit-Blockchain",
-        "blockchain_same": "Deposit- und Ziel-Blockchain dürfen nicht gleich sein",
         "aml_check": "AML-Prüfung",
         "aml_check_short": "AML",
         "aml_check_pass": "Bestanden",

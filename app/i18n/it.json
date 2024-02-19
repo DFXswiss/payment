@@ -315,7 +315,6 @@
         "blockchain": "Blockchain",
         "target_blockchain": "Obiettivo  blockchain",
         "deposit_blockchain": "Deposito Blockchain",
-        "blockchain_same": "Blockchain identiche",
         "aml_check": "Controllo antiriciclaggio",
         "aml_check_short": "AML",
         "aml_check_pass": "Superato",

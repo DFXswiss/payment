@@ -1,4 +1,4 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import React, { useRef, useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -16,7 +16,6 @@ import IconButton from "../components/util/IconButton";
 import ClipboardService from "../services/ClipboardService";
 import Validations from "../utils/Validations";
 import { Text } from "react-native-paper";
-import SettingsService from "../services/SettingsService";
 import { DeFiButton } from "../elements/Buttons";
 import ButtonContainer from "../components/util/ButtonContainer";
 import { createRules, openUrl } from "../utils/Utils";
@@ -26,7 +25,6 @@ import Loading from "../components/util/Loading";
 import { getSignMessage } from "../services/ApiService";
 import NotificationService from "../services/NotificationService";
 import { Blockchain } from "../models/Blockchain";
-import { ErrorScreenType } from "./ErrorScreen";
 import { useAlby } from "../hooks/useAlby";
 import { Environment } from "../env/Environment";
 
@@ -39,7 +37,6 @@ interface LoginData {
 
 const LoginScreen = () => {
   const nav = useNavigation();
-  const route = useRoute();
   const { t } = useTranslation();
   const { isInstalled: isAlbyInstalled, enable: enableAlby, signMessage: signMessageWithAlby } = useAlby();
 
@@ -138,62 +135,9 @@ const LoginScreen = () => {
   };
 
   useEffect(() => {
-    // update settings
-    const headless = Boolean(params?.headless);
-    const language = params?.lang?.toUpperCase();
-    SettingsService.updateSettings({ headless }).then(() => {
-      if (language) SettingsService.updateSettings({ language });
-    });
-
-    // TODO: remove 0 -> 1 conversion (fix for DFX Wallet v0.10.5)
-    setValue("walletId", params?.walletId == 0 ? 1 : +params?.walletId);
-    setValue("refCode", params?.code);
-
-    // token login
-    if (params?.token || params?.session) {
-      setIsAutoLogin(true);
-      setIsProcessing(true);
-
-      resetParams();
-
-      SessionService.tokenLogin(params?.token ?? params?.session)
-        .then(() => nav.navigate(Routes.Home))
-        .catch(() => {
-          nav.navigate(Routes.Error, { screenType: ErrorScreenType.LOGIN_FAILED });
-        })
-        .finally(() => {
-          setIsProcessing(false);
-          setIsAutoLogin(false);
-        });
-    }
-
-    if (params?.address) {
-      setValue("userName", params.address);
-
-      setIsAutoLogin(true);
-
-      // deprecated login with address & signature (TODO: remove)
-      params.signature && setValue("password", params.signature);
-      const directLogin = params.signature != null;
-
-      handleSubmit(onSubmit(directLogin))();
-    }
-
-    resetParams();
+    let url = `${Environment.services}`;
+    openUrl(url, false);
   }, []);
-
-  const resetParams = () => {
-    nav.navigate(Routes.Login, {
-      lang: undefined,
-      address: undefined,
-      signature: undefined,
-      walletId: undefined,
-      code: undefined,
-      headless: undefined,
-      token: undefined,
-      session: undefined,
-    });
-  };
 
   const addressValueHook = (value: string): string => {
     if (addressEntered && signMessage) {
@@ -204,7 +148,6 @@ const LoginScreen = () => {
     return value;
   };
 
-  const params = route.params as any;
   const rules: any = createRules({
     userName: [Validations.Required, Validations.Address],
     password: addressEntered && [Validations.Required, Validations.Signature],

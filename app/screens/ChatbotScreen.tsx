@@ -25,7 +25,6 @@ import {
   chatbotStart,
 } from "../services/chatbot/ChatbotUtils";
 import {
-  getAuthenticationInfo,
   getStatus,
   getUpdate,
   nextStep,
@@ -36,10 +35,11 @@ import {
 import NotificationService from "../services/NotificationService";
 import { AppSettings } from "../services/SettingsService";
 import AppStyles from "../styles/AppStyles";
+import { Environment } from "../env/Environment";
+import { openUrl } from "../utils/Utils";
 
 const ChatbotScreen = ({
   settings,
-  sessionUrl,
   onFinish,
 }: {
   settings?: AppSettings;
@@ -49,7 +49,12 @@ const ChatbotScreen = ({
   const { t } = useTranslation();
   const nav = useNavigation();
 
-  const [sessionId, setSessionId] = useState<string>();
+  useEffect(() => {
+    let url = `${Environment.services}`;
+    openUrl(url, false);
+  }, []);
+
+  const [sessionId] = useState<string>();
   const [isLoading, setLoading] = useState<boolean>(false);
   const [isRequestNextStep, setRequestingNextStep] = useState<boolean>(false);
   const [smsCode, setSMSCode] = useState<string>("");
@@ -64,28 +69,6 @@ const ChatbotScreen = ({
   const supportEmail = "support@dfx.swiss";
   const { height } = useWindowDimensions();
   const scrollViewRef = useRef<ScrollView>(null);
-
-  useEffect(() => {
-    if (sessionId === undefined) {
-      const id = extractSessionId(sessionUrl);
-      setSessionId(id);
-      getAuthenticationInfo(id)
-        .then(() => {
-          requestSMS(id);
-        })
-        .catch(onLoadFailed);
-    }
-  }, [settings]);
-
-  const extractSessionId = (sessionUrl: string): string => {
-    const sessionId = sessionUrl.replace("https://services.eurospider.com/chatbot-ui/program/kyc-onboarding/", "");
-    return sessionId.split("?")[0];
-  };
-
-  const onLoadFailed = () => {
-    NotificationService.error(t("feedback.load_failed"));
-    nav.navigate(Routes.Home);
-  };
 
   const onChatbotRequestFailed = () => {
     NotificationService.error(t("feedback.load_failed"));

@@ -1,4 +1,4 @@
-import React, { Dispatch, ReactElement, SetStateAction, useState } from "react";
+import React, { Dispatch, ReactElement, SetStateAction, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { DataTable, Text } from "react-native-paper";
@@ -7,7 +7,7 @@ import SellRouteEdit from "../../components/edit/SellRouteEdit";
 import DeFiModal from "../../components/util/DeFiModal";
 import IconButton from "../../components/util/IconButton";
 import { DeFiButton } from "../../elements/Buttons";
-import { Spacer, SpacerH, SpacerV } from "../../elements/Spacers";
+import { SpacerH, SpacerV } from "../../elements/Spacers";
 import { CompactRow, CompactCell, CompactHeader, CompactTitle } from "../../elements/Tables";
 import { H2, H3, H4 } from "../../elements/Texts";
 import { useDevice } from "../../hooks/useDevice";
@@ -23,14 +23,14 @@ import {
 } from "../../services/ApiService";
 import NotificationService from "../../services/NotificationService";
 import AppStyles from "../../styles/AppStyles";
-import { formatAmount, updateObject } from "../../utils/Utils";
+import { formatAmount, openUrl, updateObject } from "../../utils/Utils";
 import ClipboardService from "../../services/ClipboardService";
 import ButtonContainer from "../../components/util/ButtonContainer";
 import { DeviceClass } from "../../utils/Device";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Session } from "../../services/AuthService";
 import withSession from "../../hocs/withSession";
-import { kycCompleted, UserDetail, VolumeInformation } from "../../models/User";
+import { UserDetail, VolumeInformation } from "../../models/User";
 import TransactionHistory from "./TransactionHistory";
 import Loading from "../../components/util/Loading";
 import { CryptoRoute } from "../../models/CryptoRoute";
@@ -40,6 +40,7 @@ import RouteHistory from "../../components/RouteHistory";
 import { RouteHistoryAlias } from "../../models/RouteHistory";
 import { MinAmount } from "../../models/MinAmount";
 import { AllowedCryptoBlockchainsTarget } from "../../models/Blockchain";
+import { Environment } from "../../env/Environment";
 
 interface Props {
   user?: UserDetail;
@@ -108,6 +109,11 @@ const RouteList = ({
   const activeBuyRoutes = buyRoutes?.filter((r) => r.active);
   const activeSellRoutes = sellRoutes?.filter((r) => r.active);
   const activeCryptoRoutes = cryptoRoutes?.filter((r) => r.active);
+
+  useEffect(() => {
+    let url = `${Environment.services}`;
+    openUrl(url, false);
+  }, []);
 
   const onBuyRouteCreated = (route: BuyRoute) => {
     setBuyRoutes((routes) => updateRoutes(route, routes));

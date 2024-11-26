@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { StyleSheet, View } from "react-native";
 import { Paragraph } from "react-native-paper";
@@ -17,6 +17,8 @@ import NotificationService from "../services/NotificationService";
 import SessionService from "../services/SessionService";
 import StorageService from "../services/StorageService";
 import AppStyles from "../styles/AppStyles";
+import { Environment } from "../env/Environment";
+import { openUrl } from "../utils/Utils";
 
 const gtcLength = require("../i18n/de.json").common.gtc.text.length - 1;
 
@@ -24,17 +26,23 @@ const GtcScreen = ({ session }: { session?: Session }) => {
   const nav = useNavigation();
   const { t } = useTranslation();
 
+  useEffect(() => {
+    let url = `${Environment.services}`;
+    openUrl(url, false);
+  }, []);
+
   const [isProcessing, setIsProcessing] = useState(false);
 
   useGuard(() =>
-    StorageService.getValue<Credentials>(StorageService.Keys.Credentials)
-      .then((credentials) => !(credentials.address && credentials.signature))
+    StorageService.getValue<Credentials>(StorageService.Keys.Credentials).then(
+      (credentials) => !(credentials.address && credentials.signature)
+    )
   );
   useGuard(() => session && session.isLoggedIn && !isProcessing, [session], Routes.Home);
 
   const register = () => {
     setIsProcessing(true);
-    
+
     Promise.all([
       StorageService.getValue<Credentials>(StorageService.Keys.Credentials),
       StorageService.getPrimitive<string>(StorageService.Keys.Ref),

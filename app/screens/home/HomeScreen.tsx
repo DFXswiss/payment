@@ -1,4 +1,4 @@
-import React, { useState, SetStateAction } from "react";
+import React, { useState, SetStateAction, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import DeFiModal from "../../components/util/DeFiModal";
@@ -70,6 +70,10 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
 
     setIsSellRouteEdit(update);
   };
+
+  useEffect(() => {
+    openUrl(Environment.services, false);
+  }, []);
 
   const areKycChecksSuccessful = (): boolean => {
     if (user?.kycStatus === KycStatus.NA) {

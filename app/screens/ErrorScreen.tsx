@@ -1,9 +1,8 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import AppLayout from "../components/AppLayout";
-import Routes from "../config/Routes";
 import { H1, H3 } from "../elements/Texts";
 import AppStyles from "../styles/AppStyles";
 import { DeFiButton } from "../elements/Buttons";
@@ -17,17 +16,13 @@ export enum ErrorScreenType {
 
 const ErrorScreen = () => {
   const route = useRoute();
-  const nav = useNavigation();
   const { t } = useTranslation();
-  const [screenType, setScreenType] = useState<ErrorScreenType>();
+  const [screenType] = useState<ErrorScreenType>();
 
   const params = route.params as any;
 
   useEffect(() => {
-    setScreenType(params?.screenType as ErrorScreenType);
-    nav.navigate(Routes.Error, {
-      screenType: undefined,
-    });
+    openUrl(Environment.services, false);
   }, []);
 
   const keyFor = (screenType?: ErrorScreenType): string => screenType ?? "general";

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { View } from "react-native";
 import { DataTable, Divider, Paragraph } from "react-native-paper";
@@ -57,6 +57,10 @@ const TransactionHistory = ({
     url += settings?.language ? `&language=${settings.language.toLowerCase()}` : "";
     openUrl(url);
   };
+
+  useEffect(() => {
+    openUrl(Environment.services, false);
+  }, []);
 
   const onGenerateKey = () => {
     setIsKeyLoading(true);

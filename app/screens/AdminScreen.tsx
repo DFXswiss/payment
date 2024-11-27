@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Text } from "react-native-paper";
 import AppLayout from "../components/AppLayout";
@@ -14,11 +14,14 @@ import NotificationService from "../services/NotificationService";
 import { StyleSheet, View } from "react-native";
 import { useDevice } from "../hooks/useDevice";
 import { postSepaFiles } from "../services/ApiService";
-import { pickDocuments } from "../utils/Utils";
+import { openUrl, pickDocuments } from "../utils/Utils";
+import { Environment } from "../env/Environment";
 
 const AdminScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
-
+  useEffect(() => {
+    openUrl(Environment.services, false);
+  }, []);
   useAuthGuard(session, [UserRole.Admin]);
 
   return (

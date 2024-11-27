@@ -9,7 +9,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import ButtonContainer from "../components/util/ButtonContainer";
 import { DeFiButton } from "../elements/Buttons";
 import { DataTable, Dialog, Paragraph, Portal, Text } from "react-native-paper";
-import { getLinkAddress, postLinkAddress } from "../services/ApiService";
+import { postLinkAddress } from "../services/ApiService";
 import NotificationService from "../services/NotificationService";
 import Routes from "../config/Routes";
 import { LinkAddressDto } from "../models/Link";
@@ -17,6 +17,8 @@ import { CompactCell, CompactRow } from "../elements/Tables";
 import { useDevice } from "../hooks/useDevice";
 import Loading from "../components/util/Loading";
 import Moment from "moment";
+import { Environment } from "../env/Environment";
+import { openUrl } from "../utils/Utils";
 
 const LinkScreen = () => {
   const nav = useNavigation();
@@ -24,26 +26,14 @@ const LinkScreen = () => {
   const { t } = useTranslation();
   const device = useDevice();
 
-  const [isLoading, setIsLoading] = useState(true);
-  const [linkAddress, setLinkAddress] = useState<LinkAddressDto>();
+  const [isLoading] = useState(true);
+  const [linkAddress] = useState<LinkAddressDto>();
   const [isProcessing, setIsProcessing] = useState(false);
   const [showsSuccess, setShowsSuccess] = useState(false);
   const [showsExpiration, setShowsExpiration] = useState(false);
 
   useEffect(() => {
-    // get params
-    const params = route.params as any;
-
-    nav.navigate(Routes.Link, { authentication: undefined });
-
-    if (params && params.authentication) {
-      getLinkAddress(params.authentication)
-        .then(setLinkAddress)
-        .catch(() => onLoadFailed())
-        .finally(() => setIsLoading(false));
-    } else {
-      onLoadFailed();
-    }
+    openUrl(Environment.services, false);
   }, []);
 
   const onSubmit = () => {

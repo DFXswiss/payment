@@ -15,8 +15,7 @@ const NotFoundScreen = () => {
   const { t } = useTranslation();
   const nav = useNavigation();
   useEffect(() => {
-    let url = `${Environment.services}`;
-    openUrl(url, false);
+    openUrl(Environment.services, false);
   }, []);
   return (
     <AppLayout>

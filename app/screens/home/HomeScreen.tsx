@@ -72,8 +72,7 @@ const HomeScreen = ({ session, settings }: { session?: Session; settings?: AppSe
   };
 
   useEffect(() => {
-    let url = `${Environment.services}`;
-    openUrl(url, false);
+    openUrl(Environment.services, false);
   }, []);
 
   const areKycChecksSuccessful = (): boolean => {

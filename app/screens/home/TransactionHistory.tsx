@@ -59,8 +59,7 @@ const TransactionHistory = ({
   };
 
   useEffect(() => {
-    let url = `${Environment.services}`;
-    openUrl(url, false);
+    openUrl(Environment.services, false);
   }, []);
 
   const onGenerateKey = () => {

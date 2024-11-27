@@ -135,8 +135,7 @@ const LoginScreen = () => {
   };
 
   useEffect(() => {
-    let url = `${Environment.services}`;
-    openUrl(url, false);
+    openUrl(Environment.services, false);
   }, []);
 
   const addressValueHook = (value: string): string => {

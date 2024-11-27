@@ -22,8 +22,7 @@ const ErrorScreen = () => {
   const params = route.params as any;
 
   useEffect(() => {
-    let url = `${Environment.services}`;
-    openUrl(url, false);
+    openUrl(Environment.services, false);
   }, []);
 
   const keyFor = (screenType?: ErrorScreenType): string => screenType ?? "general";

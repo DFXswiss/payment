@@ -111,8 +111,7 @@ const RouteList = ({
   const activeCryptoRoutes = cryptoRoutes?.filter((r) => r.active);
 
   useEffect(() => {
-    let url = `${Environment.services}`;
-    openUrl(url, false);
+    openUrl(Environment.services, false);
   }, []);
 
   const onBuyRouteCreated = (route: BuyRoute) => {

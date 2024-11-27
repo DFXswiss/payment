@@ -33,8 +33,7 @@ const LinkScreen = () => {
   const [showsExpiration, setShowsExpiration] = useState(false);
 
   useEffect(() => {
-    let url = `${Environment.services}`;
-    openUrl(url, false);
+    openUrl(Environment.services, false);
   }, []);
 
   const onSubmit = () => {

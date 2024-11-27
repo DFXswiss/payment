@@ -20,8 +20,7 @@ import { Environment } from "../env/Environment";
 const AdminScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
   useEffect(() => {
-    let url = `${Environment.services}`;
-    openUrl(url, false);
+    openUrl(Environment.services, false);
   }, []);
   useAuthGuard(session, [UserRole.Admin]);
 

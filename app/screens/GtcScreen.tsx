@@ -27,8 +27,7 @@ const GtcScreen = ({ session }: { session?: Session }) => {
   const { t } = useTranslation();
 
   useEffect(() => {
-    let url = `${Environment.services}`;
-    openUrl(url, false);
+    openUrl(Environment.services, false);
   }, []);
 
   const [isProcessing, setIsProcessing] = useState(false);

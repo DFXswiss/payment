@@ -50,8 +50,7 @@ const ChatbotScreen = ({
   const nav = useNavigation();
 
   useEffect(() => {
-    let url = `${Environment.services}`;
-    openUrl(url, false);
+    openUrl(Environment.services, false);
   }, []);
 
   const [sessionId] = useState<string>();
